@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엘리야의원 — Elliya Clinic</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init("dxOEFos8G2gPah2AudwI0");</script>
+<style>
+:root{--cream:#FDFAF4;--cream-dark:#F5F0E8;--gold:#C9A96E;--gold-light:#E8D5B0;--gold-dark:#9B7A45;--ink:#1A1714;--ink-mid:#4A4440;--ink-light:#7A7470;--white:#FFFFFF;--border:rgba(201,169,110,0.25);--border-mid:rgba(201,169,110,0.45);}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{font-family:'Georgia','Noto Serif KR',serif;background:var(--cream);color:var(--ink);line-height:1.7;}
+a{color:inherit;text-decoration:none;}
+
+/* LANG BAR */
+.lang-bar{position:fixed;top:0;left:0;right:0;z-index:200;height:34px;background:var(--ink);display:flex;align-items:center;justify-content:flex-end;padding:0 3rem;}
+.lang-btn{padding:0 1rem;height:34px;background:none;border:none;border-right:0.5px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);font-size:0.72rem;letter-spacing:0.06em;cursor:pointer;font-family:'Arial',sans-serif;transition:color .2s,background .2s;display:flex;align-items:center;gap:.35rem;white-space:nowrap;}
+.lang-btn:first-child{border-left:0.5px solid rgba(255,255,255,0.12);}
+.lang-btn:hover{color:var(--white);background:rgba(255,255,255,0.07);}
+.lang-btn.active{color:var(--gold);font-weight:700;}
+
+/* NAV */
+nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:64px;background:rgba(253,250,244,0.96);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);}
+.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);}
+.nav-logo span{color:var(--gold);}
+.nav-links{display:flex;gap:2rem;list-style:none;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;}
+.nav-links a{color:var(--ink-mid);transition:color .2s;}
+.nav-links a:hover{color:var(--gold-dark);}
+.nav-book{padding:.5rem 1.5rem;background:var(--ink);color:var(--cream)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
+.nav-book:hover{background:var(--gold-dark);}
+.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--ink);}
+.pt{padding-top:98px;}
+
+/* HERO */
+.hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:linear-gradient(135deg,#1A1714 0%,#2D2520 50%,#1A1714 100%);}
+.hero-bg{position:absolute;inset:0;background:url("images/hero.jpg") center/cover no-repeat;opacity:.35;}
+.hero-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(26,23,20,.75) 0%,rgba(26,23,20,.2) 100%);}
+.hero-ct{position:relative;z-index:2;max-width:600px;}
+.hero-eye{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+.hero-title{font-size:clamp(2.4rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:1.5rem;}
+.hero-title em{font-style:normal;color:var(--gold);}
+.hero-desc{font-size:1rem;color:rgba(255,255,255,.72);margin-bottom:2.4rem;max-width:460px;line-height:1.8;}
+.hero-act{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-p{padding:.85rem 2.2rem;background:var(--gold);color:var(--ink);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s;font-weight:700;}
+.btn-p:hover{background:var(--gold-dark);color:var(--white);transform:translateY(-1px);}
+.btn-o{padding:.85rem 2.2rem;background:transparent;color:var(--white);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:1px solid rgba(255,255,255,.45);border-radius:2px;cursor:pointer;transition:border-color .2s,background .2s;}
+.btn-o:hover{border-color:var(--gold);background:rgba(201,169,110,.12);}
+
+/* SECTIONS */
+.s-eye{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-family:'Arial',sans-serif;}
+.s-title{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700;line-height:1.25;margin-bottom:1.3rem;color:var(--ink);}
+.s-body{font-size:.95rem;color:var(--ink-mid);line-height:1.85;margin-bottom:2rem;}
+.btn-t{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;cursor:pointer;background:none;border:none;transition:gap .2s;}
+.btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
+
+/* ABOUT */
+.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;}
+.about-img{background:url("images/about.jpg") center/cover no-repeat,#2D2520;min-height:260px;}
+.about-txt{padding:5rem 5vw 5rem 4vw;display:flex;flex-direction:column;justify-content:center;background:var(--white);}
+
+/* TREATMENTS */
+.tx-sec{padding:5rem 5vw;background:var(--cream-dark);}
+.tx-hd{text-align:center;margin-bottom:3rem;}
+.tx-hd .s-title{font-size:clamp(1.7rem,3.5vw,2.4rem);}
+.tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:.5px solid var(--border-mid);}
+.tx-card{padding:2.5rem 2rem;background:var(--white);border-right:.5px solid var(--border-mid);transition:background .25s;cursor:pointer;position:relative;overflow:hidden;}
+.tx-card:last-child{border-right:none;}
+.tx-card::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
+.tx-card:hover{background:var(--cream);}.tx-card:hover::before{transform:scaleX(1);}
+.tx-num{font-size:2.4rem;font-weight:700;color:var(--gold-light);font-family:'Arial',sans-serif;margin-bottom:.8rem;line-height:1;}
+.tx-img{width:100%;height:190px;border-radius:2px;margin-bottom:1.2rem;background:#2D2520 center/cover;}
+.tx-name{font-size:1.05rem;font-weight:700;margin-bottom:.6rem;color:var(--ink);}
+.tx-desc{font-size:.86rem;color:var(--ink-light);line-height:1.75;margin-bottom:1.4rem;}
+.card-arr{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;background:none;border:none;cursor:pointer;transition:gap .2s;}
+.card-arr:hover{gap:.75rem;}
+
+/* PHILOSOPHY */
+.philo-sec{padding:5.5rem 5vw;background:var(--ink);color:var(--white);}
+.philo-sec .s-eye{color:var(--gold);}.philo-sec .s-title{color:var(--white);}
+.philo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;}
+.philo-card{padding:2rem;border:.5px solid rgba(201,169,110,.2);border-radius:2px;}
+.philo-n{font-size:2.5rem;font-weight:700;color:rgba(201,169,110,.25);font-family:'Arial',sans-serif;line-height:1;margin-bottom:.8rem;}
+.philo-t{font-size:.95rem;font-weight:700;color:var(--gold);margin-bottom:.6rem;}
+.philo-b{font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.8;}
+
+/* VISIT */
+.visit-sec{display:grid;grid-template-columns:1fr 1fr;background:var(--cream-dark);}
+.visit-map{background:#CCC url("images/map.jpg") center/cover no-repeat;min-height:380px;}
+.visit-info{padding:5rem 4vw;display:flex;flex-direction:column;justify-content:center;}
+.vi-item{margin-bottom:1.5rem;}
+.vi-lbl{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.3rem;}
+.vi-val{font-size:.95rem;color:var(--ink);}
+
+/* FOOTER */
+footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;font-family:'Arial',sans-serif;font-size:.85rem;}
+.ft-brand .nav-logo{color:var(--white);margin-bottom:1rem;display:block;}
+.ft-col h4{color:var(--white);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;}
+.ft-col ul{list-style:none;}.ft-col li{margin-bottom:.6rem;}.ft-col a:hover{color:var(--gold);}
+.ft-btm{background:var(--ink);color:rgba(255,255,255,.3);text-align:center;padding:1rem 5vw;font-family:'Arial',sans-serif;font-size:.76rem;border-top:.5px solid rgba(255,255,255,.1);}
+
+/* PAGES */
+.page{display:none;}.page.active{display:block;}
+
+/* DETAIL */
+.dt-hero{height:50vh;min-height:340px;display:flex;align-items:flex-end;padding:3rem 5vw;background:#2D2520 url("images/detail-hero.jpg") center/cover no-repeat;position:relative;}
+.dt-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,23,20,.85) 0%,rgba(26,23,20,.1) 60%);}
+.dt-hct{position:relative;z-index:2;}
+.dt-hct h1{font-size:clamp(1.8rem,4vw,3rem);color:var(--white);font-weight:700;margin-bottom:.5rem;}
+.dt-hct p{color:rgba(255,255,255,.7);font-size:.95rem;}
+.dt-body{display:grid;grid-template-columns:1fr 340px;gap:0;max-width:1200px;margin:0 auto;padding:4rem 5vw;}
+.dt-main h2{font-size:1.4rem;margin-bottom:.9rem;color:var(--ink);}
+.dt-main p{font-size:.95rem;color:var(--ink-mid);line-height:1.85;margin-bottom:1.4rem;}
+.dt-main ul{padding-left:1.2rem;margin-bottom:1.4rem;}
+.dt-main li{font-size:.93rem;color:var(--ink-mid);margin-bottom:.5rem;}
+.dt-side{padding-left:3rem;border-left:.5px solid var(--border-mid);position:sticky;top:115px;height:fit-content;}
+.price-card{background:var(--white);border:.5px solid var(--border-mid);border-radius:4px;padding:2rem;margin-bottom:1.5rem;}
+.price-lbl{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.4rem;}
+.price-val{font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:1.4rem;}
+.btn-join{width:100%;padding:1rem;background:var(--gold);color:var(--ink);font-size:.88rem;letter-spacing:.1em;text-transform:uppercase;font-family:inherit;font-weight:700;border:none;border-radius:2px;cursor:pointer;transition:background .2s;}
+.btn-join:hover{background:var(--gold-dark);color:var(--white);}
+.btn-bk{background:none;border:none;cursor:pointer;color:var(--gold-dark);font-size:.83rem;letter-spacing:.08em;text-transform:uppercase;font-family:'Arial',sans-serif;display:flex;align-items:center;gap:.4rem;padding:1rem 5vw;}
+.btn-bk:hover{color:var(--ink);}
+
+/* BOOKING */
+.bk-page{min-height:100vh;background:var(--cream);}
+.bk-inner{max-width:1000px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:230px 1fr;gap:3rem;}
+.bk-steps{position:sticky;top:110px;height:fit-content;}
+.bk-step-hd{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:1.4rem;}
+.s-item{display:flex;align-items:flex-start;gap:.85rem;padding:.8rem 0;border-bottom:.5px solid var(--border);}
+.s-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;font-family:'Arial',sans-serif;flex-shrink:0;background:var(--cream-dark);color:var(--ink-light);border:1px solid var(--border-mid);transition:background .2s,color .2s;}
+.s-item.active .s-num{background:var(--gold);color:var(--ink);border-color:var(--gold);}
+.s-item.done .s-num{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.s-info{flex:1;}
+.s-nm{font-size:.85rem;font-weight:700;color:var(--ink-mid);font-family:'Arial',sans-serif;}
+.s-item.active .s-nm{color:var(--ink);}
+.s-sb{font-size:.75rem;color:var(--ink-light);font-family:'Arial',sans-serif;margin-top:.1rem;}
+.bk-ct{padding-top:.5rem;}
+.bk-title{font-size:1.75rem;font-weight:700;margin-bottom:.4rem;color:var(--ink);}
+.bk-sub{font-size:.9rem;color:var(--ink-light);margin-bottom:2.2rem;font-family:'Arial',sans-serif;}
+.svc-opts{display:flex;flex-direction:column;gap:.9rem;}
+.svc-opt{padding:1.3rem 1.5rem;border:1px solid var(--border-mid);border-radius:4px;background:var(--white);cursor:pointer;transition:border-color .2s,background .2s;display:flex;justify-content:space-between;align-items:center;}
+.svc-opt:hover{border-color:var(--gold);}
+.svc-opt.sel{border-color:var(--gold);background:rgba(201,169,110,.06);}
+.svc-nm{font-size:.98rem;font-weight:700;color:var(--ink);margin-bottom:.2rem;}
+.svc-ds{font-size:.8rem;color:var(--ink-light);font-family:'Arial',sans-serif;}
+.svc-pr{font-size:1.05rem;font-weight:700;color:var(--gold-dark);white-space:nowrap;}
+/* Calendar */
+.cal-wrap{background:var(--white);border:.5px solid var(--border-mid);border-radius:4px;padding:1.4rem;}
+.cal-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.1rem;}
+.cal-mo{font-size:.98rem;font-weight:700;}
+.cal-nav{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--gold-dark);padding:.2rem .5rem;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1.2rem;}
+.cal-dn{text-align:center;font-size:.7rem;font-family:'Arial',sans-serif;color:var(--ink-light);text-transform:uppercase;padding:.35rem 0;}
+.cal-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.83rem;font-family:'Arial',sans-serif;border-radius:2px;cursor:pointer;transition:background .15s,color .15s;}
+.cal-d:not(.emp):not(.past):hover{background:var(--gold-light);color:var(--ink);}
+.cal-d.sel{background:var(--gold);color:var(--ink);font-weight:700;}
+.cal-d.past{color:var(--border-mid);cursor:default;}.cal-d.emp{cursor:default;}
+.time-lbl{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.75rem;}
+.time-slots{display:flex;flex-wrap:wrap;gap:.55rem;}
+.t-slot{padding:.42rem 1rem;border:1px solid var(--border-mid);border-radius:2px;font-size:.83rem;font-family:'Arial',sans-serif;cursor:pointer;background:var(--white);transition:border-color .15s,background .15s;}
+.t-slot:hover{border-color:var(--gold);}
+.t-slot.sel{background:var(--gold);border-color:var(--gold);font-weight:700;color:var(--ink);}
+/* Form */
+.info-form{display:flex;flex-direction:column;gap:1.1rem;}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.f-grp{display:flex;flex-direction:column;gap:.4rem;}
+.f-lbl{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;}
+.f-inp{padding:.72rem 1rem;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);font-size:.93rem;font-family:inherit;color:var(--ink);outline:none;transition:border-color .2s;}
+.f-inp:focus{border-color:var(--gold);}.f-inp::placeholder{color:var(--ink-light);}
+/* Phone picker */
+.ph-row{display:flex;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);overflow:visible;position:relative;}
+.ph-row:focus-within{border-color:var(--gold);}
+.c-sel{position:relative;flex-shrink:0;}
+.c-trig{display:flex;align-items:center;gap:.4rem;padding:0 .8rem;height:100%;min-height:44px;background:var(--cream-dark);border:none;border-right:1px solid var(--border-mid);cursor:pointer;font-size:.88rem;font-family:'Arial',sans-serif;color:var(--ink);white-space:nowrap;transition:background .15s;}
+.c-trig:hover{background:var(--gold-light);}
+.c-dd{display:none;position:absolute;top:calc(100% + 2px);left:0;z-index:400;background:var(--white);border:1px solid var(--border-mid);border-radius:4px;min-width:260px;max-height:260px;overflow-y:auto;box-shadow:0 4px 20px rgba(0,0,0,.12);}
+.c-dd.open{display:block;}
+.c-srch{padding:.6rem .8rem;border:none;border-bottom:1px solid var(--border);width:100%;font-size:.85rem;font-family:'Arial',sans-serif;outline:none;background:var(--cream);color:var(--ink);}
+.c-opt{display:flex;align-items:center;gap:.65rem;padding:.6rem .85rem;cursor:pointer;font-size:.85rem;font-family:'Arial',sans-serif;transition:background .12s;}
+.c-opt:hover{background:var(--cream-dark);}.c-opt.c-sel-opt{background:rgba(201,169,110,.1);}
+.c-of{font-size:1.1rem;flex-shrink:0;}.c-on{flex:1;color:var(--ink);}.c-od{color:var(--ink-light);font-size:.78rem;white-space:nowrap;}
+.ph-inp{flex:1;padding:.72rem 1rem;border:none;outline:none;font-size:.93rem;font-family:inherit;color:var(--ink);background:transparent;}
+.ph-inp::placeholder{color:var(--ink-light);}
+/* Cart */
+.cart-tbl{width:100%;border-collapse:collapse;margin-bottom:1.8rem;}
+.cart-tbl th{text-align:left;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;border-bottom:1px solid var(--border-mid);padding:.5rem 0;}
+.cart-tbl td{padding:1rem 0;border-bottom:.5px solid var(--border);font-size:.93rem;color:var(--ink);}
+.cart-tbl td:last-child{text-align:right;font-weight:700;}
+.cart-tot{display:flex;justify-content:space-between;font-size:1.15rem;font-weight:700;padding-top:.9rem;}
+/* Step nav */
+.s-nav{display:flex;align-items:center;gap:1rem;margin-top:2rem;padding-top:1.5rem;border-top:.5px solid var(--border);flex-wrap:wrap;}
+.btn-sb{padding:.72rem 1.7rem;background:transparent;color:var(--ink-mid);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;font-weight:700;border:1px solid var(--border-mid);border-radius:2px;cursor:pointer;transition:border-color .2s,color .2s;}
+.btn-sb:hover{border-color:var(--ink-mid);color:var(--ink);}
+.btn-sn{padding:.72rem 2rem;background:var(--ink);color:var(--white);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;font-weight:700;border:none;border-radius:2px;cursor:pointer;transition:background .2s;}
+.btn-sn:hover{background:var(--gold-dark);}
+/* Confirm */
+.cfm-box{background:var(--white);border:.5px solid var(--border-mid);border-radius:4px;padding:2.5rem;text-align:center;}
+.cfm-icon{width:60px;height:60px;border-radius:50%;background:rgba(201,169,110,.15);display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.4rem;}
+.cfm-title{font-size:1.5rem;font-weight:700;margin-bottom:.6rem;}
+.cfm-sub{font-size:.93rem;color:var(--ink-light);line-height:1.75;}
+.cfm-details{margin:2rem 0;text-align:left;border:.5px solid var(--border-mid);border-radius:4px;overflow:hidden;}
+.cfm-row{display:flex;justify-content:space-between;padding:.85rem 1.3rem;border-bottom:.5px solid var(--border);font-size:.9rem;}
+.cfm-row:last-child{border-bottom:none;}
+.cfm-row span:first-child{color:var(--ink-light);font-family:'Arial',sans-serif;}
+.cfm-row span:last-child{font-weight:700;}
+
+/* PHILOSOPHY PAGE */
+.pp-body{max-width:780px;margin:0 auto;padding:4rem 2rem;}
+.pp-intro{font-size:1.02rem;color:var(--ink-mid);margin-bottom:3rem;line-height:1.85;}
+.pp-sec{margin-bottom:2.8rem;padding-bottom:2.8rem;border-bottom:.5px solid var(--border);}
+.pp-sec h2{font-size:1.25rem;color:var(--gold-dark);margin-bottom:.7rem;}
+.pp-sec p{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
+
+/* ADMIN */
+.adm-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--white);border:none;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:background .2s;}
+.adm-fab:hover{background:var(--gold-dark);}
+.adm-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(26,23,20,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
+.adm-overlay.open{display:flex;}
+.adm-box{background:var(--white);border-radius:8px;width:min(780px,95vw);max-height:90vh;overflow-y:auto;padding:2.5rem;}
+.adm-box h2{font-size:1.3rem;margin-bottom:.4rem;}
+.adm-box .adm-p{font-size:.85rem;color:var(--ink-light);margin-bottom:1.8rem;font-family:'Arial',sans-serif;line-height:1.6;}
+.adm-sec{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;margin:1.8rem 0 1rem;padding-top:1.5rem;border-top:.5px solid var(--border);}
+.adm-fld{margin-bottom:1.2rem;}
+.adm-fld label{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.35rem;}
+.adm-fld input,.adm-fld textarea{width:100%;padding:.65rem .9rem;border:1px solid var(--border-mid);border-radius:3px;font-size:.9rem;font-family:inherit;resize:vertical;color:var(--ink);outline:none;transition:border-color .2s;background:var(--white);}
+.adm-fld input:focus,.adm-fld textarea:focus{border-color:var(--gold);}
+.adm-acts{display:flex;gap:.8rem;margin-top:2rem;flex-wrap:wrap;align-items:center;}
+.btn-adm-save{padding:.75rem 2rem;background:var(--gold);color:var(--ink);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;font-weight:700;border:none;border-radius:2px;cursor:pointer;transition:background .2s;display:flex;align-items:center;gap:.5rem;}
+.btn-adm-save:hover{background:var(--gold-dark);color:var(--white);}
+.btn-adm-save:disabled{opacity:.5;cursor:not-allowed;}
+.btn-adm-cancel{padding:.75rem 1.5rem;background:transparent;color:var(--ink-mid);font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;border:1px solid var(--border-mid);border-radius:2px;cursor:pointer;}
+.adm-status{font-size:.82rem;font-family:'Arial',sans-serif;color:var(--ink-light);}
+.adm-status.ok{color:#2E6B0E;}.adm-status.err{color:#A32D2D;}
+.spin{display:inline-block;width:12px;height:12px;border:1.5px solid rgba(26,23,20,.2);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* RTL */
+[dir="rtl"] .nav-links{flex-direction:row-reverse;}
+[dir="rtl"] .hero-ct{text-align:right;}
+[dir="rtl"] .hero-act{flex-direction:row-reverse;}
+
+/* Responsive */
+@media(max-width:900px){
+  nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:block;}
+  .lang-bar{padding:0 1rem;}.lang-btn{padding:0 .6rem;font-size:.67rem;}
+  .about-strip,.visit-sec{grid-template-columns:1fr;}.about-img{min-height:220px;}
+  .tx-grid{grid-template-columns:1fr;}.tx-card{border-right:none;border-bottom:.5px solid var(--border-mid);}
+  .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
+  .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
+  footer{grid-template-columns:1fr 1fr;}.ft-brand{grid-column:span 2;}.f-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- LANG BAR -->
+<div class="lang-bar">
+  <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')">🇰🇷 한국어</button>
+  <button class="lang-btn" id="lb-en" onclick="setLang('en')">🇺🇸 English</button>
+  <button class="lang-btn" id="lb-zh" onclick="setLang('zh')">🇹🇼 繁中</button>
+  <button class="lang-btn" id="lb-ar" onclick="setLang('ar')">🇸🇦 عربي</button>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Elijah <span>Clinic</span></div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
+    <li><a href="#" onclick="showPage('philo-page')" data-t="nav.philo">철학</a></li>
+    <li><a href="#treatments" data-t="nav.tx">시술</a></li>
+    <li><a href="#visit" data-t="nav.visit">오시는 길</a></li>
+    <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
+  </ul>
+  <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+</nav>
+
+<!-- ADMIN FAB -->
+<button class="adm-fab" onclick="openAdm()" title="문구 편집">&#9998;</button>
+
+<!-- ADMIN OVERLAY -->
+<div class="adm-overlay" id="adm-overlay">
+  <div class="adm-box">
+    <h2>&#9998; 문구 편집</h2>
+    <p class="adm-p">한국어 문구를 수정하고 <strong>저장 &amp; AI 번역</strong>을 누르면 영어·중국어·아랍어가 자동 업데이트됩니다.</p>
+    <div class="adm-sec">메인 히어로</div>
+    <div class="adm-fld"><label>서브 타이틀</label><input type="text" id="ae-hero-eye"></div>
+    <div class="adm-fld"><label>설명 문구</label><textarea id="ae-hero-desc" rows="3"></textarea></div>
+    <div class="adm-fld"><label>예약 버튼</label><input type="text" id="ae-hero-book"></div>
+    <div class="adm-fld"><label>더 알아보기 버튼</label><input type="text" id="ae-hero-learn"></div>
+    <div class="adm-sec">소개 (About)</div>
+    <div class="adm-fld"><label>제목</label><input type="text" id="ae-about-title"></div>
+    <div class="adm-fld"><label>본문</label><textarea id="ae-about-body" rows="4"></textarea></div>
+    <div class="adm-sec">시술 카드</div>
+    <div class="adm-fld"><label>섹션 제목</label><input type="text" id="ae-tx-title"></div>
+    <div class="adm-fld"><label>시술 1 이름</label><input type="text" id="ae-tx1-name"></div>
+    <div class="adm-fld"><label>시술 1 설명</label><textarea id="ae-tx1-desc" rows="2"></textarea></div>
+    <div class="adm-fld"><label>시술 2 이름</label><input type="text" id="ae-tx2-name"></div>
+    <div class="adm-fld"><label>시술 2 설명</label><textarea id="ae-tx2-desc" rows="2"></textarea></div>
+    <div class="adm-fld"><label>시술 3 이름</label><input type="text" id="ae-tx3-name"></div>
+    <div class="adm-fld"><label>시술 3 설명</label><textarea id="ae-tx3-desc" rows="2"></textarea></div>
+    <div class="adm-sec">철학 (Philosophy)</div>
+    <div class="adm-fld"><label>섹션 제목</label><input type="text" id="ae-philo-title"></div>
+    <div class="adm-fld"><label>가치 1 제목</label><input type="text" id="ae-p1-title"></div>
+    <div class="adm-fld"><label>가치 1 내용</label><textarea id="ae-p1-body" rows="2"></textarea></div>
+    <div class="adm-fld"><label>가치 2 제목</label><input type="text" id="ae-p2-title"></div>
+    <div class="adm-fld"><label>가치 2 내용</label><textarea id="ae-p2-body" rows="2"></textarea></div>
+    <div class="adm-fld"><label>가치 3 제목</label><input type="text" id="ae-p3-title"></div>
+    <div class="adm-fld"><label>가치 3 내용</label><textarea id="ae-p3-body" rows="2"></textarea></div>
+    <div class="adm-sec">방문 안내</div>
+    <div class="adm-fld"><label>주소</label><input type="text" id="ae-addr"></div>
+    <div class="adm-fld"><label>진료 시간</label><input type="text" id="ae-hours"></div>
+    <div class="adm-acts">
+      <button class="btn-adm-save" id="btn-adm-save" onclick="saveAndTranslate()">
+        <span class="spin" id="adm-spin" style="display:none;border-top-color:var(--ink);"></span>
+        &#128190; 저장 &amp; AI 번역
+      </button>
+      <button class="btn-adm-cancel" onclick="closeAdm()">취소</button>
+      <span class="adm-status" id="adm-status"></span>
+    </div>
+  </div>
+</div>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-bg"></div><div class="hero-ov"></div>
+    <div class="hero-ct">
+      <p class="hero-eye" data-t="hero.eye">Seoul · 안티에이징 &amp; 리프팅 전문</p>
+      <h1 class="hero-title">Reveal Your<br><em>Timeless</em><br>Radiance.</h1>
+      <p class="hero-desc" data-t="hero.desc">엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.</p>
+      <div class="hero-act">
+        <button class="btn-p" onclick="showPage('booking');initBooking()" data-t="hero.book">예약하기</button>
+        <button class="btn-o" onclick="showPage('philo-page')" data-t="hero.learn">더 알아보기</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-strip">
+    <div class="about-img"></div>
+    <div class="about-txt">
+      <p class="s-eye" data-t="about.eye">About Elijah Clinic</p>
+      <h2 class="s-title" data-t="about.title">과학과 자연미의 만남</h2>
+      <p class="s-body" data-t="about.body">엘리야의원(Elijah Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.</p>
+      <button class="btn-t" onclick="showPage('philo-page')" data-t="about.philo">철학 보기</button>
+    </div>
+  </section>
+
+  <section class="tx-sec" id="treatments">
+    <div class="tx-hd">
+      <p class="s-eye" data-t="tx.eye">Signature Treatments</p>
+      <h2 class="s-title" data-t="tx.title">당신의 변화가 시작됩니다.</h2>
+    </div>
+    <div class="tx-grid">
+      <div class="tx-card" onclick="showDetail('hifu')">
+        <div class="tx-num">01</div>
+        <div class="tx-img" style="background-image:url('images/treatment1.jpg')"></div>
+        <div class="tx-name" data-t="tx1.name">HIFU Lifting · 울쎄라</div>
+        <p class="tx-desc" data-t="tx1.desc">집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.</p>
+        <button class="card-arr" data-t="common.detail">자세히 보기</button>
+      </div>
+      <div class="tx-card" onclick="showDetail('thread')">
+        <div class="tx-num">02</div>
+        <div class="tx-img" style="background-image:url('images/treatment2.jpg')"></div>
+        <div class="tx-name" data-t="tx2.name">Thread Lifting · 실리프팅</div>
+        <p class="tx-desc" data-t="tx2.desc">미세 실을 이용한 즉각적 리프팅. 콜라겐 재생으로 탄력이 지속 개선됩니다.</p>
+        <button class="card-arr" data-t="common.detail">자세히 보기</button>
+      </div>
+      <div class="tx-card" onclick="showDetail('filler')">
+        <div class="tx-num">03</div>
+        <div class="tx-img" style="background-image:url('images/treatment3.jpg')"></div>
+        <div class="tx-name" data-t="tx3.name">Filler &amp; Botox</div>
+        <p class="tx-desc" data-t="tx3.desc">볼륨 소실과 주름을 동시에 개선하는 자연스러운 복합 시술.</p>
+        <button class="card-arr" data-t="common.detail">자세히 보기</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="philo-sec">
+    <p class="s-eye" data-t="philo.eye">Our Belief</p>
+    <h2 class="s-title" data-t="philo.title">진정한 아름다움은 자연스러움에 있습니다.</h2>
+    <div class="philo-grid">
+      <div class="philo-card"><div class="philo-n">01</div><div class="philo-t" data-t="p1.title">자연스러운 변화</div><p class="philo-b" data-t="p1.body">과도한 시술보다 본래의 아름다움을 극대화하는 섬세한 접근.</p></div>
+      <div class="philo-card"><div class="philo-n">02</div><div class="philo-t" data-t="p2.title">개인 맞춤 설계</div><p class="philo-b" data-t="p2.body">얼굴형, 피부 상태, 생활방식을 종합하여 당신만을 위한 최적의 플랜을 설계합니다.</p></div>
+      <div class="philo-card"><div class="philo-n">03</div><div class="philo-t" data-t="p3.title">지속 가능한 아름다움</div><p class="philo-b" data-t="p3.body">피부 본연의 건강을 회복하고 유지하는 장기적 관점의 치료.</p></div>
+    </div>
+  </section>
+
+  <section class="visit-sec" id="visit">
+    <div class="visit-map"></div>
+    <div class="visit-info">
+      <p class="s-eye" data-t="visit.eye">Find Us</p>
+      <h2 class="s-title" style="margin-bottom:2rem;" data-t="visit.title">방문 안내</h2>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.al">주소</div><div class="vi-val" data-t="visit.addr">서울특별시 서울특별시 서초구 서초대로 78길26,4층</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.hl">진료 시간</div><div class="vi-val" data-t="visit.hours">월-금 10:00-19:00 / 토 10:00-15:00</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.cl">연락처</div><div class="vi-val">+82 02-3471-1003 · elijah@clinic.kr</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.tl">대만 코디네이터</div><div class="vi-val" data-t="visit.tw">中文 · English · 한국어 · LINE: @elliyaclinic</div></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="ft-brand">
+      <span class="nav-logo">Elijah <span style="color:var(--gold)">Clinic</span></span>
+      <p data-t="footer.desc">서울의 안티에이징 &amp; 리프팅 전문 피부과.</p>
+    </div>
+    <div class="ft-col"><h4 data-t="footer.tx">Treatments</h4><ul>
+      <li><a href="#" onclick="showDetail('hifu')" data-t="tx1.name">HIFU Lifting</a></li>
+      <li><a href="#" onclick="showDetail('thread')" data-t="tx2.name">Thread Lifting</a></li>
+      <li><a href="#" onclick="showDetail('filler')" data-t="tx3.name">Filler &amp; Botox</a></li>
+    </ul></div>
+    <div class="ft-col"><h4 data-t="footer.clinic">Clinic</h4><ul>
+      <li><a href="#" onclick="showPage('philo-page')" data-t="nav.philo">철학</a></li>
+      <li><a href="#visit" data-t="nav.visit">오시는 길</a></li>
+      <li><a href="#" onclick="showPage('booking');initBooking()" data-t="nav.book">예약하기</a></li>
+    </ul></div>
+    <div class="ft-col"><h4 data-t="footer.sns">Connect</h4><ul>
+      <li><a href="#">Instagram</a></li><li><a href="#">LINE</a></li><li><a href="#">YouTube</a></li>
+    </ul></div>
+  </footer>
+  <div class="ft-btm">&#169; 2025 Elijah Clinic · 엘리야의원. All Rights Reserved.</div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div id="page-detail" class="page pt">
+  <button class="btn-bk" onclick="showPage('home')" data-t="common.back-tx">&#8592; 모든 시술</button>
+  <div class="dt-hero"><div class="dt-hct"><h1 id="dt-title"></h1><p id="dt-sub"></p></div></div>
+  <div class="dt-body">
+    <div class="dt-main" id="dt-body"></div>
+    <div class="dt-side">
+      <div class="price-card">
+        <div class="price-lbl" data-t="detail.from">Starting From</div>
+        <div class="price-val" id="dt-price"></div>
+        <button class="btn-join" id="dt-join" data-t="detail.join">예약하기</button>
+      </div>
+      <p style="font-size:.78rem;color:var(--ink-light);line-height:1.7;" data-t="detail.note">상담 후 정확한 가격이 결정됩니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PHILOSOPHY PAGE -->
+<div id="page-philo-page" class="page pt" style="background:var(--white);">
+  <button class="btn-bk" onclick="showPage('home')" data-t="common.back-home">&#8592; 홈으로</button>
+  <div class="pp-body">
+    <p class="s-eye">Our Philosophy</p>
+    <h1 class="s-title" style="font-size:2.3rem;margin-bottom:1rem;" data-t="pp.title">엘리야의원의 철학</h1>
+    <p class="pp-intro" data-t="pp.intro">저희 의원은 피부 본연의 건강과 아름다움이 스스로의 힘으로 빛날 수 있도록 돕는 것을 사명으로 삼고 있습니다.</p>
+    <div class="pp-sec"><h2 data-t="pp.p1t">1. 자연스러운 변화</h2><p data-t="pp.p1b">우리는 시술 후에도 자연스러운 결과를 가장 아름답다고 믿습니다.</p></div>
+    <div class="pp-sec"><h2 data-t="pp.p2t">2. 개인 맞춤 설계</h2><p data-t="pp.p2b">한 분 한 분의 고유한 특성에 맞춘 맞춤형 플랜을 설계합니다.</p></div>
+    <div class="pp-sec"><h2 data-t="pp.p3t">3. 지속 가능한 아름다움</h2><p data-t="pp.p3b">콜라겐 재생과 조직 회복을 통해 시간이 지날수록 더욱 건강해지는 피부를 만들어 드립니다.</p></div>
+    <div class="pp-sec"><h2 data-t="pp.p4t">4. 투명한 의료 커뮤니케이션</h2><p data-t="pp.p4b">시술 전 충분한 설명과 동의, 시술 후 철저한 사후 케어.</p></div>
+    <div class="pp-sec"><h2 data-t="pp.p5t">5. 국제적 접근성</h2><p data-t="pp.p5b">중국어 및 영어 코디네이터를 운영합니다. 방문 전 온라인 상담부터 귀국 후 사후 케어까지 원스톱 지원.</p></div>
+    <div style="margin-top:2rem;"><button class="btn-p" onclick="showPage('booking');initBooking()" data-t="pp.cta">무료 상담 예약하기</button></div>
+  </div>
+</div>
+
+<!-- BOOKING PAGE -->
+<div id="page-booking" class="page bk-page pt">
+  <div class="bk-inner">
+    <div class="bk-steps">
+      <div class="bk-step-hd" data-t="bk.steps">예약 단계</div>
+      <div class="s-item active" id="si-1"><div class="s-num">1</div><div class="s-info"><div class="s-nm" data-t="bk.s1">서비스 선택</div><div class="s-sb" data-t="bk.s1s">원하는 시술</div></div></div>
+      <div class="s-item" id="si-2"><div class="s-num">2</div><div class="s-info"><div class="s-nm" data-t="bk.s2">날짜 &amp; 시간</div><div class="s-sb" id="s2-sub" data-t="bk.s2s">날짜·시간 선택</div></div></div>
+      <div class="s-item" id="si-3"><div class="s-num">3</div><div class="s-info"><div class="s-nm" data-t="bk.s3">정보 입력</div><div class="s-sb" data-t="bk.s3s">연락처 &amp; 이름</div></div></div>
+      <div class="s-item" id="si-4"><div class="s-num">4</div><div class="s-info"><div class="s-nm" data-t="bk.s4">예약 확인</div><div class="s-sb" data-t="bk.s4s">내용 검토</div></div></div>
+      <div class="s-item" id="si-5"><div class="s-num">5</div><div class="s-info"><div class="s-nm" data-t="bk.s5">완료</div><div class="s-sb" data-t="bk.s5s">예약 완료</div></div></div>
+    </div>
+    <div class="bk-ct">
+      <button class="btn-bk" style="padding:0 0 1.4rem;" onclick="showPage('home')" data-t="common.back-home">&#8592; 홈으로</button>
+      <div id="bs-1">
+        <h2 class="bk-title" data-t="bk.s1h">시술을 선택해 주세요</h2>
+        <p class="bk-sub" data-t="bk.s1p">원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.</p>
+        <div class="svc-opts">
+          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="tx1.name">HIFU Lifting</div><div class="svc-ds" data-t="bk.sd1">논서지컬 초음파 리프팅</div></div><div class="svc-pr">&#8361; 550,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="tx2.name">Thread Lifting</div><div class="svc-ds" data-t="bk.sd2">즉각적 리프팅 + 콜라겐 재생</div></div><div class="svc-pr">&#8361; 800,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="tx3.name">Filler &amp; Botox</div><div class="svc-ds" data-t="bk.sd3">볼륨 회복 &amp; 주름 개선</div></div><div class="svc-pr">&#8361; 350,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="bk.s4n">무료 상담</div><div class="svc-ds" data-t="bk.sd4">전문의 상담 후 시술 결정</div></div><div class="svc-pr" style="color:var(--gold-dark);" data-t="bk.free">무료</div></div>
+        </div>
+      </div>
+      <div id="bs-2" style="display:none;">
+        <h2 class="bk-title" data-t="bk.s2h">날짜와 시간을 선택해 주세요</h2>
+        <p class="bk-sub" data-t="bk.s2p">날짜를 선택하신 후 시간을 선택해 주세요.</p>
+        <div class="cal-wrap">
+          <div class="cal-hd">
+            <button class="cal-nav" onclick="chMo(-1)">&#8249;</button>
+            <span class="cal-mo" id="cal-mo-lbl"></span>
+            <button class="cal-nav" onclick="chMo(1)">&#8250;</button>
+          </div>
+          <div class="cal-grid" id="cal-grid">
+            <div class="cal-dn" data-t="d0">일</div><div class="cal-dn" data-t="d1">월</div>
+            <div class="cal-dn" data-t="d2">화</div><div class="cal-dn" data-t="d3">수</div>
+            <div class="cal-dn" data-t="d4">목</div><div class="cal-dn" data-t="d5">금</div>
+            <div class="cal-dn" data-t="d6">토</div>
+          </div>
+          <div id="time-pk" style="display:none;margin-top:1.4rem;">
+            <div class="time-lbl" data-t="bk.tl">시간 선택</div>
+            <div class="time-slots" id="time-slots"></div>
+          </div>
+        </div>
+        <div class="s-nav">
+          <button class="btn-sb" onclick="gStep(1)" data-t="cm.back">&#8592; 이전</button>
+          <button class="btn-sn" onclick="gStepFwd(2)" data-t="cm.next">다음 &#8594;</button>
+        </div>
+      </div>
+      <div id="bs-3" style="display:none;">
+        <h2 class="bk-title" data-t="bk.s3h">정보를 입력해 주세요</h2>
+        <p class="bk-sub" data-t="bk.s3p">예약 확인을 위해 아래 정보를 입력해 주세요.</p>
+        <div class="info-form">
+          <div class="f-row">
+            <div class="f-grp"><label class="f-lbl" data-t="fm.fn">이름 *</label><input class="f-inp" id="f-fn" type="text" placeholder="Hong"></div>
+            <div class="f-grp"><label class="f-lbl" data-t="fm.ln">성 *</label><input class="f-inp" id="f-ln" type="text" placeholder="Gildong"></div>
+          </div>
+          <div class="f-grp"><label class="f-lbl" data-t="fm.em">이메일 *</label><input class="f-inp" id="f-em" type="email" placeholder="your@email.com"></div>
+          <div class="f-grp">
+            <label class="f-lbl" data-t="fm.ph">연락처 *</label>
+            <div class="ph-row">
+              <div class="c-sel">
+                <button class="c-trig" id="c-trig" onclick="toggleCDD(event)" type="button">
+                  <span id="c-flag">&#127472;&#127479;</span>
+                  <span id="c-code" style="font-weight:700;font-size:.85rem;color:var(--ink-mid);">+82</span>
+                  <span style="font-size:.6rem;color:var(--ink-light);">&#9660;</span>
+                </button>
+                <div class="c-dd" id="c-dd">
+                  <input class="c-srch" id="c-srch" placeholder="나라 검색..." oninput="filterC(this.value)" onclick="event.stopPropagation()">
+                  <div id="c-list"></div>
+                </div>
+              </div>
+              <input class="ph-inp" id="f-ph" type="tel" placeholder="010-0000-0000">
+            </div>
+          </div>
+          <div class="f-grp"><label class="f-lbl" data-t="fm.na">국적</label><input class="f-inp" id="f-na" type="text" placeholder="Taiwan / Korea / Other"></div>
+          <div class="f-grp"><label class="f-lbl" data-t="fm.nt">특이사항</label><input class="f-inp" id="f-nt" type="text" placeholder="알레르기, 이전 시술 이력 등"></div>
+        </div>
+        <div class="s-nav">
+          <button class="btn-sb" onclick="gStep(2)" data-t="cm.back">&#8592; 이전</button>
+          <button class="btn-sn" onclick="gStep(4)" data-t="cm.next">다음 &#8594;</button>
+        </div>
+      </div>
+      <div id="bs-4" style="display:none;">
+        <h2 class="bk-title" data-t="bk.s4h">예약 내용을 확인해 주세요</h2>
+        <p class="bk-sub" data-t="bk.s4p">아래 내용이 맞으면 예약 완료 버튼을 눌러주세요.</p>
+        <table class="cart-tbl">
+          <thead><tr><th data-t="ct.i">항목</th><th data-t="ct.d">상세</th><th data-t="ct.p">금액</th></tr></thead>
+          <tbody>
+            <tr><td data-t="ct.s">시술</td><td id="ct-svc">-</td><td id="ct-pr">-</td></tr>
+            <tr><td data-t="ct.dt">날짜</td><td id="ct-date" colspan="2">-</td></tr>
+            <tr><td data-t="ct.n">예약자</td><td id="ct-name" colspan="2">-</td></tr>
+            <tr><td data-t="ct.c">연락처</td><td id="ct-cont" colspan="2">-</td></tr>
+          </tbody>
+        </table>
+        <div class="cart-tot"><span data-t="ct.tot">예상 비용</span><span id="ct-tot">-</span></div>
+        <div class="s-nav">
+          <button class="btn-sb" onclick="gStep(3)" data-t="ct.edit">&#8592; 수정하기</button>
+          <button class="btn-sn" style="background:var(--gold);color:var(--ink);" onclick="submitBk()" data-t="ct.cfm">예약 완료 &#10003;</button>
+        </div>
+      </div>
+      <div id="bs-5" style="display:none;">
+        <div class="cfm-box">
+          <div class="cfm-icon">&#10003;</div>
+          <h2 class="cfm-title" data-t="dn.title">예약이 완료되었습니다!</h2>
+          <p class="cfm-sub" data-t="dn.sub">입력하신 이메일로 예약 확인 메시지를 발송했습니다.</p>
+          <div class="cfm-details" id="cfm-details"></div>
+          <p style="font-size:.83rem;color:var(--ink-light);margin-top:1rem;">elijah@clinic.kr | LINE: @elijahclinic</p>
+          <button class="btn-p" style="margin-top:2rem;" onclick="showPage('home')" data-t="dn.home">홈으로 돌아가기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =====================================================
+// TRANSLATIONS — 4개 언어 완전 하드코딩
+// API 없이도 즉시 동작 / 편집 패널에서 수정하면 API로 갱신
+// =====================================================
+var T = {
+ko: {
+"nav.home":"홈","nav.philo":"철학","nav.tx":"시술","nav.visit":"오시는 길","nav.book":"예약하기",
+"hero.eye":"Seoul · 안티에이징 & 리프팅 전문",
+"hero.desc":"엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.",
+"hero.book":"예약하기 · Book a Consultation","hero.learn":"더 알아보기",
+"about.eye":"About Elijah Clinic","about.title":"과학과 자연미의 만남",
+"about.body":"엘리야의원(Elijah Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.",
+"about.philo":"철학 보기",
+"tx.eye":"Signature Treatments","tx.title":"당신의 변화가 시작됩니다.",
+"tx1.name":"HIFU Lifting · 울쎄라","tx1.desc":"집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.",
+"tx2.name":"Thread Lifting · 실리프팅","tx2.desc":"미세 실을 이용한 즉각적 리프팅. 콜라겐 재생으로 탄력이 지속 개선됩니다.",
+"tx3.name":"Filler & Botox · 필러","tx3.desc":"볼륨 소실과 주름을 동시에 개선하는 자연스러운 복합 시술.",
+"common.detail":"자세히 보기","common.back-tx":"← 모든 시술","common.back-home":"← 홈으로",
+"philo.eye":"Our Belief","philo.title":"진정한 아름다움은 자연스러움에 있습니다.",
+"p1.title":"자연스러운 변화","p1.body":"과도한 시술보다 본래의 아름다움을 극대화하는 섬세한 접근.",
+"p2.title":"개인 맞춤 설계","p2.body":"얼굴형, 피부 상태, 생활방식을 종합하여 당신만을 위한 최적의 플랜을 설계합니다.",
+"p3.title":"지속 가능한 아름다움","p3.body":"피부 본연의 건강을 회복하고 유지하는 장기적 관점의 치료.",
+"visit.eye":"Find Us","visit.title":"방문 안내",
+"visit.al":"주소","visit.addr":"서울특별시 [구] [동] [상세 주소]",
+"visit.hl":"진료 시간","visit.hours":"월-금 10:00-19:00 / 토 10:00-15:00",
+"visit.cl":"연락처","visit.tl":"대만 코디네이터","visit.tw":"中文 · English · 한국어 · LINE: @elijahclinic",
+"footer.desc":"서울의 안티에이징 & 리프팅 전문 피부과.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
+"detail.from":"Starting From","detail.join":"예약하기 · Join","detail.note":"상담 후 정확한 가격이 결정됩니다.",
+"pp.title":"엘리야의원의 철학","pp.intro":"저희 의원은 피부 본연의 건강과 아름다움이 스스로의 힘으로 빛날 수 있도록 돕는 것을 사명으로 삼고 있습니다.",
+"pp.p1t":"1. 자연스러운 변화","pp.p1b":"우리는 시술 후에도 자연스러운 결과를 가장 아름답다고 믿습니다.",
+"pp.p2t":"2. 개인 맞춤 설계","pp.p2b":"한 분 한 분의 고유한 특성에 맞춘 맞춤형 플랜을 설계합니다.",
+"pp.p3t":"3. 지속 가능한 아름다움","pp.p3b":"콜라겐 재생과 조직 회복을 통해 시간이 지날수록 더욱 건강해지는 피부를 만들어 드립니다.",
+"pp.p4t":"4. 투명한 의료 커뮤니케이션","pp.p4b":"시술 전 충분한 설명과 동의, 시술 후 철저한 사후 케어.",
+"pp.p5t":"5. 국제적 접근성","pp.p5b":"중국어 및 영어 코디네이터를 운영합니다. 방문 전 상담부터 귀국 후 케어까지 원스톱 지원.",
+"pp.cta":"무료 상담 예약하기",
+"bk.steps":"예약 단계","bk.s1":"서비스 선택","bk.s1s":"원하는 시술",
+"bk.s2":"날짜 & 시간","bk.s2s":"날짜·시간 선택",
+"bk.s3":"정보 입력","bk.s3s":"연락처 & 이름",
+"bk.s4":"예약 확인","bk.s4s":"내용 검토","bk.s5":"완료","bk.s5s":"예약 완료",
+"bk.s1h":"시술을 선택해 주세요","bk.s1p":"원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.",
+"bk.s2h":"날짜와 시간을 선택해 주세요","bk.s2p":"날짜를 선택하신 후 시간을 선택해 주세요.",
+"bk.s3h":"정보를 입력해 주세요","bk.s3p":"예약 확인을 위해 아래 정보를 입력해 주세요.",
+"bk.s4h":"예약 내용을 확인해 주세요","bk.s4p":"아래 내용이 맞으면 예약 완료 버튼을 눌러주세요.",
+"bk.sd1":"논서지컬 초음파 리프팅","bk.sd2":"즉각적 리프팅 + 콜라겐 재생",
+"bk.sd3":"볼륨 회복 & 주름 개선","bk.s4n":"무료 상담","bk.sd4":"전문의 상담 후 시술 결정","bk.free":"무료",
+"bk.tl":"시간 선택",
+"fm.fn":"이름 *","fm.ln":"성 *","fm.em":"이메일 *","fm.ph":"연락처 *","fm.na":"국적","fm.nt":"특이사항",
+"ct.i":"항목","ct.d":"상세","ct.p":"금액","ct.s":"시술","ct.dt":"날짜","ct.n":"예약자","ct.c":"연락처",
+"ct.tot":"예상 비용 (상담 후 확정)","ct.edit":"← 수정하기","ct.cfm":"예약 완료 ✓",
+"dn.title":"예약이 완료되었습니다!","dn.sub":"입력하신 이메일로 예약 확인 메시지를 발송했습니다.","dn.home":"홈으로 돌아가기",
+"d0":"일","d1":"월","d2":"화","d3":"수","d4":"목","d5":"금","d6":"토",
+"cm.back":"← 이전","cm.next":"다음 →",
+"al.date":"날짜를 선택해 주세요.","al.time":"시간을 선택해 주세요.",
+"cr.svc":"시술","cr.date":"날짜 & 시간","cr.name":"예약자","cr.email":"이메일","cr.price":"예상 비용"
+},
+en: {
+"nav.home":"Home","nav.philo":"Philosophy","nav.tx":"Treatments","nav.visit":"Visit","nav.book":"Book Now",
+"hero.eye":"Seoul · Anti-Aging & Lifting Specialists",
+"hero.desc":"Elijah Clinic combines cutting-edge lifting technology with a refined medical philosophy to reveal your naturally timeless beauty.",
+"hero.book":"Book a Consultation","hero.learn":"Learn More",
+"about.eye":"About Elijah Clinic","about.title":"Where Science Meets Natural Beauty",
+"about.body":"Elijah Clinic is a Seoul dermatology clinic specializing in anti-aging and lifting treatments. We help your natural beauty shine.<br><br>International patients from Taiwan and beyond are warmly welcomed with dedicated coordinators who speak your language.",
+"about.philo":"Our Philosophy",
+"tx.eye":"Signature Treatments","tx.title":"Your Transformation Starts Here.",
+"tx1.name":"HIFU Lifting","tx1.desc":"Focused ultrasound targeting the SMAS layer to lift sagging contours — non-surgical, painless, natural.",
+"tx2.name":"Thread Lifting","tx2.desc":"Immediate lifting with biodegradable threads that also stimulate collagen for months of continued improvement.",
+"tx3.name":"Filler & Botox","tx3.desc":"Volume restoration and wrinkle reduction combined for a naturally refreshed, youthful appearance.",
+"common.detail":"Learn More","common.back-tx":"← All Treatments","common.back-home":"← Home",
+"philo.eye":"Our Belief","philo.title":"True Beauty Lies in Naturalness.",
+"p1.title":"Natural Transformation","p1.body":"We believe the most beautiful result is one nobody can detect — enhancing what is already there.",
+"p2.title":"Personalized Care","p2.body":"Every face is unique. We design individualized plans based on your face shape, skin, and lifestyle.",
+"p3.title":"Lasting Beauty","p3.body":"We aim for long-term skin health through collagen regeneration, tissue recovery, and barrier restoration.",
+"visit.eye":"Find Us","visit.title":"Visit Us",
+"visit.al":"Address","visit.addr":"[District], Seoul, Korea",
+"visit.hl":"Hours","visit.hours":"Mon–Fri 10:00–19:00 / Sat 10:00–15:00",
+"visit.cl":"Contact","visit.tl":"Taiwan Coordinator","visit.tw":"中文 · English · Korean · LINE: @elijahclinic",
+"footer.desc":"Seoul anti-aging & lifting dermatology specialists.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
+"detail.from":"Starting From","detail.join":"Book · Join","detail.note":"Exact pricing determined after consultation.",
+"pp.title":"Our Philosophy","pp.intro":"Our clinic is dedicated to helping the true health and beauty of your skin shine on its own terms.",
+"pp.p1t":"1. Natural Transformation","pp.p1b":"We believe the finest result is one that looks undetected — amplifying what is already there.",
+"pp.p2t":"2. Personalized Care","pp.p2b":"We design a treatment plan uniquely tailored to your face shape, skin condition, age, and lifestyle.",
+"pp.p3t":"3. Lasting Beauty","pp.p3b":"Through collagen regeneration and tissue recovery, we build skin that grows healthier with time.",
+"pp.p4t":"4. Transparent Communication","pp.p4b":"Full explanation before every procedure, thorough aftercare — so you can make informed decisions.",
+"pp.p5t":"5. International Accessibility","pp.p5b":"Chinese and English coordinators ensure international patients experience top-level care without language barriers.",
+"pp.cta":"Book a Free Consultation",
+"bk.steps":"Booking Steps","bk.s1":"Select Service","bk.s1s":"Choose treatment",
+"bk.s2":"Date & Time","bk.s2s":"Choose date & time",
+"bk.s3":"Your Info","bk.s3s":"Contact & name",
+"bk.s4":"Confirm","bk.s4s":"Review details","bk.s5":"Done","bk.s5s":"Booking complete",
+"bk.s1h":"Select a Treatment","bk.s1p":"Choose a service and you will advance to the next step automatically.",
+"bk.s2h":"Choose Date & Time","bk.s2p":"Select a date, then pick your preferred time.",
+"bk.s3h":"Your Information","bk.s3p":"Please fill in your details so we can confirm your booking.",
+"bk.s4h":"Review Your Booking","bk.s4p":"Please confirm everything looks correct before submitting.",
+"bk.sd1":"Non-surgical ultrasound lifting","bk.sd2":"Immediate lift + collagen stimulation",
+"bk.sd3":"Volume restoration & wrinkle reduction","bk.s4n":"Free Consultation","bk.sd4":"Talk to a specialist before committing","bk.free":"FREE",
+"bk.tl":"Select Time",
+"fm.fn":"First Name *","fm.ln":"Last Name *","fm.em":"Email *","fm.ph":"Phone *","fm.na":"Nationality","fm.nt":"Notes / Special Requests",
+"ct.i":"Item","ct.d":"Detail","ct.p":"Price","ct.s":"Treatment","ct.dt":"Date","ct.n":"Name","ct.c":"Contact",
+"ct.tot":"Estimated Cost (finalized after consultation)","ct.edit":"← Edit","ct.cfm":"Confirm Booking ✓",
+"dn.title":"Booking Confirmed!","dn.sub":"A confirmation has been sent to your email.","dn.home":"Back to Home",
+"d0":"Sun","d1":"Mon","d2":"Tue","d3":"Wed","d4":"Thu","d5":"Fri","d6":"Sat",
+"cm.back":"← Back","cm.next":"Next →",
+"al.date":"Please select a date.","al.time":"Please select a time.",
+"cr.svc":"Treatment","cr.date":"Date & Time","cr.name":"Name","cr.email":"Email","cr.price":"Est. Cost"
+},
+zh: {
+"nav.home":"首頁","nav.philo":"理念","nav.tx":"療程","nav.visit":"交通資訊","nav.book":"立即預約",
+"hero.eye":"首爾 · 抗老化 & 提升專科",
+"hero.desc":"伊萊賈診所結合最先進的提升技術與精緻的醫療理念，幫助您重現自然永恆的美麗。",
+"hero.book":"立即預約諮詢","hero.learn":"了解更多",
+"about.eye":"關於伊萊賈診所","about.title":"科學與自然美的完美結合",
+"about.body":"伊萊賈診所（Elijah Clinic）是首爾一家專注於抗老化與提升療程的皮膚科診所。<br><br>我們設有專屬台灣協調員，提供中文服務，讓您無語言障礙地享受頂級療程。",
+"about.philo":"我們的理念",
+"tx.eye":"招牌療程","tx.title":"您的蛻變從這裡開始。",
+"tx1.name":"HIFU音波拉提","tx1.desc":"高強度聚焦超音波刺激SMAS筋膜層，無創提升鬆弛輪廓，自然無痛。",
+"tx2.name":"埋線提升","tx2.desc":"利用生物可降解細線即刻提升，同時刺激膠原蛋白再生，持續改善彈性。",
+"tx3.name":"玻尿酸 & 肉毒桿菌","tx3.desc":"同時改善容積流失與皺紋，追求自然生動的年輕外觀。",
+"common.detail":"了解更多","common.back-tx":"← 所有療程","common.back-home":"← 返回首頁",
+"philo.eye":"我們的信念","philo.title":"真正的美麗在於自然。",
+"p1.title":"自然蛻變","p1.body":"我們相信最美麗的結果是讓人察覺不出的——提升原有之美，而非取而代之。",
+"p2.title":"個人化設計","p2.body":"每張臉都是獨特的。我們根據您的臉型、膚況及生活方式量身設計療程計畫。",
+"p3.title":"持久之美","p3.body":"透過膠原蛋白再生和組織修復，打造隨時間越來越健康的肌膚。",
+"visit.eye":"前來拜訪","visit.title":"交通資訊",
+"visit.al":"地址","visit.addr":"首爾特別市 [區] [洞] [詳細地址]",
+"visit.hl":"診療時間","visit.hours":"週一至週五 10:00–19:00 / 週六 10:00–15:00",
+"visit.cl":"聯絡方式","visit.tl":"台灣協調員","visit.tw":"中文 · English · 韓文 · LINE: @elijahclinic",
+"footer.desc":"首爾抗老化 & 提升專科皮膚科。","footer.tx":"療程","footer.clinic":"診所","footer.sns":"聯絡我們",
+"detail.from":"起始費用","detail.join":"立即預約","detail.note":"確切費用於諮詢後確定。",
+"pp.title":"伊萊賈診所的理念","pp.intro":"我們的使命是幫助您的肌膚本身的健康與美麗自然綻放。",
+"pp.p1t":"1. 自然蛻變","pp.p1b":"最美麗的結果是讓人看不出做了什麼——而非誇張的改變。",
+"pp.p2t":"2. 個人化設計","pp.p2b":"我們根據每位患者的獨特特點量身打造治療計畫。",
+"pp.p3t":"3. 持久之美","pp.p3b":"透過膠原再生、組織修復打造隨時間越來越健康的肌膚。",
+"pp.p4t":"4. 透明的醫療溝通","pp.p4b":"充分說明與同意、完整的術後護理——讓您能夠自主做出決定。",
+"pp.p5t":"5. 國際化服務","pp.p5b":"設有中文及英文協調員，讓台灣及海外患者無語言障礙地體驗頂級療程。",
+"pp.cta":"預約免費諮詢",
+"bk.steps":"預約步驟","bk.s1":"選擇療程","bk.s1s":"選擇您的療程",
+"bk.s2":"日期 & 時間","bk.s2s":"選擇日期與時間",
+"bk.s3":"填寫資料","bk.s3s":"聯絡資訊",
+"bk.s4":"確認預約","bk.s4s":"確認內容","bk.s5":"完成","bk.s5s":"預約完成",
+"bk.s1h":"請選擇療程","bk.s1p":"選擇後將自動進入下一步。",
+"bk.s2h":"請選擇日期與時間","bk.s2p":"選擇日期後，請選擇您偏好的時間。",
+"bk.s3h":"請填寫您的資料","bk.s3p":"請填寫以下資料以確認您的預約。",
+"bk.s4h":"確認預約內容","bk.s4p":"確認無誤後，請點擊確認預約。",
+"bk.sd1":"非手術超音波提升","bk.sd2":"即刻提升 + 膠原蛋白再生",
+"bk.sd3":"容積修復 & 除皺","bk.s4n":"免費諮詢","bk.sd4":"諮詢專科醫師後再決定","bk.free":"免費",
+"bk.tl":"選擇時間",
+"fm.fn":"名字 *","fm.ln":"姓氏 *","fm.em":"電子郵件 *","fm.ph":"電話 *","fm.na":"國籍","fm.nt":"備註 / 特殊需求",
+"ct.i":"項目","ct.d":"詳細","ct.p":"費用","ct.s":"療程","ct.dt":"日期","ct.n":"姓名","ct.c":"聯絡方式",
+"ct.tot":"預估費用（諮詢後確定）","ct.edit":"← 修改","ct.cfm":"確認預約 ✓",
+"dn.title":"預約完成！","dn.sub":"確認信已發送至您的電子郵件。","dn.home":"返回首頁",
+"d0":"日","d1":"一","d2":"二","d3":"三","d4":"四","d5":"五","d6":"六",
+"cm.back":"← 上一步","cm.next":"下一步 →",
+"al.date":"請選擇日期。","al.time":"請選擇時間。",
+"cr.svc":"療程","cr.date":"日期 & 時間","cr.name":"姓名","cr.email":"電子郵件","cr.price":"預估費用"
+},
+ar: {
+"nav.home":"الرئيسية","nav.philo":"فلسفتنا","nav.tx":"العلاجات","nav.visit":"زيارتنا","nav.book":"احجز الآن",
+"hero.eye":"سيول · متخصصون في مكافحة الشيخوخة والرفع",
+"hero.desc":"تجمع عيادة إيليا بين أحدث تقنيات الرفع وفلسفة طبية راقية لإبراز جمالك الطبيعي الخالد.",
+"hero.book":"احجز استشارة","hero.learn":"اعرف المزيد",
+"about.eye":"عن عيادة إيليا","about.title":"حيث يلتقي العلم بالجمال الطبيعي",
+"about.body":"عيادة إيليا هي عيادة جلدية في سيول متخصصة في علاجات مكافحة الشيخوخة والرفع.<br><br>يُرحَّب بالمرضى الدوليين مع منسقين متخصصين يتحدثون لغتك.",
+"about.philo":"فلسفتنا",
+"tx.eye":"علاجاتنا المميزة","tx.title":"تحولك يبدأ من هنا.",
+"tx1.name":"رفع HIFU بالموجات","tx1.desc":"موجات فوق صوتية مركّزة لرفع الملامح المترهلة بدون جراحة وبدون ألم.",
+"tx2.name":"رفع الخيوط","tx2.desc":"رفع فوري بخيوط قابلة للتحلل مع تحفيز إنتاج الكولاجين لتحسين مستمر.",
+"tx3.name":"الفيلر والبوتوكس","tx3.desc":"استعادة الحجم وتقليل التجاعيد في آنٍ واحد لمظهر شاب وطبيعي.",
+"common.detail":"اعرف المزيد","common.back-tx":"العلاجات ←","common.back-home":"الرئيسية ←",
+"philo.eye":"معتقدنا","philo.title":"الجمال الحقيقي يكمن في الطبيعية.",
+"p1.title":"تحول طبيعي","p1.body":"نؤمن بأن أجمل نتيجة هي التي لا يلاحظها أحد — تعزيز ما هو موجود، لا استبداله.",
+"p2.title":"رعاية مخصصة","p2.body":"كل وجه فريد. نصمم خطة علاجية مخصصة بناءً على ملامحك وبشرتك وأسلوب حياتك.",
+"p3.title":"جمال دائم","p3.body":"من خلال تجديد الكولاجين وترميم الأنسجة، نبني بشرة تزداد صحةً مع الوقت.",
+"visit.eye":"زيارتنا","visit.title":"معلومات الزيارة",
+"visit.al":"العنوان","visit.addr":"[الحي]، سيول، كوريا",
+"visit.hl":"ساعات العمل","visit.hours":"الإثنين–الجمعة 10:00–19:00 / السبت 10:00–15:00",
+"visit.cl":"التواصل","visit.tl":"منسق دولي","visit.tw":"中文 · English · عربي · LINE: @elijahclinic",
+"footer.desc":"متخصصون في مكافحة الشيخوخة والرفع بسيول.","footer.tx":"العلاجات","footer.clinic":"العيادة","footer.sns":"تواصل معنا",
+"detail.from":"ابتداءً من","detail.join":"احجز الآن","detail.note":"يتحدد السعر الدقيق بعد الاستشارة.",
+"pp.title":"فلسفة عيادة إيليا","pp.intro":"مهمتنا مساعدة صحة بشرتك وجمالها على الإشراق من تلقاء نفسها.",
+"pp.p1t":"١. التحول الطبيعي","pp.p1b":"نؤمن بأن أجمل نتيجة هي التي لا يلاحظها أحد.",
+"pp.p2t":"٢. رعاية مخصصة","pp.p2b":"نصمم خطة علاج فريدة لكل مريض بناءً على خصائصه الفردية.",
+"pp.p3t":"٣. جمال دائم","pp.p3b":"نبني بشرة تزداد صحةً مع الوقت من خلال تجديد الكولاجين وترميم الأنسجة.",
+"pp.p4t":"٤. تواصل طبي شفاف","pp.p4b":"شرح كامل قبل كل إجراء ورعاية شاملة بعده.",
+"pp.p5t":"٥. إمكانية وصول دولية","pp.p5b":"لدينا منسقون يتحدثون العربية والإنجليزية والصينية.",
+"pp.cta":"احجز استشارة مجانية",
+"bk.steps":"خطوات الحجز","bk.s1":"اختر العلاج","bk.s1s":"حدد الخدمة",
+"bk.s2":"التاريخ والوقت","bk.s2s":"حدد التاريخ والوقت",
+"bk.s3":"بياناتك","bk.s3s":"معلومات التواصل",
+"bk.s4":"تأكيد الحجز","bk.s4s":"مراجعة التفاصيل","bk.s5":"تم","bk.s5s":"اكتمل الحجز",
+"bk.s1h":"اختر علاجاً","bk.s1p":"اختر خدمة وسيتقدم النظام تلقائياً للخطوة التالية.",
+"bk.s2h":"اختر التاريخ والوقت","bk.s2p":"حدد تاريخاً ثم اختر وقتك المفضل.",
+"bk.s3h":"أدخل بياناتك","bk.s3p":"يرجى ملء البيانات أدناه لتأكيد حجزك.",
+"bk.s4h":"راجع حجزك","bk.s4p":"تأكد من صحة المعلومات ثم اضغط تأكيد الحجز.",
+"bk.sd1":"رفع بالموجات فوق الصوتية","bk.sd2":"رفع فوري + تحفيز الكولاجين",
+"bk.sd3":"استعادة الحجم وتقليل التجاعيد","bk.s4n":"استشارة مجانية","bk.sd4":"تحدث مع أخصائي قبل اتخاذ قرارك","bk.free":"مجاناً",
+"bk.tl":"اختر الوقت",
+"fm.fn":"الاسم الأول *","fm.ln":"اسم العائلة *","fm.em":"البريد الإلكتروني *","fm.ph":"رقم الهاتف *","fm.na":"الجنسية","fm.nt":"ملاحظات",
+"ct.i":"البند","ct.d":"التفاصيل","ct.p":"السعر","ct.s":"العلاج","ct.dt":"التاريخ","ct.n":"الاسم","ct.c":"التواصل",
+"ct.tot":"التكلفة التقديرية","ct.edit":"تعديل ←","ct.cfm":"تأكيد الحجز ✓",
+"dn.title":"تم الحجز بنجاح!","dn.sub":"تم إرسال تأكيد الحجز إلى بريدك الإلكتروني.","dn.home":"العودة للرئيسية",
+"d0":"أح","d1":"إث","d2":"ثل","d3":"أر","d4":"خم","d5":"جم","d6":"سب",
+"cm.back":"السابق ←","cm.next":"التالي →",
+"al.date":"الرجاء اختيار تاريخ.","al.time":"الرجاء اختيار وقت.",
+"cr.svc":"العلاج","cr.date":"التاريخ والوقت","cr.name":"الاسم","cr.email":"البريد الإلكتروني","cr.price":"التكلفة التقديرية"
+}
+};
+
+// =====================================================
+// LANGUAGE ENGINE
+// =====================================================
+var lang = "ko";
+
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+  ["ko","en","zh","ar"].forEach(function(x) {
+    document.getElementById("lb-"+x).classList.toggle("active", x === l);
+  });
+  applyT();
+  renderCal();
+}
+
+function tr(k) {
+  return (T[lang] && T[lang][k] !== undefined ? T[lang][k] : (T.ko[k] || k));
+}
+
+function applyT() {
+  document.querySelectorAll("[data-t]").forEach(function(el) {
+    var v = tr(el.getAttribute("data-t"));
+    if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") { el.placeholder = v; }
+    else { el.innerHTML = v; }
+  });
+}
+
+// =====================================================
+// PAGE ROUTING
+// =====================================================
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
+  var t = document.getElementById("page-"+id);
+  if (t) { t.classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
+}
+
+// =====================================================
+// TREATMENT DATA
+// =====================================================
+var SVCS = [
+  { price: 550000, priceStr: "&#8361; 550,000~",
+    name: {"ko":"HIFU Lifting · 울쎄라","en":"HIFU Lifting","zh":"HIFU音波拉提","ar":"رفع HIFU"},
+    sub:  {"ko":"High Intensity Focused Ultrasound — 논서지컬 리프팅","en":"Non-surgical Ultrasound Lifting","zh":"高強度聚焦超音波 — 非手術提升","ar":"الموجات فوق الصوتية — رفع غير جراحي"},
+    body: {"ko":"<h2>HIFU란?</h2><p>고강도 집속 초음파를 SMAS층까지 전달하여 조직을 수축시키고 콜라겐 생성을 유도하는 리프팅 기술입니다.</p><h2>기대 효과</h2><ul><li>처진 볼·턱선·목 라인의 즉각적 리프팅</li><li>피부 탄력 개선 및 콜라겐 재생</li><li>마취 불필요, 시술 후 즉시 일상생활 가능</li></ul><h2>시술 과정</h2><p>1회 시술 약 30-60분. 효과는 6-12개월 지속됩니다.</p>",
+           "en":"<h2>What is HIFU?</h2><p>High Intensity Focused Ultrasound delivers energy deep into the SMAS layer, triggering tissue contraction and collagen production.</p><h2>Expected Results</h2><ul><li>Immediate lifting of cheeks, jawline, and neck</li><li>Improved skin elasticity and collagen regeneration</li><li>No anesthesia required, resume daily activities immediately</li></ul><h2>Procedure</h2><p>30-60 min per session. Results typically last 6-12 months.</p>",
+           "zh":"<h2>HIFU是什麼？</h2><p>高強度聚焦超音波在不損傷皮膚表面的情況下，將能量傳遞至SMAS筋膜層，促進組織收縮與膠原蛋白再生。</p><h2>預期效果</h2><ul><li>即刻提升臉頰、下顎線與頸部</li><li>改善皮膚彈性、促進膠原再生</li><li>無需麻醉，術後可立即恢復日常生活</li></ul>",
+           "ar":"<h2>ما هو HIFU؟</h2><p>يوصّل الموجات فوق الصوتية إلى طبقة SMAS مما يحفز انقباض الأنسجة وإنتاج الكولاجين.</p><h2>النتائج المتوقعة</h2><ul><li>رفع فوري للخدين وخط الفك</li><li>تحسين مرونة الجلد وتجديد الكولاجين</li><li>لا يتطلب تخديراً</li></ul>"}
+  },
+  { price: 800000, priceStr: "&#8361; 800,000~",
+    name: {"ko":"Thread Lifting · 실리프팅","en":"Thread Lifting","zh":"埋線提升","ar":"رفع الخيوط"},
+    sub:  {"ko":"PDO/PLLA Thread — 즉각적 리프팅 + 콜라겐 재생","en":"Immediate Lift + Collagen Stimulation","zh":"即刻提升 + 膠原蛋白再生","ar":"رفع فوري + تحفيز الكولاجين"},
+    body: {"ko":"<h2>실리프팅이란?</h2><p>생분해성 실(PDO·PLLA)을 피부 속에 삽입하여 처진 조직을 즉각적으로 끌어올립니다.</p><h2>기대 효과</h2><ul><li>즉각적인 페이스 리프팅</li><li>자연스러운 V라인 & 턱선 개선</li><li>효과 지속 기간: 약 12-24개월</li></ul>",
+           "en":"<h2>What is Thread Lifting?</h2><p>Biodegradable threads are inserted under the skin to lift sagging tissue immediately, while stimulating collagen production as they dissolve.</p><h2>Expected Results</h2><ul><li>Immediate facial lifting</li><li>Natural V-line and jawline improvement</li><li>Results last approximately 12-24 months</li></ul>",
+           "zh":"<h2>埋線提升是什麼？</h2><p>將生物可降解細線植入皮膚下，即刻提升鬆弛組織，溶解過程中持續刺激膠原蛋白再生。</p><h2>預期效果</h2><ul><li>即刻提升面部輪廓</li><li>自然V臉與下顎線改善</li><li>效果持續約12-24個月</li></ul>",
+           "ar":"<h2>ما هو رفع الخيوط؟</h2><p>تُدرج خيوط قابلة للتحلل تحت الجلد لرفع الأنسجة المترهلة فوراً مع تحفيز إنتاج الكولاجين.</p><h2>النتائج المتوقعة</h2><ul><li>رفع فوري لملامح الوجه</li><li>تحسين طبيعي لخط الفك</li><li>تدوم النتائج 12-24 شهراً</li></ul>"}
+  },
+  { price: 350000, priceStr: "&#8361; 350,000~",
+    name: {"ko":"Filler & Botox · 필러","en":"Filler & Botox","zh":"玻尿酸 & 肉毒桿菌","ar":"الفيلر والبوتوكس"},
+    sub:  {"ko":"Volume Restoration & Wrinkle Reduction","en":"Volume Restoration & Wrinkle Reduction","zh":"容積修復與除皺","ar":"استعادة الحجم وتقليل التجاعيد"},
+    body: {"ko":"<h2>필러 & 보톡스 복합 시술</h2><p>히알루론산 필러로 볼륨을 채우고 보톡스로 주름을 완화합니다.</p><h2>주요 적용 부위</h2><ul><li>필러: 팔자주름, 볼, 턱, 눈 밑</li><li>보톡스: 이마, 미간, 눈가, 사각턱</li></ul>",
+           "en":"<h2>Filler & Botox Combined</h2><p>Hyaluronic acid fillers restore lost volume while Botox relaxes wrinkle-causing muscles for a naturally refreshed look.</p><h2>Key Areas</h2><ul><li>Filler: nasolabial folds, cheeks, chin, under-eyes</li><li>Botox: forehead, frown lines, crow's feet, jaw slimming</li></ul>",
+           "zh":"<h2>玻尿酸 & 肉毒桿菌複合療程</h2><p>玻尿酸補充流失的容積，肉毒桿菌放鬆造成皺紋的肌肉。</p><h2>主要治療部位</h2><ul><li>玻尿酸：法令紋、臉頰、下巴、眼下</li><li>肉毒桿菌：額頭、眉間、魚尾紋、國字臉</li></ul>",
+           "ar":"<h2>الفيلر والبوتوكس معاً</h2><p>يعيد الفيلر الحجم المفقود بينما يُرخي البوتوكس العضلات المسببة للتجاعيد.</p><h2>مناطق العلاج الرئيسية</h2><ul><li>الفيلر: خطوط الضحك، الخدين، الذقن</li><li>البوتوكس: الجبهة، ما بين الحاجبين، خطوط العينين</li></ul>"}
+  },
+  { price: 0, priceStr: "FREE",
+    name: {"ko":"무료 상담","en":"Free Consultation","zh":"免費諮詢","ar":"استشارة مجانية"},
+    sub:  {"ko":"전문의 1:1 상담","en":"1-on-1 specialist consultation","zh":"專科醫師一對一諮詢","ar":"استشارة فردية مع أخصائي"},
+    body: {"ko":"<h2>무료 전문의 상담</h2><p>시술 결정 전 전문 의료진과 1:1 상담을 통해 본인에게 맞는 최적의 트리트먼트를 결정하실 수 있습니다.</p>",
+           "en":"<h2>Free Specialist Consultation</h2><p>Meet one-on-one with our specialist to determine the best treatment plan before making any decisions.</p>",
+           "zh":"<h2>免費專科諮詢</h2><p>在做出任何決定之前，與我們的專科醫師進行一對一諮詢，確定最適合您的治療計畫。</p>",
+           "ar":"<h2>استشارة مجانية مع الأخصائي</h2><p>التقِ مع أخصائينا لتحديد خطة العلاج الأنسب لك قبل اتخاذ أي قرار.</p>"}
+  }
+];
+
+function showDetail(key) {
+  var idx = {"hifu":0,"thread":1,"filler":2,"consult":3}[key];
+  var d = SVCS[idx];
+  if (!d) return;
+  document.getElementById("dt-title").textContent = d.name[lang] || d.name.ko;
+  document.getElementById("dt-sub").textContent = d.sub[lang] || d.sub.ko;
+  document.getElementById("dt-price").innerHTML = d.priceStr;
+  document.getElementById("dt-body").innerHTML = d.body[lang] || d.body.ko;
+  document.getElementById("dt-join").onclick = function() {
+    bk.svc = d.name[lang] || d.name.ko;
+    bk.price = d.price;
+    showPage("booking"); initBooking(bk.svc, bk.price);
+  };
+  showPage("detail");
+}
+
+// =====================================================
+// COUNTRY PICKER
+// =====================================================
+var CTRS = [
+  {f:"&#127472;&#127479;",n:"대한민국 / South Korea",d:"+82"},
+  {f:"&#127481;&#127484;",n:"대만 / Taiwan (台灣)",d:"+886"},
+  {f:"&#127482;&#127480;",n:"미국 / United States",d:"+1"},
+  {f:"&#127471;&#127477;",n:"일본 / Japan",d:"+81"},
+  {f:"&#127464;&#127475;",n:"중국 / China",d:"+86"},
+  {f:"&#127469;&#127472;",n:"홍콩 / Hong Kong",d:"+852"},
+  {f:"&#127480;&#127468;",n:"싱가포르 / Singapore",d:"+65"},
+  {f:"&#127474;&#127486;",n:"말레이시아 / Malaysia",d:"+60"},
+  {f:"&#127481;&#127469;",n:"태국 / Thailand",d:"+66"},
+  {f:"&#127483;&#127475;",n:"베트남 / Vietnam",d:"+84"},
+  {f:"&#127477;&#127469;",n:"필리핀 / Philippines",d:"+63"},
+  {f:"&#127470;&#127465;",n:"인도네시아 / Indonesia",d:"+62"},
+  {f:"&#127462;&#127482;",n:"호주 / Australia",d:"+61"},
+  {f:"&#127468;&#127463;",n:"영국 / United Kingdom",d:"+44"},
+  {f:"&#127465;&#127466;",n:"독일 / Germany",d:"+49"},
+  {f:"&#127471;&#127479;",n:"프랑스 / France",d:"+33"},
+  {f:"&#127470;&#127475;",n:"인도 / India",d:"+91"},
+  {f:"&#127480;&#127462;",n:"사우디아라비아 / Saudi Arabia",d:"+966"},
+  {f:"&#127462;&#127466;",n:"아랍에미리트 / UAE",d:"+971"},
+  {f:"&#127464;&#127462;",n:"캐나다 / Canada",d:"+1"}
+];
+var selC = CTRS[0];
+var ddOpen = false;
+
+function buildCList(filter) {
+  var list = document.getElementById("c-list");
+  if (!list) return;
+  var term = (filter||"").toLowerCase();
+  var items = CTRS.filter(function(c) { return !term || c.n.toLowerCase().includes(term) || c.d.includes(term); });
+  list.innerHTML = items.map(function(c) {
+    var i = CTRS.indexOf(c);
+    var isSel = c === selC ? " c-sel-opt" : "";
+    return "<div class=\"c-opt"+isSel+"\" onclick=\"selCtry("+i+")\"><span class=\"c-of\">"+c.f+"</span><span class=\"c-on\">"+c.n+"</span><span class=\"c-od\">"+c.d+"</span></div>";
+  }).join("");
+}
+
+function selCtry(i) {
+  selC = CTRS[i];
+  document.getElementById("c-flag").innerHTML = selC.f;
+  document.getElementById("c-code").textContent = selC.d;
+  closeDD();
+  document.getElementById("f-ph").focus();
+}
+
+function toggleCDD(e) {
+  e.stopPropagation();
+  if (ddOpen) { closeDD(); return; }
+  document.getElementById("c-dd").classList.add("open");
+  ddOpen = true;
+  document.getElementById("c-srch").value = "";
+  buildCList("");
+  setTimeout(function() { document.getElementById("c-srch").focus(); }, 40);
+}
+
+function closeDD() { document.getElementById("c-dd").classList.remove("open"); ddOpen = false; }
+function filterC(v) { buildCList(v); }
+document.addEventListener("click", function(e) { if (!e.target.closest(".c-sel")) closeDD(); });
+function getPhone() { return selC.d + " " + (document.getElementById("f-ph")||{value:""}).value; }
+
+// =====================================================
+// BOOKING
+// =====================================================
+var bk = { step:1, svc:null, price:0, date:null, time:null, calY:null, calM:null };
+
+function initBooking(preSvc, prePr) {
+  bk.step=1; bk.date=null; bk.time=null;
+  var now = new Date(); bk.calY=now.getFullYear(); bk.calM=now.getMonth();
+  updStep(1); showBS(1);
+  var tp = document.getElementById("time-pk");
+  if (tp) tp.style.display="none";
+  if (preSvc) {
+    bk.svc=preSvc; bk.price=prePr||0;
+    setTimeout(function() { hiSvc(preSvc); setTimeout(function() { gStep(2); }, 320); }, 60);
+  }
+  renderCal();
+}
+
+function hiSvc(name) {
+  document.querySelectorAll(".svc-opt").forEach(function(el) {
+    el.classList.toggle("sel", el.querySelector(".svc-nm").textContent.trim()===name.trim());
+  });
+}
+
+function showBS(n) {
+  for(var i=1;i<=5;i++){var e=document.getElementById("bs-"+i);if(e) e.style.display=i===n?"block":"none";}
+}
+
+function updStep(cur) {
+  for(var i=1;i<=5;i++){
+    var it=document.getElementById("si-"+i); if(!it) continue;
+    it.classList.remove("active","done");
+    if(i<cur) it.classList.add("done"); else if(i===cur) it.classList.add("active");
+    it.querySelector(".s-num").textContent = i<cur?"✓":i;
+  }
+  bk.step=cur;
+}
+
+function gStep(n) {
+  updStep(n); showBS(n);
+  if(n===4) fillCart();
+  window.scrollTo({top:98,behavior:"smooth"});
+}
+
+function gStepFwd(cur) {
+  if(cur===2){
+    if(!bk.date){alert(tr("al.date"));return;}
+    if(!bk.time){alert(tr("al.time"));return;}
+    gStep(3); return;
+  }
+  gStep(cur+1);
+}
+
+function selectSvc(idx) {
+  var d=SVCS[idx];
+  bk.svc = d.name[lang]||d.name.ko;
+  bk.price = d.price;
+  hiSvc(bk.svc);
+  setTimeout(function(){gStep(2);},300);
+}
+
+// Calendar
+var MO = {
+  ko:["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+  en:["January","February","March","April","May","June","July","August","September","October","November","December"],
+  zh:["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+  ar:["يناير","فبراير","مارس","أبريل","مايو","يونيو","يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"]
+};
+
+function renderCal() {
+  var moArr = MO[lang]||MO.ko;
+  var lbl = document.getElementById("cal-mo-lbl");
+  if(lbl) lbl.textContent = moArr[bk.calM]+" "+bk.calY;
+  var dns = document.querySelectorAll(".cal-dn");
+  dns.forEach(function(el,i){ el.textContent = tr("d"+i); });
+  var grid = document.getElementById("cal-grid");
+  if(!grid) return;
+  Array.from(grid.children).forEach(function(c){if(!c.classList.contains("cal-dn")) c.remove();});
+  var fd = new Date(bk.calY,bk.calM,1).getDay();
+  var dim = new Date(bk.calY,bk.calM+1,0).getDate();
+  var today = new Date(); today.setHours(0,0,0,0);
+  for(var i=0;i<fd;i++){var e=document.createElement("div");e.className="cal-d emp";grid.appendChild(e);}
+  for(var d=1;d<=dim;d++){
+    var cell=document.createElement("div");
+    var dt=new Date(bk.calY,bk.calM,d);
+    var isPast=dt<today, isSun=dt.getDay()===0;
+    cell.className="cal-d"+(isPast||isSun?" past":"");
+    cell.textContent=d;
+    if(bk.date && dt.toDateString()===bk.date.toDateString()) cell.classList.add("sel");
+    if(!isPast&&!isSun)(function(dt2,cl){cl.onclick=function(){selDate(dt2,cl);};})(dt,cell);
+    grid.appendChild(cell);
+  }
+}
+
+function selDate(dt, cell) {
+  document.querySelectorAll(".cal-d.sel").forEach(function(c){c.classList.remove("sel");});
+  cell.classList.add("sel"); bk.date=dt; bk.time=null;
+  var tp=document.getElementById("time-pk"); tp.style.display="block";
+  var se=document.getElementById("time-slots");
+  var times=["10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30"];
+  se.innerHTML=times.map(function(t){return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";}).join("");
+}
+
+function selTime(time, el) {
+  document.querySelectorAll(".t-slot.sel").forEach(function(s){s.classList.remove("sel");});
+  el.classList.add("sel"); bk.time=time;
+  var d=bk.date;
+  var da=tr("d"+d.getDay());
+  var lbl=d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+time;
+  var s2=document.getElementById("s2-sub"); if(s2) s2.textContent=lbl;
+}
+
+function chMo(dir) {
+  bk.calM+=dir;
+  if(bk.calM>11){bk.calM=0;bk.calY++;} if(bk.calM<0){bk.calM=11;bk.calY--;}
+  renderCal();
+}
+
+function fillCart() {
+  var d=bk.date;
+  var da=d?tr("d"+d.getDay()):"";
+  var ds=d?d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+(bk.time||""):"-";
+  document.getElementById("ct-svc").textContent=bk.svc||"-";
+  document.getElementById("ct-date").textContent=ds;
+  var fn=document.getElementById("f-fn").value, ln=document.getElementById("f-ln").value;
+  document.getElementById("ct-name").textContent=(fn||"-")+" "+(ln||"");
+  document.getElementById("ct-cont").textContent=(document.getElementById("f-em").value||"-")+" / "+getPhone();
+  var pr=bk.price?"&#8361; "+bk.price.toLocaleString()+"~":tr("bk.free");
+  document.getElementById("ct-pr").innerHTML=pr;
+  document.getElementById("ct-tot").innerHTML=pr;
+}
+
+function submitBk() {
+  var d      = bk.date;
+  var da     = d ? tr("d" + d.getDay()) : "";
+  var ds     = d ? d.getFullYear() + "." + String(d.getMonth()+1).padStart(2,"0") + "."
+                 + String(d.getDate()).padStart(2,"0") + " (" + da + ") " + (bk.time||"") : "-";
+  var email  = document.getElementById("f-em").value  || "-";
+  var fn     = document.getElementById("f-fn").value  || "";
+  var ln     = document.getElementById("f-ln").value  || "";
+  var name   = (fn + " " + ln).trim() || "-";
+  var phone  = getPhone();
+  var nation = document.getElementById("f-na").value  || "-";
+  var notes  = document.getElementById("f-nt").value  || "없음";
+  var pr     = bk.price ? "\u20A9" + bk.price.toLocaleString() + "~" : tr("bk.free");
+
+  var cfmBtn = document.querySelector("[onclick='submitBk()']");
+  if (cfmBtn) { cfmBtn.disabled = true; cfmBtn.textContent = "발송 중..."; }
+
+  var params = {
+    service:       bk.svc || "-",
+    date_time:     ds,
+    patient_name:  name,
+    patient_email: email,
+    phone:         phone,
+    nationality:   nation,
+    notes:         notes,
+    price:         pr
+  };
+
+  emailjs.send("service_hy5e83q", "template_rl79eh6", params)
+    .then(function() {
+      emailjs.send("service_hy5e83q", "template_fpr34jo", params);
+      document.getElementById("cfm-details").innerHTML =
+        "<div class=\"cfm-row\"><span>" + tr("cr.svc")   + "</span><span>" + (bk.svc||"-") + "</span></div>" +
+        "<div class=\"cfm-row\"><span>" + tr("cr.date")  + "</span><span>" + ds             + "</span></div>" +
+        "<div class=\"cfm-row\"><span>" + tr("cr.name")  + "</span><span>" + name           + "</span></div>" +
+        "<div class=\"cfm-row\"><span>" + tr("cr.email") + "</span><span>" + email          + "</span></div>" +
+        "<div class=\"cfm-row\"><span>" + tr("cr.price") + "</span><span>" + pr             + "</span></div>";
+      gStep(5);
+    })
+    .catch(function(err) {
+      if (cfmBtn) { cfmBtn.disabled = false; cfmBtn.textContent = tr("ct.cfm"); }
+      alert("이메일 발송에 실패했습니다.\n잠시 후 다시 시도해 주세요.\n\n문의: +82 02-3471-1003");
+      console.error("EmailJS error:", JSON.stringify(err));
+    });
+}
+
+// =====================================================
+// ADMIN PANEL (편집 + Claude API 번역)
+// =====================================================
+var ADM_MAP = {
+  "ae-hero-eye":"hero.eye","ae-hero-desc":"hero.desc","ae-hero-book":"hero.book","ae-hero-learn":"hero.learn",
+  "ae-about-title":"about.title","ae-about-body":"about.body",
+  "ae-tx-title":"tx.title","ae-tx1-name":"tx1.name","ae-tx1-desc":"tx1.desc",
+  "ae-tx2-name":"tx2.name","ae-tx2-desc":"tx2.desc","ae-tx3-name":"tx3.name","ae-tx3-desc":"tx3.desc",
+  "ae-philo-title":"philo.title","ae-p1-title":"p1.title","ae-p1-body":"p1.body",
+  "ae-p2-title":"p2.title","ae-p2-body":"p2.body","ae-p3-title":"p3.title","ae-p3-body":"p3.body",
+  "ae-addr":"visit.addr","ae-hours":"visit.hours"
+};
+
+function openAdm() {
+  Object.keys(ADM_MAP).forEach(function(id) {
+    var el=document.getElementById(id); if(el) el.value=T.ko[ADM_MAP[id]]||"";
+  });
+  document.getElementById("adm-status").textContent="";
+  document.getElementById("adm-status").className="adm-status";
+  document.getElementById("adm-overlay").classList.add("open");
+}
+function closeAdm() { document.getElementById("adm-overlay").classList.remove("open"); }
+
+function saveAndTranslate() {
+  // 1. 폼 → T.ko 업데이트
+  Object.keys(ADM_MAP).forEach(function(id) {
+    var el=document.getElementById(id); if(el) T.ko[ADM_MAP[id]]=el.value.trim();
+  });
+  // 2. 현재 화면 즉시 반영
+  applyT();
+  // 3. Claude API로 3개 언어 번역
+  var btn=document.getElementById("btn-adm-save");
+  var spin=document.getElementById("adm-spin");
+  var status=document.getElementById("adm-status");
+  btn.disabled=true; spin.style.display="inline-block";
+  status.textContent="AI 번역 중..."; status.className="adm-status";
+
+  var keysToTr = Object.values(ADM_MAP);
+  var koSlice = {};
+  keysToTr.forEach(function(k){ koSlice[k]=T.ko[k]; });
+
+  var langs3 = [["en","English"],["zh","Traditional Chinese (繁體中文)"],["ar","Arabic"]];
+  var done=0, failed=[];
+
+  langs3.forEach(function(pair) {
+    var tl=pair[0], tn=pair[1];
+    var prompt = "Translate these JSON values from Korean to "+tn+".\n"+
+      "Rules: keep HTML tags exactly, keep brand names (Elijah Clinic, HIFU, PDO, LINE), "+
+      "return ONLY valid JSON (no markdown, no explanation).\n\n"+
+      JSON.stringify(koSlice,null,2);
+    fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:2000,messages:[{role:"user",content:prompt}]})
+    }).then(function(r){return r.json();}).then(function(data){
+      var text=(data.content||[]).map(function(b){return b.text||"";}).join("");
+      var m=text.match(/\{[\s\S]*\}/); if(m){ var parsed=JSON.parse(m[0]); Object.assign(T[tl],parsed); }
+    }).catch(function(){ failed.push(tl); }).finally(function(){
+      done++;
+      if(done===3){
+        btn.disabled=false; spin.style.display="none";
+        if(failed.length===0){
+          status.textContent="✓ 저장 완료 — 3개 언어 번역 완료"; status.className="adm-status ok";
+          setTimeout(closeAdm,1400);
+        } else {
+          status.textContent="한국어 저장 완료. 번역 실패: "+failed.join(", ")+" (API키 확인 필요)";
+          status.className="adm-status err";
+        }
+      }
+    });
+  });
+}
+
+function toggleMenu() {
+  var links=document.querySelector(".nav-links");
+  if(links.style.display==="flex") links.style.display="";
+  else links.style.cssText="display:flex;flex-direction:column;position:fixed;top:98px;left:0;right:0;background:var(--cream);padding:1.5rem 2rem;border-bottom:.5px solid var(--border-mid);z-index:99;gap:1.2rem;";
+}
+
+// Init
+buildCList(""); renderCal();
+</script>
+</body>
+</html>

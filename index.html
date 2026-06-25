@@ -47,7 +47,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
 .hero-bg{
   position:absolute;inset:0;
-  background:url("images/main%20Image.png") center/cover no-repeat;
+  background:url("images/main_Image.png") center/cover no-repeat;
   opacity:.55;
   border-radius:0;
   animation:kenburns 18s ease-in-out infinite alternate;
@@ -97,13 +97,13 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .card-arr:hover{gap:.75rem;}
 
 /* PHILOSOPHY */
-.philo-sec{padding:5.5rem 5vw;background:#1C1916;color:var(--white);}
-.philo-sec .s-eye{color:var(--gold-light);}.philo-sec .s-title{color:var(--white);}
+.philo-sec{padding:5.5rem 5vw;background:#1C1916 !important;color:var(--white) !important;}
+.philo-sec .s-eye{color:var(--gold-light) !important;}.philo-sec .s-title{color:var(--white) !important;}
 .philo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
 .philo-card{padding:2rem;border:.5px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.04);transition:background .3s,transform .3s;}
 .philo-n{font-size:2.5rem;font-weight:700;color:rgba(201,169,110,.25);font-family:'Arial',sans-serif;line-height:1;margin-bottom:.8rem;}
-.philo-t{font-size:.95rem;font-weight:700;color:var(--gold);margin-bottom:.6rem;}
-.philo-b{font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.8;}
+.philo-t{font-size:.95rem;font-weight:700;color:var(--gold) !important;margin-bottom:.6rem;}
+.philo-b{font-size:.86rem;color:rgba(255,255,255,.65) !important;line-height:1.8;}
 
 /* VISIT */
 .visit-sec{display:grid;grid-template-columns:3fr 1fr;background:var(--cream-dark);}
@@ -143,11 +143,11 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 .elli:hover .elli-bubble{opacity:1;}
 
 /* ── SNS SECTION ── */
-.sns-sec{background:#1C1916;color:var(--white);padding:5rem 5vw;text-align:center;}
-.sns-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--white);margin-bottom:.8rem;letter-spacing:-.01em;}
-.sns-sub{font-size:.95rem;color:rgba(255,255,255,.6);margin-bottom:2.8rem;font-family:'Noto Serif KR','Georgia',serif;}
+.sns-sec{background:#1C1916 !important;color:var(--white) !important;padding:5rem 5vw;text-align:center;}
+.sns-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--white) !important;margin-bottom:.8rem;letter-spacing:-.01em;}
+.sns-sub{font-size:.95rem;color:rgba(255,255,255,.7) !important;margin-bottom:2.8rem;font-family:'Noto Serif KR','Georgia',serif;}
 .sns-icons{display:flex;justify-content:center;gap:2.5rem;margin-bottom:2.5rem;flex-wrap:wrap;}
-.sns-icon-btn{display:flex;flex-direction:column;align-items:center;gap:.7rem;color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s,transform .2s;}
+.sns-icon-btn{display:flex;flex-direction:column;align-items:center;gap:.7rem;color:rgba(255,255,255,.7) !important;text-decoration:none;transition:color .2s,transform .2s;}
 .sns-icon-btn:hover{color:var(--gold);transform:translateY(-4px);}
 .sns-icon-btn svg{width:44px;height:44px;}
 .sns-icon-btn span{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;}
@@ -156,7 +156,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 
 
 /* ── SCROLL FADE-IN ── */
-.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;background:inherit;}
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
 .fade-in.visible{opacity:1;transform:translateY(0);}
 
 /* PAGES */
@@ -327,7 +327,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
     <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v15</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v16</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

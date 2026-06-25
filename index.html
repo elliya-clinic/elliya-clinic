@@ -7,9 +7,9 @@
 <title>엘리야의원 — Elliya Clinic</title>
 <style>
 :root{
-  --cream:#FFFFFF;
-  --cream-dark:#F8F5F0;
-  --cream-mid:#F0EBE3;
+  --cream:#FDFCFA;
+  --cream-dark:#FDFCFA;
+  --cream-mid:#F5F2EE;
   --gold:#B8965A;
   --gold-light:#DFC99A;
   --gold-dark:#8A6E3A;
@@ -17,29 +17,30 @@
   --ink-mid:#4A4440;
   --ink-light:#8A8480;
   --white:#FFFFFF;
-  --border:rgba(184,150,90,0.2);
-  --border-mid:rgba(184,150,90,0.35);
+  --border:rgba(184,150,90,0.18);
+  --border-mid:rgba(184,150,90,0.3);
 }
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
-body{font-family:'Georgia','Noto Serif KR',serif;background:var(--cream-dark);color:var(--ink);line-height:1.7;}
+body{font-family:'Georgia','Noto Serif KR',serif;background:#FDFCFA;color:var(--ink);line-height:1.7;}
 a{color:inherit;text-decoration:none;}
 
 /* LANG BAR */
 .lang-bar{
-  position:fixed;top:0;left:0;right:0;z-index:200;height:34px;
-  background:rgba(28,25,22,0.92);backdrop-filter:blur(8px);
+  position:fixed;top:0;left:0;right:0;z-index:200;height:30px;
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);
+  border-bottom:0.5px solid var(--border);
   display:flex;align-items:center;justify-content:flex-end;padding:0 3rem;
   transition:transform .35s ease;
 }
 .lang-bar.hidden{transform:translateY(-100%);}
-.lang-btn{padding:0 1rem;height:34px;background:none;border:none;border-right:0.5px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);font-size:0.72rem;letter-spacing:0.06em;cursor:pointer;font-family:'Arial',sans-serif;transition:color .2s,background .2s;display:flex;align-items:center;gap:.35rem;white-space:nowrap;}
-.lang-btn:first-child{border-left:0.5px solid rgba(255,255,255,0.12);}
-.lang-btn:hover{color:var(--white);background:rgba(255,255,255,0.07);}
-.lang-btn.active{color:var(--gold);font-weight:700;}
+.lang-btn{padding:0 1rem;height:30px;background:none;border:none;border-right:0.5px solid var(--border);color:var(--ink-light);font-size:0.68rem;letter-spacing:0.06em;cursor:pointer;font-family:'Arial',sans-serif;transition:color .2s,background .2s;display:flex;align-items:center;gap:.35rem;white-space:nowrap;}
+.lang-btn:first-child{border-left:0.5px solid var(--border);}
+.lang-btn:hover{color:var(--ink);background:var(--cream-dark);}
+.lang-btn.active{color:var(--gold-dark);font-weight:700;}
 
 /* NAV */
 nav{
-  position:fixed;top:34px;left:0;right:0;z-index:100;
+  position:fixed;top:30px;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 3rem;height:64px;
   background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);
@@ -56,7 +57,7 @@ nav.nav-top{top:0;}
 .nav-book{padding:.5rem 1.5rem;background:var(--ink);color:var(--cream)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
 .nav-book:hover{background:var(--gold-dark);}
 .hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--ink);}
-.pt{padding-top:98px;transition:padding-top .35s ease;}
+.pt{padding-top:94px;transition:padding-top .35s ease;}
 
 /* HERO */
 .hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
@@ -342,7 +343,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
     <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v19</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v21</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

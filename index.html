@@ -47,7 +47,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
 .hero-bg{
   position:absolute;inset:0;
-  background:url("images/main_image.png") center/cover no-repeat;
+  background:url("images/main%20Image.png") center/cover no-repeat;
   opacity:.55;
   border-radius:0;
   animation:kenburns 18s ease-in-out infinite alternate;
@@ -69,7 +69,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .btn-o:hover{border-color:var(--gold);background:rgba(201,169,110,.12);}
 
 /* SECTIONS */
-.s-eye{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-family:'Arial',sans-serif;}
+.s-eye{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:1rem;font-family:'Arial',sans-serif;}
 .s-title{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700;line-height:1.25;margin-bottom:1.3rem;color:var(--ink);}
 .s-body{font-size:.95rem;color:var(--ink-mid);line-height:1.85;margin-bottom:2rem;}
 .btn-t{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;cursor:pointer;background:none;border:none;transition:gap .2s;}
@@ -98,7 +98,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 
 /* PHILOSOPHY */
 .philo-sec{padding:5.5rem 5vw;background:#1C1916;color:var(--white);}
-.philo-sec .s-eye{color:var(--gold);}.philo-sec .s-title{color:var(--white);}
+.philo-sec .s-eye{color:var(--gold-light);}.philo-sec .s-title{color:var(--white);}
 .philo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
 .philo-card{padding:2rem;border:.5px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.04);transition:background .3s,transform .3s;}
 .philo-n{font-size:2.5rem;font-weight:700;color:rgba(201,169,110,.25);font-family:'Arial',sans-serif;line-height:1;margin-bottom:.8rem;}
@@ -106,9 +106,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .philo-b{font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.8;}
 
 /* VISIT */
-.visit-sec{display:grid;grid-template-columns:3fr 1fr;background:var(--white);border-top:0.5px solid var(--border);}
+.visit-sec{display:grid;grid-template-columns:3fr 1fr;background:var(--cream-dark);}
 .visit-map{min-height:420px;overflow:hidden;line-height:0;}
-.visit-info{padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);}
+.visit-info{padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);color:var(--ink);}
 .vi-item{margin-bottom:1.5rem;}
 .vi-lbl{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.3rem;}
 .vi-val{font-size:.95rem;color:var(--ink);}
@@ -327,7 +327,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
     <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v14</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v15</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Serif+KR:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" onload="emailjs.init('ihFk7nt9x6g6ypCy3')"></script>
 <title>엘리야의원 — Elliya Clinic</title>
 <style>
@@ -61,7 +64,7 @@ nav.nav-scrolled{
 .nav-scrolled .nav-logo{color:var(--white);}
 .nav-logo span{color:var(--gold-light);transition:color .4s;}
 .nav-scrolled .nav-logo span{color:var(--gold-light);}
-.nav-links{display:flex;gap:2rem;list-style:none;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;font-family:'Playfair Display',Georgia,serif;font-weight:700;}
+.nav-links{display:flex;gap:2rem;list-style:none;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:600;}
 .nav-links a{color:rgba(255,255,255,.85);transition:color .2s,.4s;}
 .nav-scrolled .nav-links a{color:rgba(255,255,255,.85);}
 .nav-links a:hover{color:var(--white);}
@@ -178,8 +181,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 .sns-title{font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:var(--white);margin-bottom:.5rem;letter-spacing:-.01em;}
 .sns-sub{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem;font-family:'Arial',sans-serif;}
 .sns-icons{display:flex;justify-content:center;gap:2rem;margin-bottom:0;flex-wrap:wrap;}
-.sns-icon-btn{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s,transform .2s;}
-.sns-icon-btn:hover{color:var(--gold);transform:translateY(-4px);}
+.sns-icon-btn{display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--gold-light);text-decoration:none;transition:color .2s,transform .2s;}
+.sns-icon-btn:hover{color:var(--white);transform:translateY(-4px);}
 .sns-icon-btn svg{width:32px;height:32px;}
 .sns-icon-btn span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;}
 
@@ -356,9 +359,16 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 <!-- NAV -->
 <nav>
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
-    <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v23</span>
+    <svg width="160" height="36" viewBox="0 0 160 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="nav-logo-svg">
+  <rect x="0" y="6" width="2" height="24" fill="currentColor"/>
+  <rect x="0" y="6" width="12" height="2" fill="currentColor"/>
+  <rect x="0" y="17" width="8" height="2" fill="#B8965A"/>
+  <rect x="0" y="28" width="12" height="2" fill="currentColor"/>
+  <text x="18" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="700" fill="currentColor" letter-spacing="0.5">Elliya</text>
+  <circle cx="88" cy="18" r="2" fill="#B8965A"/>
+  <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
+</svg>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v24</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -532,8 +542,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <!-- SNS FOLLOW SECTION -->
   <section class="sns-sec fade-in">
     <p class="s-eye" style="color:var(--gold-light);letter-spacing:.25em;">Follow Us</p>
-    <h2 class="sns-title">Follow us on Instagram</h2>
-    <p class="sns-sub">@dr_elliya &#8212; 리얼 시술 결과, 의료 정보, 일상을 공유합니다</p>
+
     <div class="sns-icons">
       <a href="https://www.instagram.com/dr_elliya" target="_blank" rel="noopener" class="sns-icon-btn" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">

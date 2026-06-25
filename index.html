@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>엘리야의원 — Elliya Clinic</title>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" onload="emailjs.init('ihFk7nt9x6g6ypCy3')"></script>
+<title>엘리야의원 — Elliya Clinic</title>
 <style>
 :root{--cream:#FDFAF4;--cream-dark:#F5F0E8;--gold:#C9A96E;--gold-light:#E8D5B0;--gold-dark:#9B7A45;--ink:#1A1714;--ink-mid:#4A4440;--ink-light:#7A7470;--white:#FFFFFF;--border:rgba(201,169,110,0.25);--border-mid:rgba(201,169,110,0.45);}
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
@@ -84,7 +84,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 
 /* VISIT */
 .visit-sec{display:grid;grid-template-columns:1fr 1fr;background:var(--cream-dark);}
-.visit-map{background:#CCC url("images/map.jpg") center/cover no-repeat;min-height:380px;}
+.visit-map{min-height:420px;overflow:hidden;line-height:0;}
 .visit-info{padding:5rem 4vw;display:flex;flex-direction:column;justify-content:center;}
 .vi-item{margin-bottom:1.5rem;}
 .vi-lbl{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.3rem;}
@@ -96,6 +96,40 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
 .ft-col h4{color:var(--white);font-size:.76rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;}
 .ft-col ul{list-style:none;}.ft-col li{margin-bottom:.6rem;}.ft-col a:hover{color:var(--gold);}
 .ft-btm{background:var(--ink);color:rgba(255,255,255,.3);text-align:center;padding:1rem 5vw;font-family:'Arial',sans-serif;font-size:.76rem;border-top:.5px solid rgba(255,255,255,.1);}
+
+
+/* ── MASCOT ELLI ── */
+.elli{display:inline-block;position:relative;user-select:none;}
+.elli svg{display:block;}
+.elli-float{animation:elli-float 3s ease-in-out infinite;}
+@keyframes elli-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.elli-hero{position:absolute;right:6vw;bottom:8%;z-index:3;opacity:.92;}
+.elli-done{display:flex;justify-content:center;margin-bottom:1.5rem;}
+.elli-footer{display:inline-block;vertical-align:middle;margin-left:.5rem;}
+.elli-bubble{
+  position:absolute;background:var(--white);border-radius:12px;padding:.5rem .9rem;
+  font-size:.78rem;font-family:'Noto Serif KR',serif;color:var(--ink);
+  box-shadow:0 4px 16px rgba(0,0,0,.12);white-space:nowrap;
+  bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.elli-bubble::after{
+  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:6px solid transparent;border-top-color:var(--white);
+}
+.elli:hover .elli-bubble{opacity:1;}
+
+/* ── SNS SECTION ── */
+.sns-sec{background:var(--ink);color:var(--white);padding:5rem 5vw;text-align:center;}
+.sns-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:var(--white);margin-bottom:.8rem;letter-spacing:-.01em;}
+.sns-sub{font-size:.95rem;color:rgba(255,255,255,.6);margin-bottom:2.8rem;font-family:'Noto Serif KR','Georgia',serif;}
+.sns-icons{display:flex;justify-content:center;gap:2.5rem;margin-bottom:2.5rem;flex-wrap:wrap;}
+.sns-icon-btn{display:flex;flex-direction:column;align-items:center;gap:.7rem;color:rgba(255,255,255,.7);text-decoration:none;transition:color .2s,transform .2s;}
+.sns-icon-btn:hover{color:var(--gold);transform:translateY(-4px);}
+.sns-icon-btn svg{width:44px;height:44px;}
+.sns-icon-btn span{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;}
+.sns-follow-btn{display:inline-block;padding:.9rem 2.5rem;border:1px solid rgba(201,169,110,.5);border-radius:2px;color:var(--gold);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Noto Serif KR','Georgia',serif;font-weight:700;transition:background .2s,border-color .2s,color .2s;text-decoration:none;}
+.sns-follow-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--ink);}
 
 /* PAGES */
 .page{display:none;}.page.active{display:block;}
@@ -262,7 +296,18 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Elijah <span>Clinic</span></div>
+  <div class="nav-logo">Elliya <span>Clinic</span> <span class="elli elli-footer" style="vertical-align:middle;"><svg width="36" height="42" viewBox="0 0 36 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="18" cy="32" rx="13" ry="10" fill="white" stroke="#E8D5B0" stroke-width="1"/>
+  <circle cx="18" cy="14" r="12" fill="#E8D5B0"/>
+  <ellipse cx="13.5" cy="13" rx="2" ry="2.5" fill="#1A1714"/>
+  <ellipse cx="22.5" cy="13" rx="2" ry="2.5" fill="#1A1714"/>
+  <circle cx="14.2" cy="12" r=".8" fill="white"/>
+  <circle cx="23.2" cy="12" r=".8" fill="white"/>
+  <ellipse cx="11" cy="17" rx="3" ry="1.8" fill="#F5A0A0" opacity=".4"/>
+  <ellipse cx="25" cy="17" rx="3" ry="1.8" fill="#F5A0A0" opacity=".4"/>
+  <path d="M13 19 Q18 24 23 19" stroke="#9B7A45" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="18" y1="24" x2="18" y2="40" stroke="#C9A96E" stroke-width="1"/>
+</svg></span></div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
     <li><a href="#" onclick="showPage('philo-page')" data-t="nav.philo">철학</a></li>
@@ -332,14 +377,48 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
         <button class="btn-o" onclick="showPage('philo-page')" data-t="hero.learn">더 알아보기</button>
       </div>
     </div>
-  </section>
+
+  <div class="elli elli-hero elli-float" style="display:none;" id="hero-elli">
+    <div class="elli-bubble">안녕하세요! 엘리야의원입니다 👋</div>
+    <svg width="90" height="110" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 몸통 (흰 가운) -->
+  <ellipse cx="45" cy="82" rx="28" ry="26" fill="white" stroke="#E8D5B0" stroke-width="1.5"/>
+  <!-- 가운 골드 라인 -->
+  <line x1="45" y1="60" x2="45" y2="105" stroke="#C9A96E" stroke-width="1.5"/>
+  <!-- 얼굴 -->
+  <circle cx="45" cy="38" r="24" fill="#C9A96E"/>
+  <circle cx="45" cy="38" r="22" fill="#E8D5B0"/>
+  <!-- 눈 -->
+  <ellipse cx="37" cy="35" rx="3.5" ry="4" fill="#1A1714"/>
+  <ellipse cx="53" cy="35" rx="3.5" ry="4" fill="#1A1714"/>
+  <!-- 눈 하이라이트 -->
+  <circle cx="38.5" cy="33.5" r="1.2" fill="white"/>
+  <circle cx="54.5" cy="33.5" r="1.2" fill="white"/>
+  <!-- 볼터치 -->
+  <ellipse cx="32" cy="41" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
+  <ellipse cx="58" cy="41" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
+  <!-- 미소 -->
+  <path d="M37 44 Q45 52 53 44" stroke="#9B7A45" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- 왼팔 (흔드는) -->
+  <path d="M17 70 Q6 55 14 44" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- 왼손 -->
+  <circle cx="14" cy="42" r="6" fill="#E8D5B0"/>
+  <!-- 오른팔 -->
+  <path d="M73 70 Q80 78 76 88" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- 다리 -->
+  <rect x="34" y="104" width="10" height="6" rx="3" fill="#C9A96E"/>
+  <rect x="46" y="104" width="10" height="6" rx="3" fill="#C9A96E"/>
+  <!-- 머리 하이라이트 -->
+  <ellipse cx="38" cy="24" rx="8" ry="5" fill="white" opacity=".3"/>
+</svg>
+  </div>
 
   <section class="about-strip">
     <div class="about-img"></div>
     <div class="about-txt">
-      <p class="s-eye" data-t="about.eye">About Elijah Clinic</p>
+      <p class="s-eye" data-t="about.eye">About Elliya Clinic</p>
       <h2 class="s-title" data-t="about.title">과학과 자연미의 만남</h2>
-      <p class="s-body" data-t="about.body">엘리야의원(Elijah Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.</p>
+      <p class="s-body" data-t="about.body">엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.</p>
       <button class="btn-t" onclick="showPage('philo-page')" data-t="about.philo">철학 보기</button>
     </div>
   </section>
@@ -385,20 +464,69 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
   </section>
 
   <section class="visit-sec" id="visit">
-    <div class="visit-map"></div>
+    <div class="visit-map">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.3!2d127.0195!3d37.4939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1506a2ea4ab%3A0x7d1d82b2da50a70e!2z7ISc7Jq47IucIOyEnOy5mOq1rCDshLjstIzrj5nroZwgNzjquLggMjY!5e0!3m2!1sko!2skr!4v1700000000001!5m2!1sko!2skr"
+    width="100%" height="100%" style="border:0;display:block;min-height:420px;"
+    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+  </iframe>
+</div>
     <div class="visit-info">
       <p class="s-eye" data-t="visit.eye">Find Us</p>
       <h2 class="s-title" style="margin-bottom:2rem;" data-t="visit.title">방문 안내</h2>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.al">주소</div><div class="vi-val" data-t="visit.addr">서울특별시 서울특별시 서초구 서초대로 78길26,4층</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.al">주소</div><div class="vi-val" data-t="visit.addr">서울 서초구 서초대로78길 26, 4층</div></div>
       <div class="vi-item"><div class="vi-lbl" data-t="visit.hl">진료 시간</div><div class="vi-val" data-t="visit.hours">월-금 10:00-19:00 / 토 10:00-15:00</div></div>
       <div class="vi-item"><div class="vi-lbl" data-t="visit.cl">연락처</div><div class="vi-val">+82 02-3471-1003 · elijah@clinic.kr</div></div>
       <div class="vi-item"><div class="vi-lbl" data-t="visit.tl">대만 코디네이터</div><div class="vi-val" data-t="visit.tw">中文 · English · 한국어 · LINE: @elliyaclinic</div></div>
     </div>
   </section>
 
+  <!-- SNS FOLLOW SECTION -->
+  <section class="sns-sec">
+    <p class="s-eye" style="color:var(--gold-light);letter-spacing:.25em;">Follow Us</p>
+    <h2 class="sns-title">Follow us on Instagram</h2>
+    <p class="sns-sub">@dr_elliya &#8212; 리얼 시술 결과, 의료 정보, 일상을 공유합니다</p>
+    <div class="sns-icons">
+      <a href="https://www.instagram.com/dr_elliya" target="_blank" rel="noopener" class="sns-icon-btn" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>Instagram</span>
+      </a>
+      <a href="https://threads.com/dr_elliya" target="_blank" rel="noopener" class="sns-icon-btn" aria-label="Threads">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="44" height="44">
+          <path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.471 12.03v-.059c.029-3.557.879-6.41 2.524-8.463C5.845 1.205 8.598.024 12.18 0h.014c2.746.02 5.043.735 6.826 2.123 1.677 1.312 2.858 3.155 3.499 5.482l-2.38.62c-.88-3.374-3.022-5.081-6.01-5.1-2.74.02-4.933.908-6.18 2.504-1.247 1.596-1.89 4.01-1.912 7.4v.05c.022 3.389.665 5.804 1.912 7.4 1.247 1.596 3.44 2.484 6.18 2.504 2.74-.02 4.497-.808 5.577-1.888.99-.99 1.558-2.322 1.689-3.96a7.556 7.556 0 0 0-.238-2.508 3.998 3.998 0 0 0-1.172-1.92c-.3.738-.733 1.394-1.293 1.94-.988.958-2.29 1.516-3.878 1.658-1.319.12-2.559-.145-3.487-.747-.991-.64-1.56-1.595-1.598-2.685-.038-1.069.468-2.054 1.389-2.773.977-.763 2.357-1.197 3.895-1.225.764-.014 1.5.04 2.2.163a6.83 6.83 0 0 0-.166-.972c-.318-1.113-1.087-1.703-2.35-1.82-.813-.074-1.596.106-2.21.508l-1.178-1.992c.975-.624 2.172-.954 3.466-.84 2.303.208 3.766 1.39 4.338 3.513.13.48.21.983.247 1.508a12.9 12.9 0 0 1 1.888 1.131c1.05.796 1.784 1.85 2.122 3.044.364 1.27.405 2.694.12 4.008-.453 2.085-1.536 3.773-3.13 4.883-1.52 1.063-3.513 1.62-5.761 1.637z"/>
+        </svg>
+        <span>Threads</span>
+      </a>
+      <a href="https://blog.naver.com/bigmacdoc" target="_blank" rel="noopener" class="sns-icon-btn" aria-label="Naver Blog">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="44" height="44">
+          <path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/>
+        </svg>
+        <span>Naver Blog</span>
+      </a>
+    </div>
+    <a href="https://www.instagram.com/dr_elliya" target="_blank" rel="noopener" class="sns-follow-btn">
+      인스타그램 팔로우 &#183; Follow on Instagram
+    </a>
+  </section>
+
   <footer>
     <div class="ft-brand">
-      <span class="nav-logo">Elijah <span style="color:var(--gold)">Clinic</span></span>
+      <span class="nav-logo">Elliya <span style="color:var(--gold)">Clinic</span></span><span class="elli elli-footer"><svg width="36" height="42" viewBox="0 0 36 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="18" cy="32" rx="13" ry="10" fill="white" stroke="#E8D5B0" stroke-width="1"/>
+  <circle cx="18" cy="14" r="12" fill="#E8D5B0"/>
+  <ellipse cx="13.5" cy="13" rx="2" ry="2.5" fill="#1A1714"/>
+  <ellipse cx="22.5" cy="13" rx="2" ry="2.5" fill="#1A1714"/>
+  <circle cx="14.2" cy="12" r=".8" fill="white"/>
+  <circle cx="23.2" cy="12" r=".8" fill="white"/>
+  <ellipse cx="11" cy="17" rx="3" ry="1.8" fill="#F5A0A0" opacity=".4"/>
+  <ellipse cx="25" cy="17" rx="3" ry="1.8" fill="#F5A0A0" opacity=".4"/>
+  <path d="M13 19 Q18 24 23 19" stroke="#9B7A45" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <line x1="18" y1="24" x2="18" y2="40" stroke="#C9A96E" stroke-width="1"/>
+</svg></span>
       <p data-t="footer.desc">서울의 안티에이징 &amp; 리프팅 전문 피부과.</p>
     </div>
     <div class="ft-col"><h4 data-t="footer.tx">Treatments</h4><ul>
@@ -415,7 +543,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
       <li><a href="#">Instagram</a></li><li><a href="#">LINE</a></li><li><a href="#">YouTube</a></li>
     </ul></div>
   </footer>
-  <div class="ft-btm">&#169; 2025 Elijah Clinic · 엘리야의원. All Rights Reserved.</div>
+  <div class="ft-btm">&#169; 2025 Elliya Clinic · 엘리야의원. All Rights Reserved.</div>
 </div>
 
 <!-- DETAIL PAGE -->
@@ -553,7 +681,22 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
       </div>
       <div id="bs-5" style="display:none;">
         <div class="cfm-box">
-          <div class="cfm-icon">&#10003;</div>
+          <div class="elli-done"><svg width="80" height="100" viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="40" cy="75" rx="26" ry="23" fill="white" stroke="#E8D5B0" stroke-width="1.5"/>
+  <line x1="40" y1="55" x2="40" y2="95" stroke="#C9A96E" stroke-width="1.5"/>
+  <circle cx="40" cy="32" r="22" fill="#E8D5B0"/>
+  <path d="M30 29 Q33 25 36 29" stroke="#1A1714" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M44 29 Q47 25 50 29" stroke="#1A1714" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="27" cy="36" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
+  <ellipse cx="53" cy="36" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
+  <path d="M30 39 Q40 50 50 39" stroke="#9B7A45" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M8 72 Q2 58 10 48" stroke="white" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <ellipse cx="12" cy="45" rx="7" ry="5" fill="#E8D5B0" transform="rotate(-30 12 45)"/>
+  <ellipse cx="8" cy="50" rx="4" ry="7" fill="#E8D5B0" transform="rotate(-20 8 50)"/>
+  <path d="M66 68 Q74 76 70 86" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <text x="56" y="20" font-size="14" fill="#C9A96E">&#11088;</text>
+  <text x="5" y="30" font-size="10" fill="#C9A96E" opacity=".7">&#10024;</text>
+</svg></div>
           <h2 class="cfm-title" data-t="dn.title">예약이 완료되었습니다!</h2>
           <p class="cfm-sub" data-t="dn.sub">입력하신 이메일로 예약 확인 메시지를 발송했습니다.</p>
           <div class="cfm-details" id="cfm-details"></div>
@@ -576,8 +719,8 @@ ko: {
 "hero.eye":"Seoul · 안티에이징 & 리프팅 전문",
 "hero.desc":"엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.",
 "hero.book":"예약하기 · Book a Consultation","hero.learn":"더 알아보기",
-"about.eye":"About Elijah Clinic","about.title":"과학과 자연미의 만남",
-"about.body":"엘리야의원(Elijah Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.",
+"about.eye":"About Elliya Clinic","about.title":"과학과 자연미의 만남",
+"about.body":"엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.",
 "about.philo":"철학 보기",
 "tx.eye":"Signature Treatments","tx.title":"당신의 변화가 시작됩니다.",
 "tx1.name":"HIFU Lifting · 울쎄라","tx1.desc":"집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.",
@@ -589,7 +732,7 @@ ko: {
 "p2.title":"개인 맞춤 설계","p2.body":"얼굴형, 피부 상태, 생활방식을 종합하여 당신만을 위한 최적의 플랜을 설계합니다.",
 "p3.title":"지속 가능한 아름다움","p3.body":"피부 본연의 건강을 회복하고 유지하는 장기적 관점의 치료.",
 "visit.eye":"Find Us","visit.title":"방문 안내",
-"visit.al":"주소","visit.addr":"서울특별시 [구] [동] [상세 주소]",
+"visit.al":"주소","visit.addr":"서울 서초구 서초대로78길 26, 4층",
 "visit.hl":"진료 시간","visit.hours":"월-금 10:00-19:00 / 토 10:00-15:00",
 "visit.cl":"연락처","visit.tl":"대만 코디네이터","visit.tw":"中文 · English · 한국어 · LINE: @elijahclinic",
 "footer.desc":"서울의 안티에이징 & 리프팅 전문 피부과.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
@@ -624,10 +767,10 @@ ko: {
 en: {
 "nav.home":"Home","nav.philo":"Philosophy","nav.tx":"Treatments","nav.visit":"Visit","nav.book":"Book Now",
 "hero.eye":"Seoul · Anti-Aging & Lifting Specialists",
-"hero.desc":"Elijah Clinic combines cutting-edge lifting technology with a refined medical philosophy to reveal your naturally timeless beauty.",
+"hero.desc":"Elliya Clinic combines cutting-edge lifting technology with a refined medical philosophy to reveal your naturally timeless beauty.",
 "hero.book":"Book a Consultation","hero.learn":"Learn More",
-"about.eye":"About Elijah Clinic","about.title":"Where Science Meets Natural Beauty",
-"about.body":"Elijah Clinic is a Seoul dermatology clinic specializing in anti-aging and lifting treatments. We help your natural beauty shine.<br><br>International patients from Taiwan and beyond are warmly welcomed with dedicated coordinators who speak your language.",
+"about.eye":"About Elliya Clinic","about.title":"Where Science Meets Natural Beauty",
+"about.body":"Elliya Clinic is a Seoul dermatology clinic specializing in anti-aging and lifting treatments. We help your natural beauty shine.<br><br>International patients from Taiwan and beyond are warmly welcomed with dedicated coordinators who speak your language.",
 "about.philo":"Our Philosophy",
 "tx.eye":"Signature Treatments","tx.title":"Your Transformation Starts Here.",
 "tx1.name":"HIFU Lifting","tx1.desc":"Focused ultrasound targeting the SMAS layer to lift sagging contours — non-surgical, painless, natural.",
@@ -639,7 +782,7 @@ en: {
 "p2.title":"Personalized Care","p2.body":"Every face is unique. We design individualized plans based on your face shape, skin, and lifestyle.",
 "p3.title":"Lasting Beauty","p3.body":"We aim for long-term skin health through collagen regeneration, tissue recovery, and barrier restoration.",
 "visit.eye":"Find Us","visit.title":"Visit Us",
-"visit.al":"Address","visit.addr":"[District], Seoul, Korea",
+"visit.al":"Address","visit.addr":"26, Seocho-daero 78-gil, Seocho-gu, Seoul (4F)",
 "visit.hl":"Hours","visit.hours":"Mon–Fri 10:00–19:00 / Sat 10:00–15:00",
 "visit.cl":"Contact","visit.tl":"Taiwan Coordinator","visit.tw":"中文 · English · Korean · LINE: @elijahclinic",
 "footer.desc":"Seoul anti-aging & lifting dermatology specialists.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
@@ -677,7 +820,7 @@ zh: {
 "hero.desc":"伊萊賈診所結合最先進的提升技術與精緻的醫療理念，幫助您重現自然永恆的美麗。",
 "hero.book":"立即預約諮詢","hero.learn":"了解更多",
 "about.eye":"關於伊萊賈診所","about.title":"科學與自然美的完美結合",
-"about.body":"伊萊賈診所（Elijah Clinic）是首爾一家專注於抗老化與提升療程的皮膚科診所。<br><br>我們設有專屬台灣協調員，提供中文服務，讓您無語言障礙地享受頂級療程。",
+"about.body":"伊萊賈診所（Elliya Clinic）是首爾一家專注於抗老化與提升療程的皮膚科診所。<br><br>我們設有專屬台灣協調員，提供中文服務，讓您無語言障礙地享受頂級療程。",
 "about.philo":"我們的理念",
 "tx.eye":"招牌療程","tx.title":"您的蛻變從這裡開始。",
 "tx1.name":"HIFU音波拉提","tx1.desc":"高強度聚焦超音波刺激SMAS筋膜層，無創提升鬆弛輪廓，自然無痛。",
@@ -689,7 +832,7 @@ zh: {
 "p2.title":"個人化設計","p2.body":"每張臉都是獨特的。我們根據您的臉型、膚況及生活方式量身設計療程計畫。",
 "p3.title":"持久之美","p3.body":"透過膠原蛋白再生和組織修復，打造隨時間越來越健康的肌膚。",
 "visit.eye":"前來拜訪","visit.title":"交通資訊",
-"visit.al":"地址","visit.addr":"首爾特別市 [區] [洞] [詳細地址]",
+"visit.al":"地址","visit.addr":"首爾市瑞草區瑞草大路78街26號 4樓",
 "visit.hl":"診療時間","visit.hours":"週一至週五 10:00–19:00 / 週六 10:00–15:00",
 "visit.cl":"聯絡方式","visit.tl":"台灣協調員","visit.tw":"中文 · English · 韓文 · LINE: @elijahclinic",
 "footer.desc":"首爾抗老化 & 提升專科皮膚科。","footer.tx":"療程","footer.clinic":"診所","footer.sns":"聯絡我們",
@@ -739,7 +882,7 @@ ar: {
 "p2.title":"رعاية مخصصة","p2.body":"كل وجه فريد. نصمم خطة علاجية مخصصة بناءً على ملامحك وبشرتك وأسلوب حياتك.",
 "p3.title":"جمال دائم","p3.body":"من خلال تجديد الكولاجين وترميم الأنسجة، نبني بشرة تزداد صحةً مع الوقت.",
 "visit.eye":"زيارتنا","visit.title":"معلومات الزيارة",
-"visit.al":"العنوان","visit.addr":"[الحي]، سيول، كوريا",
+"visit.al":"العنوان","visit.addr":"26، شارع سيوتشو-دايرو 78، سيوتشو-غو، سيول، الطابق 4",
 "visit.hl":"ساعات العمل","visit.hours":"الإثنين–الجمعة 10:00–19:00 / السبت 10:00–15:00",
 "visit.cl":"التواصل","visit.tl":"منسق دولي","visit.tw":"中文 · English · عربي · LINE: @elijahclinic",
 "footer.desc":"متخصصون في مكافحة الشيخوخة والرفع بسيول.","footer.tx":"العلاجات","footer.clinic":"العيادة","footer.sns":"تواصل معنا",
@@ -1060,49 +1203,50 @@ function fillCart() {
 }
 
 function submitBk() {
-  var d      = bk.date;
-  var da     = d ? tr("d" + d.getDay()) : "";
-  var ds     = d ? d.getFullYear() + "." + String(d.getMonth()+1).padStart(2,"0") + "."
-                 + String(d.getDate()).padStart(2,"0") + " (" + da + ") " + (bk.time||"") : "-";
-  var email  = document.getElementById("f-em").value  || "-";
-  var fn     = document.getElementById("f-fn").value  || "";
-  var ln     = document.getElementById("f-ln").value  || "";
-  var name   = (fn + " " + ln).trim() || "-";
-  var phone  = getPhone();
-  var nation = document.getElementById("f-na").value  || "-";
-  var notes  = document.getElementById("f-nt").value  || "없음";
-  var pr     = bk.price ? "\u20A9" + bk.price.toLocaleString() + "~" : tr("bk.free");
-
-  var cfmBtn = document.querySelector("[onclick='submitBk()']");
-  if (cfmBtn) { cfmBtn.disabled = true; cfmBtn.textContent = "발송 중..."; }
-
-  var params = {
-    service:       bk.svc || "-",
-    date_time:     ds,
-    patient_name:  name,
-    patient_email: email,
-    phone:         phone,
-    nationality:   nation,
-    notes:         notes,
-    price:         pr
-  };
-
-  emailjs.send("service_hy5e83q", "template_n8c1j0u", params)
-    .then(function() {
-      emailjs.send("service_hy5e83q", "template_aiz27ku", params);
-      document.getElementById("cfm-details").innerHTML =
-        "<div class=\"cfm-row\"><span>" + tr("cr.svc")   + "</span><span>" + (bk.svc||"-") + "</span></div>" +
-        "<div class=\"cfm-row\"><span>" + tr("cr.date")  + "</span><span>" + ds             + "</span></div>" +
-        "<div class=\"cfm-row\"><span>" + tr("cr.name")  + "</span><span>" + name           + "</span></div>" +
-        "<div class=\"cfm-row\"><span>" + tr("cr.email") + "</span><span>" + email          + "</span></div>" +
-        "<div class=\"cfm-row\"><span>" + tr("cr.price") + "</span><span>" + pr             + "</span></div>";
+  var d=bk.date, da=d?tr("d"+d.getDay()):"";
+  var ds=d?d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+(bk.time||""):"-";
+  var email=document.getElementById("f-em").value||"-";
+  var fn=document.getElementById("f-fn").value||"";
+  var ln=document.getElementById("f-ln").value||"";
+  var name=(fn+" "+ln).trim()||"-";
+  var phone=getPhone();
+  var nation=document.getElementById("f-na").value||"-";
+  var notes=document.getElementById("f-nt").value||"없음";
+  var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
+  var cfmBtn=document.querySelector("[onclick='submitBk()']");
+  if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
+  var params={service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
+  emailjs.send("service_hy5e83q","template_n8c1j0u",params)
+    .then(function(){
+      emailjs.send("service_hy5e83q","template_aiz27ku",params);
+      document.getElementById("cfm-details").innerHTML=
+        "<div class=\"cfm-row\"><span>"+tr("cr.svc")+"</span><span>"+(bk.svc||"-")+"</span></div>"+
+        "<div class=\"cfm-row\"><span>"+tr("cr.date")+"</span><span>"+ds+"</span></div>"+
+        "<div class=\"cfm-row\"><span>"+tr("cr.name")+"</span><span>"+name+"</span></div>"+
+        "<div class=\"cfm-row\"><span>"+tr("cr.email")+"</span><span>"+email+"</span></div>"+
+        "<div class=\"cfm-row\"><span>"+tr("cr.price")+"</span><span>"+pr+"</span></div>";
       gStep(5);
     })
-    .catch(function(err) {
-      if (cfmBtn) { cfmBtn.disabled = false; cfmBtn.textContent = tr("ct.cfm"); }
-      alert("이메일 발송에 실패했습니다.\n잠시 후 다시 시도해 주세요.\n\n문의: +82 02-3471-1003");
-      console.error("EmailJS error:", JSON.stringify(err));
+    .catch(function(err){
+      if(cfmBtn){cfmBtn.disabled=false;cfmBtn.textContent=tr("ct.cfm");}
+      alert("이메일 발송에 실패했습니다.\n잠시 후 다시 시도해 주세요.");
+      console.error("EmailJS error:",JSON.stringify(err));
     });
+  return;
+}
+function submitBk_unused() {
+  var d=bk.date, da=d?tr("d"+d.getDay()):"";
+  var ds=d?d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+(bk.time||""):"-";
+  var email=document.getElementById("f-em").value||"-";
+  var name=((document.getElementById("f-fn").value||"")+" "+(document.getElementById("f-ln").value||"")).trim()||"-";
+  var pr=bk.price?"&#8361; "+bk.price.toLocaleString()+"~":tr("bk.free");
+  document.getElementById("cfm-details").innerHTML=
+    "<div class=\"cfm-row\"><span>"+tr("cr.svc")+"</span><span>"+(bk.svc||"-")+"</span></div>"+
+    "<div class=\"cfm-row\"><span>"+tr("cr.date")+"</span><span>"+ds+"</span></div>"+
+    "<div class=\"cfm-row\"><span>"+tr("cr.name")+"</span><span>"+name+"</span></div>"+
+    "<div class=\"cfm-row\"><span>"+tr("cr.email")+"</span><span>"+email+"</span></div>"+
+    "<div class=\"cfm-row\"><span>"+tr("cr.price")+"</span><span>"+pr+"</span></div>";
+  gStep(5);
 }
 
 // =====================================================
@@ -1152,7 +1296,7 @@ function saveAndTranslate() {
   langs3.forEach(function(pair) {
     var tl=pair[0], tn=pair[1];
     var prompt = "Translate these JSON values from Korean to "+tn+".\n"+
-      "Rules: keep HTML tags exactly, keep brand names (Elijah Clinic, HIFU, PDO, LINE), "+
+      "Rules: keep HTML tags exactly, keep brand names (Elliya Clinic, HIFU, PDO, LINE), "+
       "return ONLY valid JSON (no markdown, no explanation).\n\n"+
       JSON.stringify(koSlice,null,2);
     fetch("https://api.anthropic.com/v1/messages",{

@@ -44,19 +44,25 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .pt{padding-top:98px;}
 
 /* HERO */
-.hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:linear-gradient(135deg,#1C1916 0%,#2A2420 50%,#1C1916 100%);}
-.hero-bg{position:absolute;inset:0;background:url("https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1920&q=80&fit=crop") center/cover no-repeat;opacity:.45;}
-.hero-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(26,23,20,.75) 0%,rgba(26,23,20,.2) 100%);}
-.hero-ct{position:relative;z-index:2;max-width:600px;}
-.hero-eye{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
-.hero-title{font-size:clamp(2.4rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:1.5rem;}
-.hero-title em{font-style:normal;color:var(--gold);}
-.hero-desc{font-size:1rem;color:rgba(255,255,255,.72);margin-bottom:2.4rem;max-width:460px;line-height:1.8;}
+.hero{
+  height:100vh;min-height:600px;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;
+  position:relative;overflow:hidden;
+  background:var(--cream-dark);
+}
+.hero-bg{display:none;}
+.hero-ov{display:none;}
+.hero-ct{padding:6rem 4rem 6rem 8vw;z-index:2;}
+.hero-eye{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-family:'Arial',sans-serif;}
+.hero-title{font-size:clamp(2.2rem,4vw,3.6rem);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:1.5rem;}
+.hero-title em{font-style:normal;color:var(--gold-dark);}
+.hero-desc{font-size:.95rem;color:var(--ink-mid);margin-bottom:2.4rem;max-width:420px;line-height:1.85;}
 .hero-act{display:flex;gap:1rem;flex-wrap:wrap;}
 .btn-p{padding:.85rem 2.2rem;background:var(--gold);color:var(--ink);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s;font-weight:700;}
 .btn-p:hover{background:var(--gold-dark);color:var(--white);transform:translateY(-1px);}
-.btn-o{padding:.85rem 2.2rem;background:transparent;color:var(--white);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:1px solid rgba(255,255,255,.45);border-radius:2px;cursor:pointer;transition:border-color .2s,background .2s;}
-.btn-o:hover{border-color:var(--gold);background:rgba(201,169,110,.12);}
+.btn-o{padding:.85rem 2.2rem;background:transparent;color:var(--ink);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:1px solid var(--border-mid);border-radius:2px;cursor:pointer;transition:border-color .2s,background .2s;}
+.btn-o:hover{border-color:var(--gold);background:var(--cream-mid);}
 
 /* SECTIONS */
 .s-eye{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-family:'Arial',sans-serif;}
@@ -66,9 +72,9 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--cream-dark);}
-.about-img{background:url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=900&q=80&fit=crop") center/cover no-repeat,#2D2520;min-height:260px;border-radius:0 20px 20px 0;}
-.about-txt{padding:5rem 5vw 5rem 4vw;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);}
+.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--white);gap:0;}
+.about-img{background:url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=900&q=80&fit=crop") center/cover no-repeat,#2D2520;min-height:260px;border-radius:0 24px 24px 0;margin:2.5rem 0 2.5rem 2.5rem;}
+.about-txt{padding:4rem 6vw 4rem 4rem;display:flex;flex-direction:column;justify-content:center;background:var(--white);}
 
 /* TREATMENTS */
 .tx-sec{padding:5rem 5vw;background:var(--cream-dark);}
@@ -317,7 +323,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
     <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v12</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v13</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -378,7 +384,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 <!-- HOME PAGE -->
 <div id="page-home" class="page active">
   <section class="hero">
-    <div class="hero-bg"></div><div class="hero-ov"></div>
     <div class="hero-ct">
       <p class="hero-eye" data-t="hero.eye">Seoul · 안티에이징 &amp; 리프팅 전문</p>
       <h1 class="hero-title">Reveal Your<br><em>Timeless</em><br>Radiance.</h1>
@@ -387,6 +392,9 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
         <button class="btn-p" onclick="showPage('booking');initBooking()" data-t="hero.book">예약하기</button>
         <button class="btn-o" onclick="showPage('philo-page')" data-t="hero.learn">더 알아보기</button>
       </div>
+    </div>
+    <div class="hero-img-side">
+      <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=900&q=85&fit=crop&crop=top" alt="Elliya Clinic">
     </div>
     <!-- 마스코트 Elli -->
     <div class="elli elli-hero elli-float">

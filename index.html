@@ -20,8 +20,9 @@ a{color:inherit;text-decoration:none;}
 
 /* NAV */
 nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:64px;background:rgba(253,250,244,0.96);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);}
-.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);}
+.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.6rem;}
 .nav-logo span{color:var(--gold);}
+.nav-logo img{height:36px;width:auto;display:block;}
 .nav-links{display:flex;gap:2rem;list-style:none;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;}
 .nav-links a{color:var(--ink-mid);transition:color .2s;}
 .nav-links a:hover{color:var(--gold-dark);}
@@ -83,7 +84,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .philo-b{font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.8;}
 
 /* VISIT */
-.visit-sec{display:grid;grid-template-columns:1fr 1fr;background:var(--cream-dark);}
+.visit-sec{display:grid;grid-template-columns:3fr 1fr;background:var(--cream-dark);}
 .visit-map{min-height:420px;overflow:hidden;line-height:0;}
 .visit-info{padding:5rem 4vw;display:flex;flex-direction:column;justify-content:center;}
 .vi-item{margin-bottom:1.5rem;}
@@ -296,12 +297,15 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Elliya <span>Clinic</span></div>
+  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+    <img src="images/elliya-logo.svg" alt="Elliya Clinic" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <span style="display:flex;align-items:center;gap:.3rem;">Elliya <span>Clinic</span></span>
+  </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
     <li><a href="#" onclick="showPage('philo-page')" data-t="nav.philo">철학</a></li>
-    <li><a href="#treatments" data-t="nav.tx">시술</a></li>
-    <li><a href="#visit" data-t="nav.visit">오시는 길</a></li>
+    <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('treatments').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.tx">시술</a></li>
+    <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('visit').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.visit">오시는 길</a></li>
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
   </ul>
   <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
@@ -454,7 +458,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
       <h2 class="s-title" style="margin-bottom:2rem;" data-t="visit.title">방문 안내</h2>
       <div class="vi-item"><div class="vi-lbl" data-t="visit.al">주소</div><div class="vi-val" data-t="visit.addr">서울 서초구 서초대로78길 26, 4층</div></div>
       <div class="vi-item"><div class="vi-lbl" data-t="visit.hl">진료 시간</div><div class="vi-val" data-t="visit.hours">월-금 10:00-19:00 / 토 10:00-15:00</div></div>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.cl">연락처</div><div class="vi-val">+82 02-3471-1003 · elijah@clinic.kr</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.cl">연락처</div><div class="vi-val">+82 02-3471-1003 · elliya@clinic.kr</div></div>
       <div class="vi-item"><div class="vi-lbl" data-t="visit.tl">대만 코디네이터</div><div class="vi-val" data-t="visit.tw">中文 · English · 한국어 · LINE: @elliyaclinic</div></div>
     </div>
   </section>
@@ -667,7 +671,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
           <h2 class="cfm-title" data-t="dn.title">예약이 완료되었습니다!</h2>
           <p class="cfm-sub" data-t="dn.sub">입력하신 이메일로 예약 확인 메시지를 발송했습니다.</p>
           <div class="cfm-details" id="cfm-details"></div>
-          <p style="font-size:.83rem;color:var(--ink-light);margin-top:1rem;">elijah@clinic.kr | LINE: @elijahclinic</p>
+          <p style="font-size:.83rem;color:var(--ink-light);margin-top:1rem;">elliya@clinic.kr | LINE: @elliyaclinic</p>
           <button class="btn-p" style="margin-top:2rem;" onclick="showPage('home')" data-t="dn.home">홈으로 돌아가기</button>
         </div>
       </div>
@@ -701,7 +705,7 @@ ko: {
 "visit.eye":"Find Us","visit.title":"방문 안내",
 "visit.al":"주소","visit.addr":"서울 서초구 서초대로78길 26, 4층",
 "visit.hl":"진료 시간","visit.hours":"월-금 10:00-19:00 / 토 10:00-15:00",
-"visit.cl":"연락처","visit.tl":"대만 코디네이터","visit.tw":"中文 · English · 한국어 · LINE: @elijahclinic",
+"visit.cl":"연락처","visit.tl":"대만 코디네이터","visit.tw":"中文 · English · 한국어 · LINE: @elliyaclinic",
 "footer.desc":"서울의 안티에이징 & 리프팅 전문 피부과.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
 "detail.from":"Starting From","detail.join":"예약하기 · Join","detail.note":"상담 후 정확한 가격이 결정됩니다.",
 "pp.title":"엘리야의원의 철학","pp.intro":"저희 의원은 피부 본연의 건강과 아름다움이 스스로의 힘으로 빛날 수 있도록 돕는 것을 사명으로 삼고 있습니다.",
@@ -751,7 +755,7 @@ en: {
 "visit.eye":"Find Us","visit.title":"Visit Us",
 "visit.al":"Address","visit.addr":"26, Seocho-daero 78-gil, Seocho-gu, Seoul (4F)",
 "visit.hl":"Hours","visit.hours":"Mon–Fri 10:00–19:00 / Sat 10:00–15:00",
-"visit.cl":"Contact","visit.tl":"Taiwan Coordinator","visit.tw":"中文 · English · Korean · LINE: @elijahclinic",
+"visit.cl":"Contact","visit.tl":"Taiwan Coordinator","visit.tw":"中文 · English · Korean · LINE: @elliyaclinic",
 "footer.desc":"Seoul anti-aging & lifting dermatology specialists.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
 "detail.from":"Starting From","detail.join":"Book · Join","detail.note":"Exact pricing determined after consultation.",
 "pp.title":"Our Philosophy","pp.intro":"Our clinic is dedicated to helping the true health and beauty of your skin shine on its own terms.",
@@ -801,7 +805,7 @@ zh: {
 "visit.eye":"前來拜訪","visit.title":"交通資訊",
 "visit.al":"地址","visit.addr":"首爾市瑞草區瑞草大路78街26號 4樓",
 "visit.hl":"診療時間","visit.hours":"週一至週五 10:00–19:00 / 週六 10:00–15:00",
-"visit.cl":"聯絡方式","visit.tl":"台灣協調員","visit.tw":"中文 · English · 韓文 · LINE: @elijahclinic",
+"visit.cl":"聯絡方式","visit.tl":"台灣協調員","visit.tw":"中文 · English · 韓文 · LINE: @elliyaclinic",
 "footer.desc":"首爾抗老化 & 提升專科皮膚科。","footer.tx":"療程","footer.clinic":"診所","footer.sns":"聯絡我們",
 "detail.from":"起始費用","detail.join":"立即預約","detail.note":"確切費用於諮詢後確定。",
 "pp.title":"伊萊賈診所的理念","pp.intro":"我們的使命是幫助您的肌膚本身的健康與美麗自然綻放。",
@@ -851,7 +855,7 @@ ar: {
 "visit.eye":"زيارتنا","visit.title":"معلومات الزيارة",
 "visit.al":"العنوان","visit.addr":"26، شارع سيوتشو-دايرو 78، سيوتشو-غو، سيول، الطابق 4",
 "visit.hl":"ساعات العمل","visit.hours":"الإثنين–الجمعة 10:00–19:00 / السبت 10:00–15:00",
-"visit.cl":"التواصل","visit.tl":"منسق دولي","visit.tw":"中文 · English · عربي · LINE: @elijahclinic",
+"visit.cl":"التواصل","visit.tl":"منسق دولي","visit.tw":"中文 · English · عربي · LINE: @elliyaclinic",
 "footer.desc":"متخصصون في مكافحة الشيخوخة والرفع بسيول.","footer.tx":"العلاجات","footer.clinic":"العيادة","footer.sns":"تواصل معنا",
 "detail.from":"ابتداءً من","detail.join":"احجز الآن","detail.note":"يتحدد السعر الدقيق بعد الاستشارة.",
 "pp.title":"فلسفة عيادة إيليا","pp.intro":"مهمتنا مساعدة صحة بشرتك وجمالها على الإشراق من تلقاء نفسها.",

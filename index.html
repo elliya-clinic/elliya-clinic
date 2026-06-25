@@ -65,17 +65,17 @@ nav.nav-scrolled{
 .nav-logo span{color:var(--gold-light);transition:color .4s;}
 .nav-scrolled .nav-logo span{color:var(--gold-light);}
 .nav-links{display:flex;gap:2rem;list-style:none;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:600;}
-.nav-links a{color:rgba(255,255,255,.85);transition:color .2s,.4s;}
+.nav-links a{color:var(--ink-mid);transition:color .4s;}
 .nav-scrolled .nav-links a{color:rgba(255,255,255,.85);}
-.nav-links a:hover{color:var(--white);}
+.nav-links a:hover{color:var(--gold-dark);}
 .nav-scrolled .nav-links a:hover{color:var(--gold-light);}
-.nav-book{padding:.5rem 1.5rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.5);color:var(--white)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .4s,border .4s,color .4s;}
+.nav-book{padding:.5rem 1.5rem;background:var(--ink);border:1px solid var(--ink);color:var(--white)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .4s,border .4s,color .4s;}
 .nav-scrolled .nav-book{background:var(--gold);border-color:var(--gold);color:var(--ink)!important;}
-.nav-book:hover{background:rgba(255,255,255,.25);}
+.nav-book:hover{background:var(--gold-dark);border-color:var(--gold-dark);}
 .nav-scrolled .nav-book:hover{background:var(--gold-dark);color:var(--white)!important;}
 .hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;}
 .nav-scrolled .hamburger{color:var(--white);}
-.pt{padding-top:70px;}
+.pt{padding-top:70px;background:#FDFCFA;min-height:100vh;}
 
 /* HERO */
 .hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
@@ -189,6 +189,10 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 
 
 
+/* NAV LOGO SVG */
+.nav-logo-svg{color:var(--ink);transition:color .4s;}
+.nav-scrolled .nav-logo-svg{color:var(--white);}
+
 /* ── SCROLL FADE-IN ── */
 .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
 .fade-in.visible{opacity:1;transform:translateY(0);}
@@ -217,7 +221,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 .btn-bk:hover{color:var(--ink);}
 
 /* BOOKING */
-.bk-page{min-height:100vh;background:var(--cream-dark);}
+.bk-page{min-height:100vh;background:#FDFCFA;}
 .bk-inner{max-width:1000px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:230px 1fr;gap:3rem;}
 .bk-steps{position:sticky;top:110px;height:fit-content;}
 .bk-step-hd{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:1.4rem;}
@@ -368,7 +372,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v25</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v26</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -377,7 +381,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
     <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('visit').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.visit">오시는 길</a></li>
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:0.5px solid rgba(255,255,255,.2);" id="nav-lang-group">
+  <div style="display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:0.5px solid var(--border);" id="nav-lang-group">
     <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')">🇰🇷 KO</button>
     <button class="lang-btn" id="lb-en" onclick="setLang('en')">🇺🇸 EN</button>
     <button class="lang-btn" id="lb-zh" onclick="setLang('zh')">🇹🇼 繁</button>
@@ -583,7 +587,9 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
       <li><a href="#" onclick="showPage('booking');initBooking()" data-t="nav.book">예약하기</a></li>
     </ul></div>
     <div class="ft-col"><h4 data-t="footer.sns">Connect</h4><ul>
-      <li><a href="#">Instagram</a></li><li><a href="#">LINE</a></li><li><a href="#">YouTube</a></li>
+      <li><a href="https://www.instagram.com/dr_elliya" target="_blank" rel="noopener">Instagram</a></li>
+      <li><a href="https://line.me/ti/p/~elliyaclinic" target="_blank" rel="noopener">LINE</a></li>
+      <li><a href="https://www.youtube.com" target="_blank" rel="noopener">YouTube</a></li>
     </ul></div>
   </footer>
   <div class="ft-btm">&#169; 2025 Elliya Clinic · 엘리야의원. All Rights Reserved.</div>
@@ -607,7 +613,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 </div>
 
 <!-- PHILOSOPHY PAGE -->
-<div id="page-philo-page" class="page pt" style="background:var(--white);">
+<div id="page-philo-page" class="page pt">
   <button class="btn-bk" onclick="showPage('home')" data-t="common.back-home">&#8592; 홈으로</button>
   <div class="pp-body">
     <p class="s-eye">Our Philosophy</p>

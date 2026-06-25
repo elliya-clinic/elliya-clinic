@@ -20,9 +20,8 @@ a{color:inherit;text-decoration:none;}
 
 /* NAV */
 nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 3rem;height:64px;background:rgba(253,250,244,0.96);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border);}
-.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.6rem;}
+.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);}
 .nav-logo span{color:var(--gold);}
-.nav-logo img{height:36px;width:auto;display:block;}
 .nav-links{display:flex;gap:2rem;list-style:none;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;}
 .nav-links a{color:var(--ink-mid);transition:color .2s;}
 .nav-links a:hover{color:var(--gold-dark);}
@@ -33,7 +32,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 
 /* HERO */
 .hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:linear-gradient(135deg,#1A1714 0%,#2D2520 50%,#1A1714 100%);}
-.hero-bg{position:absolute;inset:0;background:url("images/hero.jpg") center/cover no-repeat;opacity:.35;}
+.hero-bg{position:absolute;inset:0;background:url("https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1920&q=80&fit=crop") center/cover no-repeat;opacity:.45;}
 .hero-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(26,23,20,.75) 0%,rgba(26,23,20,.2) 100%);}
 .hero-ct{position:relative;z-index:2;max-width:600px;}
 .hero-eye{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
@@ -55,7 +54,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 
 /* ABOUT */
 .about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;}
-.about-img{background:url("images/about.jpg") center/cover no-repeat,#2D2520;min-height:260px;}
+.about-img{background:url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=900&q=80&fit=crop") center/cover no-repeat,#2D2520;min-height:260px;}
 .about-txt{padding:5rem 5vw 5rem 4vw;display:flex;flex-direction:column;justify-content:center;background:var(--white);}
 
 /* TREATMENTS */
@@ -84,7 +83,7 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .philo-b{font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.8;}
 
 /* VISIT */
-.visit-sec{display:grid;grid-template-columns:3fr 1fr;background:var(--cream-dark);}
+.visit-sec{display:grid;grid-template-columns:1fr 1fr;background:var(--cream-dark);}
 .visit-map{min-height:420px;overflow:hidden;line-height:0;}
 .visit-info{padding:5rem 4vw;display:flex;flex-direction:column;justify-content:center;}
 .vi-item{margin-bottom:1.5rem;}
@@ -136,7 +135,7 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
 .page{display:none;}.page.active{display:block;}
 
 /* DETAIL */
-.dt-hero{height:50vh;min-height:340px;display:flex;align-items:flex-end;padding:3rem 5vw;background:#2D2520 url("images/detail-hero.jpg") center/cover no-repeat;position:relative;}
+.dt-hero{height:50vh;min-height:340px;display:flex;align-items:flex-end;padding:3rem 5vw;background:#2D2520 url("https://images.unsplash.com/photo-1588776814546-1ffedccd64a7?w=1600&q=80&fit=crop") center/cover no-repeat;position:relative;}
 .dt-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,23,20,.85) 0%,rgba(26,23,20,.1) 60%);}
 .dt-hct{position:relative;z-index:2;}
 .dt-hct h1{font-size:clamp(1.8rem,4vw,3rem);color:var(--white);font-weight:700;margin-bottom:.5rem;}
@@ -297,15 +296,12 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
-    <img src="images/elliya-logo.svg" alt="Elliya Clinic" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <span style="display:flex;align-items:center;gap:.3rem;">Elliya <span>Clinic</span></span>
-  </a>
+  <div class="nav-logo">Elliya <span>Clinic</span></div>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
     <li><a href="#" onclick="showPage('philo-page')" data-t="nav.philo">철학</a></li>
-    <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('treatments').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.tx">시술</a></li>
-    <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('visit').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.visit">오시는 길</a></li>
+    <li><a href="#treatments" data-t="nav.tx">시술</a></li>
+    <li><a href="#visit" data-t="nav.visit">오시는 길</a></li>
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
   </ul>
   <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
@@ -413,21 +409,21 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
     <div class="tx-grid">
       <div class="tx-card" onclick="showDetail('hifu')">
         <div class="tx-num">01</div>
-        <div class="tx-img" style="background-image:url('images/treatment1.jpg')"></div>
+        <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80&fit=crop')"></div>
         <div class="tx-name" data-t="tx1.name">HIFU Lifting · 울쎄라</div>
         <p class="tx-desc" data-t="tx1.desc">집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>
       </div>
       <div class="tx-card" onclick="showDetail('thread')">
         <div class="tx-num">02</div>
-        <div class="tx-img" style="background-image:url('images/treatment2.jpg')"></div>
+        <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=600&q=80&fit=crop')"></div>
         <div class="tx-name" data-t="tx2.name">Thread Lifting · 실리프팅</div>
         <p class="tx-desc" data-t="tx2.desc">미세 실을 이용한 즉각적 리프팅. 콜라겐 재생으로 탄력이 지속 개선됩니다.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>
       </div>
       <div class="tx-card" onclick="showDetail('filler')">
         <div class="tx-num">03</div>
-        <div class="tx-img" style="background-image:url('images/treatment3.jpg')"></div>
+        <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&q=80&fit=crop')"></div>
         <div class="tx-name" data-t="tx3.name">Filler &amp; Botox</div>
         <p class="tx-desc" data-t="tx3.desc">볼륨 소실과 주름을 동시에 개선하는 자연스러운 복합 시술.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>

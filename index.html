@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>엘리야의원 — Elliya Clinic</title>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>emailjs.init("ihFk7nt9x6g6ypCy3");</script>
 <style>
 :root{--cream:#FDFAF4;--cream-dark:#F5F0E8;--gold:#C9A96E;--gold-light:#E8D5B0;--gold-dark:#9B7A45;--ink:#1A1714;--ink-mid:#4A4440;--ink-light:#7A7470;--white:#FFFFFF;--border:rgba(201,169,110,0.25);--border-mid:rgba(201,169,110,0.45);}
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
@@ -1187,6 +1186,9 @@ function toggleMenu() {
 
 // Init
 buildCList(""); renderCal();
+window.addEventListener("load", function() {
+  emailjs.init("ihFk7nt9x6g6ypCy3");
+});
 </script>
 </body>
 </html>

@@ -21,7 +21,7 @@
   --border-mid:rgba(184,150,90,0.3);
 }
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
-body{font-family:'Georgia','Noto Serif KR',serif;background:#FDFCFA;color:var(--ink);line-height:1.7;}
+body{font-family:'Noto Serif KR','Georgia',serif;background:#FDFCFA;color:var(--ink);line-height:1.85;font-size:17px;}
 a{color:inherit;text-decoration:none;}
 
 /* LANG BAR */
@@ -33,13 +33,13 @@ a{color:inherit;text-decoration:none;}
   cursor:pointer;font-family:'Arial',sans-serif;
   transition:color .2s;display:flex;align-items:center;gap:.3rem;white-space:nowrap;
 }
-.nav-scrolled .lang-btn{color:var(--ink-light);border-right-color:var(--border);}
+.nav-scrolled .lang-btn{color:rgba(255,255,255,.6);border-right-color:rgba(255,255,255,.15);}
 .lang-btn:first-child{border-left:0.5px solid rgba(255,255,255,.2);}
-.nav-scrolled .lang-btn:first-child{border-left-color:var(--border);}
+.nav-scrolled .lang-btn:first-child{border-left-color:rgba(255,255,255,.15);}
 .lang-btn:hover{color:var(--white);}
-.nav-scrolled .lang-btn:hover{color:var(--ink);background:var(--cream-mid);}
+.nav-scrolled .lang-btn:hover{color:var(--white);background:rgba(255,255,255,.1);}
 .lang-btn.active{color:var(--gold-light);font-weight:700;}
-.nav-scrolled .lang-btn.active{color:var(--gold-dark);}
+.nav-scrolled .lang-btn.active{color:var(--gold-light);}
 
 /* NAV */
 nav{
@@ -52,26 +52,26 @@ nav{
   transition:background .4s ease, box-shadow .4s ease, border-color .4s ease;
 }
 nav.nav-scrolled{
-  background:rgba(255,255,255,0.97);
-  backdrop-filter:blur(16px);
-  border-bottom:0.5px solid var(--border);
-  box-shadow:0 1px 20px rgba(0,0,0,0.06);
+  background:rgba(20,18,16,0.88);
+  backdrop-filter:blur(20px);
+  border-bottom:0.5px solid rgba(255,255,255,0.08);
+  box-shadow:0 4px 24px rgba(0,0,0,0.18);
 }
-.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--white);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .4s;}
-.nav-scrolled .nav-logo{color:var(--ink);}
+.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--white);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .4s;font-family:'Playfair Display',Georgia,serif;}
+.nav-scrolled .nav-logo{color:var(--white);}
 .nav-logo span{color:var(--gold-light);transition:color .4s;}
-.nav-scrolled .nav-logo span{color:var(--gold);}
-.nav-links{display:flex;gap:2rem;list-style:none;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;}
+.nav-scrolled .nav-logo span{color:var(--gold-light);}
+.nav-links{display:flex;gap:2rem;list-style:none;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;font-family:'Playfair Display',Georgia,serif;font-weight:700;}
 .nav-links a{color:rgba(255,255,255,.85);transition:color .2s,.4s;}
-.nav-scrolled .nav-links a{color:var(--ink-mid);}
+.nav-scrolled .nav-links a{color:rgba(255,255,255,.85);}
 .nav-links a:hover{color:var(--white);}
-.nav-scrolled .nav-links a:hover{color:var(--gold-dark);}
+.nav-scrolled .nav-links a:hover{color:var(--gold-light);}
 .nav-book{padding:.5rem 1.5rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.5);color:var(--white)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .4s,border .4s,color .4s;}
-.nav-scrolled .nav-book{background:var(--ink);border-color:var(--ink);color:var(--white)!important;}
+.nav-scrolled .nav-book{background:var(--gold);border-color:var(--gold);color:var(--ink)!important;}
 .nav-book:hover{background:rgba(255,255,255,.25);}
-.nav-scrolled .nav-book:hover{background:var(--gold-dark);}
+.nav-scrolled .nav-book:hover{background:var(--gold-dark);color:var(--white)!important;}
 .hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;}
-.nav-scrolled .hamburger{color:var(--ink);}
+.nav-scrolled .hamburger{color:var(--white);}
 .pt{padding-top:70px;}
 
 /* HERO */
@@ -90,9 +90,9 @@ nav.nav-scrolled{
 .hero-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(28,25,22,0.45) 0%,rgba(28,25,22,0.1) 65%,transparent 100%);}
 .hero-ct{position:relative;z-index:2;max-width:580px;}
 .hero-eye{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-family:'Arial',sans-serif;}
-.hero-title{font-size:clamp(2.4rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:1.5rem;}
+.hero-title{font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;color:var(--white);line-height:1.12;margin-bottom:1.5rem;font-family:'Playfair Display',serif;}
 .hero-title em{font-style:normal;color:var(--gold);}
-.hero-desc{font-size:1rem;color:rgba(255,255,255,.78);margin-bottom:2.4rem;max-width:460px;line-height:1.8;}
+.hero-desc{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2.4rem;max-width:500px;line-height:1.85;}
 .hero-act{display:flex;gap:1rem;flex-wrap:wrap;}
 .btn-p{padding:.85rem 2.2rem;background:var(--gold);color:var(--ink);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s;font-weight:700;}
 .btn-p:hover{background:var(--gold-dark);color:var(--white);transform:translateY(-1px);}
@@ -101,8 +101,8 @@ nav.nav-scrolled{
 
 /* SECTIONS */
 .s-eye{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:1rem;font-family:'Arial',sans-serif;}
-.s-title{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:700;line-height:1.25;margin-bottom:1.3rem;color:var(--ink);}
-.s-body{font-size:.95rem;color:var(--ink-mid);line-height:1.85;margin-bottom:2rem;}
+.s-title{font-size:clamp(1.6rem,3vw,2.3rem);font-weight:700;line-height:1.2;margin-bottom:1.3rem;color:var(--ink);font-family:'Playfair Display','Noto Serif KR',serif;}
+.s-body{font-size:1.05rem;color:var(--ink-mid);line-height:1.9;margin-bottom:2rem;}
 .btn-t{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;cursor:pointer;background:none;border:none;transition:gap .2s;}
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
@@ -123,7 +123,7 @@ nav.nav-scrolled{
 .tx-num{display:none;}
 .tx-img{width:100%;height:200px;border-radius:12px;margin-bottom:1.2rem;background:#2D2520 center/cover;}
 .tx-name{font-size:1.05rem;font-weight:700;margin-bottom:.6rem;color:var(--ink);}
-.tx-desc{font-size:.86rem;color:var(--ink-light);line-height:1.75;margin-bottom:1.4rem;}
+.tx-desc{font-size:.95rem;color:var(--ink-mid);line-height:1.85;margin-bottom:1.4rem;}
 .card-arr{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;background:none;border:none;cursor:pointer;transition:gap .2s;}
 .card-arr:hover{gap:.75rem;}
 
@@ -134,7 +134,7 @@ nav.nav-scrolled{
 .philo-card{padding:2rem;border:.5px solid var(--border-mid);border-radius:16px;background:var(--white);transition:background .3s,transform .3s;box-shadow:0 2px 12px rgba(0,0,0,0.04);}
 .philo-n{font-size:2.5rem;font-weight:700;color:var(--gold-light);font-family:'Arial',sans-serif;line-height:1;margin-bottom:.8rem;}
 .philo-t{font-size:.95rem;font-weight:700;color:var(--gold-dark);margin-bottom:.6rem;}
-.philo-b{font-size:.86rem;color:var(--ink-mid);line-height:1.8;}
+.philo-b{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* VISIT */
 .visit-sec{display:grid;grid-template-columns:3fr 1fr;background:var(--cream-dark);}
@@ -358,7 +358,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
     <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v22</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v23</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

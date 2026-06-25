@@ -66,21 +66,21 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;}
-.about-img{background:url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=900&q=80&fit=crop") center/cover no-repeat,#2D2520;min-height:260px;}
-.about-txt{padding:5rem 5vw 5rem 4vw;display:flex;flex-direction:column;justify-content:center;background:var(--white);}
+.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--cream-dark);}
+.about-img{background:url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=900&q=80&fit=crop") center/cover no-repeat,#2D2520;min-height:260px;border-radius:0 20px 20px 0;}
+.about-txt{padding:5rem 5vw 5rem 4vw;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);}
 
 /* TREATMENTS */
 .tx-sec{padding:5rem 5vw;background:var(--cream-dark);}
 .tx-hd{text-align:center;margin-bottom:3rem;}
 .tx-hd .s-title{font-size:clamp(1.7rem,3.5vw,2.4rem);}
-.tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:.5px solid var(--border-mid);}
-.tx-card{padding:2.5rem 2rem;background:var(--white);border-right:.5px solid var(--border-mid);transition:background .25s,box-shadow .25s;cursor:pointer;position:relative;overflow:hidden;}
-.tx-card:last-child{border-right:none;}
+.tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;padding:0 0 2rem;}
+.tx-card{padding:2rem 1.8rem;background:var(--white);border-radius:16px;transition:transform .3s,box-shadow .3s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.06);}
+
 .tx-card::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
-.tx-card:hover{background:var(--cream-dark);box-shadow:0 4px 24px rgba(0,0,0,0.07);}.tx-card:hover::before{transform:scaleX(1);}
-.tx-num{font-size:2.4rem;font-weight:700;color:var(--gold-light);font-family:'Arial',sans-serif;margin-bottom:.8rem;line-height:1;}
-.tx-img{width:100%;height:190px;border-radius:2px;margin-bottom:1.2rem;background:#2D2520 center/cover;}
+.tx-card:hover{transform:translateY(-6px);box-shadow:0 12px 36px rgba(0,0,0,0.12);}.tx-card:hover::before{transform:scaleX(1);}
+.tx-num{display:none;}
+.tx-img{width:100%;height:200px;border-radius:12px;margin-bottom:1.2rem;background:#2D2520 center/cover;}
 .tx-name{font-size:1.05rem;font-weight:700;margin-bottom:.6rem;color:var(--ink);}
 .tx-desc{font-size:.86rem;color:var(--ink-light);line-height:1.75;margin-bottom:1.4rem;}
 .card-arr{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;background:none;border:none;cursor:pointer;transition:gap .2s;}
@@ -89,8 +89,8 @@ nav{position:fixed;top:34px;left:0;right:0;z-index:100;display:flex;align-items:
 /* PHILOSOPHY */
 .philo-sec{padding:5.5rem 5vw;background:#1C1916;color:var(--white);}
 .philo-sec .s-eye{color:var(--gold);}.philo-sec .s-title{color:var(--white);}
-.philo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;}
-.philo-card{padding:2rem;border:.5px solid rgba(201,169,110,.2);border-radius:2px;}
+.philo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.philo-card{padding:2rem;border:.5px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.04);transition:background .3s,transform .3s;}
 .philo-n{font-size:2.5rem;font-weight:700;color:rgba(201,169,110,.25);font-family:'Arial',sans-serif;line-height:1;margin-bottom:.8rem;}
 .philo-t{font-size:.95rem;font-weight:700;color:var(--gold);margin-bottom:.6rem;}
 .philo-b{font-size:.86rem;color:rgba(255,255,255,.6);line-height:1.8;}
@@ -143,6 +143,11 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
 .sns-icon-btn span{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;}
 .sns-follow-btn{display:inline-block;padding:.9rem 2.5rem;border:1px solid rgba(201,169,110,.5);border-radius:2px;color:var(--gold);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:'Noto Serif KR','Georgia',serif;font-weight:700;transition:background .2s,border-color .2s,color .2s;text-decoration:none;}
 .sns-follow-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--ink);}
+
+
+/* ── SCROLL FADE-IN ── */
+.fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease;}
+.fade-in.visible{opacity:1;transform:translateY(0);}
 
 /* PAGES */
 .page{display:none;}.page.active{display:block;}
@@ -312,7 +317,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
     <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v11</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v12</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -408,7 +413,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
     </div>
   </section>
 
-  <section class="about-strip">
+  <section class="about-strip fade-in">
     <div class="about-img"></div>
     <div class="about-txt">
       <p class="s-eye" data-t="about.eye">About Elliya Clinic</p>
@@ -418,27 +423,27 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
     </div>
   </section>
 
-  <section class="tx-sec" id="treatments">
+  <section class="tx-sec fade-in" id="treatments">
     <div class="tx-hd">
       <p class="s-eye" data-t="tx.eye">Signature Treatments</p>
       <h2 class="s-title" data-t="tx.title">당신의 변화가 시작됩니다.</h2>
     </div>
     <div class="tx-grid">
-      <div class="tx-card" onclick="showDetail('hifu')">
+      <div class="tx-card fade-in" onclick="showDetail('hifu')" style="transition-delay:.1s">
         <div class="tx-num">01</div>
         <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80&fit=crop')"></div>
         <div class="tx-name" data-t="tx1.name">HIFU Lifting · 울쎄라</div>
         <p class="tx-desc" data-t="tx1.desc">집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>
       </div>
-      <div class="tx-card" onclick="showDetail('thread')">
+      <div class="tx-card fade-in" onclick="showDetail('thread')" style="transition-delay:.2s">
         <div class="tx-num">02</div>
         <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=600&q=80&fit=crop')"></div>
         <div class="tx-name" data-t="tx2.name">Thread Lifting · 실리프팅</div>
         <p class="tx-desc" data-t="tx2.desc">미세 실을 이용한 즉각적 리프팅. 콜라겐 재생으로 탄력이 지속 개선됩니다.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>
       </div>
-      <div class="tx-card" onclick="showDetail('filler')">
+      <div class="tx-card fade-in" onclick="showDetail('filler')" style="transition-delay:.3s">
         <div class="tx-num">03</div>
         <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&q=80&fit=crop')"></div>
         <div class="tx-name" data-t="tx3.name">Filler &amp; Botox</div>
@@ -448,7 +453,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
     </div>
   </section>
 
-  <section class="philo-sec">
+  <section class="philo-sec fade-in">
     <p class="s-eye" data-t="philo.eye">Our Belief</p>
     <h2 class="s-title" data-t="philo.title">진정한 아름다움은 자연스러움에 있습니다.</h2>
     <div class="philo-grid">
@@ -458,7 +463,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
     </div>
   </section>
 
-  <section class="visit-sec" id="visit">
+  <section class="visit-sec fade-in" id="visit">
     <div class="visit-map">
   <iframe
     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.3!2d127.0195!3d37.4939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1506a2ea4ab%3A0x7d1d82b2da50a70e!2z7ISc7Jq47IucIOyEnOy5mOq1rCDshLjstIzrj5nroZwgNzjquLggMjY!5e0!3m2!1sko!2skr!4v1700000000001!5m2!1sko!2skr"
@@ -477,7 +482,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   </section>
 
   <!-- SNS FOLLOW SECTION -->
-  <section class="sns-sec">
+  <section class="sns-sec fade-in">
     <p class="s-eye" style="color:var(--gold-light);letter-spacing:.25em;">Follow Us</p>
     <h2 class="sns-title">Follow us on Instagram</h2>
     <p class="sns-sub">@dr_elliya &#8212; 리얼 시술 결과, 의료 정보, 일상을 공유합니다</p>
@@ -1314,6 +1319,18 @@ function toggleMenu() {
 
 // Init
 buildCList(""); renderCal();
+
+// ── SCROLL FADE-IN OBSERVER ──
+var fadeEls = document.querySelectorAll(".fade-in");
+var observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+    }
+  });
+}, { threshold: 0.12 });
+fadeEls.forEach(function(el) { observer.observe(el); });
+
 </script>
 </body>
 </html>

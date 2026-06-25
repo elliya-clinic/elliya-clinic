@@ -102,8 +102,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
 .elli{display:inline-block;position:relative;user-select:none;}
 .elli svg{display:block;}
 .elli-float{animation:elli-float 3s ease-in-out infinite;}
-@keyframes elli-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-.elli-hero{position:absolute;right:6vw;bottom:8%;z-index:3;opacity:.92;}
+@keyframes elli-float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.elli-hero{position:absolute;right:8vw;bottom:10%;z-index:3;}
 .elli-done{display:flex;justify-content:center;margin-bottom:1.5rem;}
 .elli-footer{display:inline-block;vertical-align:middle;margin-left:.5rem;}
 .elli-bubble{
@@ -377,41 +377,30 @@ footer{background:var(--ink);color:rgba(255,255,255,.55);padding:3rem 5vw;displa
         <button class="btn-o" onclick="showPage('philo-page')" data-t="hero.learn">더 알아보기</button>
       </div>
     </div>
-
-  <div class="elli elli-hero elli-float" style="display:none;" id="hero-elli">
-    <div class="elli-bubble">안녕하세요! 엘리야의원입니다 👋</div>
-    <svg width="90" height="110" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- 몸통 (흰 가운) -->
-  <ellipse cx="45" cy="82" rx="28" ry="26" fill="white" stroke="#E8D5B0" stroke-width="1.5"/>
-  <!-- 가운 골드 라인 -->
-  <line x1="45" y1="60" x2="45" y2="105" stroke="#C9A96E" stroke-width="1.5"/>
-  <!-- 얼굴 -->
-  <circle cx="45" cy="38" r="24" fill="#C9A96E"/>
-  <circle cx="45" cy="38" r="22" fill="#E8D5B0"/>
-  <!-- 눈 -->
-  <ellipse cx="37" cy="35" rx="3.5" ry="4" fill="#1A1714"/>
-  <ellipse cx="53" cy="35" rx="3.5" ry="4" fill="#1A1714"/>
-  <!-- 눈 하이라이트 -->
-  <circle cx="38.5" cy="33.5" r="1.2" fill="white"/>
-  <circle cx="54.5" cy="33.5" r="1.2" fill="white"/>
-  <!-- 볼터치 -->
-  <ellipse cx="32" cy="41" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
-  <ellipse cx="58" cy="41" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
-  <!-- 미소 -->
-  <path d="M37 44 Q45 52 53 44" stroke="#9B7A45" stroke-width="2" fill="none" stroke-linecap="round"/>
-  <!-- 왼팔 (흔드는) -->
-  <path d="M17 70 Q6 55 14 44" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
-  <!-- 왼손 -->
-  <circle cx="14" cy="42" r="6" fill="#E8D5B0"/>
-  <!-- 오른팔 -->
-  <path d="M73 70 Q80 78 76 88" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
-  <!-- 다리 -->
-  <rect x="34" y="104" width="10" height="6" rx="3" fill="#C9A96E"/>
-  <rect x="46" y="104" width="10" height="6" rx="3" fill="#C9A96E"/>
-  <!-- 머리 하이라이트 -->
-  <ellipse cx="38" cy="24" rx="8" ry="5" fill="white" opacity=".3"/>
-</svg>
-  </div>
+    <!-- 마스코트 Elli -->
+    <div class="elli elli-hero elli-float">
+      <div class="elli-bubble">안녕하세요! 엘리야의원입니다 👋</div>
+      <svg width="90" height="110" viewBox="0 0 90 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="45" cy="82" rx="28" ry="26" fill="white" stroke="#E8D5B0" stroke-width="1.5"/>
+        <line x1="45" y1="60" x2="45" y2="105" stroke="#C9A96E" stroke-width="1.5"/>
+        <circle cx="45" cy="38" r="24" fill="#C9A96E"/>
+        <circle cx="45" cy="38" r="22" fill="#E8D5B0"/>
+        <ellipse cx="37" cy="35" rx="3.5" ry="4" fill="#1A1714"/>
+        <ellipse cx="53" cy="35" rx="3.5" ry="4" fill="#1A1714"/>
+        <circle cx="38.5" cy="33.5" r="1.2" fill="white"/>
+        <circle cx="54.5" cy="33.5" r="1.2" fill="white"/>
+        <ellipse cx="32" cy="41" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
+        <ellipse cx="58" cy="41" rx="5" ry="3" fill="#F5A0A0" opacity=".45"/>
+        <path d="M37 44 Q45 52 53 44" stroke="#9B7A45" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M17 70 Q6 55 14 44" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <circle cx="14" cy="42" r="6" fill="#E8D5B0"/>
+        <path d="M73 70 Q80 78 76 88" stroke="white" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <rect x="34" y="104" width="10" height="6" rx="3" fill="#C9A96E"/>
+        <rect x="46" y="104" width="10" height="6" rx="3" fill="#C9A96E"/>
+        <ellipse cx="38" cy="24" rx="8" ry="5" fill="white" opacity=".3"/>
+      </svg>
+    </div>
+  </section>
 
   <section class="about-strip">
     <div class="about-img"></div>

@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 44" fill="none">
+  <!-- 황금 라인 장식 (왼쪽) -->
+  <line x1="0" y1="22" x2="8" y2="22" stroke="#C9A96E" stroke-width="1.5"/>
+  
+  <!-- E 모양 심볼 (미니멀) -->
+  <rect x="12" y="8" width="2.5" height="28" fill="#1A1714"/>
+  <rect x="12" y="8" width="14" height="2.5" fill="#1A1714"/>
+  <rect x="12" y="20.75" width="10" height="2.5" fill="#C9A96E"/>
+  <rect x="12" y="33.5" width="14" height="2.5" fill="#1A1714"/>
+
+  <!-- Elliya 텍스트 -->
+  <text x="34" y="30" 
+    font-family="Georgia, 'Times New Roman', serif" 
+    font-size="22" 
+    font-weight="700"
+    letter-spacing="1"
+    fill="#1A1714">Elliya</text>
+
+  <!-- 구분 도트 -->
+  <circle cx="104" cy="22" r="2" fill="#C9A96E"/>
+
+  <!-- Clinic 텍스트 -->
+  <text x="112" y="30" 
+    font-family="Georgia, 'Times New Roman', serif" 
+    font-size="22"
+    font-weight="400"
+    letter-spacing="1"
+    fill="#C9A96E">Clinic</text>
+
+  <!-- 황금 라인 장식 (오른쪽) -->
+  <line x1="212" y1="22" x2="220" y2="22" stroke="#C9A96E" stroke-width="1.5"/>
+</svg>

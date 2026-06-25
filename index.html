@@ -25,39 +25,54 @@ body{font-family:'Georgia','Noto Serif KR',serif;background:#FDFCFA;color:var(--
 a{color:inherit;text-decoration:none;}
 
 /* LANG BAR */
-.lang-bar{
-  position:fixed;top:0;left:0;right:0;z-index:200;height:30px;
-  background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);
-  border-bottom:0.5px solid var(--border);
-  display:flex;align-items:center;justify-content:flex-end;padding:0 3rem;
-  transition:transform .35s ease;
+.lang-bar{display:none;}
+.lang-btn{
+  padding:0 .6rem;height:28px;background:none;border:none;
+  border-right:0.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.7);font-size:0.65rem;letter-spacing:0.06em;
+  cursor:pointer;font-family:'Arial',sans-serif;
+  transition:color .2s;display:flex;align-items:center;gap:.3rem;white-space:nowrap;
 }
-.lang-bar.hidden{transform:translateY(-100%);}
-.lang-btn{padding:0 1rem;height:30px;background:none;border:none;border-right:0.5px solid var(--border);color:var(--ink-light);font-size:0.68rem;letter-spacing:0.06em;cursor:pointer;font-family:'Arial',sans-serif;transition:color .2s,background .2s;display:flex;align-items:center;gap:.35rem;white-space:nowrap;}
-.lang-btn:first-child{border-left:0.5px solid var(--border);}
-.lang-btn:hover{color:var(--ink);background:var(--cream-dark);}
-.lang-btn.active{color:var(--gold-dark);font-weight:700;}
+.nav-scrolled .lang-btn{color:var(--ink-light);border-right-color:var(--border);}
+.lang-btn:first-child{border-left:0.5px solid rgba(255,255,255,.2);}
+.nav-scrolled .lang-btn:first-child{border-left-color:var(--border);}
+.lang-btn:hover{color:var(--white);}
+.nav-scrolled .lang-btn:hover{color:var(--ink);background:var(--cream-mid);}
+.lang-btn.active{color:var(--gold-light);font-weight:700;}
+.nav-scrolled .lang-btn.active{color:var(--gold-dark);}
 
 /* NAV */
 nav{
-  position:fixed;top:30px;left:0;right:0;z-index:100;
+  position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 3rem;height:64px;
-  background:rgba(255,255,255,0.97);backdrop-filter:blur(16px);
+  padding:0 3rem;height:70px;
+  background:transparent;
+  border-bottom:none;
+  box-shadow:none;
+  transition:background .4s ease, box-shadow .4s ease, border-color .4s ease;
+}
+nav.nav-scrolled{
+  background:rgba(255,255,255,0.97);
+  backdrop-filter:blur(16px);
   border-bottom:0.5px solid var(--border);
   box-shadow:0 1px 20px rgba(0,0,0,0.06);
-  transition:top .35s ease;
 }
-nav.nav-top{top:0;}
-.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.5rem;}
-.nav-logo span{color:var(--gold);}
+.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--white);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .4s;}
+.nav-scrolled .nav-logo{color:var(--ink);}
+.nav-logo span{color:var(--gold-light);transition:color .4s;}
+.nav-scrolled .nav-logo span{color:var(--gold);}
 .nav-links{display:flex;gap:2rem;list-style:none;font-size:0.85rem;letter-spacing:0.06em;text-transform:uppercase;}
-.nav-links a{color:var(--ink-mid);transition:color .2s;}
-.nav-links a:hover{color:var(--gold-dark);}
-.nav-book{padding:.5rem 1.5rem;background:var(--ink);color:var(--cream)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s;}
-.nav-book:hover{background:var(--gold-dark);}
-.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--ink);}
-.pt{padding-top:94px;transition:padding-top .35s ease;}
+.nav-links a{color:rgba(255,255,255,.85);transition:color .2s,.4s;}
+.nav-scrolled .nav-links a{color:var(--ink-mid);}
+.nav-links a:hover{color:var(--white);}
+.nav-scrolled .nav-links a:hover{color:var(--gold-dark);}
+.nav-book{padding:.5rem 1.5rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.5);color:var(--white)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .4s,border .4s,color .4s;}
+.nav-scrolled .nav-book{background:var(--ink);border-color:var(--ink);color:var(--white)!important;}
+.nav-book:hover{background:rgba(255,255,255,.25);}
+.nav-scrolled .nav-book:hover{background:var(--gold-dark);}
+.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;}
+.nav-scrolled .hamburger{color:var(--ink);}
+.pt{padding-top:70px;}
 
 /* HERO */
 .hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
@@ -343,7 +358,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
   <a class="nav-logo" href="#" onclick="showPage('home');return false;">
     <img src="images/elliya-logo.svg" alt="Elliya Clinic" height="32" onerror="this.style.display='none'">
     <span>Elliya <span style="color:var(--gold)">Clinic</span></span>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v21</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v22</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -352,6 +367,12 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3rem 5vw;display:g
     <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('visit').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.visit">오시는 길</a></li>
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
   </ul>
+  <div style="display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:0.5px solid rgba(255,255,255,.2);" id="nav-lang-group">
+    <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')">🇰🇷 KO</button>
+    <button class="lang-btn" id="lb-en" onclick="setLang('en')">🇺🇸 EN</button>
+    <button class="lang-btn" id="lb-zh" onclick="setLang('zh')">🇹🇼 繁</button>
+    <button class="lang-btn" id="lb-ar" onclick="setLang('ar')">🇸🇦 AR</button>
+  </div>
   <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
 </nav>
 
@@ -1344,20 +1365,21 @@ function toggleMenu() {
 // Init
 buildCList(""); renderCal();
 
-// ── LANG BAR HIDE ON SCROLL ──
-var lastScroll = 0;
-var langBar = document.querySelector(".lang-bar");
+// ── NAV SCROLL EFFECT ──
 var navEl = document.querySelector("nav");
+var navLangGroup = document.getElementById("nav-lang-group");
 window.addEventListener("scroll", function() {
-  var current = window.scrollY;
-  if (current > 60) {
-    langBar.classList.add("hidden");
-    navEl.classList.add("nav-top");
+  if (window.scrollY > 50) {
+    navEl.classList.add("nav-scrolled");
+    if(navLangGroup){
+      navLangGroup.style.borderLeftColor = "var(--border)";
+    }
   } else {
-    langBar.classList.remove("hidden");
-    navEl.classList.remove("nav-top");
+    navEl.classList.remove("nav-scrolled");
+    if(navLangGroup){
+      navLangGroup.style.borderLeftColor = "rgba(255,255,255,.2)";
+    }
   }
-  lastScroll = current;
 }, { passive: true });
 
 

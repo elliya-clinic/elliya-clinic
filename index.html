@@ -116,19 +116,34 @@ nav.nav-scrolled{
 
 /* TREATMENTS */
 .tx-sec{padding:5rem 5vw;background:var(--cream-dark);}
-.tx-hd{text-align:center;margin-bottom:3rem;}
+.tx-hd{text-align:center;margin-bottom:2.5rem;}
 .tx-hd .s-title{font-size:clamp(1.7rem,3.5vw,2.4rem);}
-.tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;padding:0 0 2rem;}
-.tx-card{padding:2rem 1.8rem;background:var(--cream-dark);border-radius:16px;transition:transform .3s,box-shadow .3s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.04);border:1px solid rgba(184,150,90,0.15);}
+.tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:0 0 2rem;}
+.tx-card{padding:0;background:var(--white);border-radius:16px;transition:transform .3s,box-shadow .3s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.07);border:none;}
 
 .tx-card::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
-.tx-card:hover{transform:translateY(-6px);background:var(--cream-mid);box-shadow:0 12px 32px rgba(0,0,0,0.1);}.tx-card:hover::before{transform:scaleX(1);}
+.tx-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.12);}.tx-card:hover::before{transform:scaleX(1);}
 .tx-num{display:none;}
-.tx-img{width:100%;height:200px;border-radius:12px;margin-bottom:1.2rem;background:#2D2520 center/cover;}
-.tx-name{font-size:1.05rem;font-weight:700;margin-bottom:.6rem;color:var(--ink);}
-.tx-desc{font-size:.95rem;color:var(--ink-mid);line-height:1.85;margin-bottom:1.4rem;}
-.card-arr{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);font-family:'Arial',sans-serif;background:none;border:none;cursor:pointer;transition:gap .2s;}
-.card-arr:hover{gap:.75rem;}
+.tx-img{width:100%;height:260px;border-radius:16px 16px 0 0;margin-bottom:0;background:#E8E4DF center/cover;}
+.tx-name{font-size:1.05rem;font-weight:700;margin-bottom:.5rem;color:var(--gold-dark);font-family:"Playfair Display",serif;padding:1.2rem 1.4rem 0;}
+.tx-desc{font-size:.9rem;color:var(--ink);font-weight:600;line-height:1.75;margin-bottom:1rem;padding:0 1.4rem;}
+.card-arr{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.85rem;font-weight:700;
+  color:var(--ink);font-family:'Noto Serif KR',serif;
+  background:none;border:none;cursor:pointer;
+  transition:gap .2s,color .2s;
+  padding:0 1.4rem 1.4rem;
+}
+.card-arr:hover{gap:.8rem;color:var(--gold-dark);}
+.card-arr::after{
+  content:"→";
+  display:inline-flex;align-items:center;justify-content:center;
+  width:24px;height:24px;border-radius:50%;
+  background:var(--ink);color:var(--white);
+  font-size:.75rem;transition:background .2s;
+}
+.card-arr:hover::after{background:var(--gold-dark);}
 
 /* PHILOSOPHY */
 .philo-sec{padding:5rem 5vw;background:var(--cream-dark);color:var(--ink);}
@@ -372,7 +387,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v27</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v28</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -493,21 +508,21 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <div class="tx-grid">
       <div class="tx-card fade-in" onclick="showDetail('hifu')" style="transition-delay:.1s">
         <div class="tx-num">01</div>
-        <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80&fit=crop')"></div>
+        <div class="tx-img" style="background-image:url('images/treatment1.jpg')"></div>
         <div class="tx-name" data-t="tx1.name">HIFU Lifting · 울쎄라</div>
         <p class="tx-desc" data-t="tx1.desc">집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>
       </div>
       <div class="tx-card fade-in" onclick="showDetail('thread')" style="transition-delay:.2s">
         <div class="tx-num">02</div>
-        <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=600&q=80&fit=crop')"></div>
+        <div class="tx-img" style="background-image:url('images/treatment2.jpg')"></div>
         <div class="tx-name" data-t="tx2.name">Thread Lifting · 실리프팅</div>
         <p class="tx-desc" data-t="tx2.desc">미세 실을 이용한 즉각적 리프팅. 콜라겐 재생으로 탄력이 지속 개선됩니다.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>
       </div>
       <div class="tx-card fade-in" onclick="showDetail('filler')" style="transition-delay:.3s">
         <div class="tx-num">03</div>
-        <div class="tx-img" style="background-image:url('https://images.unsplash.com/photo-1559599101-f09722fb4948?w=600&q=80&fit=crop')"></div>
+        <div class="tx-img" style="background-image:url('images/treatment3.jpg')"></div>
         <div class="tx-name" data-t="tx3.name">Filler &amp; Botox</div>
         <p class="tx-desc" data-t="tx3.desc">볼륨 소실과 주름을 동시에 개선하는 자연스러운 복합 시술.</p>
         <button class="card-arr" data-t="common.detail">자세히 보기</button>

@@ -109,12 +109,12 @@ nav.nav-scrolled{
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--cream-dark);gap:0;}
+.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--cream-dark);gap:0;margin:4rem 0;border-radius:20px;overflow:hidden;}
 .about-img{background:url("images/elliya_about.jpeg") center/cover no-repeat,#2D2520;min-height:260px;border-radius:0 24px 24px 0;margin:2.5rem 0 2.5rem 2.5rem;}
 .about-txt{padding:4rem 6vw 4rem 4rem;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);}
 
 /* TREATMENTS */
-.tx-sec{padding:5rem 5vw;background:var(--cream-dark);}
+.tx-sec{padding:5rem 5vw;background:var(--cream-dark);margin:2rem 0;}
 .tx-hd{text-align:center;margin-bottom:2.5rem;}
 .tx-hd .s-title{font-size:clamp(1.7rem,3.5vw,2.4rem);}
 .tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:0 0 2rem;}
@@ -145,7 +145,7 @@ nav.nav-scrolled{
 .card-arr:hover::after{background:var(--gold-dark);}
 
 /* PHILOSOPHY */
-.philo-sec{padding:5rem 5vw;background:var(--cream-dark);color:var(--ink);}
+.philo-sec{padding:5rem 5vw;background:var(--cream-dark);color:var(--ink);margin:4rem 0;border-radius:20px;}
 .philo-sec .s-eye{color:var(--gold-dark);}.philo-sec .s-title{color:var(--ink);}
 .philo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
 .philo-card{padding:2rem;border:.5px solid var(--border-mid);border-radius:16px;background:var(--white);transition:background .3s,transform .3s;box-shadow:0 2px 12px rgba(0,0,0,0.04);}
@@ -154,12 +154,29 @@ nav.nav-scrolled{
 .philo-b{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* VISIT */
-.visit-sec{display:grid;grid-template-columns:3fr 1fr;background:var(--cream-dark);}
-.visit-map{min-height:420px;overflow:hidden;line-height:0;}
-.visit-info{padding:3rem 2.5rem;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);color:var(--ink);}
-.vi-item{margin-bottom:1.5rem;}
-.vi-lbl{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.3rem;}
-.vi-val{font-size:.95rem;color:var(--ink);}
+.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:4rem 5vw;gap:2.5rem;}
+.visit-map{
+  width:100%;max-width:960px;
+  height:460px;
+  overflow:hidden;
+  border-radius:20px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.1);
+  line-height:0;
+}
+.visit-info{
+  width:100%;max-width:960px;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+  text-align:center;
+}
+.vi-item{
+  padding:1.5rem;
+  background:var(--white);
+  border-radius:12px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.05);
+}
+.vi-lbl{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-dark);font-family:'Cormorant Garamond',serif;font-weight:600;margin-bottom:.5rem;}
+.vi-val{font-size:.88rem;color:var(--ink);line-height:1.6;font-weight:600;}
 
 /* FOOTER */
 footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;font-family:'Noto Serif KR','Georgia',serif;font-size:.9rem;}
@@ -191,7 +208,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .elli:hover .elli-bubble{opacity:1;}
 
 /* ── SNS SECTION ── */
-.sns-sec{background:#1C1916;color:var(--white);padding:2rem 5vw 1.5rem;text-align:center;}
+.sns-sec{background:#1C1916;color:var(--white);padding:2rem 5vw 1.5rem;text-align:center;margin-top:4rem;border-radius:20px 20px 0 0;}
 .sns-title{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--white);margin-bottom:.5rem;letter-spacing:-.01em;font-family:"Playfair Display",serif;}
 .sns-sub{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem;font-family:'Arial',sans-serif;}
 .sns-icons{display:flex;justify-content:center;gap:2rem;margin-bottom:0;flex-wrap:wrap;}
@@ -356,7 +373,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 @media(max-width:900px){
   nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:block;}
   .lang-bar{padding:0 1rem;}.lang-btn{padding:0 .6rem;font-size:.67rem;}
-  .about-strip,.visit-sec{grid-template-columns:1fr;}.about-img{min-height:220px;}
+  .about-strip{grid-template-columns:1fr;}.about-img{min-height:220px;}.visit-info{grid-template-columns:1fr 1fr;}
   .tx-grid{grid-template-columns:1fr;}.tx-card{border-right:none;border-bottom:.5px solid var(--border-mid);}
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
@@ -386,7 +403,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v31</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v32</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -544,6 +561,16 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   </section>
 
   <section class="visit-sec fade-in" id="visit">
+    <div style="text-align:center;width:100%;max-width:960px;">
+      <p class="s-eye" data-t="visit.eye">Find Us</p>
+      <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,2.5rem);" data-t="visit.title">방문 안내</h2>
+    </div>
+    <div class="visit-info">
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.al">주소</div><div class="vi-val" data-t="visit.addr">서울 서초구 서초대로78길 26, 4층</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.hl">진료 시간</div><div class="vi-val" data-t="visit.hours">월-금 10:00-19:00<br>토 10:00-15:00</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.cl">연락처</div><div class="vi-val">+82 02-XXXX-XXXX<br>elijah@clinic.kr</div></div>
+      <div class="vi-item"><div class="vi-lbl" data-t="visit.tl">코디네이터</div><div class="vi-val" data-t="visit.tw">中文 · English<br>LINE: @elliyaclinic</div></div>
+    </div>
     <div class="visit-map">
   <iframe
     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.3!2d127.0195!3d37.4939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1506a2ea4ab%3A0x7d1d82b2da50a70e!2z7ISc7Jq47IucIOyEnOy5mOq1rCDshLjstIzrj5nroZwgNzjquLggMjY!5e0!3m2!1sko!2skr!4v1700000000001!5m2!1sko!2skr"

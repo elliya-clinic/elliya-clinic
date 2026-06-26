@@ -154,21 +154,16 @@ nav.nav-scrolled{
 .philo-b{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* VISIT */
-.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 0;gap:2.5rem;}
+.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 4vw;gap:2.5rem;}
 .visit-map{
   width:100%;
-  aspect-ratio:21/9;
+  height:400px;
   overflow:hidden;
-  border-radius:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.08);
+  border-radius:16px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.12);
   line-height:0;
-  transform:perspective(1000px) rotateX(1deg);
-  transition:transform .3s,box-shadow .3s;
 }
-.visit-map:hover{
-  transform:perspective(1000px) rotateX(0deg) translateY(-4px);
-  box-shadow:0 28px 70px rgba(0,0,0,0.18), 0 12px 30px rgba(0,0,0,0.1);
-}
+.visit-map iframe{width:100%;height:100%;border:0;display:block;}
 .visit-info{
   width:100%;max-width:960px;
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -409,7 +404,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v40</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v42</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

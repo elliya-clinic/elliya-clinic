@@ -154,9 +154,9 @@ nav.nav-scrolled{
 .philo-b{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* VISIT */
-.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 5vw;gap:2.5rem;}
+.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 3vw;gap:2.5rem;}
 .visit-map{
-  width:100%;max-width:960px;
+  width:100%;max-width:1200px;
   aspect-ratio:16/9;
   overflow:hidden;
   border-radius:20px;
@@ -409,7 +409,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v34</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v36</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1323,6 +1323,17 @@ function submitBk() {
   var cfmBtn=document.querySelector("[onclick='submitBk()']");
   if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
   var params={service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
+
+  // ── Google Sheets 저장 ──
+  var now=new Date();
+  var bookedAt=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+" "+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
+  fetch("https://script.google.com/macros/s/AKfycbytyY622kBtzVk4Hx80N5Zsh5TvPN1mb7xyJeaovdWr5BBa4357iq74QRf4_lGbyCP3lg/exec",{
+    method:"POST",
+    mode:"no-cors",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({booked_at:bookedAt,service:params.service,date_time:params.date_time,patient_name:params.patient_name,patient_email:params.patient_email,phone:params.phone,nationality:params.nationality,notes:params.notes,price:params.price})
+  }).catch(function(err){console.warn("Sheets 저장 실패:",err);});
+
   emailjs.send("service_hy5e83q","template_n8c1j0u",params)
     .then(function(){
       emailjs.send("service_hy5e83q","template_aiz27ku",params);

@@ -109,7 +109,7 @@ nav.nav-scrolled{
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--cream-dark);gap:0;margin:4rem 0;border-radius:20px;overflow:hidden;}
+.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--cream-dark);gap:0;margin:6rem 5vw 4rem;border-radius:20px;overflow:hidden;}
 .about-img{background:url("images/elliya_about.jpeg") center/cover no-repeat,#2D2520;min-height:260px;border-radius:0 24px 24px 0;margin:2.5rem 0 2.5rem 2.5rem;}
 .about-txt{padding:4rem 6vw 4rem 4rem;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);}
 
@@ -157,11 +157,17 @@ nav.nav-scrolled{
 .visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:4rem 5vw;gap:2.5rem;}
 .visit-map{
   width:100%;max-width:960px;
-  height:460px;
+  aspect-ratio:16/9;
   overflow:hidden;
   border-radius:20px;
-  box-shadow:0 8px 32px rgba(0,0,0,0.1);
+  box-shadow:0 20px 60px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.08);
   line-height:0;
+  transform:perspective(1000px) rotateX(1deg);
+  transition:transform .3s,box-shadow .3s;
+}
+.visit-map:hover{
+  transform:perspective(1000px) rotateX(0deg) translateY(-4px);
+  box-shadow:0 28px 70px rgba(0,0,0,0.18), 0 12px 30px rgba(0,0,0,0.1);
 }
 .visit-info{
   width:100%;max-width:960px;
@@ -403,7 +409,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v32</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v33</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -564,27 +570,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <div style="text-align:center;width:100%;max-width:960px;">
       <p class="s-eye" data-t="visit.eye">Find Us</p>
       <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,2.5rem);" data-t="visit.title">방문 안내</h2>
-    </div>
-    <div class="visit-info">
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.al">주소</div><div class="vi-val" data-t="visit.addr">서울 서초구 서초대로78길 26, 4층</div></div>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.hl">진료 시간</div><div class="vi-val" data-t="visit.hours">월-금 10:00-19:00<br>토 10:00-15:00</div></div>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.cl">연락처</div><div class="vi-val">+82 02-XXXX-XXXX<br>elijah@clinic.kr</div></div>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.tl">코디네이터</div><div class="vi-val" data-t="visit.tw">中文 · English<br>LINE: @elliyaclinic</div></div>
-    </div>
-    <div class="visit-map">
-  <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3165.3!2d127.0195!3d37.4939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1506a2ea4ab%3A0x7d1d82b2da50a70e!2z7ISc7Jq47IucIOyEnOy5mOq1rCDshLjstIzrj5nroZwgNzjquLggMjY!5e0!3m2!1sko!2skr!4v1700000000001!5m2!1sko!2skr"
-    width="100%" height="100%" style="border:0;display:block;min-height:420px;"
-    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-  </iframe>
-</div>
-    <div class="visit-info">
-      <p class="s-eye" data-t="visit.eye">Find Us</p>
-      <h2 class="s-title" style="margin-bottom:2rem;" data-t="visit.title">방문 안내</h2>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.al">주소</div><div class="vi-val" data-t="visit.addr">서울 서초구 서초대로78길 26, 4층</div></div>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.hl">진료 시간</div><div class="vi-val" data-t="visit.hours">월-금 10:00-19:00 / 토 10:00-15:00</div></div>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.cl">연락처</div><div class="vi-val">+82 02-3471-1003 · elliya@clinic.kr</div></div>
-      <div class="vi-item"><div class="vi-lbl" data-t="visit.tl">대만 코디네이터</div><div class="vi-val" data-t="visit.tw">中文 · English · 한국어 · LINE: @elliyaclinic</div></div>
     </div>
   </section>
 

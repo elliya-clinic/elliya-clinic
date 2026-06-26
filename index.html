@@ -114,7 +114,7 @@ nav.nav-scrolled{
 .about-txt{padding:4rem 6vw 4rem 4rem;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);}
 
 /* TREATMENTS */
-.tx-sec{padding:5rem 5vw;background:var(--cream-dark);margin:2rem 0;}
+.tx-sec{padding:5rem 5vw;background:var(--cream-dark);margin:5rem 0;}
 .tx-hd{text-align:center;margin-bottom:2.5rem;}
 .tx-hd .s-title{font-size:clamp(1.7rem,3.5vw,2.4rem);}
 .tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;padding:0 0 2rem;}
@@ -154,7 +154,7 @@ nav.nav-scrolled{
 .philo-b{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* VISIT */
-.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:4rem 5vw;gap:2.5rem;}
+.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 5vw;gap:2.5rem;}
 .visit-map{
   width:100%;max-width:960px;
   aspect-ratio:16/9;
@@ -214,7 +214,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .elli:hover .elli-bubble{opacity:1;}
 
 /* ── SNS SECTION ── */
-.sns-sec{background:#1C1916;color:var(--white);padding:2rem 5vw 1.5rem;text-align:center;margin-top:4rem;border-radius:20px 20px 0 0;}
+.sns-sec{background:#1C1916;color:var(--white);padding:2.5rem 5vw 2rem;text-align:center;margin-top:5rem;border-radius:20px 20px 0 0;}
 .sns-title{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--white);margin-bottom:.5rem;letter-spacing:-.01em;font-family:"Playfair Display",serif;}
 .sns-sub{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem;font-family:'Arial',sans-serif;}
 .sns-icons{display:flex;justify-content:center;gap:2rem;margin-bottom:0;flex-wrap:wrap;}
@@ -409,7 +409,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v33</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v34</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -567,9 +567,37 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   </section>
 
   <section class="visit-sec fade-in" id="visit">
+    <!-- 타이틀 -->
     <div style="text-align:center;width:100%;max-width:960px;">
       <p class="s-eye" data-t="visit.eye">Find Us</p>
       <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,2.5rem);" data-t="visit.title">방문 안내</h2>
+    </div>
+    <!-- 정보 카드 4개 -->
+    <div class="visit-info">
+      <div class="vi-item">
+        <div class="vi-lbl" data-t="visit.al">주소</div>
+        <div class="vi-val" data-t="visit.addr">서울 서초구 서초대로78길 26, 4층</div>
+      </div>
+      <div class="vi-item">
+        <div class="vi-lbl" data-t="visit.hl">진료 시간</div>
+        <div class="vi-val" data-t="visit.hours">월-금 10:00-19:00<br>토 10:00-15:00</div>
+      </div>
+      <div class="vi-item">
+        <div class="vi-lbl" data-t="visit.cl">연락처</div>
+        <div class="vi-val">+82 02-XXXX-XXXX<br>elliya@clinic.kr</div>
+      </div>
+      <div class="vi-item">
+        <div class="vi-lbl" data-t="visit.tl">코디네이터</div>
+        <div class="vi-val" data-t="visit.tw">中文 · English<br>LINE: @elliyaclinic</div>
+      </div>
+    </div>
+    <!-- 지도 -->
+    <div class="visit-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.3498!2d127.0176!3d37.4938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca1506fc9837b%3A0x4ae1c57e16dfeb28!2z7ISc7Jq47IucIOyEnOy5mOq1rCDshLjstIzrjbDroZwgNzjquLggMjY!5e0!3m2!1sko!2skr!4v1700000000001!5m2!1sko!2skr"
+        width="100%" height="100%" style="border:0;display:block;"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
     </div>
   </section>
 

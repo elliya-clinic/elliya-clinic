@@ -391,7 +391,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v44</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v45</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -470,7 +470,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
       <p class="hero-desc" data-t="hero.desc">엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.</p>
       <div class="hero-act">
         <button class="btn-p" onclick="showPage('booking');initBooking()" data-t="hero.book">예약하기</button>
-        <button class="btn-o" onclick="showPage('philo-page')" data-t="hero.learn">더 알아보기</button>
+        <button class="btn-o" onclick="showPage('philo-page')" data-t="hero.learn">나의 예약확인</button>
       </div>
     </div>
     <!-- 마스코트 Elli -->
@@ -514,37 +514,36 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
       <h2 class="s-title" data-t="tx.title">당신의 변화가 시작됩니다.</h2>
     </div>
     <div class="tx-grid">
-      <div class="tx-card fade-in" onclick="showDetail('hifu')" style="transition-delay:.1s">
-        <div class="tx-num">01</div>
-        <div class="tx-img" style="background-image:url('images/treatment1.jpg')"></div>
-        <div class="tx-name" data-t="tx1.name">HIFU Lifting · 울쎄라</div>
-        <p class="tx-desc" data-t="tx1.desc">집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.</p>
-        <button class="card-arr" data-t="common.detail">자세히 보기</button>
+      <div class="tx-card" onclick="showDetail('sonowave')">
+        <div class="tx-img" style="background-image:url('images/sig_1.jpg')"></div>
+        <div class="tx-name">소프웨이브</div>
+        <p class="tx-desc">초음파 에너지로 진피층을 자극하여 콜라겐 재생을 유도하는 논서지컬 리프팅.</p>
       </div>
-      <div class="tx-card fade-in" onclick="showDetail('thread')" style="transition-delay:.2s">
-        <div class="tx-num">02</div>
-        <div class="tx-img" style="background-image:url('images/treatment2.jpg')"></div>
-        <div class="tx-name" data-t="tx2.name">Thread Lifting · 실리프팅</div>
-        <p class="tx-desc" data-t="tx2.desc">미세 실을 이용한 즉각적 리프팅. 콜라겐 재생으로 탄력이 지속 개선됩니다.</p>
-        <button class="card-arr" data-t="common.detail">자세히 보기</button>
+      <div class="tx-card" onclick="showDetail('titanium')">
+        <div class="tx-img" style="background-image:url('images/sig_2.jpg')"></div>
+        <div class="tx-name">티타늄</div>
+        <p class="tx-desc">티타늄 팁을 이용한 고주파 리프팅으로 피부 탄력과 윤곽을 개선합니다.</p>
       </div>
-      <div class="tx-card fade-in" onclick="showDetail('filler')" style="transition-delay:.3s">
-        <div class="tx-num">03</div>
-        <div class="tx-img" style="background-image:url('images/treatment3.jpg')"></div>
-        <div class="tx-name" data-t="tx3.name">Filler &amp; Botox</div>
-        <p class="tx-desc" data-t="tx3.desc">볼륨 소실과 주름을 동시에 개선하는 자연스러운 복합 시술.</p>
-        <button class="card-arr" data-t="common.detail">자세히 보기</button>
+      <div class="tx-card" onclick="showDetail('thermage')">
+        <div class="tx-img" style="background-image:url('images/sig_3.jpg')"></div>
+        <div class="tx-name">써마지</div>
+        <p class="tx-desc">고주파 열에너지로 피부 깊은 층을 자극하여 즉각적인 리프팅과 콜라겐 재생 효과.</p>
       </div>
-    </div>
-  </section>
-
-  <section class="philo-sec fade-in">
-    <p class="s-eye" data-t="philo.eye">Our Belief</p>
-    <h2 class="s-title" data-t="philo.title">진정한 아름다움은 자연스러움에 있습니다.</h2>
-    <div class="philo-grid">
-      <div class="philo-card"><div class="philo-n">01</div><div class="philo-t" data-t="p1.title">자연스러운 변화</div><p class="philo-b" data-t="p1.body">과도한 시술보다 본래의 아름다움을 극대화하는 섬세한 접근.</p></div>
-      <div class="philo-card"><div class="philo-n">02</div><div class="philo-t" data-t="p2.title">개인 맞춤 설계</div><p class="philo-b" data-t="p2.body">얼굴형, 피부 상태, 생활방식을 종합하여 당신만을 위한 최적의 플랜을 설계합니다.</p></div>
-      <div class="philo-card"><div class="philo-n">03</div><div class="philo-t" data-t="p3.title">지속 가능한 아름다움</div><p class="philo-b" data-t="p3.body">피부 본연의 건강을 회복하고 유지하는 장기적 관점의 치료.</p></div>
+      <div class="tx-card" onclick="showDetail('onda')">
+        <div class="tx-img" style="background-image:url('images/sig_4.jpg')"></div>
+        <div class="tx-name">온다</div>
+        <p class="tx-desc">마이크로파 기술로 지방세포를 선택적으로 파괴하고 콜라겐 생성을 촉진합니다.</p>
+      </div>
+      <div class="tx-card" onclick="showDetail('shrink')">
+        <div class="tx-img" style="background-image:url('images/sig_5.jpg')"></div>
+        <div class="tx-name">슈링크</div>
+        <p class="tx-desc">HIFU 기술 기반의 정밀 리프팅으로 다양한 깊이에서 효과적인 피부 개선.</p>
+      </div>
+      <div class="tx-card" onclick="showDetail('ulthera')">
+        <div class="tx-img" style="background-image:url('images/sig_6.jpg')"></div>
+        <div class="tx-name">울쎄라</div>
+        <p class="tx-desc">집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 대표적 논서지컬 리프팅.</p>
+      </div>
     </div>
   </section>
 
@@ -807,7 +806,7 @@ ko: {
 "nav.home":"홈","nav.philo":"철학","nav.tx":"시술","nav.visit":"오시는 길","nav.book":"예약하기",
 "hero.eye":"Seoul · 안티에이징 & 리프팅 전문",
 "hero.desc":"엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.",
-"hero.book":"예약하기 · Book a Consultation","hero.learn":"더 알아보기",
+"hero.book":"예약하기 · Book a Consultation","hero.learn":"나의 예약확인",
 "about.eye":"About Elliya Clinic","about.title":"과학과 자연미의 만남",
 "about.body":"엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.",
 "about.philo":"철학 보기",
@@ -857,7 +856,7 @@ en: {
 "nav.home":"Home","nav.philo":"Philosophy","nav.tx":"Treatments","nav.visit":"Visit","nav.book":"Book Now",
 "hero.eye":"Seoul · Anti-Aging & Lifting Specialists",
 "hero.desc":"Elliya Clinic combines cutting-edge lifting technology with a refined medical philosophy to reveal your naturally timeless beauty.",
-"hero.book":"Book a Consultation","hero.learn":"Learn More",
+"hero.book":"Book a Consultation","hero.learn":"My Booking Check",
 "about.eye":"About Elliya Clinic","about.title":"Where Science Meets Natural Beauty",
 "about.body":"Elliya Clinic is a Seoul dermatology clinic specializing in anti-aging and lifting treatments. We help your natural beauty shine.<br><br>International patients from Taiwan and beyond are warmly welcomed with dedicated coordinators who speak your language.",
 "about.philo":"Our Philosophy",
@@ -907,7 +906,7 @@ zh: {
 "nav.home":"首頁","nav.philo":"理念","nav.tx":"療程","nav.visit":"交通資訊","nav.book":"立即預約",
 "hero.eye":"首爾 · 抗老化 & 提升專科",
 "hero.desc":"伊萊賈診所結合最先進的提升技術與精緻的醫療理念，幫助您重現自然永恆的美麗。",
-"hero.book":"立即預約諮詢","hero.learn":"了解更多",
+"hero.book":"立即預約諮詢","hero.learn":"我的預約確認",
 "about.eye":"關於伊萊賈診所","about.title":"科學與自然美的完美結合",
 "about.body":"伊萊賈診所（Elliya Clinic）是首爾一家專注於抗老化與提升療程的皮膚科診所。<br><br>我們設有專屬台灣協調員，提供中文服務，讓您無語言障礙地享受頂級療程。",
 "about.philo":"我們的理念",
@@ -957,7 +956,7 @@ ar: {
 "nav.home":"الرئيسية","nav.philo":"فلسفتنا","nav.tx":"العلاجات","nav.visit":"زيارتنا","nav.book":"احجز الآن",
 "hero.eye":"سيول · متخصصون في مكافحة الشيخوخة والرفع",
 "hero.desc":"تجمع عيادة إيليا بين أحدث تقنيات الرفع وفلسفة طبية راقية لإبراز جمالك الطبيعي الخالد.",
-"hero.book":"احجز استشارة","hero.learn":"اعرف المزيد",
+"hero.book":"احجز استشارة","hero.learn":"تأكيد حجزي",
 "about.eye":"عن عيادة إيليا","about.title":"حيث يلتقي العلم بالجمال الطبيعي",
 "about.body":"عيادة إيليا هي عيادة جلدية في سيول متخصصة في علاجات مكافحة الشيخوخة والرفع.<br><br>يُرحَّب بالمرضى الدوليين مع منسقين متخصصين يتحدثون لغتك.",
 "about.philo":"فلسفتنا",

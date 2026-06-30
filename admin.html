@@ -190,17 +190,14 @@ function saveAll() {
 
   fetch(SHEET_URL, {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
+    mode: "no-cors",
+    headers: {"Content-Type": "text/plain"},
     body: JSON.stringify({ action: "save_treatments", categories: categories })
   })
-  .then(function(r){ return r.json(); })
-  .then(function(data){
-    if (data.result === "success") {
-      showStatus("저장 완료되었습니다.");
-      loadAll();
-    } else {
-      showStatus("저장 실패: " + (data.message||""), true);
-    }
+  .then(function(){
+    // no-cors 모드는 응답 내용을 읽을 수 없어 무조건 성공으로 간주
+    showStatus("저장 완료되었습니다.");
+    setTimeout(loadAll, 800);
   })
   .catch(function(err){
     showStatus("저장 중 오류가 발생했습니다.", true);

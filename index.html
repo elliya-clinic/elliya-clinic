@@ -382,7 +382,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v53</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v54</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1300,7 +1300,7 @@ function submitBk() {
   // ── Google Sheets 저장 ──
   var now=new Date();
   var bookedAt=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+" "+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
-  fetch("https://script.google.com/macros/s/AKfycbxyE81I4eq2LkQKUyzIlLbnhdnDt4zEE-1ipeCS29wVXO6dygbzbRbUlIdtV-jLOEpt/exec",{
+  fetch("https://script.google.com/macros/s/AKfycbwD9_dauyOLxN65dPe6oRHvxeDMIYH2qzBUvbmI8UhncwDEE2yW0rWdLjJZHgVKUq0f6A/exec",{
     method:"POST",
     mode:"no-cors",
     headers:{"Content-Type":"application/json"},
@@ -1434,7 +1434,7 @@ function searchBooking() {
   btn.textContent = "검색 중...";
   btn.disabled = true;
 
-  fetch("https://script.google.com/macros/s/AKfycbxyE81I4eq2LkQKUyzIlLbnhdnDt4zEE-1ipeCS29wVXO6dygbzbRbUlIdtV-jLOEpt/exec?action=search&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email))
+  fetch("https://script.google.com/macros/s/AKfycbwD9_dauyOLxN65dPe6oRHvxeDMIYH2qzBUvbmI8UhncwDEE2yW0rWdLjJZHgVKUq0f6A/exec?action=search&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email))
     .then(function(r) { return r.json(); })
     .then(function(data) {
       btn.textContent = "예약 확인하기";

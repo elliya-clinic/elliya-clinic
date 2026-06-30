@@ -61,7 +61,7 @@ textarea{resize:vertical;min-height:50px;}
 
   <div class="bar">
     <button class="btn btn-gold" onclick="addCategory()">+ 새 카테고리 추가</button>
-    <button class="btn btn-dark" onclick="saveAll()">전체 저장</button>
+    <button class="btn btn-dark" id="save-btn" onclick="saveAll()">전체 저장</button>
     <button class="btn btn-line" onclick="loadAll()">새로고침</button>
   </div>
 
@@ -177,8 +177,14 @@ function showStatus(msg, isErr) {
 }
 
 // ── 저장 ──
+var isSaving = false;
+
 function saveAll() {
-  // 유효성 간단 체크
+  if (isSaving) {
+    showStatus("이미 저장 중입니다. 잠시만 기다려 주세요.", true);
+    return;
+  }
+
   for (var i = 0; i < categories.length; i++) {
     if (!categories[i].name.trim()) {
       showStatus("카테고리명을 입력해 주세요.", true);
@@ -186,6 +192,9 @@ function saveAll() {
     }
   }
 
+  isSaving = true;
+  var saveBtn = document.getElementById("save-btn");
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = "저장 중..."; }
   showStatus("저장 중...");
 
   fetch(SHEET_URL, {
@@ -195,11 +204,16 @@ function saveAll() {
     body: JSON.stringify({ action: "save_treatments", categories: categories })
   })
   .then(function(){
-    // no-cors 모드는 응답 내용을 읽을 수 없어 무조건 성공으로 간주
-    showStatus("저장 완료되었습니다.");
-    setTimeout(loadAll, 800);
+    setTimeout(function(){
+      isSaving = false;
+      if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = "전체 저장"; }
+      showStatus("저장 완료되었습니다.");
+      loadAll();
+    }, 1000);
   })
   .catch(function(err){
+    isSaving = false;
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = "전체 저장"; }
     showStatus("저장 중 오류가 발생했습니다.", true);
     console.error(err);
   });

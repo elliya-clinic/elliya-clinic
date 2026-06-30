@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엘리야의원 — 시술 관리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FDFCFA;--cream-dark:#F5F2EE;--gold:#B8965A;--gold-light:#DFC99A;--gold-dark:#8A6E3A;
+  --ink:#1C1916;--ink-mid:#4A4440;--ink-light:#8A8480;--white:#FFFFFF;
+  --border:rgba(184,150,90,0.2);--border-mid:rgba(184,150,90,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Serif KR',serif;background:var(--cream);color:var(--ink);line-height:1.7;padding:2rem 1.5rem 5rem;}
+.wrap{max-width:880px;margin:0 auto;}
+h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.3rem;}
+.sub{font-size:.85rem;color:var(--ink-light);margin-bottom:2rem;}
+.bar{display:flex;gap:.8rem;margin-bottom:2rem;flex-wrap:wrap;}
+.btn{padding:.7rem 1.4rem;border-radius:6px;font-size:.85rem;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:opacity .2s;}
+.btn:hover{opacity:.85;}
+.btn-gold{background:var(--gold);color:var(--ink);}
+.btn-dark{background:var(--ink);color:var(--white);}
+.btn-line{background:var(--white);color:var(--ink);border:1px solid var(--border-mid);}
+.btn-sm{padding:.4rem .9rem;font-size:.78rem;}
+.btn-danger{background:#fff;color:#B23A3A;border:1px solid #E8B8B8;}
+
+.cat-card{background:var(--white);border:1px solid var(--border-mid);border-radius:14px;padding:1.5rem;margin-bottom:1.2rem;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+.cat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem;}
+.cat-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.6rem;}
+.cat-row3{display:grid;grid-template-columns:2fr 1fr;gap:.8rem;margin-bottom:.6rem;}
+label{display:block;font-size:.72rem;color:var(--gold-dark);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem;font-family:Arial,sans-serif;}
+input[type=text],input[type=number],textarea{
+  width:100%;padding:.6rem .8rem;border:1px solid var(--border-mid);border-radius:6px;
+  font-family:'Noto Serif KR',serif;font-size:.88rem;color:var(--ink);background:var(--cream);
+}
+textarea{resize:vertical;min-height:50px;}
+
+.opt-table{width:100%;border-collapse:collapse;margin-top:.8rem;}
+.opt-table th{text-align:left;font-size:.7rem;color:var(--ink-light);letter-spacing:.06em;text-transform:uppercase;padding:.4rem .3rem;border-bottom:1px solid var(--border);font-family:Arial,sans-serif;}
+.opt-table td{padding:.4rem .3rem;border-bottom:1px solid var(--border);}
+.opt-table input{padding:.45rem .6rem;font-size:.85rem;}
+.opt-num{width:30px;text-align:center;color:var(--ink-light);font-size:.8rem;}
+.opt-del{color:#B23A3A;cursor:pointer;font-size:1.1rem;text-align:center;width:30px;}
+
+.status{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--white);padding:.8rem 1.6rem;border-radius:30px;font-size:.85rem;
+  box-shadow:0 6px 24px rgba(0,0,0,.2);display:none;z-index:99;}
+.status.show{display:block;}
+.status.err{background:#B23A3A;}
+
+.empty{text-align:center;padding:3rem 0;color:var(--ink-light);font-size:.9rem;}
+.loading{text-align:center;padding:3rem 0;color:var(--ink-light);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>&#9998; 시술 관리</h1>
+  <p class="sub">시술 카테고리와 옵션(샷수/가격)을 관리합니다. 카테고리당 옵션은 최대 10개까지 등록 가능합니다.</p>
+
+  <div class="bar">
+    <button class="btn btn-gold" onclick="addCategory()">+ 새 카테고리 추가</button>
+    <button class="btn btn-dark" onclick="saveAll()">전체 저장</button>
+    <button class="btn btn-line" onclick="loadAll()">새로고침</button>
+  </div>
+
+  <div id="cat-list"></div>
+  <div id="empty-msg" class="empty" style="display:none;">등록된 시술이 없습니다. '+ 새 카테고리 추가'로 시작하세요.</div>
+</div>
+
+<div class="status" id="status"></div>
+
+<script>
+// ══════════════════════════════════════
+// Apps Script 웹앱 URL (시술 관리용)
+// ══════════════════════════════════════
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbx9TupD--c5tj6bk1S0S-SLa4r-E0Ozuh6B-dEyh_dEAJTiy_zA03RtDBniOzFLPlKu0Q/exec";
+
+var categories = [];  // { id, name, desc, image, options:[{name,price}] }
+var nextId = 1;
+
+function emptyOption(){ return { name:"", price:"" }; }
+
+function addCategory() {
+  categories.push({
+    id: "new_" + Date.now(),
+    name: "",
+    desc: "",
+    image: "",
+    options: [emptyOption()]
+  });
+  render();
+}
+
+function removeCategory(idx) {
+  if(!confirm("이 카테고리를 삭제하시겠습니까?")) return;
+  categories.splice(idx, 1);
+  render();
+}
+
+function addOption(catIdx) {
+  if (categories[catIdx].options.length >= 10) {
+    showStatus("옵션은 최대 10개까지 등록 가능합니다.", true);
+    return;
+  }
+  categories[catIdx].options.push(emptyOption());
+  render();
+}
+
+function removeOption(catIdx, optIdx) {
+  categories[catIdx].options.splice(optIdx, 1);
+  render();
+}
+
+function updateField(catIdx, field, value) {
+  categories[catIdx][field] = value;
+}
+
+function updateOption(catIdx, optIdx, field, value) {
+  categories[catIdx].options[optIdx][field] = value;
+}
+
+function render() {
+  var list = document.getElementById("cat-list");
+  var emptyMsg = document.getElementById("empty-msg");
+
+  if (categories.length === 0) {
+    list.innerHTML = "";
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+
+  list.innerHTML = categories.map(function(cat, ci) {
+    var optRows = cat.options.map(function(opt, oi) {
+      return '<tr>' +
+        '<td class="opt-num">'+(oi+1)+'</td>' +
+        '<td><input type="text" placeholder="예: 100샷" value="'+escapeHtml(opt.name)+'" oninput="updateOption('+ci+','+oi+',\'name\',this.value)"></td>' +
+        '<td><input type="number" placeholder="가격" value="'+escapeHtml(opt.price)+'" oninput="updateOption('+ci+','+oi+',\'price\',this.value)"></td>' +
+        '<td class="opt-del" onclick="removeOption('+ci+','+oi+')" title="삭제">&times;</td>' +
+        '</tr>';
+    }).join("");
+
+    return '<div class="cat-card">' +
+      '<div class="cat-head">' +
+        '<div style="flex:1;">' +
+          '<label>카테고리명 (시술명)</label>' +
+          '<input type="text" placeholder="예: 슈링크" value="'+escapeHtml(cat.name)+'" oninput="updateField('+ci+',\'name\',this.value)" style="font-size:1rem;font-weight:700;">' +
+        '</div>' +
+        '<button class="btn btn-danger btn-sm" onclick="removeCategory('+ci+')">카테고리 삭제</button>' +
+      '</div>' +
+      '<div class="cat-row3">' +
+        '<div><label>설명</label><input type="text" placeholder="예: HIFU 기반 정밀 리프팅" value="'+escapeHtml(cat.desc)+'" oninput="updateField('+ci+',\'desc\',this.value)"></div>' +
+        '<div><label>이미지 파일명</label><input type="text" placeholder="sig_1.jpg" value="'+escapeHtml(cat.image)+'" oninput="updateField('+ci+',\'image\',this.value)"></div>' +
+      '</div>' +
+      '<table class="opt-table"><thead><tr><th>#</th><th>옵션명 (샷수 등)</th><th>가격(원)</th><th></th></tr></thead><tbody>' +
+        optRows +
+      '</tbody></table>' +
+      (cat.options.length < 10 ?
+        '<button class="btn btn-line btn-sm" style="margin-top:.6rem;" onclick="addOption('+ci+')">+ 옵션 추가 ('+cat.options.length+'/10)</button>'
+        : '<p style="font-size:.78rem;color:var(--ink-light);margin-top:.6rem;">옵션 10개 모두 등록되었습니다.</p>') +
+    '</div>';
+  }).join("");
+}
+
+function escapeHtml(s) {
+  if (s === undefined || s === null) return "";
+  return String(s).replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function showStatus(msg, isErr) {
+  var el = document.getElementById("status");
+  el.textContent = msg;
+  el.className = "status show" + (isErr ? " err" : "");
+  setTimeout(function(){ el.classList.remove("show"); }, 2800);
+}
+
+// ── 저장 ──
+function saveAll() {
+  // 유효성 간단 체크
+  for (var i = 0; i < categories.length; i++) {
+    if (!categories[i].name.trim()) {
+      showStatus("카테고리명을 입력해 주세요.", true);
+      return;
+    }
+  }
+
+  showStatus("저장 중...");
+
+  fetch(SHEET_URL, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ action: "save_treatments", categories: categories })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data){
+    if (data.result === "success") {
+      showStatus("저장 완료되었습니다.");
+      loadAll();
+    } else {
+      showStatus("저장 실패: " + (data.message||""), true);
+    }
+  })
+  .catch(function(err){
+    showStatus("저장 중 오류가 발생했습니다.", true);
+    console.error(err);
+  });
+}
+
+// ── 불러오기 ──
+function loadAll() {
+  document.getElementById("cat-list").innerHTML = '<div class="loading">불러오는 중...</div>';
+  fetch(SHEET_URL + "?action=get_treatments")
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      categories = data.categories || [];
+      render();
+    })
+    .catch(function(err){
+      categories = [];
+      render();
+      showStatus("불러오기 실패. 새로 시작합니다.", true);
+    });
+}
+
+loadAll();
+</script>
+</body>
+</html>

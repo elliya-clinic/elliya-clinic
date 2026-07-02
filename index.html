@@ -382,7 +382,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v55</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v57</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1250,7 +1250,54 @@ function selDate(dt, cell) {
   var tp=document.getElementById("time-pk"); tp.style.display="block";
   var se=document.getElementById("time-slots");
   var times=["10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30"];
-  se.innerHTML=times.map(function(t){return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";}).join("");
+
+  // 먼저 모든 슬롯 표시
+  se.innerHTML=times.map(function(t){
+    return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";
+  }).join("");
+
+  // Sheets에서 예약된 시간 조회 후 disable
+  var dateStr = dt.getFullYear() + "." +
+    String(dt.getMonth()+1).padStart(2,"0") + "." +
+    String(dt.getDate()).padStart(2,"0");
+
+  fetch(SHEET_URL + "?action=get_booked_times&date=" + encodeURIComponent(dateStr))
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      var bookedTimes = data.times || [];
+      document.querySelectorAll(".t-slot").forEach(function(slot){
+        var t = slot.textContent.trim();
+        var ampm = toAmPm(t);
+        if (bookedTimes.indexOf(ampm) !== -1) {
+          slot.classList.add("disabled");
+          slot.onclick = null;
+          slot.style.opacity = "0.35";
+          slot.style.cursor = "not-allowed";
+          slot.style.background = "#eee";
+        }
+      });
+    })
+    .catch(function(){
+      // 조회 실패 시 그냥 모든 슬롯 활성화 유지
+    });
+}
+
+
+function toAmPm(timeStr) {
+  // "10:30" → "오전 10:30", "14:30" → "오후 2:30"
+  var parts = timeStr.split(":");
+  if (parts.length < 2) return timeStr;
+  var h = parseInt(parts[0]);
+  var m = parts[1];
+  var ampm = h < 12 ? "오전" : "오후";
+  var h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+  return ampm + " " + h12 + ":" + m;
+}
+function formatDateNaver(d, dayStr, timeStr) {
+  return d.getFullYear() + "." +
+    String(d.getMonth()+1).padStart(2,"0") + "." +
+    String(d.getDate()).padStart(2,"0") + ".(" + dayStr + ") " +
+    toAmPm(timeStr);
 }
 
 function selTime(time, el) {
@@ -1258,7 +1305,7 @@ function selTime(time, el) {
   el.classList.add("sel"); bk.time=time;
   var d=bk.date;
   var da=tr("d"+d.getDay());
-  var lbl=d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+time;
+  var lbl=formatDateNaver(d,da,time);
   var s2=document.getElementById("s2-sub"); if(s2) s2.textContent=lbl;
 }
 
@@ -1271,7 +1318,7 @@ function chMo(dir) {
 function fillCart() {
   var d=bk.date;
   var da=d?tr("d"+d.getDay()):"";
-  var ds=d?d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+(bk.time||""):"-";
+  var ds=d?formatDateNaver(d,da,bk.time||""):"-";
   document.getElementById("ct-svc").textContent=bk.svc||"-";
   document.getElementById("ct-date").textContent=ds;
   var fn=document.getElementById("f-fn").value, ln=document.getElementById("f-ln").value;
@@ -1284,7 +1331,7 @@ function fillCart() {
 
 function submitBk() {
   var d=bk.date, da=d?tr("d"+d.getDay()):"";
-  var ds=d?d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+(bk.time||""):"-";
+  var ds=d?formatDateNaver(d,da,bk.time||""):"-";
   var email=document.getElementById("f-em").value||"-";
   var fn=document.getElementById("f-fn").value||"";
   var ln=document.getElementById("f-ln").value||"";
@@ -1300,7 +1347,7 @@ function submitBk() {
   // ── Google Sheets 저장 ──
   var now=new Date();
   var bookedAt=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+" "+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
-  fetch("https://script.google.com/macros/s/AKfycbzwq4kiiggEWedi2OkLLmwy4ps-y9P_Vdkk9GOALfm02sZSCsDanFso_mtXqX08LJLNOg/exec",{
+  fetch("https://script.google.com/macros/s/AKfycbzQEF6L7gKITadZmIkP94W5MCiXFMZkKfrgn6TClwGItDMK3vREWJAdP7l5JfGR0L9zCA/exec",{
     method:"POST",
     mode:"no-cors",
     headers:{"Content-Type":"application/json"},
@@ -1327,7 +1374,7 @@ function submitBk() {
 }
 function submitBk_unused() {
   var d=bk.date, da=d?tr("d"+d.getDay()):"";
-  var ds=d?d.getFullYear()+"."+String(d.getMonth()+1).padStart(2,"0")+"."+String(d.getDate()).padStart(2,"0")+" ("+da+") "+(bk.time||""):"-";
+  var ds=d?formatDateNaver(d,da,bk.time||""):"-";
   var email=document.getElementById("f-em").value||"-";
   var name=((document.getElementById("f-fn").value||"")+" "+(document.getElementById("f-ln").value||"")).trim()||"-";
   var pr=bk.price?"&#8361; "+bk.price.toLocaleString()+"~":tr("bk.free");
@@ -1434,7 +1481,7 @@ function searchBooking() {
   btn.textContent = "검색 중...";
   btn.disabled = true;
 
-  fetch("https://script.google.com/macros/s/AKfycbzwq4kiiggEWedi2OkLLmwy4ps-y9P_Vdkk9GOALfm02sZSCsDanFso_mtXqX08LJLNOg/exec?action=search&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email))
+  fetch("https://script.google.com/macros/s/AKfycbzQEF6L7gKITadZmIkP94W5MCiXFMZkKfrgn6TClwGItDMK3vREWJAdP7l5JfGR0L9zCA/exec?action=search&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email))
     .then(function(r) { return r.json(); })
     .then(function(data) {
       btn.textContent = "예약 확인하기";

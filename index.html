@@ -261,9 +261,10 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1.2rem;}
 .cal-dn{text-align:center;font-size:.7rem;font-family:'Arial',sans-serif;color:var(--ink-light);text-transform:uppercase;padding:.35rem 0;}
 .cal-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.83rem;font-family:'Arial',sans-serif;border-radius:2px;cursor:pointer;transition:background .15s,color .15s;}
-.cal-d:not(.emp):not(.past):hover{background:var(--gold-light);color:var(--ink);}
+.cal-d:not(.emp):not(.past):not(.holiday):hover{background:var(--gold-light);color:var(--ink);}
 .cal-d.sel{background:var(--gold);color:var(--ink);font-weight:700;}
 .cal-d.past{color:var(--border-mid);cursor:default;}.cal-d.emp{cursor:default;}
+.cal-d.holiday{color:#c0392b;cursor:default;font-weight:600;}
 .time-lbl{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.75rem;}
 .time-slots{display:flex;flex-wrap:wrap;gap:.55rem;}
 .t-slot{padding:.42rem 1rem;border:1px solid var(--border-mid);border-radius:2px;font-size:.83rem;font-family:'Arial',sans-serif;cursor:pointer;background:var(--white);transition:border-color .15s,background .15s;}
@@ -382,7 +383,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v65</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v66</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1236,11 +1237,11 @@ function renderCal() {
   for(var d=1;d<=dim;d++){
     var cell=document.createElement("div");
     var dt=new Date(bk.calY,bk.calM,d);
-    var isPast=dt<today, isSun=dt.getDay()===0;
-    cell.className="cal-d"+(isPast||isSun?" past":"");
+    var isPast=dt<today, isSun=dt.getDay()===0, isWed=dt.getDay()===3, isHoliday=isSun||isWed;
+    cell.className="cal-d"+(isPast?" past":(isHoliday?" holiday":""));
     cell.textContent=d;
     if(bk.date && dt.toDateString()===bk.date.toDateString()) cell.classList.add("sel");
-    if(!isPast&&!isSun)(function(dt2,cl){cl.onclick=function(){selDate(dt2,cl);};})(dt,cell);
+    if(!isPast&&!isHoliday)(function(dt2,cl){cl.onclick=function(){selDate(dt2,cl);};})(dt,cell);
     grid.appendChild(cell);
   }
 }

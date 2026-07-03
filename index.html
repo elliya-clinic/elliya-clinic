@@ -382,7 +382,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v59</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v60</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1245,6 +1245,8 @@ function renderCal() {
   }
 }
 
+var bkReqId = 0; // 날짜 이동 시 이전 요청의 늦은 응답을 무시하기 위한 요청 ID
+
 function selDate(dt, cell) {
   document.querySelectorAll(".cal-d.sel").forEach(function(c){c.classList.remove("sel");});
   cell.classList.add("sel"); bk.date=dt; bk.time=null;
@@ -1252,9 +1254,11 @@ function selDate(dt, cell) {
   var se=document.getElementById("time-slots");
   var times=["10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30"];
 
-  // 먼저 모든 슬롯 표시
+  var myReqId = ++bkReqId; // 이번 날짜 선택에 대한 고유 요청 ID
+
+  // 먼저 모든 슬롯을 "확인 중" 상태로 표시 (조회 끝나기 전엔 클릭 불가 → 예약 가능 시간으로 오인 클릭 방지)
   se.innerHTML=times.map(function(t){
-    return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";
+    return "<div class=\"t-slot checking\" style=\"opacity:.4;cursor:wait;\">"+t+"</div>";
   }).join("");
 
   // Sheets에서 예약된 시간 조회 후 disable
@@ -1265,22 +1269,26 @@ function selDate(dt, cell) {
   fetch(SHEET_URL + "?action=get_booked_times&date=" + encodeURIComponent(dateStr))
     .then(function(r){ return r.json(); })
     .then(function(data){
+      if (myReqId !== bkReqId) return; // 이미 다른 날짜로 넘어감 → 이 응답은 무시
+
       var bookedTimes = data.times || [];
-      document.querySelectorAll(".t-slot").forEach(function(slot){
-        var t = slot.textContent.trim();
+      se.innerHTML = times.map(function(t){
         var ampm = toAmPm(t);
-        if (bookedTimes.indexOf(ampm) !== -1) {
-          slot.classList.add("disabled");
-          slot.onclick = null;
-          slot.style.opacity = "0.35";
-          slot.style.cursor = "not-allowed";
-          slot.style.background = "#eee";
+        var isBooked = bookedTimes.indexOf(ampm) !== -1;
+        if (isBooked) {
+          return "<div class=\"t-slot disabled\" style=\"opacity:.35;cursor:not-allowed;background:#eee;\">"+t+"</div>";
         }
-      });
+        return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";
+      }).join("");
     })
     .catch(function(err){
-      // 조회 실패 시 모든 슬롯 활성화 유지 (단, 콘솔에 원인은 남김)
+      if (myReqId !== bkReqId) return; // 이미 다른 날짜로 넘어감 → 이 응답은 무시
+
       console.error("예약된 시간 조회 실패:", err);
+      // 조회 실패 시 모든 슬롯 활성화 (예약 자체가 막히지 않도록)
+      se.innerHTML = times.map(function(t){
+        return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";
+      }).join("");
     });
 }
 

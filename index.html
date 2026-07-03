@@ -382,7 +382,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v62</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v63</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1266,16 +1266,8 @@ function selDate(dt, cell) {
     String(dt.getMonth()+1).padStart(2,"0") + "." +
     String(dt.getDate()).padStart(2,"0");
 
-  fetch(SHEET_URL + "?action=get_booked_times&date=" + encodeURIComponent(dateStr))
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      if (myReqId !== bkReqId) return; // 이미 다른 날짜로 넘어감 → 이 응답은 무시
-      renderTimeSlots(data.times || [], times, se);
-    })
-    .catch(function(){
-      // fetch가 CORS 등으로 막히면 JSONP 방식으로 재시도 (script 태그는 CORS 영향 안 받음)
-      jsonpFallback(SHEET_URL, dateStr, myReqId, times, se);
-    });
+  // fetch는 CORS에 걸릴 수 있어 아예 쓰지 않고, 처음부터 JSONP(script 태그)로만 조회
+  jsonpFallback(SHEET_URL, dateStr, myReqId, times, se);
 }
 
 function renderTimeSlots(bookedTimes, times, se){

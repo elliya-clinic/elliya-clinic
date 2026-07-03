@@ -382,7 +382,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v60</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v61</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1270,26 +1270,61 @@ function selDate(dt, cell) {
     .then(function(r){ return r.json(); })
     .then(function(data){
       if (myReqId !== bkReqId) return; // 이미 다른 날짜로 넘어감 → 이 응답은 무시
-
-      var bookedTimes = data.times || [];
-      se.innerHTML = times.map(function(t){
-        var ampm = toAmPm(t);
-        var isBooked = bookedTimes.indexOf(ampm) !== -1;
-        if (isBooked) {
-          return "<div class=\"t-slot disabled\" style=\"opacity:.35;cursor:not-allowed;background:#eee;\">"+t+"</div>";
-        }
-        return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";
-      }).join("");
+      renderTimeSlots(data.times || [], times, se);
     })
-    .catch(function(err){
-      if (myReqId !== bkReqId) return; // 이미 다른 날짜로 넘어감 → 이 응답은 무시
-
-      console.error("예약된 시간 조회 실패:", err);
-      // 조회 실패 시 모든 슬롯 활성화 (예약 자체가 막히지 않도록)
-      se.innerHTML = times.map(function(t){
-        return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";
-      }).join("");
+    .catch(function(){
+      // fetch가 CORS 등으로 막히면 JSONP 방식으로 재시도 (script 태그는 CORS 영향 안 받음)
+      jsonpFallback(SHEET_URL, dateStr, myReqId, times, se);
     });
+}
+
+function renderTimeSlots(bookedTimes, times, se){
+  se.innerHTML = times.map(function(t){
+    var ampm = toAmPm(t);
+    var isBooked = bookedTimes.indexOf(ampm) !== -1;
+    if (isBooked) {
+      return "<div class=\"t-slot disabled\" style=\"opacity:.35;cursor:not-allowed;background:#eee;\">"+t+"</div>";
+    }
+    return "<div class=\"t-slot\" onclick=\"selTime('"+t+"',this)\">"+t+"</div>";
+  }).join("");
+}
+
+function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
+  var cbName = "bkCb" + myReqId + "_" + Date.now();
+  var cleaned = false;
+  var script = document.createElement("script");
+
+  function cleanup(){
+    if (cleaned) return;
+    cleaned = true;
+    delete window[cbName];
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  var timeoutId = setTimeout(function(){
+    if (myReqId !== bkReqId) { cleanup(); return; }
+    console.error("예약된 시간 조회 실패: JSONP 응답 시간 초과 (Apps Script에 callback 파라미터 처리가 없을 수 있음)");
+    cleanup();
+    renderTimeSlots([], times, se); // 조회 실패 시 전부 활성화 (예약 자체는 막히지 않도록)
+  }, 6000);
+
+  window[cbName] = function(data){
+    clearTimeout(timeoutId);
+    cleanup();
+    if (myReqId !== bkReqId) return;
+    renderTimeSlots((data && data.times) || [], times, se);
+  };
+
+  script.onerror = function(){
+    clearTimeout(timeoutId);
+    cleanup();
+    if (myReqId !== bkReqId) return;
+    console.error("예약된 시간 조회 실패: JSONP 스크립트 로드 실패");
+    renderTimeSlots([], times, se);
+  };
+
+  script.src = baseUrl + "?action=get_booked_times&date=" + encodeURIComponent(dateStr) + "&callback=" + cbName;
+  document.body.appendChild(script);
 }
 
 

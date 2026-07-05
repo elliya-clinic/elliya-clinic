@@ -89,12 +89,12 @@ nav.nav-scrolled{
   object-fit:cover;
   opacity:.75;
 }
-.hero-ov{position:absolute;inset:0;background:linear-gradient(to right,rgba(28,25,22,0.45) 0%,rgba(28,25,22,0.1) 65%,transparent 100%);}
+.hero-ov{display:none;}
 .hero-ct{position:relative;z-index:2;max-width:580px;}
-.hero-eye{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-family:'Arial',sans-serif;}
-.hero-title{font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;color:var(--white);line-height:1.12;margin-bottom:1.5rem;font-family:'Playfair Display',serif;}
+.hero-eye{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-family:'Arial',sans-serif;text-shadow:0 2px 8px rgba(0,0,0,.6);}
+.hero-title{font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;color:var(--white);line-height:1.12;margin-bottom:1.5rem;font-family:'Playfair Display',serif;text-shadow:0 3px 14px rgba(0,0,0,.65),0 1px 4px rgba(0,0,0,.5);}
 .hero-title em{font-style:normal;color:var(--gold);}
-.hero-desc{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2.4rem;max-width:500px;line-height:1.85;}
+.hero-desc{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2.4rem;max-width:500px;line-height:1.85;text-shadow:0 2px 10px rgba(0,0,0,.6);}
 .hero-act{display:flex;gap:1rem;flex-wrap:wrap;}
 .btn-p{padding:.85rem 2.2rem;background:var(--gold);color:var(--ink);font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s;font-weight:700;}
 .btn-p:hover{background:var(--gold-dark);color:var(--white);transform:translateY(-1px);}
@@ -260,7 +260,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .cal-nav{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--gold-dark);padding:.2rem .5rem;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1.2rem;}
 .cal-dn{text-align:center;font-size:.7rem;font-family:'Arial',sans-serif;color:var(--ink-light);text-transform:uppercase;padding:.35rem 0;}
-.cal-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.83rem;font-family:'Arial',sans-serif;border-radius:2px;cursor:pointer;transition:background .15s,color .15s;}
+.cal-d{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:.98rem;font-family:'Arial',sans-serif;border-radius:2px;cursor:pointer;transition:background .15s,color .15s;}
 .cal-d:not(.emp):not(.past):not(.holiday):hover{background:var(--gold-light);color:var(--ink);}
 .cal-d.sel{background:var(--gold);color:var(--ink);font-weight:700;}
 .cal-d.past{color:var(--border-mid);cursor:default;}.cal-d.emp{cursor:default;}
@@ -383,7 +383,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v66</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v67</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1253,7 +1253,7 @@ function selDate(dt, cell) {
   cell.classList.add("sel"); bk.date=dt; bk.time=null;
   var tp=document.getElementById("time-pk"); tp.style.display="block";
   var se=document.getElementById("time-slots");
-  var times=["10:00","10:30","11:00","11:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30"];
+  var times=["10:30","11:30","12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30"];
 
   var myReqId = ++bkReqId; // 이번 날짜 선택에 대한 고유 요청 ID
 

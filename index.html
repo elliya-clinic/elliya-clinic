@@ -49,9 +49,10 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 3rem;height:70px;
-  background:transparent;
-  border-bottom:none;
-  box-shadow:none;
+  background:rgba(20,18,16,0.92);
+  backdrop-filter:blur(20px);
+  border-bottom:0.5px solid rgba(255,255,255,0.08);
+  box-shadow:0 4px 24px rgba(0,0,0,0.18);
   transition:background .4s ease, box-shadow .4s ease, border-color .4s ease;
 }
 nav.nav-scrolled{
@@ -64,8 +65,8 @@ nav.nav-scrolled{
 .nav-scrolled .nav-logo{color:var(--white);}
 .nav-logo span{color:var(--gold-light);transition:color .4s;}
 .nav-scrolled .nav-logo span{color:var(--gold-light);}
-.nav-links{display:flex;gap:2rem;list-style:none;font-size:1rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:600;}
-.nav-links a{color:var(--ink-mid);transition:color .4s;}
+.nav-links{display:flex;gap:2rem;list-style:none;font-size:.92rem;letter-spacing:.14em;text-transform:uppercase;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:500;}
+.nav-links a{color:rgba(255,255,255,.85);transition:color .4s;}
 .nav-scrolled .nav-links a{color:rgba(255,255,255,.85);}
 .nav-links a:hover{color:var(--gold-dark);}
 .nav-scrolled .nav-links a:hover{color:var(--gold-light);}
@@ -91,16 +92,16 @@ nav.nav-scrolled{
   transition:opacity 1.2s ease;
 }
 .hero-slide.active{opacity:.75;}
-.hero-ov{display:none;}
+.hero-ov{position:absolute;inset:0;z-index:1;background:linear-gradient(to right,rgba(20,17,15,.72) 0%,rgba(20,17,15,.4) 45%,rgba(20,17,15,.05) 75%,transparent 100%);}
 .hero-dots{position:absolute;z-index:3;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;}
 .hero-dot{width:2rem;height:2rem;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(28,25,22,.35);color:rgba(255,255,255,.8);font-size:.78rem;font-family:'Arial',sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;}
 .hero-dot:hover{border-color:var(--gold);color:var(--white);}
 .hero-dot.active{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:700;}
 .hero-ct{position:relative;z-index:2;max-width:580px;}
-.hero-eye{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-family:'Arial',sans-serif;}
-.hero-title{font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;color:var(--white);line-height:1.12;margin-bottom:1.5rem;font-family:'Playfair Display',serif;}
+.hero-eye{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-family:'Arial',sans-serif;text-shadow:0 2px 6px rgba(0,0,0,.55);}
+.hero-title{font-size:clamp(2.6rem,5vw,4.2rem);font-weight:700;color:var(--white);line-height:1.12;margin-bottom:1.5rem;font-family:'Playfair Display',serif;text-shadow:0 3px 12px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.45);}
 .hero-title em{font-style:normal;color:var(--gold);}
-.hero-desc{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2.4rem;max-width:500px;line-height:1.85;}
+.hero-desc{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2.4rem;max-width:500px;line-height:1.85;text-shadow:0 2px 8px rgba(0,0,0,.55);}
 .hero-act{display:flex;gap:1rem;flex-wrap:wrap;}
 .btn-p{padding:.85rem 2.2rem;background:var(--gold);color:var(--ink);font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s;font-weight:700;}
 .btn-p:hover{background:var(--gold-dark);color:var(--white);transform:translateY(-1px);}
@@ -115,8 +116,8 @@ nav.nav-scrolled{
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--cream-dark);gap:0;margin:12rem 5vw 5rem;border-radius:20px;overflow:hidden;}
-.about-img{background:url("images/elliya_about.jpeg") center/cover no-repeat,#2D2520;min-height:260px;border-radius:0 24px 24px 0;margin:2.5rem 0 2.5rem 2.5rem;}
+.about-strip{display:grid;grid-template-columns:1fr 1fr;min-height:640px;background:var(--cream-dark);gap:0;margin:12rem 5vw 5rem;border-radius:20px;overflow:hidden;}
+.about-img{background:url("images/elliya_about.jpeg") center/cover no-repeat,#2D2520;min-height:640px;}
 .about-txt{padding:4rem 6vw 4rem 4rem;display:flex;flex-direction:column;justify-content:center;background:var(--cream-dark);}
 
 /* TREATMENTS */
@@ -389,7 +390,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v71</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v73</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -458,24 +459,12 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <section class="hero">
     <div class="hero-bg">
       <img class="hero-slide active" src="images/main_image1.jpg" alt="">
-      <img class="hero-slide" src="images/main_image2.jpg" alt="">
-      <img class="hero-slide" src="images/main_image3.jpg" alt="">
-      <img class="hero-slide" src="images/main_image4.jpg" alt="">
     </div>
     <div class="hero-ov"></div>
-    <div class="hero-dots">
-      <button class="hero-dot active" onclick="heroGoSlide(0)" aria-label="1">1</button>
-      <button class="hero-dot" onclick="heroGoSlide(1)" aria-label="2">2</button>
-      <button class="hero-dot" onclick="heroGoSlide(2)" aria-label="3">3</button>
-      <button class="hero-dot" onclick="heroGoSlide(3)" aria-label="4">4</button>
-    </div>
     <div class="hero-ct">
-      <p class="hero-eye" data-t="hero.eye">Seoul · 안티에이징 &amp; 리프팅 전문</p>
-      <h1 class="hero-title">Reveal Your<br><em>Timeless</em><br>Radiance.</h1>
-      <p class="hero-desc" data-t="hero.desc">엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.</p>
       <div class="hero-act">
         <button class="btn-p" onclick="showPage('booking');initBooking()" data-t="hero.book">예약하기</button>
-        <button class="btn-o" onclick="showPage('my-booking')" data-t="hero.learn">나의 예약확인</button>
+        <button class="btn-o" onclick="showPage('my-booking')" data-t="hero.learn">예약확인하기</button>
       </div>
     </div>
     <!-- 마스코트 Elli -->
@@ -486,7 +475,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <div class="about-txt">
       <p class="s-eye" data-t="about.eye">About Elliya Clinic</p>
       <h2 class="s-title" data-t="about.title">과학과 자연미의 만남</h2>
-      <p class="s-body" data-t="about.body">엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.</p>
+      <p class="s-body" data-t="about.body">엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다. 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.</p>
       <button class="btn-t" onclick="showPage('philo-page')" data-t="about.philo">철학 보기</button>
     </div>
   </section>
@@ -566,7 +555,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   </section>
 
   <!-- SNS FOLLOW SECTION -->
-  <section class="sns-sec fade-in">
+  <section class="sns-sec fade-in" style="background:#1C1916 !important;">
     <p class="s-eye" style="color:var(--gold-light);letter-spacing:.25em;text-align:center;">Follow Us</p>
 
     <div class="sns-icons">
@@ -597,6 +586,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <div class="ft-brand">
       <span class="nav-logo">Elliya <span style="color:var(--gold)">Clinic</span></span>
       <p data-t="footer.desc">서울의 안티에이징 &amp; 리프팅 전문 피부과.</p>
+      <p style="margin-top:.8rem;"><a href="tel:0234711003" style="color:rgba(255,255,255,.6);text-decoration:none;">02-3471-1003</a></p>
     </div>
     <div class="ft-col"><h4 data-t="footer.tx">Treatments</h4><ul>
       <li><a href="#" onclick="showDetail('hifu')" data-t="tx1.name">HIFU Lifting</a></li>
@@ -696,8 +686,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
       <div class="s-item active" id="si-1"><div class="s-num">1</div><div class="s-info"><div class="s-nm" data-t="bk.s2">날짜 &amp; 시간</div><div class="s-sb" id="s2-sub" data-t="bk.s2s">날짜·시간 선택</div></div></div>
       <div class="s-item" id="si-2"><div class="s-num">2</div><div class="s-info"><div class="s-nm" data-t="bk.s1">서비스 선택</div><div class="s-sb" data-t="bk.s1s">원하는 시술</div></div></div>
       <div class="s-item" id="si-3"><div class="s-num">3</div><div class="s-info"><div class="s-nm" data-t="bk.s3">정보 입력</div><div class="s-sb" data-t="bk.s3s">연락처 &amp; 이름</div></div></div>
-      <div class="s-item" id="si-4"><div class="s-num">4</div><div class="s-info"><div class="s-nm" data-t="bk.s4">예약 확인</div><div class="s-sb" data-t="bk.s4s">내용 검토</div></div></div>
-      <div class="s-item" id="si-5"><div class="s-num">5</div><div class="s-info"><div class="s-nm" data-t="bk.s5">완료</div><div class="s-sb" data-t="bk.s5s">예약 완료</div></div></div>
+      <div class="s-item" id="si-4"><div class="s-num">4</div><div class="s-info"><div class="s-nm" data-t="bk.s5">완료</div><div class="s-sb" data-t="bk.s5s">예약 완료</div></div></div>
     </div>
     <div class="bk-ct">
       <button class="btn-bk" style="padding:0 0 1.4rem;" onclick="showPage('home')" data-t="common.back-home">&#8592; 홈으로</button>
@@ -768,28 +757,10 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
         </div>
         <div class="s-nav">
           <button class="btn-sb" onclick="gStep(2)" data-t="cm.back">&#8592; 이전</button>
-          <button class="btn-sn" onclick="gStepFwdInfo()" data-t="cm.next">다음 &#8594;</button>
+          <button class="btn-sn" id="btn-submit-bk" style="background:var(--gold);color:var(--ink);" onclick="gStepFwdInfo()" data-t="ct.cfm">예약 &#10003;</button>
         </div>
       </div>
       <div id="bs-4" style="display:none;">
-        <h2 class="bk-title" data-t="bk.s4h">예약 내용을 확인해 주세요</h2>
-        <p class="bk-sub" data-t="bk.s4p">아래 내용이 맞으면 예약 완료 버튼을 눌러주세요.</p>
-        <table class="cart-tbl">
-          <thead><tr><th data-t="ct.i">항목</th><th data-t="ct.d">상세</th><th data-t="ct.p">금액</th></tr></thead>
-          <tbody>
-            <tr><td data-t="ct.s">시술</td><td id="ct-svc">-</td><td id="ct-pr">-</td></tr>
-            <tr><td data-t="ct.dt">날짜</td><td id="ct-date" colspan="2">-</td></tr>
-            <tr><td data-t="ct.n">예약자</td><td id="ct-name" colspan="2">-</td></tr>
-            <tr><td data-t="ct.c">연락처</td><td id="ct-cont" colspan="2">-</td></tr>
-          </tbody>
-        </table>
-        <div class="cart-tot"><span data-t="ct.tot">예상 비용</span><span id="ct-tot">-</span></div>
-        <div class="s-nav">
-          <button class="btn-sb" onclick="gStep(3)" data-t="ct.edit">&#8592; 수정하기</button>
-          <button class="btn-sn" style="background:var(--gold);color:var(--ink);" onclick="submitBk()" data-t="ct.cfm">예약 완료 &#10003;</button>
-        </div>
-      </div>
-      <div id="bs-5" style="display:none;">
         <div class="cfm-box">
           <div class="cfm-icon">&#10003;</div>
           <h2 class="cfm-title" data-t="dn.title">예약이 완료되었습니다!</h2>
@@ -813,9 +784,9 @@ ko: {
 "nav.home":"홈","nav.philo":"철학","nav.tx":"시술","nav.visit":"오시는 길","nav.book":"예약하기",
 "hero.eye":"Seoul · 안티에이징 & 리프팅 전문",
 "hero.desc":"엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.",
-"hero.book":"예약하기 · Book a Consultation","hero.learn":"나의 예약확인",
+"hero.book":"예약하기","hero.learn":"예약확인하기",
 "about.eye":"About Elliya Clinic","about.title":"과학과 자연미의 만남",
-"about.body":"엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다.<br><br>대만을 비롯한 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.",
+"about.body":"엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다. 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.",
 "about.philo":"철학 보기",
 "tx.eye":"Signature Treatments","tx.title":"당신의 변화가 시작됩니다.",
 "tx1.name":"HIFU Lifting · 울쎄라","tx1.desc":"집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.",
@@ -1191,11 +1162,11 @@ function hiSvc(name) {
 }
 
 function showBS(n) {
-  for(var i=1;i<=5;i++){var e=document.getElementById("bs-"+i);if(e) e.style.display=i===n?"block":"none";}
+  for(var i=1;i<=4;i++){var e=document.getElementById("bs-"+i);if(e) e.style.display=i===n?"block":"none";}
 }
 
 function updStep(cur) {
-  for(var i=1;i<=5;i++){
+  for(var i=1;i<=4;i++){
     var it=document.getElementById("si-"+i); if(!it) continue;
     it.classList.remove("active","done");
     if(i<cur) it.classList.add("done"); else if(i===cur) it.classList.add("active");
@@ -1217,12 +1188,11 @@ function gStepFwdInfo() {
 
   if (!ph) { alert(tr("al.phone") || "연락처를 입력해 주세요."); return; }
 
-  gStep(4);
+  submitBk();
 }
 
 function gStep(n) {
   updStep(n); showBS(n);
-  if(n===4) fillCart();
   window.scrollTo({top:98,behavior:"smooth"});
 }
 
@@ -1408,7 +1378,7 @@ function submitBk() {
   var nation=document.getElementById("f-na").value||"-";
   var notes=document.getElementById("f-nt").value||"없음";
   var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
-  var cfmBtn=document.querySelector("[onclick='submitBk()']");
+  var cfmBtn=document.getElementById("btn-submit-bk");
   if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
   var params={service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
 
@@ -1431,7 +1401,7 @@ function submitBk() {
         "<div class=\"cfm-row\"><span>"+tr("cr.name")+"</span><span>"+name+"</span></div>"+
         "<div class=\"cfm-row\"><span>"+tr("cr.email")+"</span><span>"+email+"</span></div>"+
         "<div class=\"cfm-row\"><span>"+tr("cr.price")+"</span><span>"+pr+"</span></div>";
-      gStep(5);
+      gStep(4);
     })
     .catch(function(err){
       if(cfmBtn){cfmBtn.disabled=false;cfmBtn.textContent=tr("ct.cfm");}
@@ -1452,7 +1422,7 @@ function submitBk_unused() {
     "<div class=\"cfm-row\"><span>"+tr("cr.name")+"</span><span>"+name+"</span></div>"+
     "<div class=\"cfm-row\"><span>"+tr("cr.email")+"</span><span>"+email+"</span></div>"+
     "<div class=\"cfm-row\"><span>"+tr("cr.price")+"</span><span>"+pr+"</span></div>";
-  gStep(5);
+  gStep(4);
 }
 
 // =====================================================
@@ -1589,22 +1559,11 @@ function searchBooking() {
 // Init
 buildCList(""); renderCal();
 
-// ── NAV SCROLL EFFECT ──
+// ── NAV: 항상 어두운 배경으로 고정 (스크롤과 무관) ──
 var navEl = document.querySelector("nav");
+if (navEl) navEl.classList.add("nav-scrolled");
 var navLangGroup = document.getElementById("nav-lang-group");
-window.addEventListener("scroll", function() {
-  if (window.scrollY > 50) {
-    navEl.classList.add("nav-scrolled");
-    if(navLangGroup){
-      navLangGroup.style.borderLeftColor = "var(--border)";
-    }
-  } else {
-    navEl.classList.remove("nav-scrolled");
-    if(navLangGroup){
-      navLangGroup.style.borderLeftColor = "rgba(255,255,255,.2)";
-    }
-  }
-}, { passive: true });
+if (navLangGroup) navLangGroup.style.borderLeftColor = "var(--border)";
 
 
 // ── SCROLL FADE-IN OBSERVER ──

@@ -383,7 +383,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v69</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v70</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -680,8 +680,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <div class="bk-inner">
     <div class="bk-steps">
       <div class="bk-step-hd" data-t="bk.steps">예약 단계</div>
-      <div class="s-item active" id="si-1"><div class="s-num">1</div><div class="s-info"><div class="s-nm" data-t="bk.s1">서비스 선택</div><div class="s-sb" data-t="bk.s1s">원하는 시술</div></div></div>
-      <div class="s-item" id="si-2"><div class="s-num">2</div><div class="s-info"><div class="s-nm" data-t="bk.s2">날짜 &amp; 시간</div><div class="s-sb" id="s2-sub" data-t="bk.s2s">날짜·시간 선택</div></div></div>
+      <div class="s-item active" id="si-1"><div class="s-num">1</div><div class="s-info"><div class="s-nm" data-t="bk.s2">날짜 &amp; 시간</div><div class="s-sb" id="s2-sub" data-t="bk.s2s">날짜·시간 선택</div></div></div>
+      <div class="s-item" id="si-2"><div class="s-num">2</div><div class="s-info"><div class="s-nm" data-t="bk.s1">서비스 선택</div><div class="s-sb" data-t="bk.s1s">원하는 시술</div></div></div>
       <div class="s-item" id="si-3"><div class="s-num">3</div><div class="s-info"><div class="s-nm" data-t="bk.s3">정보 입력</div><div class="s-sb" data-t="bk.s3s">연락처 &amp; 이름</div></div></div>
       <div class="s-item" id="si-4"><div class="s-num">4</div><div class="s-info"><div class="s-nm" data-t="bk.s4">예약 확인</div><div class="s-sb" data-t="bk.s4s">내용 검토</div></div></div>
       <div class="s-item" id="si-5"><div class="s-num">5</div><div class="s-info"><div class="s-nm" data-t="bk.s5">완료</div><div class="s-sb" data-t="bk.s5s">예약 완료</div></div></div>
@@ -689,17 +689,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <div class="bk-ct">
       <button class="btn-bk" style="padding:0 0 1.4rem;" onclick="showPage('home')" data-t="common.back-home">&#8592; 홈으로</button>
       <div id="bs-1">
-        <h2 class="bk-title" data-t="bk.s1h">시술을 선택해 주세요</h2>
-        <p class="bk-sub" data-t="bk.s1p">원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.</p>
-        <div class="svc-opts">
-          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="tx1.name">HIFU Lifting</div><div class="svc-ds" data-t="bk.sd1">논서지컬 초음파 리프팅</div></div><div class="svc-pr">&#8361; 550,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="tx2.name">Thread Lifting</div><div class="svc-ds" data-t="bk.sd2">즉각적 리프팅 + 콜라겐 재생</div></div><div class="svc-pr">&#8361; 800,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="tx3.name">Filler &amp; Botox</div><div class="svc-ds" data-t="bk.sd3">볼륨 회복 &amp; 주름 개선</div></div><div class="svc-pr">&#8361; 350,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="bk.s4n">무료 상담</div><div class="svc-ds" data-t="bk.sd4">전문의 상담 후 시술 결정</div></div><div class="svc-pr" style="color:var(--gold-dark);" data-t="bk.free">무료</div></div>
-        </div>
-      </div>
-      <div id="bs-2" style="display:none;">
-        <h2 class="bk-title" data-t="bk.s2h">날짜와 시간을 선택해 주세요</h2>
         <p class="bk-sub" data-t="bk.s2p">날짜를 선택하신 후 시간을 선택해 주세요.</p>
         <div class="cal-wrap">
           <div class="cal-hd">
@@ -719,8 +708,20 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
           </div>
         </div>
         <div class="s-nav">
+          <button class="btn-sn" style="margin-left:auto;" onclick="gStepFwd(1)" data-t="cm.next">다음 &#8594;</button>
+        </div>
+      </div>
+      <div id="bs-2" style="display:none;">
+        <h2 class="bk-title" data-t="bk.s1h">시술을 선택해 주세요</h2>
+        <p class="bk-sub" data-t="bk.s1p">원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.</p>
+        <div class="svc-opts">
+          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="tx1.name">HIFU Lifting</div><div class="svc-ds" data-t="bk.sd1">논서지컬 초음파 리프팅</div></div><div class="svc-pr">&#8361; 550,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="tx2.name">Thread Lifting</div><div class="svc-ds" data-t="bk.sd2">즉각적 리프팅 + 콜라겐 재생</div></div><div class="svc-pr">&#8361; 800,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="tx3.name">Filler &amp; Botox</div><div class="svc-ds" data-t="bk.sd3">볼륨 회복 &amp; 주름 개선</div></div><div class="svc-pr">&#8361; 350,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="bk.s4n">무료 상담</div><div class="svc-ds" data-t="bk.sd4">전문의 상담 후 시술 결정</div></div><div class="svc-pr" style="color:var(--gold-dark);" data-t="bk.free">무료</div></div>
+        </div>
+        <div class="s-nav">
           <button class="btn-sb" onclick="gStep(1)" data-t="cm.back">&#8592; 이전</button>
-          <button class="btn-sn" onclick="gStepFwd(2)" data-t="cm.next">다음 &#8594;</button>
         </div>
       </div>
       <div id="bs-3" style="display:none;">
@@ -746,7 +747,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
                   <div id="c-list"></div>
                 </div>
               </div>
-              <input class="ph-inp" id="f-ph" type="tel" placeholder="010-0000-0000">
+              <input class="ph-inp" id="f-ph" type="tel" inputmode="numeric" placeholder="01000000000" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
             </div>
           </div>
           <div class="f-grp"><label class="f-lbl" data-t="fm.na">국적</label><input class="f-inp" id="f-na" type="text" placeholder="Taiwan / Korea / Other"></div>
@@ -754,7 +755,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
         </div>
         <div class="s-nav">
           <button class="btn-sb" onclick="gStep(2)" data-t="cm.back">&#8592; 이전</button>
-          <button class="btn-sn" onclick="gStep(4)" data-t="cm.next">다음 &#8594;</button>
+          <button class="btn-sn" onclick="gStepFwdInfo()" data-t="cm.next">다음 &#8594;</button>
         </div>
       </div>
       <div id="bs-4" style="display:none;">
@@ -842,7 +843,7 @@ ko: {
 "dn.title":"예약이 완료되었습니다!","dn.sub":"입력하신 이메일로 예약 확인 메시지를 발송했습니다.","dn.home":"홈으로 돌아가기",
 "d0":"일","d1":"월","d2":"화","d3":"수","d4":"목","d5":"금","d6":"토",
 "cm.back":"← 이전","cm.next":"다음 →",
-"al.date":"날짜를 선택해 주세요.","al.time":"시간을 선택해 주세요.",
+"al.date":"날짜를 선택해 주세요.","al.time":"시간을 선택해 주세요.","al.name":"이름과 성을 입력해 주세요.","al.email":"올바른 이메일 주소를 입력해 주세요. (예: name@example.com)","al.phone":"연락처를 입력해 주세요.",
 "cr.svc":"시술","cr.date":"날짜 & 시간","cr.name":"예약자","cr.email":"이메일","cr.price":"예상 비용"
 },
 en: {
@@ -892,7 +893,7 @@ en: {
 "dn.title":"Booking Confirmed!","dn.sub":"A confirmation has been sent to your email.","dn.home":"Back to Home",
 "d0":"Sun","d1":"Mon","d2":"Tue","d3":"Wed","d4":"Thu","d5":"Fri","d6":"Sat",
 "cm.back":"← Back","cm.next":"Next →",
-"al.date":"Please select a date.","al.time":"Please select a time.",
+"al.date":"Please select a date.","al.time":"Please select a time.","al.name":"Please enter your first and last name.","al.email":"Please enter a valid email address (e.g. name@example.com).","al.phone":"Please enter your phone number.",
 "cr.svc":"Treatment","cr.date":"Date & Time","cr.name":"Name","cr.email":"Email","cr.price":"Est. Cost"
 },
 zh: {
@@ -942,7 +943,7 @@ zh: {
 "dn.title":"預約完成！","dn.sub":"確認信已發送至您的電子郵件。","dn.home":"返回首頁",
 "d0":"日","d1":"一","d2":"二","d3":"三","d4":"四","d5":"五","d6":"六",
 "cm.back":"← 上一步","cm.next":"下一步 →",
-"al.date":"請選擇日期。","al.time":"請選擇時間。",
+"al.date":"請選擇日期。","al.time":"請選擇時間。","al.name":"請輸入姓名。","al.email":"請輸入有效的電子郵件地址(例如:name@example.com)。","al.phone":"請輸入聯絡電話。",
 "cr.svc":"療程","cr.date":"日期 & 時間","cr.name":"姓名","cr.email":"電子郵件","cr.price":"預估費用"
 },
 ar: {
@@ -992,7 +993,7 @@ ar: {
 "dn.title":"تم الحجز بنجاح!","dn.sub":"تم إرسال تأكيد الحجز إلى بريدك الإلكتروني.","dn.home":"العودة للرئيسية",
 "d0":"أح","d1":"إث","d2":"ثل","d3":"أر","d4":"خم","d5":"جم","d6":"سب",
 "cm.back":"السابق ←","cm.next":"التالي →",
-"al.date":"الرجاء اختيار تاريخ.","al.time":"الرجاء اختيار وقت.",
+"al.date":"الرجاء اختيار تاريخ.","al.time":"الرجاء اختيار وقت.","al.name":"الرجاء إدخال الاسم الأول واسم العائلة.","al.email":"الرجاء إدخال بريد إلكتروني صحيح (مثال: name@example.com).","al.phone":"الرجاء إدخال رقم الهاتف.",
 "cr.svc":"العلاج","cr.date":"التاريخ والوقت","cr.name":"الاسم","cr.email":"البريد الإلكتروني","cr.price":"التكلفة التقديرية"
 }
 };
@@ -1165,7 +1166,7 @@ function initBooking(preSvc, prePr) {
   if (tp) tp.style.display="none";
   if (preSvc) {
     bk.svc=preSvc; bk.price=prePr||0;
-    setTimeout(function() { hiSvc(preSvc); setTimeout(function() { gStep(2); }, 320); }, 60);
+    setTimeout(function() { hiSvc(preSvc); }, 60); // 시술은 미리 선택 표시만 해두고, 날짜 단계부터 시작
   }
   renderCal();
 }
@@ -1190,6 +1191,22 @@ function updStep(cur) {
   bk.step=cur;
 }
 
+function gStepFwdInfo() {
+  var fn = document.getElementById("f-fn").value.trim();
+  var ln = document.getElementById("f-ln").value.trim();
+  var em = document.getElementById("f-em").value.trim();
+  var ph = document.getElementById("f-ph").value.trim();
+
+  if (!fn || !ln) { alert(tr("al.name") || "이름과 성을 입력해 주세요."); return; }
+
+  var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(em)) { alert(tr("al.email") || "올바른 이메일 주소를 입력해 주세요. (예: name@example.com)"); return; }
+
+  if (!ph) { alert(tr("al.phone") || "연락처를 입력해 주세요."); return; }
+
+  gStep(4);
+}
+
 function gStep(n) {
   updStep(n); showBS(n);
   if(n===4) fillCart();
@@ -1197,10 +1214,10 @@ function gStep(n) {
 }
 
 function gStepFwd(cur) {
-  if(cur===2){
+  if(cur===1){
     if(!bk.date){alert(tr("al.date"));return;}
     if(!bk.time){alert(tr("al.time"));return;}
-    gStep(3); return;
+    gStep(2); return;
   }
   gStep(cur+1);
 }
@@ -1210,7 +1227,7 @@ function selectSvc(idx) {
   bk.svc = d.name[lang]||d.name.ko;
   bk.price = d.price;
   hiSvc(bk.svc);
-  setTimeout(function(){gStep(2);},300);
+  setTimeout(function(){gStep(3);},300);
 }
 
 // Calendar

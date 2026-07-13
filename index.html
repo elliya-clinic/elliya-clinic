@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Serif+KR:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Noto+Serif+KR:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700&family=Nanum+Myeongjo:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" onload="emailjs.init('1KZmSZn1R3Ropqaly')"></script>
 <title>엘리야의원 — Elliya Clinic</title>
 <style>
@@ -25,7 +26,7 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
 body{font-family:'Noto Serif KR','Georgia',serif;background:#FDFCFA;color:var(--ink);line-height:1.85;font-size:17px;}
-body, body *{font-family:'Georgia','Noto Serif KR',serif!important;}
+body, body *{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif!important;}
 a{color:inherit;text-decoration:none;}
 
 /* LANG BAR */
@@ -63,24 +64,24 @@ nav.nav-scrolled{
   box-shadow:0 2px 12px rgba(0,0,0,0.05);
 }
 .nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .4s;font-family:'Playfair Display',Georgia,serif;}
-.nav-scrolled .nav-logo{color:var(--white);}
+.nav-scrolled .nav-logo{color:var(--ink);}
 .nav-logo span{color:var(--gold-light);transition:color .4s;}
 .nav-scrolled .nav-logo span{color:var(--gold-light);}
 .nav-links{display:flex;gap:2rem;list-style:none;font-size:.92rem;letter-spacing:.14em;text-transform:uppercase;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:500;}
 .nav-links a{color:var(--ink-mid);transition:color .4s;}
-.nav-scrolled .nav-links a{color:rgba(255,255,255,.85);}
+.nav-scrolled .nav-links a{color:var(--ink-mid);}
 .nav-links a:hover{color:var(--gold-dark);}
-.nav-scrolled .nav-links a:hover{color:var(--gold-light);}
+.nav-scrolled .nav-links a:hover{color:var(--gold-dark);}
 .nav-book{padding:.5rem 1.5rem;background:var(--ink);border:1px solid var(--ink);color:var(--white)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .4s,border .4s,color .4s;}
-.nav-scrolled .nav-book{background:var(--gold);border-color:var(--gold);color:var(--ink)!important;}
-.nav-book:hover{background:var(--gold-dark);border-color:var(--gold-dark);}
-.nav-scrolled .nav-book:hover{background:var(--gold-dark);color:var(--white)!important;}
+.nav-scrolled .nav-book{background:var(--ink);border-color:var(--ink);color:var(--white)!important;}
+.nav-scrolled .nav-book:hover{background:#000;color:var(--white)!important;}
+.nav-book:hover{background:#000;border-color:#000;}
 .hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--ink);transition:color .4s;}
-.nav-scrolled .hamburger{color:var(--white);}
+.nav-scrolled .hamburger{color:var(--ink);}
 .pt{padding-top:70px;background:#FDFCFA;min-height:100vh;}
 
 /* HERO */
-.hero{height:100vh;min-height:600px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
+.hero{width:100%;aspect-ratio:16/9;min-height:420px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
 .hero-bg{
   position:absolute;inset:0;
   overflow:hidden;
@@ -122,7 +123,7 @@ nav.nav-scrolled{
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-img-full{width:100%;height:80vh;min-height:520px;background:url("images/elliya_about.jpeg") center/cover no-repeat,#2D2520;margin-top:8rem;}
+.about-img-full{width:100%;aspect-ratio:16/9;min-height:360px;background:url("images/elliya_about.jpeg") center/contain no-repeat,#F5F2EE;margin-top:8rem;}
 .about-txt-block{max-width:680px;margin:0 auto;padding:4rem 5vw 3rem;text-align:center;}
 .about-txt-block .btn-t{justify-content:center;}
 
@@ -130,13 +131,13 @@ nav.nav-scrolled{
 .tx-sec{padding:2rem 3vw 1.5rem;background:var(--cream-dark);margin:5rem 0;}
 .tx-hd{text-align:center;margin-bottom:1.2rem;}
 .tx-hd .s-title{font-size:clamp(1.7rem,3.5vw,2.4rem);}
-.tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;padding:0 0 1rem;}
+.tx-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;padding:0 0 1rem;}
 .tx-card{padding:0;background:var(--white);border-radius:12px;transition:transform .25s,box-shadow .25s,filter .25s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);border:none;}
 
 .tx-card::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
 .tx-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,0.15);filter:brightness(1.02);}.tx-card:hover::before{transform:scaleX(1);}
 .tx-num{display:none;}
-.tx-img{width:100%;height:160px;border-radius:12px 12px 0 0;margin-bottom:0;background:#E8E4DF center/cover;}
+.tx-img{width:100%;aspect-ratio:3/4.4;border-radius:12px 12px 0 0;margin-bottom:0;background:#E8E4DF center/cover;}
 .tx-name{font-size:.85rem;font-weight:700;margin-bottom:.2rem;color:var(--gold-dark);font-family:"Playfair Display",serif;padding:.6rem .9rem 0;}
 .tx-desc{font-size:.72rem;color:var(--ink);font-weight:600;line-height:1.5;margin-bottom:.6rem;padding:0 .9rem;}
 .card-arr{display:none;}
@@ -154,7 +155,7 @@ nav.nav-scrolled{
 .philo-b{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* VISIT */
-.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 4vw;gap:2.5rem;}
+.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 4vw 2.5rem;gap:2.5rem;}
 .visit-map{
   width:100%;
   height:400px;
@@ -200,7 +201,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .elli:hover 
 
 /* ── SNS SECTION ── */
-.sns-sec{background:#1C1916;color:var(--white);padding:5.5rem 5vw 2.5rem;text-align:center;margin-top:5rem;border-radius:20px 20px 0 0;}
+.sns-sec{background:#1C1916;color:var(--white);padding:8.5rem 5vw 2.5rem;text-align:center;margin-top:0;border-radius:20px 20px 0 0;}
+.sns-sec .s-eye{margin-bottom:1.6rem;}
 .sns-title{font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:700;color:var(--white);margin-bottom:.5rem;letter-spacing:-.01em;font-family:"Playfair Display",serif;}
 .sns-sub{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem;font-family:'Arial',sans-serif;}
 .sns-icons{display:flex;justify-content:center;gap:2rem;margin-bottom:0;flex-wrap:wrap;}
@@ -214,7 +216,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 
 /* NAV LOGO SVG */
 .nav-logo-svg{color:var(--ink);transition:color .4s;}
-.nav-scrolled .nav-logo-svg{color:var(--white);}
+.nav-scrolled .nav-logo-svg{color:var(--ink);}
 
 /* ── SCROLL FADE-IN ── */
 .fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease;}
@@ -245,7 +247,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 
 /* BOOKING */
 .bk-page{min-height:100vh;background:#FDFCFA;}
-.bk-inner{max-width:1000px;margin:0 auto;padding:3rem 2rem;display:grid;grid-template-columns:230px 1fr;gap:3rem;}
+.bk-inner{max-width:1000px;margin:0 auto;padding:1.8rem 2rem 3rem;display:grid;grid-template-columns:230px 1fr;gap:3rem;}
 .bk-steps{position:sticky;top:110px;height:fit-content;}
 .bk-step-hd{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:1.4rem;}
 .s-item{display:flex;align-items:flex-start;gap:.85rem;padding:.8rem 0;border-bottom:.5px solid var(--border);}
@@ -257,10 +259,10 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .s-item.active .s-nm{color:var(--ink);}
 .s-sb{font-size:.75rem;color:var(--ink-light);font-family:'Arial',sans-serif;margin-top:.1rem;}
 .bk-ct{padding-top:.5rem;}
-.bk-title{font-size:1.75rem;font-weight:700;margin-bottom:.4rem;color:var(--ink);}
-.bk-sub{font-size:.9rem;color:var(--ink-light);margin-bottom:2.2rem;font-family:'Arial',sans-serif;}
-.svc-opts{display:flex;flex-direction:column;gap:.9rem;}
-.svc-opt{padding:1.3rem 1.5rem;border:1px solid var(--border-mid);border-radius:4px;background:var(--white);cursor:pointer;transition:border-color .2s,background .2s;display:flex;justify-content:space-between;align-items:center;}
+.bk-title{font-size:1.55rem;font-weight:700;margin-bottom:.3rem;color:var(--ink);}
+.bk-sub{font-size:.88rem;color:var(--ink-light);margin-bottom:1.3rem;font-family:'Arial',sans-serif;}
+.svc-opts{display:flex;flex-direction:column;gap:.55rem;}
+.svc-opt{padding:.85rem 1.4rem;border:1px solid var(--border-mid);border-radius:4px;background:var(--white);cursor:pointer;transition:border-color .2s,background .2s;display:flex;justify-content:space-between;align-items:center;}
 .svc-opt:hover{border-color:var(--gold);background:var(--cream-dark);}
 .svc-opt.sel{border-color:var(--gold);background:rgba(201,169,110,.06);}
 .svc-nm{font-size:.98rem;font-weight:700;color:var(--ink);margin-bottom:.2rem;}
@@ -284,11 +286,11 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .t-slot:hover{border-color:var(--gold);}
 .t-slot.sel{background:var(--gold);border-color:var(--gold);font-weight:700;color:var(--ink);}
 /* Form */
-.info-form{display:flex;flex-direction:column;gap:1.1rem;}
+.info-form{display:flex;flex-direction:column;gap:.75rem;}
 .f-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 .f-grp{display:flex;flex-direction:column;gap:.4rem;}
 .f-lbl{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;}
-.f-inp{padding:.72rem 1rem;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);font-size:.93rem;font-family:inherit;color:var(--ink);outline:none;transition:border-color .2s;}
+.f-inp{padding:.58rem 1rem;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);font-size:.93rem;font-family:inherit;color:var(--ink);outline:none;transition:border-color .2s;}
 .f-inp:focus{border-color:var(--gold);}.f-inp::placeholder{color:var(--ink-light);}
 /* Phone picker */
 .ph-row{display:flex;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);overflow:visible;position:relative;}
@@ -311,7 +313,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 .cart-tbl td:last-child{text-align:right;font-weight:700;}
 .cart-tot{display:flex;justify-content:space-between;font-size:1.15rem;font-weight:700;padding-top:.9rem;}
 /* Step nav */
-.s-nav{display:flex;align-items:center;gap:1rem;margin-top:2rem;padding-top:1.5rem;border-top:.5px solid var(--border);flex-wrap:wrap;}
+.s-nav{display:flex;align-items:center;gap:1rem;margin-top:1.2rem;padding-top:1rem;border-top:.5px solid var(--border);flex-wrap:wrap;}
 .btn-sb{padding:.72rem 1.7rem;background:transparent;color:var(--ink-mid);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;font-weight:700;border:1px solid var(--border-mid);border-radius:2px;cursor:pointer;transition:border-color .2s,color .2s;}
 .btn-sb:hover{border-color:var(--ink-mid);color:var(--ink);}
 .btn-sn{padding:.72rem 2rem;background:var(--ink);color:var(--white);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;font-weight:700;border:none;border-radius:2px;cursor:pointer;transition:background .2s;}
@@ -366,7 +368,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 @media(max-width:900px){
   nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:block;}
   .lang-bar{padding:0 1rem;}.lang-btn{padding:0 .6rem;font-size:.67rem;}
-  .about-img-full{height:50vh;min-height:280px;}.visit-info{grid-template-columns:1fr 1fr;}
+  .about-img-full{min-height:220px;}.visit-info{grid-template-columns:1fr 1fr;}
   .tx-grid{grid-template-columns:repeat(2,1fr);}.tx-card{border:none;}
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
@@ -396,11 +398,10 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v76</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v88</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
-    <li><a href="#" onclick="showPage('philo-page')" data-t="nav.philo">철학</a></li>
     <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('treatments').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.tx">시술</a></li>
     <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('visit').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.visit">오시는 길</a></li>
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
@@ -478,7 +479,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 
   <section class="about-img-full"></section>
   <section class="about-txt-block fade-in">
-    <p class="s-body" data-t="about.body">엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다. 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.</p>
+    <p class="s-body" style="font-weight:700;" data-t="about.body">Your Room. Your Doctor. Your Time.<br>프라이빗 1인실에서,<br>원장이 직접 당신을 찾아갑니다.</p>
   </section>
 
   <section class="tx-sec fade-in" id="treatments">
@@ -787,7 +788,7 @@ ko: {
 "hero.desc":"엘리야의원은 최첨단 리프팅 테크놀로지와 섬세한 의료 철학을 결합하여, 당신만의 자연스러운 아름다움을 되살립니다.",
 "hero.book":"예약하기","hero.learn":"예약확인하기",
 "about.eye":"About Elliya Clinic","about.title":"과학과 자연미의 만남",
-"about.body":"엘리야의원(Elliya Clinic)은 서울에서 안티에이징과 리프팅 시술을 전문으로 하는 피부과 클리닉입니다. 해외 환자분들도 언어 장벽 없이 상담받으실 수 있습니다.",
+"about.body":"Your Room. Your Doctor. Your Time.<br>프라이빗 1인실에서,<br>원장이 직접 당신을 찾아갑니다.",
 "about.philo":"철학 보기",
 "tx.eye":"Signature Treatments","tx.title":"당신의 변화가 시작됩니다.",
 "tx1.name":"HIFU Lifting · 울쎄라","tx1.desc":"집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.",
@@ -837,7 +838,7 @@ en: {
 "hero.desc":"Elliya Clinic combines cutting-edge lifting technology with a refined medical philosophy to reveal your naturally timeless beauty.",
 "hero.book":"Book a Consultation","hero.learn":"My Booking Check",
 "about.eye":"About Elliya Clinic","about.title":"Where Science Meets Natural Beauty",
-"about.body":"Elliya Clinic is a Seoul dermatology clinic specializing in anti-aging and lifting treatments. We help your natural beauty shine.<br><br>International patients from Taiwan and beyond are warmly welcomed with dedicated coordinators who speak your language.",
+"about.body":"Your Room. Your Doctor. Your Time.<br>In your own private suite,<br>the director comes directly to you.",
 "about.philo":"Our Philosophy",
 "tx.eye":"Signature Treatments","tx.title":"Your Transformation Starts Here.",
 "tx1.name":"HIFU Lifting","tx1.desc":"Focused ultrasound targeting the SMAS layer to lift sagging contours — non-surgical, painless, natural.",
@@ -887,7 +888,7 @@ zh: {
 "hero.desc":"伊萊賈診所結合最先進的提升技術與精緻的醫療理念，幫助您重現自然永恆的美麗。",
 "hero.book":"立即預約諮詢","hero.learn":"我的預約確認",
 "about.eye":"關於伊萊賈診所","about.title":"科學與自然美的完美結合",
-"about.body":"伊萊賈診所（Elliya Clinic）是首爾一家專注於抗老化與提升療程的皮膚科診所。<br><br>我們設有專屬台灣協調員，提供中文服務，讓您無語言障礙地享受頂級療程。",
+"about.body":"Your Room. Your Doctor. Your Time.<br>在專屬您的私人套房內，<br>院長親自前來為您診療。",
 "about.philo":"我們的理念",
 "tx.eye":"招牌療程","tx.title":"您的蛻變從這裡開始。",
 "tx1.name":"HIFU音波拉提","tx1.desc":"高強度聚焦超音波刺激SMAS筋膜層，無創提升鬆弛輪廓，自然無痛。",
@@ -937,7 +938,7 @@ ar: {
 "hero.desc":"تجمع عيادة إيليا بين أحدث تقنيات الرفع وفلسفة طبية راقية لإبراز جمالك الطبيعي الخالد.",
 "hero.book":"احجز استشارة","hero.learn":"تأكيد حجزي",
 "about.eye":"عن عيادة إيليا","about.title":"حيث يلتقي العلم بالجمال الطبيعي",
-"about.body":"عيادة إيليا هي عيادة جلدية في سيول متخصصة في علاجات مكافحة الشيخوخة والرفع.<br><br>يُرحَّب بالمرضى الدوليين مع منسقين متخصصين يتحدثون لغتك.",
+"about.body":"Your Room. Your Doctor. Your Time.<br>في جناحك الخاص،<br>يأتي إليك المدير شخصيًا.",
 "about.philo":"فلسفتنا",
 "tx.eye":"علاجاتنا المميزة","tx.title":"تحولك يبدأ من هنا.",
 "tx1.name":"رفع HIFU بالموجات","tx1.desc":"موجات فوق صوتية مركّزة لرفع الملامح المترهلة بدون جراحة وبدون ألم.",

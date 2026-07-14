@@ -131,7 +131,12 @@ nav.nav-scrolled{
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-img-full{width:100%;aspect-ratio:16/9;min-height:360px;background:url("images/elliya_about.jpeg") center/contain no-repeat,#F5F2EE;margin-top:8rem;}
+.about-img-full{width:100%;aspect-ratio:16/9;min-height:360px;margin-top:8rem;overflow:hidden;position:relative;background:#F5F2EE;}
+.about-img-inner{position:absolute;inset:0;background:url("images/elliya_about.jpeg") center/contain no-repeat;transform:scale(1.15);animation:aboutSlowZoomOut 10s ease-in-out infinite alternate;}
+@keyframes aboutSlowZoomOut{
+  from{transform:scale(1.15);}
+  to{transform:scale(1);}
+}
 .about-txt-block{max-width:680px;margin:0 auto;padding:4rem 5vw 3rem;text-align:center;}
 .about-txt-block .btn-t{justify-content:center;}
 
@@ -403,7 +408,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v96</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v97</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -482,7 +487,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <!-- 마스코트 Elli -->
   </section>
 
-  <section class="about-img-full"></section>
+  <section class="about-img-full"><div class="about-img-inner"></div></section>
   <section class="about-txt-block fade-in">
     <p class="s-body" style="font-weight:700;" data-t="about.body">Your Room. Your Doctor. Your Time.<br>프라이빗 1인실에서,<br>원장이 직접 당신을 찾아갑니다.</p>
   </section>

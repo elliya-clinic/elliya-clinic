@@ -32,12 +32,14 @@ a{color:inherit;text-decoration:none;}
 /* LANG BAR */
 .lang-bar{display:none;}
 .lang-btn{
-  padding:0 .6rem;height:28px;background:none;border:none;
+  padding:0 .55rem;height:28px;background:none;border:none;
   border-right:0.5px solid rgba(0,0,0,.15);
-  color:rgba(20,17,15,.6);font-size:0.65rem;letter-spacing:0.06em;
+  color:rgba(20,17,15,.6);font-size:1.15rem;letter-spacing:0.06em;
   cursor:pointer;font-family:'Arial',sans-serif;
-  transition:color .2s;display:flex;align-items:center;gap:.3rem;white-space:nowrap;
+  transition:color .2s,opacity .2s;display:flex;align-items:center;gap:.3rem;white-space:nowrap;
+  opacity:.55;
 }
+.lang-btn img{width:20px;height:auto;border-radius:2px;display:block;box-shadow:0 0 0 .5px rgba(0,0,0,.15);}
 .nav-scrolled .lang-btn{color:rgba(20,17,15,.55);border-right-color:rgba(0,0,0,.12);}
 .lang-btn:first-child{border-left:0.5px solid rgba(0,0,0,.15);}
 .nav-scrolled .lang-btn:first-child{border-left-color:rgba(0,0,0,.12);}
@@ -91,9 +93,15 @@ nav.nav-scrolled{
   width:100%;height:100%;
   object-fit:cover;
   opacity:0;
+  transform:scale(1);
   transition:opacity 1.2s ease;
+  animation:heroSlowZoom 10s ease-in-out infinite alternate;
 }
 .hero-slide.active{opacity:1;}
+@keyframes heroSlowZoom{
+  from{transform:scale(1);}
+  to{transform:scale(1.15);}
+}
 .hero-ov{display:none;}
 .hero-dots{position:absolute;z-index:3;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;}
 .hero-dot{width:2rem;height:2rem;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(28,25,22,.35);color:rgba(255,255,255,.8);font-size:.78rem;font-family:'Arial',sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;}
@@ -130,7 +138,7 @@ nav.nav-scrolled{
 /* TREATMENTS */
 .tx-sec{padding:2rem 3vw 1.5rem;background:var(--cream-dark);margin:5rem 0;}
 .tx-hd{text-align:center;margin-bottom:1.2rem;}
-.tx-hd .s-title{font-size:clamp(1.7rem,3.5vw,2.4rem);}
+.tx-hd .s-title{font-size:clamp(1.3rem,2.6vw,1.8rem);}
 .tx-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;padding:0 0 1rem;}
 .tx-card{padding:0;background:var(--white);border-radius:12px;transition:transform .25s,box-shadow .25s,filter .25s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);border:none;}
 
@@ -377,10 +385,10 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 
 <!-- LANG BAR -->
 <div class="lang-bar">
-  <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')">🇰🇷 한국어</button>
-  <button class="lang-btn" id="lb-en" onclick="setLang('en')">🇺🇸 English</button>
-  <button class="lang-btn" id="lb-zh" onclick="setLang('zh')">🇹🇼 繁中</button>
-  <button class="lang-btn" id="lb-ar" onclick="setLang('ar')">🇸🇦 عربي</button>
+  <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
+  <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+  <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
+  <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
 </div>
 
 <!-- NAV -->
@@ -395,7 +403,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v92</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v96</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -404,10 +412,10 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:0.5px solid var(--border);" id="nav-lang-group">
-    <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')">🇰🇷 KO</button>
-    <button class="lang-btn" id="lb-en" onclick="setLang('en')">🇺🇸 EN</button>
-    <button class="lang-btn" id="lb-zh" onclick="setLang('zh')">🇹🇼 繁</button>
-    <button class="lang-btn" id="lb-ar" onclick="setLang('ar')">🇸🇦 AR</button>
+    <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
+    <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+    <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
+    <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
   </div>
   <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
 </nav>
@@ -487,33 +495,33 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
     <div class="tx-grid">
       <div class="tx-card" onclick="showDetail('sonowave')">
         <div class="tx-img" style="background-image:url('images/sig_1.jpg')"></div>
-        <div class="tx-name">소프웨이브</div>
-        <p class="tx-desc">초음파 에너지로 진피층을 자극하여 콜라겐 재생을 유도하는 논서지컬 리프팅.</p>
+        <div class="tx-name" data-t="sig1.name">소프웨이브</div>
+        <p class="tx-desc" data-t="sig1.desc">SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비.</p>
       </div>
       <div class="tx-card" onclick="showDetail('titanium')">
         <div class="tx-img" style="background-image:url('images/sig_2.jpg')"></div>
-        <div class="tx-name">티타늄</div>
-        <p class="tx-desc">티타늄 팁을 이용한 고주파 리프팅으로 피부 탄력과 윤곽을 개선합니다.</p>
-      </div>
-      <div class="tx-card" onclick="showDetail('ulthera')">
-        <div class="tx-img" style="background-image:url('images/sig_6.jpg')"></div>
-        <div class="tx-name">울쎄라</div>
-        <p class="tx-desc">집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 대표적 논서지컬 리프팅.</p>
-      </div>
-      <div class="tx-card" onclick="showDetail('onda')">
-        <div class="tx-img" style="background-image:url('images/sig_4.jpg')"></div>
-        <div class="tx-name">온다</div>
-        <p class="tx-desc">마이크로파 기술로 지방세포를 선택적으로 파괴하고 콜라겐 생성을 촉진합니다.</p>
-      </div>
-      <div class="tx-card" onclick="showDetail('shrink')">
-        <div class="tx-img" style="background-image:url('images/sig_5.jpg')"></div>
-        <div class="tx-name">슈링크</div>
-        <p class="tx-desc">HIFU 기술 기반의 정밀 리프팅으로 다양한 깊이에서 효과적인 피부 개선.</p>
+        <div class="tx-name" data-t="sig2.name">티타늄</div>
+        <p class="tx-desc" data-t="sig2.desc">3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅.</p>
       </div>
       <div class="tx-card" onclick="showDetail('thermage')">
         <div class="tx-img" style="background-image:url('images/sig_3.jpg')"></div>
-        <div class="tx-name">써마지</div>
-        <p class="tx-desc">고주파 열에너지로 피부 깊은 층을 자극하여 즉각적인 리프팅과 콜라겐 재생 효과.</p>
+        <div class="tx-name" data-t="sig3.name">울쎄라피 프라임</div>
+        <p class="tx-desc" data-t="sig3.desc">고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비.</p>
+      </div>
+      <div class="tx-card" onclick="showDetail('onda')">
+        <div class="tx-img" style="background-image:url('images/sig_4.jpg')"></div>
+        <div class="tx-name" data-t="sig4.name">온다</div>
+        <p class="tx-desc" data-t="sig4.desc">극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비.</p>
+      </div>
+      <div class="tx-card" onclick="showDetail('shrink')">
+        <div class="tx-img" style="background-image:url('images/sig_5.jpg')"></div>
+        <div class="tx-name" data-t="sig5.name">슈링크 유니버스</div>
+        <p class="tx-desc" data-t="sig5.desc">2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술.</p>
+      </div>
+      <div class="tx-card" onclick="showDetail('ulthera')">
+        <div class="tx-img" style="background-image:url('images/sig_6.jpg')"></div>
+        <div class="tx-name" data-t="sig6.name">스킨부스터</div>
+        <p class="tx-desc" data-t="sig6.desc">피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술. 수분 충전, 모공·잔주름 개선, 미백 등 개인의 피부 고민에 따라 성분을 맞춤 선택합니다.</p>
       </div>
     </div>
   </section>
@@ -788,6 +796,12 @@ ko: {
 "about.body":"Your Room. Your Doctor. Your Time.<br>프라이빗 1인실에서,<br>원장이 직접 당신을 찾아갑니다.",
 "about.philo":"철학 보기",
 "tx.eye":"Signature Treatments","tx.title":"당신의 변화가 시작됩니다.",
+"sig1.name":"소프웨이브","sig1.desc":"SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비.",
+"sig2.name":"티타늄","sig2.desc":"3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅.",
+"sig3.name":"울쎄라피 프라임","sig3.desc":"고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비.",
+"sig4.name":"온다","sig4.desc":"극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비.",
+"sig5.name":"슈링크 유니버스","sig5.desc":"2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술.",
+"sig6.name":"스킨부스터","sig6.desc":"피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술. 수분 충전, 모공·잔주름 개선, 미백 등 개인의 피부 고민에 따라 성분을 맞춤 선택합니다.",
 "tx1.name":"HIFU Lifting · 울쎄라","tx1.desc":"집속 초음파로 SMAS층을 자극하여 처진 윤곽을 끌어올리는 논서지컬 리프팅.",
 "tx2.name":"Thread Lifting · 실리프팅","tx2.desc":"미세 실을 이용한 즉각적 리프팅. 콜라겐 재생으로 탄력이 지속 개선됩니다.",
 "tx3.name":"Filler & Botox · 필러","tx3.desc":"볼륨 소실과 주름을 동시에 개선하는 자연스러운 복합 시술.",
@@ -838,6 +852,12 @@ en: {
 "about.body":"Your Room. Your Doctor. Your Time.<br>In your own private suite,<br>the director comes directly to you.",
 "about.philo":"Our Philosophy",
 "tx.eye":"Signature Treatments","tx.title":"Your Transformation Starts Here.",
+"sig1.name":"Sofwave","sig1.desc":"Using SUPERB™ ultrasound technology, energy is delivered broadly and evenly to the dermis at a 1.5mm depth — a lifting device that regenerates elasticity and collagen.",
+"sig2.name":"Titanium","sig2.desc":"Three laser wavelengths delivered simultaneously for an all-in-one, 4th-generation lifting treatment with no downtime — improving skin texture, elasticity, and brightening all at once.",
+"sig3.name":"Ultherapy Prime","sig3.desc":"High-intensity focused ultrasound targets every layer of the skin from the dermis to the SMAS (muscle fascia) layer, refining the fat layer and stimulating collagen production.",
+"sig4.name":"Onda","sig4.desc":"A next-generation microwave technology and handpiece deliver skin tightening and continuous collagen remodeling — a contouring device.",
+"sig5.name":"Shurink Universe","sig5.desc":"Two modes and 7 cartridges deliver customized, gap-free elasticity lifting deep within the skin, tailored to each area.",
+"sig6.name":"Skin Booster","sig6.desc":"A cosmetic treatment that injects or infuses active ingredients directly into the dermis to support skin regeneration and elasticity. Ingredients are custom-selected for hydration, pore and fine-line improvement, brightening, and other individual skin concerns.",
 "tx1.name":"HIFU Lifting","tx1.desc":"Focused ultrasound targeting the SMAS layer to lift sagging contours — non-surgical, painless, natural.",
 "tx2.name":"Thread Lifting","tx2.desc":"Immediate lifting with biodegradable threads that also stimulate collagen for months of continued improvement.",
 "tx3.name":"Filler & Botox","tx3.desc":"Volume restoration and wrinkle reduction combined for a naturally refreshed, youthful appearance.",
@@ -888,6 +908,12 @@ zh: {
 "about.body":"Your Room. Your Doctor. Your Time.<br>在專屬您的私人套房內，<br>院長親自前來為您診療。",
 "about.philo":"我們的理念",
 "tx.eye":"招牌療程","tx.title":"您的蛻變從這裡開始。",
+"sig1.name":"Sofwave 舒芙波","sig1.desc":"採用 SUPERB™ 超音波技術，將能量廣泛均勻地傳遞至1.5mm深的真皮層，促進彈力與膠原蛋白再生的非手術拉提儀器。",
+"sig2.name":"鈦金拉提","sig2.desc":"三種波長雷射同時照射，無恢復期即可達到膚質、彈力、美白三合一效果的第四代全能拉提技術。",
+"sig3.name":"Ultherapy Prime 極線音波尊爵版","sig3.desc":"高強度聚焦超音波從真皮層到筋膜層（SMAS）多角度作用，整理脂肪層並促進膠原蛋白生成的拉提儀器。",
+"sig4.name":"Onda 鳳凰儀","sig4.desc":"採用新概念極短波（微波）技術與探頭，達到肌膚緊緻與持續膠原蛋白重塑的輪廓雕塑儀器。",
+"sig5.name":"Shurink Universe 聚焦音波宇宙版","sig5.desc":"兩種模式、7種探頭，深入肌膚各層，提供部位客製化、無死角的彈力拉提療程。",
+"sig6.name":"水光針 Skin Booster","sig6.desc":"將有助於肌膚再生與彈力改善的有效成分直接注入或滲透至真皮層的美容療程。可依個人肌膚需求客製選擇補水、毛孔細紋改善、美白等成分。",
 "tx1.name":"HIFU音波拉提","tx1.desc":"高強度聚焦超音波刺激SMAS筋膜層，無創提升鬆弛輪廓，自然無痛。",
 "tx2.name":"埋線提升","tx2.desc":"利用生物可降解細線即刻提升，同時刺激膠原蛋白再生，持續改善彈性。",
 "tx3.name":"玻尿酸 & 肉毒桿菌","tx3.desc":"同時改善容積流失與皺紋，追求自然生動的年輕外觀。",
@@ -938,6 +964,12 @@ ar: {
 "about.body":"Your Room. Your Doctor. Your Time.<br>في جناحك الخاص،<br>يأتي إليك المدير شخصيًا.",
 "about.philo":"فلسفتنا",
 "tx.eye":"علاجاتنا المميزة","tx.title":"تحولك يبدأ من هنا.",
+"sig1.name":"سوفويف","sig1.desc":"يستخدم تقنية الموجات فوق الصوتية SUPERB™ لتوصيل الطاقة بشكل واسع ومتساوٍ إلى طبقة الأدمة بعمق 1.5 مم، مما يجدد المرونة والكولاجين بجهاز شد غير جراحي.",
+"sig2.name":"تيتانيوم","sig2.desc":"ثلاث موجات ليزر تُبث في وقت واحد لتحقيق شد من الجيل الرابع الشامل دون فترة تعافٍ - يحسّن ملمس البشرة والمرونة والتفتيح معًا.",
+"sig3.name":"ألثيرابي برايم","sig3.desc":"موجات فوق صوتية مركزة عالية الكثافة تستهدف جميع طبقات الجلد من الأدمة حتى طبقة اللفافة العضلية (SMAS)، لتحسين طبقة الدهون وتحفيز إنتاج الكولاجين.",
+"sig4.name":"أوندا","sig4.desc":"يستخدم تقنية الموجات الدقيقة الجديدة ورؤوس علاج متخصصة لشد الجلد وإعادة بناء الكولاجين المستمر، لتحديد ملامح البشرة.",
+"sig5.name":"شرينك يونيفرس","sig5.desc":"وضعان و7 خراطيش توفر شدًا مرنًا مخصصًا لكل منطقة بعمق داخل الجلد دون فجوات.",
+"sig6.name":"حقن التألق","sig6.desc":"علاج تجميلي يحقن أو يُدخل مكونات فعالة مباشرة إلى طبقة الأدمة لدعم تجدد البشرة وتحسين المرونة. تُختار المكونات حسب احتياجات كل بشرة: الترطيب، تحسين المسام والخطوط الدقيقة، التفتيح، وغيرها.",
 "tx1.name":"رفع HIFU بالموجات","tx1.desc":"موجات فوق صوتية مركّزة لرفع الملامح المترهلة بدون جراحة وبدون ألم.",
 "tx2.name":"رفع الخيوط","tx2.desc":"رفع فوري بخيوط قابلة للتحلل مع تحفيز إنتاج الكولاجين لتحسين مستمر.",
 "tx3.name":"الفيلر والبوتوكس","tx3.desc":"استعادة الحجم وتقليل التجاعيد في آنٍ واحد لمظهر شاب وطبيعي.",
@@ -985,7 +1017,7 @@ ar: {
 // LANGUAGE ENGINE
 // =====================================================
 var lang = "ko";
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbw_mSzps4EbdN-8WYEZUaWpupu7L78qGQ53tPf9xRqmrmlZlMjlQGXjxsI_S8wIRXhbsg/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbz6LTiksv0iD9tlMFfQROX661463dx5KVqFnORKDjVF9sqklPw64H9pc-6N9inj2w9msg/exec";
 
 function setLang(l) {
   lang = l;
@@ -1270,10 +1302,17 @@ function selDate(dt, cell) {
   jsonpFallback(SHEET_URL, dateStr, myReqId, times, se);
 }
 
-function renderTimeSlots(bookedTimes, times, se){
+function timeStrToMinutes(t){
+  // "10:30" (24시간 형식) → 630
+  var parts = t.split(":");
+  return parseInt(parts[0],10)*60 + parseInt(parts[1],10);
+}
+
+function renderTimeSlots(busyMinutes, times, se){
+  var BUFFER = 59; // 이 분(minute) 이내로 겹치면 같은 시간대로 간주해 막음 (시술 소요시간 감안)
   se.innerHTML = times.map(function(t){
-    var ampm = toAmPm(t);
-    var isBooked = bookedTimes.indexOf(ampm) !== -1;
+    var slotMin = timeStrToMinutes(t);
+    var isBooked = busyMinutes.some(function(bm){ return Math.abs(bm - slotMin) < BUFFER; });
     if (isBooked) {
       return "<div class=\"t-slot disabled\" style=\"opacity:.35;cursor:not-allowed;background:#eee;\">"+t+"</div>";
     }
@@ -1304,7 +1343,7 @@ function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
     clearTimeout(timeoutId);
     cleanup();
     if (myReqId !== bkReqId) return;
-    renderTimeSlots((data && data.times) || [], times, se);
+    renderTimeSlots((data && data.busyMinutes) || [], times, se);
   };
 
   script.onerror = function(){

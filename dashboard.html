@@ -95,22 +95,54 @@ body{background:var(--cream);color:var(--ink);min-height:100vh;padding-bottom:2r
 </div>
 
 <script>
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbyWKiLZr9DPgplcC0EsOCPKP0xi0zA_kO4RmHplJDZwHghmu8ypF5uZBgel34NXmI2dIw/exec";
-var DONE_KEY = 'elliya_dash_done_list'; // 처리완료 체크한 예약번호 목록 (로컬 저장)
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbxLK5JZSiWJ21C4fsyMrikIMhWhkEcdn8UdMt9WTXfT9dI6j95U9CW5XvJgS6GGCnuuZg/exec";
+var STAFF_KEY_VAL = null; // 로그인 시 채워짐
 
-function getDoneSet(){
-  try{ return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]')); }
-  catch(e){ return new Set(); }
-}
-function saveDoneSet(set){
-  localStorage.setItem(DONE_KEY, JSON.stringify(Array.from(set)));
-}
-function toggleDone(bookingKey, checked){
-  var set = getDoneSet();
-  if(checked) set.add(bookingKey); else set.delete(bookingKey);
-  saveDoneSet(set);
-  var card = document.getElementById('card-'+CSS.escape(bookingKey));
-  if(card) card.classList.toggle('done', checked);
+function markNaverDone(processedAt, checked, checkboxEl){
+  var key = localStorage.getItem('elliya_dash_key') || '';
+  checkboxEl.disabled = true;
+
+  var cbName = 'markCb' + Date.now();
+  var script = document.createElement('script');
+  var timeoutId = setTimeout(function(){
+    cleanup();
+    checkboxEl.disabled = false;
+    checkboxEl.checked = !checked; // 실패 시 원상복구
+    alert('저장에 실패했습니다. 다시 시도해 주세요.');
+  }, 8000);
+
+  function cleanup(){
+    delete window[cbName];
+    if(script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  window[cbName] = function(data){
+    clearTimeout(timeoutId);
+    cleanup();
+    checkboxEl.disabled = false;
+    if(!data || !data.ok){
+      checkboxEl.checked = !checked;
+      alert('해당 예약을 찾지 못해 저장하지 못했습니다.');
+      return;
+    }
+    var card = checkboxEl.closest('.card');
+    if(card) card.classList.toggle('done', checked);
+  };
+
+  script.onerror = function(){
+    clearTimeout(timeoutId);
+    cleanup();
+    checkboxEl.disabled = false;
+    checkboxEl.checked = !checked;
+    alert('저장 중 오류가 발생했습니다.');
+  };
+
+  script.src = SHEET_URL + '?action=mark_naver_done'
+    + '&key=' + encodeURIComponent(key)
+    + '&processed_at=' + encodeURIComponent(processedAt)
+    + '&value=' + (checked ? '1' : '')
+    + '&callback=' + cbName;
+  document.body.appendChild(script);
 }
 
 function tryLogin(){
@@ -190,8 +222,6 @@ function renderBookings(bookings){
     return;
   }
 
-  var doneSet = getDoneSet();
-
   var groups = {};
   bookings.forEach(function(b){
     var d = b.date_only || '기타';
@@ -216,12 +246,12 @@ function renderBookings(bookings){
     items.forEach(function(b){
       var timeMatch = (b.date_time||'').match(/(오전|오후)\s+\d+:\d+/);
       var timeStr = timeMatch ? timeMatch[0] : b.date_time;
-      var bookingKey = (b.booking_no || (b.name+'_'+b.date_time));
-      var isDone = doneSet.has(bookingKey);
-      html += '<div class="card'+(isDone?' done':'')+'" id="card-'+esc(bookingKey)+'">'
+      var processedAt = b.processed_at || '';
+      var isDone = !!(b.naver_done_at && String(b.naver_done_at).trim());
+      html += '<div class="card'+(isDone?' done':'')+'">'
         + '<div class="card-top">'
         + '<span class="card-time">'+esc(timeStr)+'</span>'
-        + '<span class="done-label">✓ 처리완료</span>'
+        + '<span class="done-label">✓ 처리완료 ('+esc(b.naver_done_at||'')+')</span>'
         + '</div>'
         + '<div class="card-name">'+esc(b.name||'-')+'</div>'
         + '<div class="card-svc">'+esc(b.service||'-')+'</div>'
@@ -231,7 +261,7 @@ function renderBookings(bookings){
         + '</div>'
         + '<div class="action-note">⚠ 네이버 예약에서 이 시간 차단 필요</div>'
         + '<label class="done-toggle">'
-        + '<input type="checkbox" '+(isDone?'checked':'')+' onchange="toggleDone(\''+esc(bookingKey).replace(/'/g,"\\'")+'\', this.checked)">'
+        + '<input type="checkbox" '+(isDone?'checked':'')+(processedAt?'':' disabled')+' onchange="markNaverDone(\''+esc(processedAt).replace(/'/g,"\\'")+'\', this.checked, this)">'
         + '네이버에서 막았어요'
         + '</label>'
         + '</div>';

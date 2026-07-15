@@ -412,7 +412,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v100</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v101</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -605,9 +605,9 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
       <p style="margin-top:.8rem;"><a href="tel:0234711003" style="color:rgba(255,255,255,.6);text-decoration:none;">02-3471-1003</a></p>
     </div>
     <div class="ft-col"><h4 data-t="footer.tx">Treatments</h4><ul>
-      <li><a href="#" onclick="showDetail('hifu')" data-t="tx1.name">HIFU Lifting</a></li>
-      <li><a href="#" onclick="showDetail('thread')" data-t="tx2.name">Thread Lifting</a></li>
-      <li><a href="#" onclick="showDetail('filler')" data-t="tx3.name">Filler &amp; Botox</a></li>
+      <li><a href="#" onclick="showDetail('sofwave')" data-t="sig1.name">소프웨이브</a></li>
+      <li><a href="#" onclick="showDetail('titanium')" data-t="sig2.name">티타늄</a></li>
+      <li><a href="#" onclick="showDetail('ultherapy')" data-t="sig3.name">울쎄라피 프라임</a></li>
     </ul></div>
     <div class="ft-col"><h4 data-t="footer.clinic">Clinic</h4><ul>
       <li><a href="#" onclick="showPage('philo-page')" data-t="nav.philo">철학</a></li>
@@ -733,10 +733,12 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
         <h2 class="bk-title" data-t="bk.s1h">시술을 선택해 주세요</h2>
         <p class="bk-sub" data-t="bk.s1p">원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.</p>
         <div class="svc-opts">
-          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="tx1.name">HIFU Lifting</div><div class="svc-ds" data-t="bk.sd1">논서지컬 초음파 리프팅</div></div><div class="svc-pr">&#8361; 550,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="tx2.name">Thread Lifting</div><div class="svc-ds" data-t="bk.sd2">즉각적 리프팅 + 콜라겐 재생</div></div><div class="svc-pr">&#8361; 800,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="tx3.name">Filler &amp; Botox</div><div class="svc-ds" data-t="bk.sd3">볼륨 회복 &amp; 주름 개선</div></div><div class="svc-pr">&#8361; 350,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="bk.s4n">무료 상담</div><div class="svc-ds" data-t="bk.sd4">전문의 상담 후 시술 결정</div></div><div class="svc-pr" style="color:var(--gold-dark);" data-t="bk.free">무료</div></div>
+          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="sig1.name">소프웨이브</div><div class="svc-ds" data-t="bk.sd1">SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅</div></div><div class="svc-pr">&#8361; 900,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="sig2.name">티타늄</div><div class="svc-ds" data-t="bk.sd2">3파장 동시 조사 — 올인원 4세대 리프팅</div></div><div class="svc-pr">&#8361; 490,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="sig3.name">울쎄라피 프라임</div><div class="svc-ds" data-t="bk.sd3">고강도 초음파 — 진피부터 SMAS층까지</div></div><div class="svc-pr">&#8361; 1,090,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="sig4.name">온다</div><div class="svc-ds" data-t="bk.sd4">극초단파 컨투어링 — 지속적 콜라겐 리모델링</div></div><div class="svc-pr">&#8361; 360,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(4)"><div><div class="svc-nm" data-t="sig5.name">슈링크 유니버스</div><div class="svc-ds" data-t="bk.sd5">2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅</div></div><div class="svc-pr">&#8361; 150,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(5)"><div><div class="svc-nm" data-t="sig6.name">스킨부스터</div><div class="svc-ds" data-t="bk.sd6">진피층 직접 주입 — 수분·모공·미백 맞춤 케어</div></div><div class="svc-pr">&#8361; 40,000~</div></div>
         </div>
         <div class="s-nav">
           <button class="btn-sb" onclick="gStep(1)" data-t="cm.back">&#8592; 이전</button>
@@ -840,8 +842,8 @@ ko: {
 "bk.s2h":"날짜와 시간을 선택해 주세요","bk.s2p":"날짜를 선택하신 후 시간을 선택해 주세요.",
 "bk.s3h":"정보를 입력해 주세요","bk.s3p":"예약 확인을 위해 아래 정보를 입력해 주세요.",
 "bk.s4h":"예약 내용을 확인해 주세요","bk.s4p":"아래 내용이 맞으면 예약 완료 버튼을 눌러주세요.",
-"bk.sd1":"논서지컬 초음파 리프팅","bk.sd2":"즉각적 리프팅 + 콜라겐 재생",
-"bk.sd3":"볼륨 회복 & 주름 개선","bk.s4n":"무료 상담","bk.sd4":"전문의 상담 후 시술 결정","bk.free":"무료",
+"bk.sd1":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","bk.sd2":"3파장 동시 조사 — 올인원 4세대 리프팅",
+"bk.sd3":"고강도 초음파 — 진피부터 SMAS층까지","bk.sd4":"극초단파 컨투어링 — 지속적 콜라겐 리모델링","bk.sd5":"2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅","bk.sd6":"진피층 직접 주입 — 수분·모공·미백 맞춤 케어",
 "bk.tl":"시간 선택",
 "fm.fn":"이름 *","fm.ln":"성 *","fm.em":"이메일 *","fm.ph":"연락처 *","fm.na":"국적","fm.nt":"특이사항",
 "ct.i":"항목","ct.d":"상세","ct.p":"금액","ct.s":"시술","ct.dt":"날짜","ct.n":"예약자","ct.c":"연락처",
@@ -896,8 +898,8 @@ en: {
 "bk.s2h":"Choose Date & Time","bk.s2p":"Select a date, then pick your preferred time.",
 "bk.s3h":"Your Information","bk.s3p":"Please fill in your details so we can confirm your booking.",
 "bk.s4h":"Review Your Booking","bk.s4p":"Please confirm everything looks correct before submitting.",
-"bk.sd1":"Non-surgical ultrasound lifting","bk.sd2":"Immediate lift + collagen stimulation",
-"bk.sd3":"Volume restoration & wrinkle reduction","bk.s4n":"Free Consultation","bk.sd4":"Talk to a specialist before committing","bk.free":"FREE",
+"bk.sd1":"SUPERB™ Ultrasound — Dermal Collagen Lifting","bk.sd2":"3-Wavelength Laser — All-in-One 4th-Gen Lifting",
+"bk.sd3":"High-Intensity Ultrasound — Dermis to SMAS","bk.sd4":"Microwave Contouring — Ongoing Collagen Remodeling","bk.sd5":"2 Modes · 7 Cartridges — Customized Lifting","bk.sd6":"Direct Dermal Infusion — Custom Hydration & Brightening",
 "bk.tl":"Select Time",
 "fm.fn":"First Name *","fm.ln":"Last Name *","fm.em":"Email *","fm.ph":"Phone *","fm.na":"Nationality","fm.nt":"Notes / Special Requests",
 "ct.i":"Item","ct.d":"Detail","ct.p":"Price","ct.s":"Treatment","ct.dt":"Date","ct.n":"Name","ct.c":"Contact",
@@ -952,8 +954,8 @@ zh: {
 "bk.s2h":"請選擇日期與時間","bk.s2p":"選擇日期後，請選擇您偏好的時間。",
 "bk.s3h":"請填寫您的資料","bk.s3p":"請填寫以下資料以確認您的預約。",
 "bk.s4h":"確認預約內容","bk.s4p":"確認無誤後，請點擊確認預約。",
-"bk.sd1":"非手術超音波提升","bk.sd2":"即刻提升 + 膠原蛋白再生",
-"bk.sd3":"容積修復 & 除皺","bk.s4n":"免費諮詢","bk.sd4":"諮詢專科醫師後再決定","bk.free":"免費",
+"bk.sd1":"SUPERB™ 超音波技術 — 真皮層膠原拉提","bk.sd2":"三波長雷射同步 — 第四代全能拉提",
+"bk.sd3":"高強度超音波 — 真皮至筋膜層","bk.sd4":"極短波輪廓雕塑 — 持續膠原重塑","bk.sd5":"兩種模式・7種探頭 — 部位客製拉提","bk.sd6":"直接注入真皮層 — 補水・毛孔・美白客製",
 "bk.tl":"選擇時間",
 "fm.fn":"名字 *","fm.ln":"姓氏 *","fm.em":"電子郵件 *","fm.ph":"電話 *","fm.na":"國籍","fm.nt":"備註 / 特殊需求",
 "ct.i":"項目","ct.d":"詳細","ct.p":"費用","ct.s":"療程","ct.dt":"日期","ct.n":"姓名","ct.c":"聯絡方式",
@@ -1008,8 +1010,8 @@ ar: {
 "bk.s2h":"اختر التاريخ والوقت","bk.s2p":"حدد تاريخاً ثم اختر وقتك المفضل.",
 "bk.s3h":"أدخل بياناتك","bk.s3p":"يرجى ملء البيانات أدناه لتأكيد حجزك.",
 "bk.s4h":"راجع حجزك","bk.s4p":"تأكد من صحة المعلومات ثم اضغط تأكيد الحجز.",
-"bk.sd1":"رفع بالموجات فوق الصوتية","bk.sd2":"رفع فوري + تحفيز الكولاجين",
-"bk.sd3":"استعادة الحجم وتقليل التجاعيد","bk.s4n":"استشارة مجانية","bk.sd4":"تحدث مع أخصائي قبل اتخاذ قرارك","bk.free":"مجاناً",
+"bk.sd1":"تقنية SUPERB™ للموجات فوق الصوتية","bk.sd2":"ثلاث موجات ليزر متزامنة",
+"bk.sd3":"موجات فوق صوتية عالية الكثافة","bk.sd4":"نحت بالموجات الدقيقة","bk.sd5":"وضعان و7 خراطيش","bk.sd6":"حقن مباشر في الأدمة",
 "bk.tl":"اختر الوقت",
 "fm.fn":"الاسم الأول *","fm.ln":"اسم العائلة *","fm.em":"البريد الإلكتروني *","fm.ph":"رقم الهاتف *","fm.na":"الجنسية","fm.nt":"ملاحظات",
 "ct.i":"البند","ct.d":"التفاصيل","ct.p":"السعر","ct.s":"العلاج","ct.dt":"التاريخ","ct.n":"الاسم","ct.c":"التواصل",
@@ -1064,42 +1066,58 @@ function showPage(id) {
 // TREATMENT DATA
 // =====================================================
 var SVCS = [
-  { price: 550000, priceStr: "&#8361; 550,000~",
-    name: {"ko":"HIFU Lifting · 울쎄라","en":"HIFU Lifting","zh":"HIFU音波拉提","ar":"رفع HIFU"},
-    sub:  {"ko":"High Intensity Focused Ultrasound — 논서지컬 리프팅","en":"Non-surgical Ultrasound Lifting","zh":"高強度聚焦超音波 — 非手術提升","ar":"الموجات فوق الصوتية — رفع غير جراحي"},
-    body: {"ko":"<h2>HIFU란?</h2><p>고강도 집속 초음파를 SMAS층까지 전달하여 조직을 수축시키고 콜라겐 생성을 유도하는 리프팅 기술입니다.</p><h2>기대 효과</h2><ul><li>처진 볼·턱선·목 라인의 즉각적 리프팅</li><li>피부 탄력 개선 및 콜라겐 재생</li><li>마취 불필요, 시술 후 즉시 일상생활 가능</li></ul><h2>시술 과정</h2><p>1회 시술 약 30-60분. 효과는 6-12개월 지속됩니다.</p>",
-           "en":"<h2>What is HIFU?</h2><p>High Intensity Focused Ultrasound delivers energy deep into the SMAS layer, triggering tissue contraction and collagen production.</p><h2>Expected Results</h2><ul><li>Immediate lifting of cheeks, jawline, and neck</li><li>Improved skin elasticity and collagen regeneration</li><li>No anesthesia required, resume daily activities immediately</li></ul><h2>Procedure</h2><p>30-60 min per session. Results typically last 6-12 months.</p>",
-           "zh":"<h2>HIFU是什麼？</h2><p>高強度聚焦超音波在不損傷皮膚表面的情況下，將能量傳遞至SMAS筋膜層，促進組織收縮與膠原蛋白再生。</p><h2>預期效果</h2><ul><li>即刻提升臉頰、下顎線與頸部</li><li>改善皮膚彈性、促進膠原再生</li><li>無需麻醉，術後可立即恢復日常生活</li></ul>",
-           "ar":"<h2>ما هو HIFU؟</h2><p>يوصّل الموجات فوق الصوتية إلى طبقة SMAS مما يحفز انقباض الأنسجة وإنتاج الكولاجين.</p><h2>النتائج المتوقعة</h2><ul><li>رفع فوري للخدين وخط الفك</li><li>تحسين مرونة الجلد وتجديد الكولاجين</li><li>لا يتطلب تخديراً</li></ul>"}
+  { price: 900000, priceStr: "&#8361; 900,000~",
+    name: {"ko":"소프웨이브","en":"Sofwave","zh":"Sofwave 舒芙波","ar":"سوفويف"},
+    sub:  {"ko":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","en":"SUPERB™ Ultrasound — Dermal Collagen Lifting","zh":"SUPERB™ 超音波技術 — 真皮層膠原拉提","ar":"تقنية SUPERB™ للموجات فوق الصوتية"},
+    body: {"ko":"<h2>소프웨이브란?</h2><p>SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>진피층 콜라겐·엘라스틴 재생</li><li>넓고 균일한 에너지 전달로 자연스러운 탄력 개선</li><li>다운타임 없이 일상생활 바로 가능</li></ul>",
+           "en":"<h2>What is Sofwave?</h2><p>Using SUPERB™ ultrasound technology, energy is delivered broadly and evenly to the dermis at a 1.5mm depth — regenerating elasticity and collagen.</p><h2>Expected Results</h2><ul><li>Collagen and elastin regeneration in the dermis</li><li>Even, broad energy delivery for natural elasticity</li><li>No downtime</li></ul>",
+           "zh":"<h2>什麼是 Sofwave？</h2><p>採用 SUPERB™ 超音波技術，將能量廣泛均勻地傳遞至1.5mm深的真皮層，促進彈力與膠原蛋白再生。</p><h2>預期效果</h2><ul><li>真皮層膠原蛋白與彈力蛋白再生</li><li>均勻能量傳遞，自然改善彈力</li><li>無恢復期</li></ul>",
+           "ar":"<h2>ما هو سوفويف؟</h2><p>يستخدم تقنية SUPERB™ لتوصيل الطاقة بشكل واسع ومتساوٍ إلى طبقة الأدمة بعمق 1.5 مم.</p><h2>النتائج المتوقعة</h2><ul><li>تجديد الكولاجين والإيلاستين</li><li>توصيل طاقة متساوٍ لمرونة طبيعية</li><li>دون فترة تعافٍ</li></ul>"}
   },
-  { price: 800000, priceStr: "&#8361; 800,000~",
-    name: {"ko":"Thread Lifting · 실리프팅","en":"Thread Lifting","zh":"埋線提升","ar":"رفع الخيوط"},
-    sub:  {"ko":"PDO/PLLA Thread — 즉각적 리프팅 + 콜라겐 재생","en":"Immediate Lift + Collagen Stimulation","zh":"即刻提升 + 膠原蛋白再生","ar":"رفع فوري + تحفيز الكولاجين"},
-    body: {"ko":"<h2>실리프팅이란?</h2><p>생분해성 실(PDO·PLLA)을 피부 속에 삽입하여 처진 조직을 즉각적으로 끌어올립니다.</p><h2>기대 효과</h2><ul><li>즉각적인 페이스 리프팅</li><li>자연스러운 V라인 & 턱선 개선</li><li>효과 지속 기간: 약 12-24개월</li></ul>",
-           "en":"<h2>What is Thread Lifting?</h2><p>Biodegradable threads are inserted under the skin to lift sagging tissue immediately, while stimulating collagen production as they dissolve.</p><h2>Expected Results</h2><ul><li>Immediate facial lifting</li><li>Natural V-line and jawline improvement</li><li>Results last approximately 12-24 months</li></ul>",
-           "zh":"<h2>埋線提升是什麼？</h2><p>將生物可降解細線植入皮膚下，即刻提升鬆弛組織，溶解過程中持續刺激膠原蛋白再生。</p><h2>預期效果</h2><ul><li>即刻提升面部輪廓</li><li>自然V臉與下顎線改善</li><li>效果持續約12-24個月</li></ul>",
-           "ar":"<h2>ما هو رفع الخيوط؟</h2><p>تُدرج خيوط قابلة للتحلل تحت الجلد لرفع الأنسجة المترهلة فوراً مع تحفيز إنتاج الكولاجين.</p><h2>النتائج المتوقعة</h2><ul><li>رفع فوري لملامح الوجه</li><li>تحسين طبيعي لخط الفك</li><li>تدوم النتائج 12-24 شهراً</li></ul>"}
+  { price: 490000, priceStr: "&#8361; 490,000~",
+    name: {"ko":"티타늄","en":"Titanium","zh":"鈦金拉提","ar":"تيتانيوم"},
+    sub:  {"ko":"3파장 동시 조사 — 올인원 4세대 리프팅","en":"3-Wavelength Laser — All-in-One 4th-Gen Lifting","zh":"三波長雷射同步 — 第四代全能拉提","ar":"ثلاث موجات ليزر متزامنة"},
+    body: {"ko":"<h2>티타늄이란?</h2><p>3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅입니다.</p><h2>기대 효과</h2><ul><li>피부결 개선</li><li>탄력 강화</li><li>화이트닝 효과</li></ul>",
+           "en":"<h2>What is Titanium?</h2><p>Three laser wavelengths delivered simultaneously for an all-in-one 4th-generation lifting treatment with no downtime.</p><h2>Expected Results</h2><ul><li>Improved skin texture</li><li>Enhanced elasticity</li><li>Brightening effect</li></ul>",
+           "zh":"<h2>什麼是鈦金拉提？</h2><p>三種波長雷射同時照射，無恢復期即可達到膚質、彈力、美白三合一效果的第四代全能拉提技術。</p><h2>預期效果</h2><ul><li>改善膚質</li><li>增強彈力</li><li>美白效果</li></ul>",
+           "ar":"<h2>ما هو تيتانيوم؟</h2><p>ثلاث موجات ليزر تُبث في وقت واحد لتحقيق شد شامل من الجيل الرابع دون فترة تعافٍ.</p><h2>النتائج المتوقعة</h2><ul><li>تحسين ملمس البشرة</li><li>تعزيز المرونة</li><li>تفتيح البشرة</li></ul>"}
   },
-  { price: 350000, priceStr: "&#8361; 350,000~",
-    name: {"ko":"Filler & Botox · 필러","en":"Filler & Botox","zh":"玻尿酸 & 肉毒桿菌","ar":"الفيلر والبوتوكس"},
-    sub:  {"ko":"Volume Restoration & Wrinkle Reduction","en":"Volume Restoration & Wrinkle Reduction","zh":"容積修復與除皺","ar":"استعادة الحجم وتقليل التجاعيد"},
-    body: {"ko":"<h2>필러 & 보톡스 복합 시술</h2><p>히알루론산 필러로 볼륨을 채우고 보톡스로 주름을 완화합니다.</p><h2>주요 적용 부위</h2><ul><li>필러: 팔자주름, 볼, 턱, 눈 밑</li><li>보톡스: 이마, 미간, 눈가, 사각턱</li></ul>",
-           "en":"<h2>Filler & Botox Combined</h2><p>Hyaluronic acid fillers restore lost volume while Botox relaxes wrinkle-causing muscles for a naturally refreshed look.</p><h2>Key Areas</h2><ul><li>Filler: nasolabial folds, cheeks, chin, under-eyes</li><li>Botox: forehead, frown lines, crow's feet, jaw slimming</li></ul>",
-           "zh":"<h2>玻尿酸 & 肉毒桿菌複合療程</h2><p>玻尿酸補充流失的容積，肉毒桿菌放鬆造成皺紋的肌肉。</p><h2>主要治療部位</h2><ul><li>玻尿酸：法令紋、臉頰、下巴、眼下</li><li>肉毒桿菌：額頭、眉間、魚尾紋、國字臉</li></ul>",
-           "ar":"<h2>الفيلر والبوتوكس معاً</h2><p>يعيد الفيلر الحجم المفقود بينما يُرخي البوتوكس العضلات المسببة للتجاعيد.</p><h2>مناطق العلاج الرئيسية</h2><ul><li>الفيلر: خطوط الضحك، الخدين، الذقن</li><li>البوتوكس: الجبهة، ما بين الحاجبين، خطوط العينين</li></ul>"}
+  { price: 1090000, priceStr: "&#8361; 1,090,000~",
+    name: {"ko":"울쎄라피 프라임","en":"Ultherapy Prime","zh":"Ultherapy Prime 極線音波尊爵版","ar":"ألثيرابي برايم"},
+    sub:  {"ko":"고강도 초음파 — 진피부터 SMAS층까지","en":"High-Intensity Ultrasound — Dermis to SMAS","zh":"高強度超音波 — 真皮至筋膜層","ar":"موجات فوق صوتية عالية الكثافة"},
+    body: {"ko":"<h2>울쎄라피 프라임이란?</h2><p>고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>SMAS층까지 다각도 공략</li><li>지방층 정리</li><li>콜라겐 생성 촉진</li></ul>",
+           "en":"<h2>What is Ultherapy Prime?</h2><p>High-intensity focused ultrasound targets every layer of the skin from the dermis to the SMAS layer, refining fat and stimulating collagen.</p><h2>Expected Results</h2><ul><li>Multi-angle targeting down to SMAS</li><li>Fat layer refinement</li><li>Collagen stimulation</li></ul>",
+           "zh":"<h2>什麼是 Ultherapy Prime？</h2><p>高強度聚焦超音波從真皮層到筋膜層（SMAS）多角度作用，整理脂肪層並促進膠原蛋白生成。</p><h2>預期效果</h2><ul><li>多角度作用至SMAS層</li><li>整理脂肪層</li><li>促進膠原蛋白生成</li></ul>",
+           "ar":"<h2>ما هو ألثيرابي برايم؟</h2><p>موجات فوق صوتية مركزة تستهدف جميع طبقات الجلد من الأدمة حتى طبقة SMAS.</p><h2>النتائج المتوقعة</h2><ul><li>استهداف متعدد الزوايا حتى SMAS</li><li>تحسين طبقة الدهون</li><li>تحفيز الكولاجين</li></ul>"}
   },
-  { price: 0, priceStr: "FREE",
-    name: {"ko":"무료 상담","en":"Free Consultation","zh":"免費諮詢","ar":"استشارة مجانية"},
-    sub:  {"ko":"전문의 1:1 상담","en":"1-on-1 specialist consultation","zh":"專科醫師一對一諮詢","ar":"استشارة فردية مع أخصائي"},
-    body: {"ko":"<h2>무료 전문의 상담</h2><p>시술 결정 전 전문 의료진과 1:1 상담을 통해 본인에게 맞는 최적의 트리트먼트를 결정하실 수 있습니다.</p>",
-           "en":"<h2>Free Specialist Consultation</h2><p>Meet one-on-one with our specialist to determine the best treatment plan before making any decisions.</p>",
-           "zh":"<h2>免費專科諮詢</h2><p>在做出任何決定之前，與我們的專科醫師進行一對一諮詢，確定最適合您的治療計畫。</p>",
-           "ar":"<h2>استشارة مجانية مع الأخصائي</h2><p>التقِ مع أخصائينا لتحديد خطة العلاج الأنسب لك قبل اتخاذ أي قرار.</p>"}
+  { price: 360000, priceStr: "&#8361; 360,000~",
+    name: {"ko":"온다","en":"Onda","zh":"Onda 鳳凰儀","ar":"أوندا"},
+    sub:  {"ko":"극초단파 컨투어링 — 지속적 콜라겐 리모델링","en":"Microwave Contouring — Ongoing Collagen Remodeling","zh":"極短波輪廓雕塑 — 持續膠原重塑","ar":"نحت بالموجات الدقيقة"},
+    body: {"ko":"<h2>온다란?</h2><p>극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비입니다.</p><h2>기대 효과</h2><ul><li>피부 타이트닝</li><li>지속적 콜라겐 리모델링</li><li>부위별 컨투어링</li></ul>",
+           "en":"<h2>What is Onda?</h2><p>Next-generation microwave technology and handpiece deliver skin tightening and continuous collagen remodeling for contouring.</p><h2>Expected Results</h2><ul><li>Skin tightening</li><li>Ongoing collagen remodeling</li><li>Targeted contouring</li></ul>",
+           "zh":"<h2>什麼是 Onda？</h2><p>採用新概念極短波（微波）技術與探頭，達到肌膚緊緻與持續膠原蛋白重塑的輪廓雕塑效果。</p><h2>預期效果</h2><ul><li>肌膚緊緻</li><li>持續膠原重塑</li><li>部位輪廓雕塑</li></ul>",
+           "ar":"<h2>ما هو أوندا؟</h2><p>يستخدم تقنية الموجات الدقيقة الجديدة لشد الجلد وإعادة بناء الكولاجين المستمر لتحديد الملامح.</p><h2>النتائج المتوقعة</h2><ul><li>شد الجلد</li><li>إعادة بناء الكولاجين المستمر</li><li>نحت مناطق محددة</li></ul>"}
+  },
+  { price: 150000, priceStr: "&#8361; 150,000~",
+    name: {"ko":"슈링크 유니버스","en":"Shurink Universe","zh":"Shurink Universe 聚焦音波宇宙版","ar":"شرينك يونيفرس"},
+    sub:  {"ko":"2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅","en":"2 Modes · 7 Cartridges — Customized Lifting","zh":"兩種模式・7種探頭 — 部位客製拉提","ar":"وضعان و7 خراطيش"},
+    body: {"ko":"<h2>슈링크 유니버스란?</h2><p>2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술입니다.</p><h2>기대 효과</h2><ul><li>부위별 맞춤 시술</li><li>깊은 층까지 빈틈없는 리프팅</li><li>탄력 개선</li></ul>",
+           "en":"<h2>What is Shurink Universe?</h2><p>Two modes and 7 cartridges deliver customized, gap-free elasticity lifting deep within the skin.</p><h2>Expected Results</h2><ul><li>Customized per area</li><li>Gap-free deep lifting</li><li>Improved elasticity</li></ul>",
+           "zh":"<h2>什麼是 Shurink Universe？</h2><p>兩種模式、7種探頭，深入肌膚各層，提供部位客製化、無死角的彈力拉提療程。</p><h2>預期效果</h2><ul><li>部位客製化療程</li><li>深層無死角拉提</li><li>改善彈力</li></ul>",
+           "ar":"<h2>ما هو شرينك يونيفرس؟</h2><p>وضعان و7 خراطيش توفر شدًا مرنًا مخصصًا لكل منطقة بعمق داخل الجلد دون فجوات.</p><h2>النتائج المتوقعة</h2><ul><li>مخصص لكل منطقة</li><li>شد عميق دون فجوات</li><li>تحسين المرونة</li></ul>"}
+  },
+  { price: 40000, priceStr: "&#8361; 40,000~",
+    name: {"ko":"스킨부스터","en":"Skin Booster","zh":"水光針 Skin Booster","ar":"حقن التألق"},
+    sub:  {"ko":"진피층 직접 주입 — 수분·모공·미백 맞춤 케어","en":"Direct Dermal Infusion — Custom Hydration & Brightening","zh":"直接注入真皮層 — 補水・毛孔・美白客製","ar":"حقن مباشر في الأدمة"},
+    body: {"ko":"<h2>스킨부스터란?</h2><p>피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술입니다.</p><h2>기대 효과</h2><ul><li>수분 충전</li><li>모공·잔주름 개선</li><li>미백 등 개인 맞춤 성분 선택 가능</li></ul>",
+           "en":"<h2>What is Skin Booster?</h2><p>A cosmetic treatment that injects or infuses active ingredients directly into the dermis to support skin regeneration and elasticity.</p><h2>Expected Results</h2><ul><li>Hydration</li><li>Pore and fine-line improvement</li><li>Custom ingredients incl. brightening</li></ul>",
+           "zh":"<h2>什麼是水光針？</h2><p>將有助於肌膚再生與彈力改善的有效成分直接注入或滲透至真皮層的美容療程。</p><h2>預期效果</h2><ul><li>補水</li><li>改善毛孔與細紋</li><li>可客製美白等成分</li></ul>",
+           "ar":"<h2>ما هو حقن التألق؟</h2><p>علاج تجميلي يحقن مكونات فعالة مباشرة إلى طبقة الأدمة لدعم تجدد البشرة ومرونتها.</p><h2>النتائج المتوقعة</h2><ul><li>الترطيب</li><li>تحسين المسام والخطوط الدقيقة</li><li>مكونات مخصصة تشمل التفتيح</li></ul>"}
   }
 ];
 
 function showDetail(key) {
-  var idx = {"hifu":0,"thread":1,"filler":2,"consult":3}[key];
+  var idx = {"sofwave":0,"titanium":1,"ultherapy":2,"onda":3,"shrink":4,"skinbooster":5}[key];
   var d = SVCS[idx];
   if (!d) return;
   document.getElementById("dt-title").textContent = d.name[lang] || d.name.ko;

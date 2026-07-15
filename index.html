@@ -145,18 +145,20 @@ nav.nav-scrolled{
 .about-txt-block .btn-t{justify-content:center;}
 
 /* TREATMENTS */
-.tx-sec{padding:2rem 3vw 1.5rem;background:var(--cream-dark);margin:5rem 0;}
+.tx-sec{padding:1.5rem 3vw 1.2rem;background:var(--cream-dark);margin:3rem 0;}
 .tx-hd{text-align:center;margin-bottom:1.2rem;}
 .tx-hd .s-title{font-size:clamp(1.3rem,2.6vw,1.8rem);}
-.tx-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;padding:0 0 1rem;}
-.tx-card{padding:0;background:var(--white);border-radius:12px;transition:transform .25s,box-shadow .25s,filter .25s;cursor:pointer;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.07);border:none;}
+.tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;padding:0 0 1rem;}
+.tx-item{cursor:pointer;}
 
-.tx-card::before{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--gold);transform:scaleX(0);transition:transform .3s;transform-origin:left;}
-.tx-card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 40px rgba(0,0,0,0.15);filter:brightness(1.02);}.tx-card:hover::before{transform:scaleX(1);}
+.tx-card{background:var(--white);border-radius:4px;transition:transform .25s,box-shadow .25s,filter .25s;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:none;aspect-ratio:4/5;display:flex;align-items:flex-end;justify-content:center;padding-bottom:1.6rem;}
+.tx-item:hover .tx-card{transform:translateY(-6px);box-shadow:0 16px 32px rgba(0,0,0,0.12);}
 .tx-num{display:none;}
-.tx-img{width:100%;aspect-ratio:3/4.4;border-radius:12px 12px 0 0;margin-bottom:0;background:#E8E4DF center/cover;}
-.tx-name{font-size:.85rem;font-weight:700;margin-bottom:.2rem;color:var(--gold-dark);font-family:"Playfair Display",serif;padding:.6rem .9rem 0;}
-.tx-desc{font-size:.72rem;color:var(--ink);font-weight:600;line-height:1.5;margin-bottom:.6rem;padding:0 .9rem;}
+.tx-img{width:56%;aspect-ratio:1/1;margin-bottom:0;background-size:cover;background-position:center;
+  -webkit-mask-image:radial-gradient(ellipse at center,black 48%,transparent 76%);
+  mask-image:radial-gradient(ellipse at center,black 48%,transparent 76%);}
+.tx-name{font-size:.92rem;font-weight:700;margin:.8rem 0 .3rem;color:var(--gold-dark);font-family:"Playfair Display",serif;padding:0;text-align:center;}
+.tx-desc{font-size:.74rem;color:var(--ink);font-weight:500;line-height:1.55;margin-bottom:0;padding:0;text-align:center;}
 .card-arr{display:none;}
 
 
@@ -412,7 +414,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v101</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v104</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -502,33 +504,33 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
       <h2 class="s-title" data-t="tx.title">당신의 변화가 시작됩니다.</h2>
     </div>
     <div class="tx-grid">
-      <div class="tx-card" onclick="showDetail('sonowave')">
-        <div class="tx-img" style="background-image:url('images/sig_1.jpg')"></div>
+      <div class="tx-item" onclick="showDetail('sonowave')">
+        <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_1.jpg')"></div></div>
         <div class="tx-name" data-t="sig1.name">소프웨이브</div>
         <p class="tx-desc" data-t="sig1.desc">SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비.</p>
       </div>
-      <div class="tx-card" onclick="showDetail('titanium')">
-        <div class="tx-img" style="background-image:url('images/sig_2.jpg')"></div>
+      <div class="tx-item" onclick="showDetail('titanium')">
+        <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_2.jpg')"></div></div>
         <div class="tx-name" data-t="sig2.name">티타늄</div>
         <p class="tx-desc" data-t="sig2.desc">3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅.</p>
       </div>
-      <div class="tx-card" onclick="showDetail('thermage')">
-        <div class="tx-img" style="background-image:url('images/sig_3.jpg')"></div>
+      <div class="tx-item" onclick="showDetail('thermage')">
+        <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_3.jpg')"></div></div>
         <div class="tx-name" data-t="sig3.name">울쎄라피 프라임</div>
         <p class="tx-desc" data-t="sig3.desc">고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비.</p>
       </div>
-      <div class="tx-card" onclick="showDetail('onda')">
-        <div class="tx-img" style="background-image:url('images/sig_4.jpg')"></div>
+      <div class="tx-item" onclick="showDetail('onda')">
+        <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_4.jpg')"></div></div>
         <div class="tx-name" data-t="sig4.name">온다</div>
         <p class="tx-desc" data-t="sig4.desc">극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비.</p>
       </div>
-      <div class="tx-card" onclick="showDetail('shrink')">
-        <div class="tx-img" style="background-image:url('images/sig_5.jpg')"></div>
+      <div class="tx-item" onclick="showDetail('shrink')">
+        <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_5.jpg')"></div></div>
         <div class="tx-name" data-t="sig5.name">슈링크 유니버스</div>
         <p class="tx-desc" data-t="sig5.desc">2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술.</p>
       </div>
-      <div class="tx-card" onclick="showDetail('ulthera')">
-        <div class="tx-img" style="background-image:url('images/sig_6.jpg')"></div>
+      <div class="tx-item" onclick="showDetail('ulthera')">
+        <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_6.jpg')"></div></div>
         <div class="tx-name" data-t="sig6.name">스킨부스터</div>
         <p class="tx-desc" data-t="sig6.desc">피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술. 수분 충전, 모공·잔주름 개선, 미백 등 개인의 피부 고민에 따라 성분을 맞춤 선택합니다.</p>
       </div>

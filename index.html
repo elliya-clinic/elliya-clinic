@@ -396,6 +396,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 <div class="lang-bar">
   <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
   <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+  <button class="lang-btn" id="lb-ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
+  <button class="lang-btn" id="lb-cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
   <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
   <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
 </div>
@@ -412,7 +414,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v114</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v115</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -423,6 +425,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <div style="display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:0.5px solid var(--border);" id="nav-lang-group">
     <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
     <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+    <button class="lang-btn" id="lb-ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
+    <button class="lang-btn" id="lb-cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
     <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
     <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
   </div>
@@ -603,6 +607,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
       <span class="nav-logo">Elliya <span style="color:var(--gold)">Clinic</span></span>
       <p data-t="footer.desc">서울의 안티에이징 &amp; 리프팅 전문 피부과.</p>
       <p style="margin-top:.8rem;"><a href="tel:0234711003" style="color:rgba(255,255,255,.6);text-decoration:none;">02-3471-1003</a></p>
+      <p style="margin-top:.5rem;font-size:.78rem;color:rgba(255,255,255,.45);">대표자 홍준택 &nbsp;|&nbsp; 사업자등록번호 108-23-67003</p>
     </div>
   </footer>
   <div class="ft-btm">&#169; 2026 Elliya Clinic · 엘리야의원. All Rights Reserved. &nbsp;|&nbsp; <a href="#" onclick="showPage('terms')" style="color:inherit;">이용약관</a> &nbsp;|&nbsp; <a href="#" onclick="showPage('privacy')" style="color:inherit;">개인정보처리방침</a></div>
@@ -1189,6 +1194,118 @@ ar: {
 "cm.back":"السابق ←","cm.next":"التالي →",
 "al.date":"الرجاء اختيار تاريخ.","al.time":"الرجاء اختيار وقت.","al.name":"الرجاء إدخال الاسم الأول واسم العائلة.","al.email":"الرجاء إدخال بريد إلكتروني صحيح (مثال: name@example.com).","al.phone":"الرجاء إدخال رقم الهاتف.",
 "cr.svc":"العلاج","cr.date":"التاريخ والوقت","cr.name":"الاسم","cr.email":"البريد الإلكتروني","cr.price":"التكلفة التقديرية"
+},
+ja: {
+"nav.home":"ホーム","nav.philo":"哲学","nav.tx":"施術","nav.visit":"アクセス","nav.book":"予約する",
+"hero.eye":"Seoul · アンチエイジング&リフティング専門",
+"hero.desc":"エリヤクリニックは最先端のリフティングテクノロジーと繊細な医療哲学を融合し、あなただけの自然な美しさを蘇らせます。",
+"hero.book":"予約する","hero.learn":"予約確認",
+"about.eye":"About Elliya Clinic","about.title":"科学と自然美の出会い",
+"about.body":"Your Room. Your Doctor. Your Time.<br>プライベート個室で、<br>院長が直接あなたを診察します。",
+"about.philo":"私たちの哲学",
+"tx.eye":"Signature Treatments","tx.title":"あなたの変化がここから始まります。",
+"sig1.name":"ソフウェーブ","sig1.desc":"SUPERB™超音波技術により、深さ1.5mmの真皮層に広く均一にエネルギーを伝達し、弾力とコラーゲンを再生させるリフティング機器。",
+"sig2.name":"チタニウム","sig2.desc":"3つの波長のレーザーが同時に照射され、ダウンタイムなしで肌質・弾力・美白の3つの効果が得られるオールインワン第4世代リフティング。",
+"sig3.name":"ウルセラピープライム","sig3.desc":"高強度超音波エネルギーを真皮から筋膜層(SMAS)まで多角的に照射し、脂肪層の整理とコラーゲン生成を促すリフティング機器。",
+"sig4.name":"オンダ","sig4.desc":"新概念のマイクロ波技術とハンドピースを用い、肌の引き締めと持続的なコラーゲンリモデリングでコントアリングする機器。",
+"sig5.name":"シュリンクユニバース","sig5.desc":"2つのモードと7種のカートリッジで、肌の深層まで隙間なく部位別にカスタマイズされた弾力リフティング施術。",
+"sig6.name":"スキンブースター","sig6.desc":"肌の再生と弾力改善を助ける有効成分を真皮層に直接注入・浸透させる美容施術。保湿、毛穴・小じわ改善、美白など、お肌の悩みに合わせて成分をカスタマイズできます。",
+"tx1.name":"HIFUリフティング","tx1.desc":"SMAS層に集束超音波を照射し、たるんだ輪郭を引き上げる非手術・無痛・自然な施術。",
+"tx2.name":"糸リフティング","tx2.desc":"生分解性の糸による即効性のリフティングと、数ヶ月にわたるコラーゲン生成促進効果。",
+"tx3.name":"フィラー&ボトックス","tx3.desc":"ボリューム回復としわの改善を組み合わせ、自然で若々しい印象へ。",
+"common.detail":"詳しく見る","common.back-tx":"← 施術一覧","common.back-home":"← ホームへ",
+"philo.eye":"私たちの信念","philo.title":"真の美しさは自然さの中にあります。",
+"p1.title":"自然な変化","p1.body":"誰にも気づかれない結果こそ、最も美しいと私たちは信じています——すでにあるものを引き出すこと。",
+"p2.title":"パーソナライズドケア","p2.body":"すべての顔は唯一無二です。お顔の形、肌質、ライフスタイルに基づいた個別プランをご提案します。",
+"p3.title":"持続する美しさ","p3.body":"コラーゲン再生、組織の回復、バリア機能の修復を通じて、長期的な肌の健康を目指します。",
+"visit.eye":"Find Us","visit.title":"アクセス",
+"visit.al":"住所","visit.addr":"ソウル特別市瑞草区瑞草大路78キル26 (4階)",
+"visit.hl":"診療時間","visit.hours":"月・金 10:30–19:30<br>火・木 10:30–17:30<br>土 10:30–15:30<br>水・日休診",
+"visit.cl":"連絡先","visit.tl":"コーディネーター","visit.tw":"中文 · English · 韓国語 · LINE: @elliyaclinic",
+"footer.desc":"ソウルのアンチエイジング&リフティング専門皮膚科。","footer.tx":"施術","footer.clinic":"クリニック","footer.sns":"Connect",
+"detail.from":"料金目安","detail.join":"予約する","detail.note":"正確な料金はカウンセリング後に確定します。",
+"pp.title":"私たちの哲学","pp.intro":"当院は、お肌本来の健康と美しさがそのまま輝くお手伝いをすることに専念しています。",
+"pp.p1t":"1. 自然な変化","pp.p1b":"気づかれない仕上がりこそ最良の結果——すでにある美しさを引き立てることを信条としています。",
+"pp.p2t":"2. パーソナライズドケア","pp.p2b":"お顔の形、肌の状態、年齢、ライフスタイルに合わせた、唯一無二の施術プランをご提案します。",
+"pp.p3t":"3. 持続する美しさ","pp.p3b":"コラーゲン再生と組織回復を通じて、時とともに健やかさを増す肌へと導きます。",
+"pp.p4t":"4. 透明なコミュニケーション","pp.p4b":"施術前の丁寧な説明と徹底したアフターケアで、納得したうえでご判断いただけます。",
+"pp.p5t":"5. 国際的なアクセシビリティ","pp.p5b":"中国語・英語対応コーディネーターが、海外からの患者様にも言語の壁のない最高水準のケアをお約束します。",
+"pp.cta":"無料カウンセリング予約",
+"bk.steps":"予約ステップ","bk.s1":"施術選択","bk.s1s":"施術を選ぶ",
+"bk.s2":"日付&時間","bk.s2s":"日付・時間を選ぶ",
+"bk.s3":"お客様情報","bk.s3s":"連絡先とお名前",
+"bk.s4":"確認","bk.s4s":"内容確認","bk.s5":"完了","bk.s5s":"予約完了",
+"bk.s1h":"施術を選択してください","bk.s1p":"ご希望の施術を選択すると自動的に次のステップへ進みます。",
+"bk.s2h":"日付と時間を選択してください","bk.s2p":"日付を選択した後、ご希望の時間をお選びください。",
+"bk.s3h":"お客様情報","bk.s3p":"予約確定のため、必要事項をご入力ください。",
+"bk.s4h":"予約内容のご確認","bk.s4p":"送信前に内容に誤りがないかご確認ください。",
+"bk.sd1":"SUPERB™超音波 — 真皮層コラーゲンリフティング","bk.sd2":"3波長レーザー同時照射 — オールインワン第4世代リフティング",
+"bk.sd3":"高強度超音波 — 真皮層からSMAS層まで","bk.sd4":"マイクロ波コントアリング — 持続的コラーゲンリモデリング","bk.sd5":"2モード・7カートリッジ — 部位別カスタムリフティング","bk.sd6":"真皮層への直接注入 — 保湿・美白カスタムケア",
+"bk.tl":"時間を選択",
+"fm.fn":"名 *","fm.ln":"姓 *","fm.em":"メールアドレス *","fm.ph":"電話番号 *","fm.na":"国籍","fm.nt":"備考・ご要望",
+"ct.i":"項目","ct.d":"詳細","ct.p":"金額","ct.s":"施術","ct.dt":"日時","ct.n":"お名前","ct.c":"連絡先",
+"ct.tot":"予想費用（カウンセリング後確定）","ct.edit":"← 修正する","ct.cfm":"予約を確定する ✓",
+"dn.title":"ご予約が完了しました！","dn.sub":"ご入力いただいたメールアドレスに確認メールをお送りしました。","dn.home":"ホームへ戻る",
+"d0":"日","d1":"月","d2":"火","d3":"水","d4":"木","d5":"金","d6":"土",
+"cm.back":"← 戻る","cm.next":"次へ →",
+"al.date":"日付を選択してください。","al.time":"時間を選択してください。","al.name":"姓名をご入力ください。","al.email":"正しいメールアドレスをご入力ください（例：name@example.com）。","al.phone":"電話番号をご入力ください。",
+"cr.svc":"施術","cr.date":"日時","cr.name":"お名前","cr.email":"メールアドレス","cr.price":"予想費用"
+},
+cn: {
+"nav.home":"首页","nav.philo":"理念","nav.tx":"疗程","nav.visit":"交通信息","nav.book":"立即预约",
+"hero.eye":"Seoul · 抗衰老与提升专科",
+"hero.desc":"伊莉雅诊所将尖端提升技术与精细的医疗理念相结合，唤醒您与生俱来的自然之美。",
+"hero.book":"立即预约","hero.learn":"预约查询",
+"about.eye":"About Elliya Clinic","about.title":"科学与自然美的相遇",
+"about.body":"Your Room. Your Doctor. Your Time.<br>在专属私人诊室内，<br>院长亲自为您诊疗。",
+"about.philo":"查看理念",
+"tx.eye":"Signature Treatments","tx.title":"您的蜕变即将开始。",
+"sig1.name":"Sofwave","sig1.desc":"采用SUPERB™超声波技术，将能量广泛均匀地传递至1.5mm深的真皮层，促进弹力与胶原蛋白再生的提升仪器。",
+"sig2.name":"钛金","sig2.desc":"三种波长激光同时照射，无恢复期即可实现肤质、弹力、美白三合一效果的第四代全能提升技术。",
+"sig3.name":"Ultherapy Prime","sig3.desc":"高强度聚焦超声波从真皮层到筋膜层(SMAS)多角度作用，整理脂肪层并促进胶原蛋白生成的提升仪器。",
+"sig4.name":"Onda","sig4.desc":"采用新概念微波技术与探头，实现肌肤紧致与持续胶原蛋白重塑的轮廓雕塑仪器。",
+"sig5.name":"Shurink Universe","sig5.desc":"两种模式、7种探头，深入肌肤各层，提供部位定制化、无死角的弹力提升疗程。",
+"sig6.name":"水光针","sig6.desc":"将有助于肌肤再生与弹力改善的有效成分直接注入或渗透至真皮层的美容疗程。可根据个人肌肤需求定制补水、毛孔细纹改善、美白等成分。",
+"tx1.name":"HIFU聚焦提升","tx1.desc":"聚焦超声波作用于SMAS层，提升松弛轮廓——非手术、无痛、自然。",
+"tx2.name":"埋线提升","tx2.desc":"可吸收线材带来即刻提升效果，并持续数月刺激胶原蛋白生成。",
+"tx3.name":"玻尿酸与肉毒杆菌","tx3.desc":"容量修复与皱纹改善相结合，呈现自然年轻的外观。",
+"common.detail":"了解更多","common.back-tx":"← 返回疗程列表","common.back-home":"← 返回首页",
+"philo.eye":"我们的理念","philo.title":"真正的美，源于自然。",
+"p1.title":"自然的蜕变","p1.body":"我们相信，最美的结果是无人能察觉的——让原本拥有的美更加出众。",
+"p2.title":"个性化护理","p2.body":"每张脸都是独特的。我们根据您的脸型、肌肤状况和生活方式，设计专属方案。",
+"p3.title":"持久的美丽","p3.body":"通过胶原蛋白再生、组织修复与屏障重建，追求长期的肌肤健康。",
+"visit.eye":"Find Us","visit.title":"交通信息",
+"visit.al":"地址","visit.addr":"首尔特别市瑞草区瑞草大路78街26号 4楼",
+"visit.hl":"营业时间","visit.hours":"周一・周五 10:30–19:30<br>周二・周四 10:30–17:30<br>周六 10:30–15:30<br>周三・周日休息",
+"visit.cl":"联系方式","visit.tl":"协调员","visit.tw":"中文 · English · 韩语 · LINE: @elliyaclinic",
+"footer.desc":"首尔抗衰老与提升专科皮肤科。","footer.tx":"疗程","footer.clinic":"诊所","footer.sns":"Connect",
+"detail.from":"价格参考","detail.join":"立即预约","detail.note":"具体价格将在咨询后确定。",
+"pp.title":"我们的理念","pp.intro":"本诊所致力于帮助您展现肌肤本身真正的健康与美丽。",
+"pp.p1t":"1. 自然的蜕变","pp.p1b":"我们相信，看不出痕迹的效果才是最好的结果——让原本的美更加出众。",
+"pp.p2t":"2. 个性化护理","pp.p2b":"根据您的脸型、肌肤状况、年龄和生活方式，量身定制专属治疗方案。",
+"pp.p3t":"3. 持久的美丽","pp.p3b":"通过胶原蛋白再生与组织修复，打造随时间愈发健康的肌肤。",
+"pp.p4t":"4. 透明的沟通","pp.p4b":"每次疗程前充分说明，术后悉心护理，助您做出明智的决定。",
+"pp.p5t":"5. 无国界的服务","pp.p5b":"配备中文、英文协调员，让海外患者也能无语言障碍地享受顶级护理。",
+"pp.cta":"预约免费咨询",
+"bk.steps":"预约步骤","bk.s1":"选择疗程","bk.s1s":"选择所需疗程",
+"bk.s2":"日期与时间","bk.s2s":"选择日期与时间",
+"bk.s3":"填写信息","bk.s3s":"联系方式与姓名",
+"bk.s4":"确认","bk.s4s":"核对信息","bk.s5":"完成","bk.s5s":"预约完成",
+"bk.s1h":"请选择疗程","bk.s1p":"选择所需疗程后将自动进入下一步。",
+"bk.s2h":"请选择日期与时间","bk.s2p":"选择日期后，请选择您希望的时间。",
+"bk.s3h":"填写您的信息","bk.s3p":"请填写以下信息以确认您的预约。",
+"bk.s4h":"确认您的预约","bk.s4p":"提交前请确认所有信息无误。",
+"bk.sd1":"SUPERB™超声波 — 真皮层胶原蛋白提升","bk.sd2":"三波长激光同步 — 第四代全能提升",
+"bk.sd3":"高强度超声波 — 真皮层至SMAS层","bk.sd4":"微波轮廓雕塑 — 持续胶原蛋白重塑","bk.sd5":"两种模式・7种探头 — 部位定制提升","bk.sd6":"直接注入真皮层 — 定制补水与美白",
+"bk.tl":"选择时间",
+"fm.fn":"名字 *","fm.ln":"姓氏 *","fm.em":"邮箱 *","fm.ph":"电话 *","fm.na":"国籍","fm.nt":"备注 / 特殊要求",
+"ct.i":"项目","ct.d":"详情","ct.p":"金额","ct.s":"疗程","ct.dt":"日期","ct.n":"姓名","ct.c":"联系方式",
+"ct.tot":"预估费用（咨询后确定）","ct.edit":"← 修改","ct.cfm":"确认预约 ✓",
+"dn.title":"预约成功！","dn.sub":"确认邮件已发送至您填写的邮箱。","dn.home":"返回首页",
+"d0":"周日","d1":"周一","d2":"周二","d3":"周三","d4":"周四","d5":"周五","d6":"周六",
+"cm.back":"← 上一步","cm.next":"下一步 →",
+"al.date":"请选择日期。","al.time":"请选择时间。","al.name":"请填写姓名。","al.email":"请输入有效的邮箱地址（例如：name@example.com）。","al.phone":"请填写联系电话。",
+"cr.svc":"疗程","cr.date":"日期与时间","cr.name":"姓名","cr.email":"邮箱","cr.price":"预估费用"
 }
 };
 
@@ -1202,7 +1319,7 @@ function setLang(l) {
   lang = l;
   document.documentElement.lang = l;
   document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
-  ["ko","en","zh","ar"].forEach(function(x) {
+  ["ko","en","zh","ar","ja","cn"].forEach(function(x) {
     document.getElementById("lb-"+x).classList.toggle("active", x === l);
   });
   applyT();

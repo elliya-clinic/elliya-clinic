@@ -198,7 +198,21 @@ nav.nav-scrolled{
 .vi-val{font-size:.88rem;color:var(--ink);line-height:1.6;font-weight:600;}
 
 /* FOOTER */
-footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;display:flex;justify-content:center;text-align:center;font-family:'Noto Serif KR','Georgia',serif;font-size:.9rem;}
+footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display:flex;justify-content:center;}
+.ft-wrap{width:100%;max-width:1080px;display:flex;align-items:center;gap:4.5rem;}
+.ft-logo{display:flex;flex-direction:column;align-items:center;gap:.7rem;flex-shrink:0;}
+.ft-logo-tx{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;color:var(--white);letter-spacing:.06em;white-space:nowrap;}
+.ft-links{list-style:none;flex-shrink:0;display:flex;flex-direction:column;gap:.9rem;}
+.ft-links a{color:var(--white);font-weight:700;font-size:.9rem;text-decoration:none;letter-spacing:.02em;transition:color .2s;}
+.ft-links a:hover{color:var(--gold-light);}
+.ft-info{display:flex;flex-direction:column;gap:.55rem;font-size:.85rem;color:rgba(255,255,255,.75);line-height:1.6;}
+.ft-info .ft-sep{color:rgba(255,255,255,.3);margin:0 .55rem;}
+.ft-copy{font-size:.74rem;color:rgba(255,255,255,.4);letter-spacing:.03em;margin-top:.15rem;}
+@media(max-width:768px){
+  .ft-wrap{flex-direction:column;gap:2rem;text-align:center;}
+  .ft-info{align-items:center;font-size:.8rem;}
+  .ft-links{flex-direction:row;gap:1.6rem;}
+}
 .ft-brand .nav-logo{color:var(--white);margin-bottom:1rem;display:block;}
 .ft-col h4{color:var(--white);font-size:1.1rem;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1rem;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:700;border-bottom:1px solid rgba(201,169,110,.3);padding-bottom:.5rem;}
 .ft-col ul{list-style:none;}.ft-col li{margin-bottom:.5rem;font-size:.85rem;color:rgba(255,255,255,.5);}.ft-col a{color:rgba(255,255,255,.5);transition:color .2s;}.ft-col a:hover{color:var(--gold-light);}
@@ -353,6 +367,24 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 /* ADMIN */
 .adm-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--white);border:none;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:background .2s;}
 .adm-fab:hover{background:var(--gold-dark);}
+
+/* QUICK CONTACT FLOATING BAR */
+.qbar{position:fixed;right:1.2rem;bottom:5.8rem;z-index:450;display:flex;flex-direction:column;gap:.6rem;align-items:stretch;}
+.qbtn{display:flex;align-items:center;gap:.55rem;background:var(--white);border:1px solid var(--border-mid);border-radius:999px;padding:.6rem 1.15rem;font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:none;box-shadow:0 5px 16px rgba(0,0,0,.14);cursor:pointer;white-space:nowrap;animation:qfloat 3.4s ease-in-out infinite;transition:transform .2s,box-shadow .2s;}
+.qbtn:hover{box-shadow:0 8px 22px rgba(0,0,0,.2);}
+.qbtn svg{width:17px;height:17px;flex-shrink:0;color:var(--gold-dark);}
+.qbtn:nth-child(1){animation-delay:0s;}
+.qbtn:nth-child(2){animation-delay:.35s;}
+.qbtn:nth-child(3){animation-delay:.7s;}
+.qbtn:nth-child(4){animation-delay:1.05s;}
+.qbtn:nth-child(5){animation-delay:1.4s;}
+@keyframes qfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@media(max-width:768px){
+  .qbar{right:.9rem;bottom:5.2rem;gap:.5rem;}
+  .qbtn{padding:.5rem .95rem;font-size:.76rem;}
+  .qbtn svg{width:15px;height:15px;}
+}
+@media(prefers-reduced-motion:reduce){.qbtn{animation:none;}}
 .adm-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(26,23,20,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
 .adm-overlay.open{display:flex;}
 .adm-box{background:var(--white);border-radius:8px;width:min(780px,95vw);max-height:90vh;overflow-y:auto;padding:2.5rem;}
@@ -414,7 +446,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v115</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v117</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -435,6 +467,30 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
 
 <!-- ADMIN FAB -->
 <button class="adm-fab" onclick="openAdm()" title="문구 편집">&#9998;</button>
+
+<!-- QUICK CONTACT FLOATING BAR -->
+<div class="qbar" id="qbar">
+  <a class="qbtn" href="tel:0234711003" aria-label="전화 상담">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    <span>02-3471-1003</span>
+  </a>
+  <a class="qbtn" href="#" onclick="showPage('booking');initBooking();return false;" aria-label="온라인 예약">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+    <span>온라인 예약</span>
+  </a>
+  <a class="qbtn" href="https://www.instagram.com/dr_elliya" target="_blank" rel="noopener" aria-label="인스타그램">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+    <span>인스타그램</span>
+  </a>
+  <a class="qbtn" href="https://threads.com/dr_elliya" target="_blank" rel="noopener" aria-label="스레드">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.471 12.03v-.059c.029-3.557.879-6.41 2.524-8.463C5.845 1.205 8.598.024 12.18 0h.014c2.746.02 5.043.735 6.826 2.123 1.677 1.312 2.858 3.155 3.499 5.482l-2.38.62c-.88-3.374-3.022-5.081-6.01-5.1-2.74.02-4.933.908-6.18 2.504-1.247 1.596-1.89 4.01-1.912 7.4v.05c.022 3.389.665 5.804 1.912 7.4 1.247 1.596 3.44 2.484 6.18 2.504 2.74-.02 4.497-.808 5.577-1.888.99-.99 1.558-2.322 1.689-3.96a7.556 7.556 0 0 0-.238-2.508 3.998 3.998 0 0 0-1.172-1.92c-.3.738-.733 1.394-1.293 1.94-.988.958-2.29 1.516-3.878 1.658-1.319.12-2.559-.145-3.487-.747-.991-.64-1.56-1.595-1.598-2.685-.038-1.069.468-2.054 1.389-2.773.977-.763 2.357-1.197 3.895-1.225.764-.014 1.5.04 2.2.163a6.83 6.83 0 0 0-.166-.972c-.318-1.113-1.087-1.703-2.35-1.82-.813-.074-1.596.106-2.21.508l-1.178-1.992c.975-.624 2.172-.954 3.466-.84 2.303.208 3.766 1.39 4.338 3.513.13.48.21.983.247 1.508a12.9 12.9 0 0 1 1.888 1.131c1.05.796 1.784 1.85 2.122 3.044.364 1.27.405 2.694.12 4.008-.453 2.085-1.536 3.773-3.13 4.883-1.52 1.063-3.513 1.62-5.761 1.637z"/></svg>
+    <span>스레드</span>
+  </a>
+  <a class="qbtn" href="https://blog.naver.com/bigmacdoc" target="_blank" rel="noopener" aria-label="네이버 블로그">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/></svg>
+    <span>블로그</span>
+  </a>
+</div>
 
 <!-- ADMIN OVERLAY -->
 <div class="adm-overlay" id="adm-overlay">
@@ -603,14 +659,27 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:1.5rem 5vw 3rem;di
   </section>
 
   <footer>
-    <div class="ft-brand">
-      <span class="nav-logo">Elliya <span style="color:var(--gold)">Clinic</span></span>
-      <p data-t="footer.desc">서울의 안티에이징 &amp; 리프팅 전문 피부과.</p>
-      <p style="margin-top:.8rem;"><a href="tel:0234711003" style="color:rgba(255,255,255,.6);text-decoration:none;">02-3471-1003</a></p>
-      <p style="margin-top:.5rem;font-size:.78rem;color:rgba(255,255,255,.45);">대표자 홍준택 &nbsp;|&nbsp; 사업자등록번호 108-23-67003</p>
+    <div class="ft-wrap">
+      <div class="ft-logo">
+        <svg width="64" height="64" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Elliya Clinic Logo">
+          <rect x="8" y="6" width="2.4" height="24" fill="#FFFFFF"/>
+          <rect x="8" y="6" width="14" height="2.4" fill="#FFFFFF"/>
+          <rect x="8" y="16.8" width="9.5" height="2.4" fill="#C9A96E"/>
+          <rect x="8" y="27.6" width="14" height="2.4" fill="#FFFFFF"/>
+        </svg>
+        <span class="ft-logo-tx">Elliya Clinic</span>
+      </div>
+      <ul class="ft-links">
+        <li><a href="#" onclick="showPage('terms');return false;">이용약관</a></li>
+        <li><a href="#" onclick="showPage('privacy');return false;">개인정보처리방침</a></li>
+      </ul>
+      <div class="ft-info">
+        <p>엘리야의원<span class="ft-sep">|</span>사업자번호 108-23-67003<span class="ft-sep">|</span>대표자 홍준택</p>
+        <p>서울 서초구 서초대로78길 26, 4층<span class="ft-sep">|</span>TEL. <a href="tel:0234711003" style="color:inherit;text-decoration:none;">02-3471-1003</a></p>
+        <p class="ft-copy">COPYRIGHT &#169; 2026 엘리야의원 ALL RIGHTS RESERVED.</p>
+      </div>
     </div>
   </footer>
-  <div class="ft-btm">&#169; 2026 Elliya Clinic · 엘리야의원. All Rights Reserved. &nbsp;|&nbsp; <a href="#" onclick="showPage('terms')" style="color:inherit;">이용약관</a> &nbsp;|&nbsp; <a href="#" onclick="showPage('privacy')" style="color:inherit;">개인정보처리방침</a></div>
 </div>
 
 <!-- DETAIL PAGE -->

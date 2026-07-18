@@ -102,6 +102,7 @@ nav.nav-scrolled{
   animation:heroSlowZoom 10s ease-in-out infinite alternate;
 }
 .hero-slide.active{opacity:1;}
+.hero-slide:nth-child(2){object-position:right center;}
 @keyframes heroSlowZoom{
   from{transform:scale(1);}
   to{transform:scale(1.15);}
@@ -113,11 +114,15 @@ nav.nav-scrolled{
 .hero-tset{display:none;}
 .hero-tset.active{display:block;}
 .hero-mask{display:block;overflow:hidden;padding:.12em 0;}
-.hero-t1,.hero-t2{font-size:clamp(1.5rem,3.4vw,2.6rem);font-weight:700;color:var(--white);line-height:1.35;font-family:'Playfair Display','Noto Serif KR',Georgia,serif;letter-spacing:.04em;text-shadow:0 3px 14px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.45);transform:translateY(115%);opacity:0;}
+.hero-t1,.hero-t2{font-size:clamp(1.5rem,3.4vw,2.6rem);font-weight:700;color:var(--white);line-height:1.35;font-family:'Nanum Myeongjo','Noto Serif KR',Georgia,serif;letter-spacing:.04em;text-shadow:0 3px 14px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.45);transform:translateY(115%);opacity:0;}
 .hero-t1{margin-bottom:.5rem;}
+.hero-tset.leaving{display:block;}
 .hero-tset.active .hero-t1{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .3s forwards;}
 .hero-tset.active .hero-t2{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .85s forwards;}
+.hero-tset.leaving .hero-t1{animation:heroFall 1s cubic-bezier(.6,.05,.75,.4) .15s forwards;transform:translateY(0);opacity:1;}
+.hero-tset.leaving .hero-t2{animation:heroFall 1s cubic-bezier(.6,.05,.75,.4) 0s forwards;transform:translateY(0);opacity:1;}
 @keyframes heroRise{from{opacity:0;transform:translateY(115%);}to{opacity:1;transform:translateY(0);}}
+@keyframes heroFall{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(115%);}}
 @media(prefers-reduced-motion:reduce){.hero-tset.active .hero-t1,.hero-tset.active .hero-t2{animation-duration:.01s;animation-delay:0s;}}
 .hero-dots{position:absolute;z-index:3;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;}
 .hero-dot{width:2rem;height:2rem;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(28,25,22,.35);color:rgba(255,255,255,.8);font-size:.78rem;font-family:'Arial',sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;}
@@ -381,17 +386,23 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .adm-fab:hover{background:var(--gold-dark);}
 
 /* QUICK CONTACT FLOATING BAR */
-.qbar{position:fixed;right:1.2rem;bottom:5.8rem;z-index:450;display:flex;flex-direction:column;gap:.6rem;align-items:stretch;animation:qbounce .7s infinite alternate;}
+.qbar{position:fixed;right:1.2rem;bottom:5.8rem;z-index:450;display:flex;flex-direction:column;gap:.6rem;align-items:stretch;}
 .qbtn{display:flex;align-items:center;gap:.55rem;background:var(--white);border:1px solid var(--border-mid);border-radius:999px;padding:.6rem 1.15rem;font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:none;box-shadow:0 5px 16px rgba(0,0,0,.14);cursor:pointer;white-space:nowrap;transition:transform .2s,box-shadow .2s;}
 .qbtn:hover{box-shadow:0 8px 22px rgba(0,0,0,.2);}
 .qbtn svg{width:17px;height:17px;flex-shrink:0;color:var(--gold-dark);}
-@keyframes qbounce{0%{transform:translate3d(0,-15px,0);}100%{transform:translate3d(0,0,0);}}
+.qbtn{animation:qfloat 3.4s ease-in-out infinite;}
+.qbtn:nth-child(1){animation-delay:0s;}
+.qbtn:nth-child(2){animation-delay:.35s;}
+.qbtn:nth-child(3){animation-delay:.7s;}
+.qbtn:nth-child(4){animation-delay:1.05s;}
+.qbtn:nth-child(5){animation-delay:1.4s;}
+@keyframes qfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
 @media(max-width:768px){
   .qbar{right:.9rem;bottom:5.2rem;gap:.5rem;}
   .qbtn{padding:.5rem .95rem;font-size:.76rem;}
   .qbtn svg{width:15px;height:15px;}
 }
-@media(prefers-reduced-motion:reduce){.qbar{animation:none;}}
+@media(prefers-reduced-motion:reduce){.qbtn{animation:none;}}
 .adm-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(26,23,20,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
 .adm-overlay.open{display:flex;}
 .adm-box{background:var(--white);border-radius:8px;width:min(780px,95vw);max-height:90vh;overflow-y:auto;padding:2.5rem;}
@@ -453,7 +464,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v121</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v122</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -2033,8 +2044,16 @@ var heroTextIdx = 0;
 function heroTextNext() {
   var sets = document.querySelectorAll(".hero-tset");
   if (sets.length < 2) return;
+  var cur = heroTextIdx;
   heroTextIdx = (heroTextIdx + 1) % sets.length;
-  sets.forEach(function(el, i){ el.classList.toggle("active", i === heroTextIdx); });
+  // 현재 문구: 밑으로 내려가며 퇴장
+  sets[cur].classList.remove("active");
+  sets[cur].classList.add("leaving");
+  // 퇴장이 끝난 뒤 새 문구 등장
+  setTimeout(function(){
+    sets[cur].classList.remove("leaving");
+    sets[heroTextIdx].classList.add("active");
+  }, 1200);
 }
 
 function heroGoSlideAuto(idx) {

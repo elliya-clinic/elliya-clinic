@@ -109,21 +109,6 @@ nav.nav-scrolled{
 }
 .hero-ov{display:none;}
 
-/* HERO ROTATING TEXT */
-.hero-txt{position:absolute;z-index:2;top:44%;left:50%;transform:translate(-50%,-50%);text-align:center;width:92%;pointer-events:none;}
-.hero-sizer{visibility:hidden;}
-.hero-tset{position:absolute;top:0;left:0;right:0;visibility:hidden;}
-.hero-tset.active,.hero-tset.leaving{visibility:visible;}
-.hero-mask{display:block;overflow:hidden;padding:.1em 0;}
-.hero-t1,.hero-t2{display:block;font-size:clamp(1.7rem,3.85vw,3.2rem);font-weight:400;color:var(--white);line-height:1.2;font-family:'Nanum Myeongjo','Noto Serif KR',serif!important;letter-spacing:-0.8px;text-shadow:0 1px 8px rgba(0,0,0,.3);transform:translateY(115%);opacity:0;}
-.hero-tset .hero-mask:first-child,.hero-sizer .hero-mask:first-child{margin-bottom:.5rem;}
-.hero-tset.active .hero-t1{animation:heroRise 2.4s cubic-bezier(.22,.7,.25,1) 1.2s forwards;}
-.hero-tset.active .hero-t2{animation:heroRise 2.4s cubic-bezier(.22,.7,.25,1) 2.2s forwards;}
-.hero-tset.leaving .hero-t1{animation:heroFall 2.4s cubic-bezier(.5,.1,.6,.5) 0s forwards;transform:translateY(0);opacity:1;}
-.hero-tset.leaving .hero-t2{animation:heroFall 2.4s cubic-bezier(.5,.1,.6,.5) 1s forwards;transform:translateY(0);opacity:1;}
-@keyframes heroRise{from{opacity:0;transform:translateY(115%);}to{opacity:1;transform:translateY(0);}}
-@keyframes heroFall{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(115%);}}
-@media(prefers-reduced-motion:reduce){.hero-tset.active .hero-t1,.hero-tset.active .hero-t2{animation-duration:.01s;animation-delay:0s;}}
 .hero-dots{position:absolute;z-index:3;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;}
 .hero-dot{width:2rem;height:2rem;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(28,25,22,.35);color:rgba(255,255,255,.8);font-size:.78rem;font-family:'Arial',sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;}
 .hero-dot:hover{border-color:var(--gold);color:var(--white);}
@@ -385,24 +370,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .adm-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--white);border:none;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:background .2s;}
 .adm-fab:hover{background:var(--gold-dark);}
 
-/* QUICK CONTACT FLOATING BAR */
-.qbar{position:fixed;right:1.2rem;bottom:5.8rem;z-index:450;display:flex;flex-direction:column;gap:.6rem;align-items:stretch;}
-.qbtn{display:flex;align-items:center;gap:.55rem;background:var(--white);border:1px solid var(--border-mid);border-radius:999px;padding:.6rem 1.15rem;font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:none;box-shadow:0 5px 16px rgba(0,0,0,.14);cursor:pointer;white-space:nowrap;transition:transform .2s,box-shadow .2s;}
-.qbtn:hover{box-shadow:0 8px 22px rgba(0,0,0,.2);}
-.qbtn svg{width:17px;height:17px;flex-shrink:0;color:var(--gold-dark);}
-.qbtn{animation:qfloat 3.4s ease-in-out infinite;}
-.qbtn:nth-child(1){animation-delay:0s;}
-.qbtn:nth-child(2){animation-delay:.35s;}
-.qbtn:nth-child(3){animation-delay:.7s;}
-.qbtn:nth-child(4){animation-delay:1.05s;}
-.qbtn:nth-child(5){animation-delay:1.4s;}
-@keyframes qfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-@media(max-width:768px){
-  .qbar{right:.9rem;bottom:5.2rem;gap:.5rem;}
-  .qbtn{padding:.5rem .95rem;font-size:.76rem;}
-  .qbtn svg{width:15px;height:15px;}
-}
-@media(prefers-reduced-motion:reduce){.qbtn{animation:none;}}
 .adm-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(26,23,20,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
 .adm-overlay.open{display:flex;}
 .adm-box{background:var(--white);border-radius:8px;width:min(780px,95vw);max-height:90vh;overflow-y:auto;padding:2.5rem;}
@@ -464,7 +431,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v130</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v131</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -486,29 +453,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 <!-- ADMIN FAB -->
 <button class="adm-fab" onclick="openAdm()" title="문구 편집">&#9998;</button>
 
-<!-- QUICK CONTACT FLOATING BAR -->
-<div class="qbar" id="qbar">
-  <a class="qbtn" href="tel:0234711003" aria-label="전화 상담">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-    <span>02-3471-1003</span>
-  </a>
-  <a class="qbtn" href="#" onclick="showPage('booking');initBooking();return false;" aria-label="온라인 예약">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-    <span>온라인 예약</span>
-  </a>
-  <a class="qbtn" href="https://www.instagram.com/dr_elliya" target="_blank" rel="noopener" aria-label="인스타그램">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-    <span>인스타그램</span>
-  </a>
-  <a class="qbtn" href="https://threads.com/dr_elliya" target="_blank" rel="noopener" aria-label="스레드">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.471 12.03v-.059c.029-3.557.879-6.41 2.524-8.463C5.845 1.205 8.598.024 12.18 0h.014c2.746.02 5.043.735 6.826 2.123 1.677 1.312 2.858 3.155 3.499 5.482l-2.38.62c-.88-3.374-3.022-5.081-6.01-5.1-2.74.02-4.933.908-6.18 2.504-1.247 1.596-1.89 4.01-1.912 7.4v.05c.022 3.389.665 5.804 1.912 7.4 1.247 1.596 3.44 2.484 6.18 2.504 2.74-.02 4.497-.808 5.577-1.888.99-.99 1.558-2.322 1.689-3.96a7.556 7.556 0 0 0-.238-2.508 3.998 3.998 0 0 0-1.172-1.92c-.3.738-.733 1.394-1.293 1.94-.988.958-2.29 1.516-3.878 1.658-1.319.12-2.559-.145-3.487-.747-.991-.64-1.56-1.595-1.598-2.685-.038-1.069.468-2.054 1.389-2.773.977-.763 2.357-1.197 3.895-1.225.764-.014 1.5.04 2.2.163a6.83 6.83 0 0 0-.166-.972c-.318-1.113-1.087-1.703-2.35-1.82-.813-.074-1.596.106-2.21.508l-1.178-1.992c.975-.624 2.172-.954 3.466-.84 2.303.208 3.766 1.39 4.338 3.513.13.48.21.983.247 1.508a12.9 12.9 0 0 1 1.888 1.131c1.05.796 1.784 1.85 2.122 3.044.364 1.27.405 2.694.12 4.008-.453 2.085-1.536 3.773-3.13 4.883-1.52 1.063-3.513 1.62-5.761 1.637z"/></svg>
-    <span>스레드</span>
-  </a>
-  <a class="qbtn" href="https://blog.naver.com/bigmacdoc" target="_blank" rel="noopener" aria-label="네이버 블로그">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.273 12.845L7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727z"/></svg>
-    <span>블로그</span>
-  </a>
-</div>
 
 <!-- ADMIN OVERLAY -->
 <div class="adm-overlay" id="adm-overlay">
@@ -561,24 +505,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
       <img class="hero-slide" src="images/main_image2.jpg" alt="">
     </div>
     <div class="hero-ov"></div>
-    <div class="hero-txt">
-      <div class="hero-sizer" aria-hidden="true">
-        <div class="hero-mask"><span class="hero-t1">깊이 있는 아름다움의 시작, 엘리야 클리닉</span></div>
-        <div class="hero-mask"><span class="hero-t2">깊이 있는 아름다움의 시작, 엘리야 클리닉</span></div>
-      </div>
-      <div class="hero-tset active">
-        <div class="hero-mask"><span class="hero-t1">피부가 기억하는</span></div>
-        <div class="hero-mask"><span class="hero-t2">깊이 있는 아름다움의 시작, 엘리야 클리닉</span></div>
-      </div>
-      <div class="hero-tset">
-        <div class="hero-mask"><span class="hero-t1">조용히&nbsp;&nbsp;&nbsp;달라지며</span></div>
-        <div class="hero-mask"><span class="hero-t2">시간을&nbsp;&nbsp;&nbsp;디자인하는</span></div>
-      </div>
-      <div class="hero-tset">
-        <div class="hero-mask"><span class="hero-t1">섬세하게&nbsp;&nbsp;&nbsp;완성하며</span></div>
-        <div class="hero-mask"><span class="hero-t2">시간을&nbsp;&nbsp;&nbsp;다시 쓰는</span></div>
-      </div>
-    </div>
     <div class="hero-ct">
       <div class="hero-act">
         <button class="btn-p" onclick="showPage('booking');initBooking()" data-t="hero.book">예약하기</button>
@@ -2032,25 +1958,13 @@ function heroGoSlide(idx) {
 
 function restartHeroTimer() {
   if (heroSlideTimer) clearInterval(heroSlideTimer);
-  if (heroSlideCount < 2 && document.querySelectorAll(".hero-tset").length < 2) return;
+  if (heroSlideCount < 2) return;
   heroSlideTimer = setInterval(function(){
     if (heroSlideCount > 1) heroGoSlideAuto((heroSlideIdx + 1) % heroSlideCount);
-    heroTextNext();
   }, 12000);
 }
 
-var heroTextIdx = 0;
-function heroTextNext() {
-  var sets = document.querySelectorAll(".hero-tset");
-  if (sets.length < 2) return;
-  var cur = heroTextIdx;
-  heroTextIdx = (heroTextIdx + 1) % sets.length;
-  // 현재 문구는 내려가고, 동시에 새 문구가 올라옴 (교차)
-  sets[cur].classList.remove("active");
-  sets[cur].classList.add("leaving");
-  sets[heroTextIdx].classList.add("active");
-  setTimeout(function(){ sets[cur].classList.remove("leaving"); }, 4000);
-}
+
 
 function heroGoSlideAuto(idx) {
   heroSlideIdx = idx;

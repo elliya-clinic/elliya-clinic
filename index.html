@@ -110,16 +110,17 @@ nav.nav-scrolled{
 .hero-ov{display:none;}
 
 /* HERO ROTATING TEXT */
-.hero-txt{position:absolute;z-index:2;top:44%;left:50%;transform:translate(-50%,-50%);text-align:center;width:92%;pointer-events:none;display:grid;justify-items:center;}
-.hero-tset{display:none;grid-area:1/1;width:100%;}
-.hero-tset.active,.hero-tset.leaving{display:block;}
-.hero-mask{display:block;overflow:hidden;padding:.12em 0;}
-.hero-t1,.hero-t2{font-size:clamp(1.5rem,3.4vw,2.6rem);font-weight:400;color:var(--white);line-height:1.2;font-family:'Nanum Myeongjo','Noto Serif KR',serif;letter-spacing:-0.8px;text-shadow:0 3px 14px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.45);transform:translateY(115%);opacity:0;}
-.hero-t1{margin-bottom:.5rem;}
-.hero-tset.active .hero-t1{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .5s forwards;}
-.hero-tset.active .hero-t2{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) 1.05s forwards;}
-.hero-tset.leaving .hero-t1{animation:heroFall 2s cubic-bezier(.45,.05,.55,.5) .15s forwards;transform:translateY(0);opacity:1;}
-.hero-tset.leaving .hero-t2{animation:heroFall 2s cubic-bezier(.45,.05,.55,.5) 0s forwards;transform:translateY(0);opacity:1;}
+.hero-txt{position:absolute;z-index:2;top:44%;left:50%;transform:translate(-50%,-50%);text-align:center;width:92%;pointer-events:none;}
+.hero-sizer{visibility:hidden;}
+.hero-tset{position:absolute;top:0;left:0;right:0;visibility:hidden;}
+.hero-tset.active,.hero-tset.leaving{visibility:visible;}
+.hero-mask{display:block;overflow:hidden;padding:.1em 0;}
+.hero-t1,.hero-t2{display:block;font-size:clamp(1.7rem,3.85vw,3.2rem);font-weight:400;color:var(--white);line-height:1.2;font-family:'Nanum Myeongjo','Noto Serif KR',serif!important;letter-spacing:-0.8px;text-shadow:0 1px 8px rgba(0,0,0,.3);transform:translateY(115%);opacity:0;}
+.hero-tset .hero-mask:first-child,.hero-sizer .hero-mask:first-child{margin-bottom:.5rem;}
+.hero-tset.active .hero-t1{animation:heroRise 2.4s cubic-bezier(.22,.7,.25,1) 1.2s forwards;}
+.hero-tset.active .hero-t2{animation:heroRise 2.4s cubic-bezier(.22,.7,.25,1) 2.2s forwards;}
+.hero-tset.leaving .hero-t1{animation:heroFall 2.4s cubic-bezier(.5,.1,.6,.5) 0s forwards;transform:translateY(0);opacity:1;}
+.hero-tset.leaving .hero-t2{animation:heroFall 2.4s cubic-bezier(.5,.1,.6,.5) 1s forwards;transform:translateY(0);opacity:1;}
 @keyframes heroRise{from{opacity:0;transform:translateY(115%);}to{opacity:1;transform:translateY(0);}}
 @keyframes heroFall{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(115%);}}
 @media(prefers-reduced-motion:reduce){.hero-tset.active .hero-t1,.hero-tset.active .hero-t2{animation-duration:.01s;animation-delay:0s;}}
@@ -463,7 +464,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v125</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v130</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -561,17 +562,21 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
     </div>
     <div class="hero-ov"></div>
     <div class="hero-txt">
+      <div class="hero-sizer" aria-hidden="true">
+        <div class="hero-mask"><span class="hero-t1">깊이 있는 아름다움의 시작, 엘리야 클리닉</span></div>
+        <div class="hero-mask"><span class="hero-t2">깊이 있는 아름다움의 시작, 엘리야 클리닉</span></div>
+      </div>
       <div class="hero-tset active">
-        <span class="hero-mask"><p class="hero-t1">피부가 기억하는</p></span>
-        <span class="hero-mask"><p class="hero-t2">깊이 있는 아름다움의 시작</p></span>
+        <div class="hero-mask"><span class="hero-t1">피부가 기억하는</span></div>
+        <div class="hero-mask"><span class="hero-t2">깊이 있는 아름다움의 시작, 엘리야 클리닉</span></div>
       </div>
       <div class="hero-tset">
-        <span class="hero-mask"><p class="hero-t1">조용히&nbsp;&nbsp;&nbsp;달라지는</p></span>
-        <span class="hero-mask"><p class="hero-t2">시간을&nbsp;&nbsp;&nbsp;디자인하는</p></span>
+        <div class="hero-mask"><span class="hero-t1">조용히&nbsp;&nbsp;&nbsp;달라지며</span></div>
+        <div class="hero-mask"><span class="hero-t2">시간을&nbsp;&nbsp;&nbsp;디자인하는</span></div>
       </div>
       <div class="hero-tset">
-        <span class="hero-mask"><p class="hero-t1">섬세하게&nbsp;&nbsp;&nbsp;완성하는</p></span>
-        <span class="hero-mask"><p class="hero-t2">시간을&nbsp;&nbsp;&nbsp;다시 쓰는</p></span>
+        <div class="hero-mask"><span class="hero-t1">섬세하게&nbsp;&nbsp;&nbsp;완성하며</span></div>
+        <div class="hero-mask"><span class="hero-t2">시간을&nbsp;&nbsp;&nbsp;다시 쓰는</span></div>
       </div>
     </div>
     <div class="hero-ct">
@@ -1745,7 +1750,7 @@ function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
     console.error("예약된 시간 조회 실패: JSONP 응답 시간 초과 (Apps Script에 callback 파라미터 처리가 없을 수 있음)");
     cleanup();
     renderTimeSlots([], times, se); // 조회 실패 시 전부 활성화 (예약 자체는 막히지 않도록)
-  }, 9000);
+  }, 12000);
 
   window[cbName] = function(data){
     clearTimeout(timeoutId);
@@ -2031,7 +2036,7 @@ function restartHeroTimer() {
   heroSlideTimer = setInterval(function(){
     if (heroSlideCount > 1) heroGoSlideAuto((heroSlideIdx + 1) % heroSlideCount);
     heroTextNext();
-  }, 9000);
+  }, 12000);
 }
 
 var heroTextIdx = 0;
@@ -2044,7 +2049,7 @@ function heroTextNext() {
   sets[cur].classList.remove("active");
   sets[cur].classList.add("leaving");
   sets[heroTextIdx].classList.add("active");
-  setTimeout(function(){ sets[cur].classList.remove("leaving"); }, 2300);
+  setTimeout(function(){ sets[cur].classList.remove("leaving"); }, 4000);
 }
 
 function heroGoSlideAuto(idx) {

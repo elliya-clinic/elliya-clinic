@@ -110,17 +110,16 @@ nav.nav-scrolled{
 .hero-ov{display:none;}
 
 /* HERO ROTATING TEXT */
-.hero-txt{position:absolute;z-index:2;top:40%;left:50%;transform:translate(-50%,-50%);text-align:center;width:92%;pointer-events:none;}
-.hero-tset{display:none;}
-.hero-tset.active{display:block;}
+.hero-txt{position:absolute;z-index:2;top:44%;left:50%;transform:translate(-50%,-50%);text-align:center;width:92%;pointer-events:none;display:grid;justify-items:center;}
+.hero-tset{display:none;grid-area:1/1;width:100%;}
+.hero-tset.active,.hero-tset.leaving{display:block;}
 .hero-mask{display:block;overflow:hidden;padding:.12em 0;}
-.hero-t1,.hero-t2{font-size:clamp(1.5rem,3.4vw,2.6rem);font-weight:700;color:var(--white);line-height:1.35;font-family:'Nanum Myeongjo','Noto Serif KR',Georgia,serif;letter-spacing:.04em;text-shadow:0 3px 14px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.45);transform:translateY(115%);opacity:0;}
+.hero-t1,.hero-t2{font-size:clamp(1.5rem,3.4vw,2.6rem);font-weight:700;color:var(--white);line-height:1.35;font-family:'Pretendard','Apple SD Gothic Neo','Nanum Gothic',sans-serif;letter-spacing:-.01em;text-shadow:0 3px 14px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.45);transform:translateY(115%);opacity:0;}
 .hero-t1{margin-bottom:.5rem;}
-.hero-tset.leaving{display:block;}
-.hero-tset.active .hero-t1{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .3s forwards;}
-.hero-tset.active .hero-t2{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .85s forwards;}
-.hero-tset.leaving .hero-t1{animation:heroFall 1s cubic-bezier(.6,.05,.75,.4) .15s forwards;transform:translateY(0);opacity:1;}
-.hero-tset.leaving .hero-t2{animation:heroFall 1s cubic-bezier(.6,.05,.75,.4) 0s forwards;transform:translateY(0);opacity:1;}
+.hero-tset.active .hero-t1{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .5s forwards;}
+.hero-tset.active .hero-t2{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) 1.05s forwards;}
+.hero-tset.leaving .hero-t1{animation:heroFall 2s cubic-bezier(.45,.05,.55,.5) .15s forwards;transform:translateY(0);opacity:1;}
+.hero-tset.leaving .hero-t2{animation:heroFall 2s cubic-bezier(.45,.05,.55,.5) 0s forwards;transform:translateY(0);opacity:1;}
 @keyframes heroRise{from{opacity:0;transform:translateY(115%);}to{opacity:1;transform:translateY(0);}}
 @keyframes heroFall{from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(115%);}}
 @media(prefers-reduced-motion:reduce){.hero-tset.active .hero-t1,.hero-tset.active .hero-t2{animation-duration:.01s;animation-delay:0s;}}
@@ -216,7 +215,7 @@ nav.nav-scrolled{
 
 /* FOOTER */
 footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display:flex;justify-content:center;}
-.ft-wrap{width:100%;max-width:1080px;display:flex;align-items:center;gap:4.5rem;}
+.ft-wrap{width:100%;max-width:1080px;display:flex;align-items:center;justify-content:center;gap:5rem;}
 .ft-logo{display:flex;flex-direction:column;align-items:center;gap:.7rem;flex-shrink:0;}
 .ft-logo-tx{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:700;color:var(--white);letter-spacing:.06em;white-space:nowrap;}
 .ft-links{list-style:none;flex-shrink:0;display:flex;flex-direction:column;gap:.9rem;}
@@ -464,7 +463,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v122</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v124</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -694,12 +693,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <footer>
     <div class="ft-wrap">
       <div class="ft-logo">
-        <svg width="64" height="64" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Elliya Clinic Logo">
-          <rect x="8" y="6" width="2.4" height="24" fill="#FFFFFF"/>
-          <rect x="8" y="6" width="14" height="2.4" fill="#FFFFFF"/>
-          <rect x="8" y="16.8" width="9.5" height="2.4" fill="#C9A96E"/>
-          <rect x="8" y="27.6" width="14" height="2.4" fill="#FFFFFF"/>
-        </svg>
+        <img src="images/elliya_logo_white.png" alt="Elliya Clinic Logo" style="height:76px;width:auto;">
         <span class="ft-logo-tx">Elliya Clinic</span>
       </div>
       <ul class="ft-links">
@@ -2046,14 +2040,11 @@ function heroTextNext() {
   if (sets.length < 2) return;
   var cur = heroTextIdx;
   heroTextIdx = (heroTextIdx + 1) % sets.length;
-  // 현재 문구: 밑으로 내려가며 퇴장
+  // 현재 문구는 내려가고, 동시에 새 문구가 올라옴 (교차)
   sets[cur].classList.remove("active");
   sets[cur].classList.add("leaving");
-  // 퇴장이 끝난 뒤 새 문구 등장
-  setTimeout(function(){
-    sets[cur].classList.remove("leaving");
-    sets[heroTextIdx].classList.add("active");
-  }, 1200);
+  sets[heroTextIdx].classList.add("active");
+  setTimeout(function(){ sets[cur].classList.remove("leaving"); }, 2300);
 }
 
 function heroGoSlideAuto(idx) {

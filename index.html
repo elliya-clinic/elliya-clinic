@@ -107,6 +107,18 @@ nav.nav-scrolled{
   to{transform:scale(1.15);}
 }
 .hero-ov{display:none;}
+
+/* HERO ROTATING TEXT */
+.hero-txt{position:absolute;z-index:2;top:40%;left:50%;transform:translate(-50%,-50%);text-align:center;width:92%;pointer-events:none;}
+.hero-tset{display:none;}
+.hero-tset.active{display:block;}
+.hero-mask{display:block;overflow:hidden;padding:.12em 0;}
+.hero-t1,.hero-t2{font-size:clamp(1.5rem,3.4vw,2.6rem);font-weight:700;color:var(--white);line-height:1.35;font-family:'Playfair Display','Noto Serif KR',Georgia,serif;letter-spacing:.04em;text-shadow:0 3px 14px rgba(0,0,0,.6),0 1px 4px rgba(0,0,0,.45);transform:translateY(115%);opacity:0;}
+.hero-t1{margin-bottom:.5rem;}
+.hero-tset.active .hero-t1{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .3s forwards;}
+.hero-tset.active .hero-t2{animation:heroRise 1.6s cubic-bezier(.22,.7,.25,1) .85s forwards;}
+@keyframes heroRise{from{opacity:0;transform:translateY(115%);}to{opacity:1;transform:translateY(0);}}
+@media(prefers-reduced-motion:reduce){.hero-tset.active .hero-t1,.hero-tset.active .hero-t2{animation-duration:.01s;animation-delay:0s;}}
 .hero-dots{position:absolute;z-index:3;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;}
 .hero-dot{width:2rem;height:2rem;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(28,25,22,.35);color:rgba(255,255,255,.8);font-size:.78rem;font-family:'Arial',sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;}
 .hero-dot:hover{border-color:var(--gold);color:var(--white);}
@@ -369,22 +381,17 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .adm-fab:hover{background:var(--gold-dark);}
 
 /* QUICK CONTACT FLOATING BAR */
-.qbar{position:fixed;right:1.2rem;bottom:5.8rem;z-index:450;display:flex;flex-direction:column;gap:.6rem;align-items:stretch;}
-.qbtn{display:flex;align-items:center;gap:.55rem;background:var(--white);border:1px solid var(--border-mid);border-radius:999px;padding:.6rem 1.15rem;font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:none;box-shadow:0 5px 16px rgba(0,0,0,.14);cursor:pointer;white-space:nowrap;animation:qfloat 3.4s ease-in-out infinite;transition:transform .2s,box-shadow .2s;}
+.qbar{position:fixed;right:1.2rem;bottom:5.8rem;z-index:450;display:flex;flex-direction:column;gap:.6rem;align-items:stretch;animation:qbounce .7s infinite alternate;}
+.qbtn{display:flex;align-items:center;gap:.55rem;background:var(--white);border:1px solid var(--border-mid);border-radius:999px;padding:.6rem 1.15rem;font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:none;box-shadow:0 5px 16px rgba(0,0,0,.14);cursor:pointer;white-space:nowrap;transition:transform .2s,box-shadow .2s;}
 .qbtn:hover{box-shadow:0 8px 22px rgba(0,0,0,.2);}
 .qbtn svg{width:17px;height:17px;flex-shrink:0;color:var(--gold-dark);}
-.qbtn:nth-child(1){animation-delay:0s;}
-.qbtn:nth-child(2){animation-delay:.35s;}
-.qbtn:nth-child(3){animation-delay:.7s;}
-.qbtn:nth-child(4){animation-delay:1.05s;}
-.qbtn:nth-child(5){animation-delay:1.4s;}
-@keyframes qfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+@keyframes qbounce{0%{transform:translate3d(0,-15px,0);}100%{transform:translate3d(0,0,0);}}
 @media(max-width:768px){
   .qbar{right:.9rem;bottom:5.2rem;gap:.5rem;}
   .qbtn{padding:.5rem .95rem;font-size:.76rem;}
   .qbtn svg{width:15px;height:15px;}
 }
-@media(prefers-reduced-motion:reduce){.qbtn{animation:none;}}
+@media(prefers-reduced-motion:reduce){.qbar{animation:none;}}
 .adm-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(26,23,20,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
 .adm-overlay.open{display:flex;}
 .adm-box{background:var(--white);border-radius:8px;width:min(780px,95vw);max-height:90vh;overflow-y:auto;padding:2.5rem;}
@@ -446,7 +453,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v117</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v121</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -540,8 +547,23 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <section class="hero">
     <div class="hero-bg">
       <img class="hero-slide active" src="images/main_image1.jpg" alt="">
+      <img class="hero-slide" src="images/main_image2.jpg" alt="">
     </div>
     <div class="hero-ov"></div>
+    <div class="hero-txt">
+      <div class="hero-tset active">
+        <span class="hero-mask"><p class="hero-t1">피부가 기억하는</p></span>
+        <span class="hero-mask"><p class="hero-t2">깊이 있는 아름다움의 시작</p></span>
+      </div>
+      <div class="hero-tset">
+        <span class="hero-mask"><p class="hero-t1">조용히&nbsp;&nbsp;&nbsp;달라지는</p></span>
+        <span class="hero-mask"><p class="hero-t2">시간을&nbsp;&nbsp;&nbsp;디자인하는</p></span>
+      </div>
+      <div class="hero-tset">
+        <span class="hero-mask"><p class="hero-t1">섬세하게&nbsp;&nbsp;&nbsp;완성하는</p></span>
+        <span class="hero-mask"><p class="hero-t2">시간을&nbsp;&nbsp;&nbsp;다시 쓰는</p></span>
+      </div>
+    </div>
     <div class="hero-ct">
       <div class="hero-act">
         <button class="btn-p" onclick="showPage('booking');initBooking()" data-t="hero.book">예약하기</button>
@@ -1718,7 +1740,7 @@ function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
     console.error("예약된 시간 조회 실패: JSONP 응답 시간 초과 (Apps Script에 callback 파라미터 처리가 없을 수 있음)");
     cleanup();
     renderTimeSlots([], times, se); // 조회 실패 시 전부 활성화 (예약 자체는 막히지 않도록)
-  }, 6000);
+  }, 9000);
 
   window[cbName] = function(data){
     clearTimeout(timeoutId);
@@ -2000,10 +2022,19 @@ function heroGoSlide(idx) {
 
 function restartHeroTimer() {
   if (heroSlideTimer) clearInterval(heroSlideTimer);
-  if (heroSlideCount < 2) return;
+  if (heroSlideCount < 2 && document.querySelectorAll(".hero-tset").length < 2) return;
   heroSlideTimer = setInterval(function(){
-    heroGoSlideAuto((heroSlideIdx + 1) % heroSlideCount);
-  }, 5000);
+    if (heroSlideCount > 1) heroGoSlideAuto((heroSlideIdx + 1) % heroSlideCount);
+    heroTextNext();
+  }, 9000);
+}
+
+var heroTextIdx = 0;
+function heroTextNext() {
+  var sets = document.querySelectorAll(".hero-tset");
+  if (sets.length < 2) return;
+  heroTextIdx = (heroTextIdx + 1) % sets.length;
+  sets.forEach(function(el, i){ el.classList.toggle("active", i === heroTextIdx); });
 }
 
 function heroGoSlideAuto(idx) {

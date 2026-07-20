@@ -154,7 +154,7 @@ nav.nav-scrolled{
 .tx-item{cursor:pointer;}
 
 .tx-card{background:var(--white);border-radius:4px;transition:transform .25s,box-shadow .25s;position:relative;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.06);border:none;aspect-ratio:900/1264;}
-.tx-item:hover .tx-card{transform:translateY(-6px);box-shadow:0 16px 32px rgba(0,0,0,0.12);}
+.tx-item:hover .tx-card{transform:translateY(-8px);box-shadow:0 22px 48px rgba(0,0,0,0.24);}
 .tx-num{display:none;}
 .tx-img{width:100%;height:100%;background-size:cover;background-position:center;}
 .tx-name{font-size:.88rem;font-weight:700;margin:.7rem 0 .28rem;color:var(--gold-dark);font-family:"Playfair Display",serif;padding:0;text-align:center;}
@@ -174,7 +174,8 @@ nav.nav-scrolled{
 .philo-b{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* VISIT */
-.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 4vw 2.5rem;gap:2.5rem;}
+.visit-sec{display:flex;flex-direction:column;align-items:center;background:transparent;padding:5rem 4vw 2.5rem;gap:0;}
+.visit-map{margin-top:1.3rem;}
 .visit-map{
   width:100%;
   height:400px;
@@ -311,8 +312,16 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .cal-d.past{color:var(--border-mid);cursor:default;}.cal-d.emp{cursor:default;}
 .cal-d.holiday{color:#c0392b;cursor:default;font-weight:600;}
 .time-lbl{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.75rem;}
-.time-slots{display:flex;flex-wrap:wrap;gap:.55rem;}
-.t-slot{padding:.42rem 1rem;border:1px solid var(--border-mid);border-radius:2px;font-size:.93rem;font-family:'Arial',sans-serif;cursor:pointer;background:var(--white);transition:border-color .15s,background .15s;}
+.time-slots{display:grid;grid-template-columns:repeat(6,1fr);gap:.7rem .8rem;width:100%;}
+.slots-chk-msg{grid-column:1/-1;font-size:.82rem;color:var(--ink-light);margin-bottom:.3rem;}
+.slots-chk-msg .cdot{display:inline-block;animation:cdot 1.2s infinite;}
+.slots-chk-msg .cdot:nth-child(2){animation-delay:.2s;}
+.slots-chk-msg .cdot:nth-child(3){animation-delay:.4s;}
+@keyframes cdot{0%,60%,100%{opacity:.2;}30%{opacity:1;}}
+.t-slot.checking{color:transparent;cursor:wait;border-color:var(--border);background:linear-gradient(90deg,#F1EDE6 25%,#FBF9F5 50%,#F1EDE6 75%);background-size:200% 100%;animation:shimmer 1.2s linear infinite;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+@media(max-width:640px){.time-slots{grid-template-columns:repeat(3,1fr);}}
+.t-slot{padding:.55rem 0;text-align:center;border:1px solid var(--border-mid);border-radius:2px;font-size:.93rem;font-family:'Arial',sans-serif;cursor:pointer;background:var(--white);transition:border-color .15s,background .15s;}
 .t-slot:hover{border-color:var(--gold);}
 .t-slot.sel{background:var(--gold);border-color:var(--gold);font-weight:700;color:var(--ink);}
 /* Form */
@@ -431,7 +440,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v135</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v137</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -525,32 +534,32 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
       <h2 class="s-title" data-t="tx.title">당신의 변화가 시작됩니다.</h2>
     </div>
     <div class="tx-grid">
-      <div class="tx-item" onclick="showDetail('sonowave')">
+      <div class="tx-item" onclick="showPage('booking');initBooking()">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_1.jpg')"></div></div>
         <div class="tx-name" data-t="sig1.name">소프웨이브</div>
         <p class="tx-desc" data-t="sig1.desc">SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비.</p>
       </div>
-      <div class="tx-item" onclick="showDetail('titanium')">
+      <div class="tx-item" onclick="showPage('booking');initBooking()">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_2.jpg')"></div></div>
         <div class="tx-name" data-t="sig2.name">티타늄</div>
         <p class="tx-desc" data-t="sig2.desc">3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅.</p>
       </div>
-      <div class="tx-item" onclick="showDetail('thermage')">
+      <div class="tx-item" onclick="showPage('booking');initBooking()">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_3.jpg')"></div></div>
         <div class="tx-name" data-t="sig3.name">울쎄라피 프라임</div>
         <p class="tx-desc" data-t="sig3.desc">고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비.</p>
       </div>
-      <div class="tx-item" onclick="showDetail('onda')">
+      <div class="tx-item" onclick="showPage('booking');initBooking()">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_4.jpg')"></div></div>
         <div class="tx-name" data-t="sig4.name">온다</div>
         <p class="tx-desc" data-t="sig4.desc">극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비.</p>
       </div>
-      <div class="tx-item" onclick="showDetail('shrink')">
+      <div class="tx-item" onclick="showPage('booking');initBooking()">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_5.jpg')"></div></div>
         <div class="tx-name" data-t="sig5.name">슈링크 유니버스</div>
         <p class="tx-desc" data-t="sig5.desc">2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술.</p>
       </div>
-      <div class="tx-item" onclick="showDetail('ulthera')">
+      <div class="tx-item" onclick="showPage('booking');initBooking()">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_6.jpg')"></div></div>
         <div class="tx-name" data-t="sig6.name">스킨부스터</div>
         <p class="tx-desc" data-t="sig6.desc">피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술. 수분 충전, 모공·잔주름 개선, 미백 등 개인의 피부 고민에 따라 성분을 맞춤 선택합니다.</p>
@@ -562,7 +571,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
     <!-- 타이틀 -->
     <div style="text-align:center;width:100%;max-width:960px;">
       <p class="s-eye" data-t="visit.eye">Find Us</p>
-      <h2 class="s-title" style="font-size:clamp(1.8rem,3.5vw,2.5rem);" data-t="visit.title">방문 안내</h2>
+      <h2 class="s-title" style="font-size:clamp(1.1rem,2.2vw,1.5rem);" data-t="visit.title">방문 안내</h2>
     </div>
     <!-- 정보 카드 4개 -->
     <div class="visit-info">
@@ -1054,7 +1063,7 @@ ko: {
 "bk.s3":"정보 입력","bk.s3s":"연락처 & 이름",
 "bk.s4":"예약 확인","bk.s4s":"내용 검토","bk.s5":"완료","bk.s5s":"예약 완료",
 "bk.s1h":"시술을 선택해 주세요","bk.s1p":"원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.",
-"bk.s2h":"날짜와 시간을 선택해 주세요","bk.s2p":"날짜를 선택하신 후 시간을 선택해 주세요.",
+"bk.s2h":"날짜와 시간을 선택해 주세요","bk.s2p":"날짜를 선택하신 후 시간을 선택해 주세요.","bk.chk":"예약 가능 시간 확인 중",
 "bk.s3h":"정보를 입력해 주세요","bk.s3p":"예약 확인을 위해 아래 정보를 입력해 주세요.",
 "bk.s4h":"예약 내용을 확인해 주세요","bk.s4p":"아래 내용이 맞으면 예약 완료 버튼을 눌러주세요.",
 "bk.sd1":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","bk.sd2":"3파장 동시 조사 — 올인원 4세대 리프팅",
@@ -1110,7 +1119,7 @@ en: {
 "bk.s3":"Your Info","bk.s3s":"Contact & name",
 "bk.s4":"Confirm","bk.s4s":"Review details","bk.s5":"Done","bk.s5s":"Booking complete",
 "bk.s1h":"Select a Treatment","bk.s1p":"Choose a service and you will advance to the next step automatically.",
-"bk.s2h":"Choose Date & Time","bk.s2p":"Select a date, then pick your preferred time.",
+"bk.s2h":"Choose Date & Time","bk.s2p":"Select a date, then pick your preferred time.","bk.chk":"Checking available times",
 "bk.s3h":"Your Information","bk.s3p":"Please fill in your details so we can confirm your booking.",
 "bk.s4h":"Review Your Booking","bk.s4p":"Please confirm everything looks correct before submitting.",
 "bk.sd1":"SUPERB™ Ultrasound — Dermal Collagen Lifting","bk.sd2":"3-Wavelength Laser — All-in-One 4th-Gen Lifting",
@@ -1166,7 +1175,7 @@ zh: {
 "bk.s3":"填寫資料","bk.s3s":"聯絡資訊",
 "bk.s4":"確認預約","bk.s4s":"確認內容","bk.s5":"完成","bk.s5s":"預約完成",
 "bk.s1h":"請選擇療程","bk.s1p":"選擇後將自動進入下一步。",
-"bk.s2h":"請選擇日期與時間","bk.s2p":"選擇日期後，請選擇您偏好的時間。",
+"bk.s2h":"請選擇日期與時間","bk.s2p":"選擇日期後，請選擇您偏好的時間。","bk.chk":"正在確認可預約時間",
 "bk.s3h":"請填寫您的資料","bk.s3p":"請填寫以下資料以確認您的預約。",
 "bk.s4h":"確認預約內容","bk.s4p":"確認無誤後，請點擊確認預約。",
 "bk.sd1":"SUPERB™ 超音波技術 — 真皮層膠原拉提","bk.sd2":"三波長雷射同步 — 第四代全能拉提",
@@ -1222,7 +1231,7 @@ ar: {
 "bk.s3":"بياناتك","bk.s3s":"معلومات التواصل",
 "bk.s4":"تأكيد الحجز","bk.s4s":"مراجعة التفاصيل","bk.s5":"تم","bk.s5s":"اكتمل الحجز",
 "bk.s1h":"اختر علاجاً","bk.s1p":"اختر خدمة وسيتقدم النظام تلقائياً للخطوة التالية.",
-"bk.s2h":"اختر التاريخ والوقت","bk.s2p":"حدد تاريخاً ثم اختر وقتك المفضل.",
+"bk.s2h":"اختر التاريخ والوقت","bk.s2p":"حدد تاريخاً ثم اختر وقتك المفضل.","bk.chk":"جارٍ التحقق من الأوقات المتاحة",
 "bk.s3h":"أدخل بياناتك","bk.s3p":"يرجى ملء البيانات أدناه لتأكيد حجزك.",
 "bk.s4h":"راجع حجزك","bk.s4p":"تأكد من صحة المعلومات ثم اضغط تأكيد الحجز.",
 "bk.sd1":"تقنية SUPERB™ للموجات فوق الصوتية","bk.sd2":"ثلاث موجات ليزر متزامنة",
@@ -1278,7 +1287,7 @@ ja: {
 "bk.s3":"お客様情報","bk.s3s":"連絡先とお名前",
 "bk.s4":"確認","bk.s4s":"内容確認","bk.s5":"完了","bk.s5s":"予約完了",
 "bk.s1h":"施術を選択してください","bk.s1p":"ご希望の施術を選択すると自動的に次のステップへ進みます。",
-"bk.s2h":"日付と時間を選択してください","bk.s2p":"日付を選択した後、ご希望の時間をお選びください。",
+"bk.s2h":"日付と時間を選択してください","bk.s2p":"日付を選択した後、ご希望の時間をお選びください。","bk.chk":"予約可能な時間を確認中",
 "bk.s3h":"お客様情報","bk.s3p":"予約確定のため、必要事項をご入力ください。",
 "bk.s4h":"予約内容のご確認","bk.s4p":"送信前に内容に誤りがないかご確認ください。",
 "bk.sd1":"SUPERB™超音波 — 真皮層コラーゲンリフティング","bk.sd2":"3波長レーザー同時照射 — オールインワン第4世代リフティング",
@@ -1334,7 +1343,7 @@ cn: {
 "bk.s3":"填写信息","bk.s3s":"联系方式与姓名",
 "bk.s4":"确认","bk.s4s":"核对信息","bk.s5":"完成","bk.s5s":"预约完成",
 "bk.s1h":"请选择疗程","bk.s1p":"选择所需疗程后将自动进入下一步。",
-"bk.s2h":"请选择日期与时间","bk.s2p":"选择日期后，请选择您希望的时间。",
+"bk.s2h":"请选择日期与时间","bk.s2p":"选择日期后，请选择您希望的时间。","bk.chk":"正在确认可预约时间",
 "bk.s3h":"填写您的信息","bk.s3p":"请填写以下信息以确认您的预约。",
 "bk.s4h":"确认您的预约","bk.s4p":"提交前请确认所有信息无误。",
 "bk.sd1":"SUPERB™超声波 — 真皮层胶原蛋白提升","bk.sd2":"三波长激光同步 — 第四代全能提升",
@@ -1643,14 +1652,16 @@ function selDate(dt, cell) {
   cell.classList.add("sel"); bk.date=dt; bk.time=null;
   var tp=document.getElementById("time-pk"); tp.style.display="block";
   var se=document.getElementById("time-slots");
-  var times=["10:30","11:30","12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30"];
+  var times=timesForDate(dt);
 
   var myReqId = ++bkReqId; // 이번 날짜 선택에 대한 고유 요청 ID
 
-  // 먼저 모든 슬롯을 "확인 중" 상태로 표시 (조회 끝나기 전엔 클릭 불가 → 예약 가능 시간으로 오인 클릭 방지)
-  se.innerHTML=times.map(function(t){
-    return "<div class=\"t-slot checking\" style=\"opacity:.4;cursor:wait;\">"+t+"</div>";
-  }).join("");
+  // 조회 동안: 안내 문구 + 반짝이는 스켈레톤 (클릭 불가)
+  se.innerHTML =
+    '<div class="slots-chk-msg">'+tr("bk.chk")+'<span class="cdot">.</span><span class="cdot">.</span><span class="cdot">.</span></div>'
+    + times.map(function(t){
+      return '<div class="t-slot checking">'+t+'</div>';
+    }).join("");
 
   // Sheets에서 예약된 시간 조회 후 disable
   var dateStr = dt.getFullYear() + "." +
@@ -1659,6 +1670,14 @@ function selDate(dt, cell) {
 
   // fetch는 CORS에 걸릴 수 있어 아예 쓰지 않고, 처음부터 JSONP(script 태그)로만 조회
   jsonpFallback(SHEET_URL, dateStr, myReqId, times, se);
+}
+
+function timesForDate(dt){
+  var d = dt.getDay();
+  if (d===1 || d===5) return ["10:30","11:30","12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30"]; // 월·금
+  if (d===2 || d===4) return ["10:30","11:30","12:30","13:30","14:30","15:30","16:30","17:30"]; // 화·목
+  if (d===6) return ["9:30","10:30","11:30","13:00","14:00","15:00"]; // 토 (네이버와 동일)
+  return []; // 수·일 휴무
 }
 
 function timeStrToMinutes(t){

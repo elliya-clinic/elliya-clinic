@@ -312,16 +312,15 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .cal-d.past{color:var(--border-mid);cursor:default;}.cal-d.emp{cursor:default;}
 .cal-d.holiday{color:#c0392b;cursor:default;font-weight:600;}
 .time-lbl{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;margin-bottom:.75rem;}
-.time-slots{display:grid;grid-template-columns:repeat(6,1fr);gap:.7rem .8rem;width:100%;}
-.slots-chk-msg{grid-column:1/-1;font-size:.82rem;color:var(--ink-light);margin-bottom:.3rem;}
-.slots-chk-msg .cdot{display:inline-block;animation:cdot 1.2s infinite;}
-.slots-chk-msg .cdot:nth-child(2){animation-delay:.2s;}
-.slots-chk-msg .cdot:nth-child(3){animation-delay:.4s;}
+.time-slots{display:grid;grid-template-columns:repeat(6,calc(100%/7));justify-content:space-between;row-gap:.7rem;width:100%;}
+#chk-msg .cdot{display:inline-block;animation:cdot 1.2s infinite;}
+#chk-msg .cdot:nth-child(2){animation-delay:.2s;}
+#chk-msg .cdot:nth-child(3){animation-delay:.4s;}
 @keyframes cdot{0%,60%,100%{opacity:.2;}30%{opacity:1;}}
 .t-slot.checking{color:transparent;cursor:wait;border-color:var(--border);background:linear-gradient(90deg,#F1EDE6 25%,#FBF9F5 50%,#F1EDE6 75%);background-size:200% 100%;animation:shimmer 1.2s linear infinite;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 @media(max-width:640px){.time-slots{grid-template-columns:repeat(3,1fr);}}
-.t-slot{padding:.55rem 0;text-align:center;border:1px solid var(--border-mid);border-radius:2px;font-size:.93rem;font-family:'Arial',sans-serif;cursor:pointer;background:var(--white);transition:border-color .15s,background .15s;}
+.t-slot{aspect-ratio:1/0.4;display:flex;align-items:center;justify-content:center;padding:0;border:1px solid var(--border-mid);border-radius:2px;font-size:.92rem;font-family:'Arial',sans-serif;cursor:pointer;background:var(--white);transition:border-color .15s,background .15s;}
 .t-slot:hover{border-color:var(--gold);}
 .t-slot.sel{background:var(--gold);border-color:var(--gold);font-weight:700;color:var(--ink);}
 /* Form */
@@ -440,7 +439,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v137</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v139</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -534,32 +533,32 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
       <h2 class="s-title" data-t="tx.title">당신의 변화가 시작됩니다.</h2>
     </div>
     <div class="tx-grid">
-      <div class="tx-item" onclick="showPage('booking');initBooking()">
+      <div class="tx-item" onclick="showDetail('sofwave')">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_1.jpg')"></div></div>
         <div class="tx-name" data-t="sig1.name">소프웨이브</div>
         <p class="tx-desc" data-t="sig1.desc">SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비.</p>
       </div>
-      <div class="tx-item" onclick="showPage('booking');initBooking()">
+      <div class="tx-item" onclick="showDetail('titanium')">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_2.jpg')"></div></div>
         <div class="tx-name" data-t="sig2.name">티타늄</div>
         <p class="tx-desc" data-t="sig2.desc">3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅.</p>
       </div>
-      <div class="tx-item" onclick="showPage('booking');initBooking()">
+      <div class="tx-item" onclick="showDetail('ultherapy')">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_3.jpg')"></div></div>
         <div class="tx-name" data-t="sig3.name">울쎄라피 프라임</div>
         <p class="tx-desc" data-t="sig3.desc">고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비.</p>
       </div>
-      <div class="tx-item" onclick="showPage('booking');initBooking()">
+      <div class="tx-item" onclick="showDetail('onda')">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_4.jpg')"></div></div>
         <div class="tx-name" data-t="sig4.name">온다</div>
         <p class="tx-desc" data-t="sig4.desc">극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비.</p>
       </div>
-      <div class="tx-item" onclick="showPage('booking');initBooking()">
+      <div class="tx-item" onclick="showDetail('shrink')">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_5.jpg')"></div></div>
         <div class="tx-name" data-t="sig5.name">슈링크 유니버스</div>
         <p class="tx-desc" data-t="sig5.desc">2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술.</p>
       </div>
-      <div class="tx-item" onclick="showPage('booking');initBooking()">
+      <div class="tx-item" onclick="showDetail('skinbooster')">
         <div class="tx-card"><div class="tx-img" style="background-image:url('images/sig_6.jpg')"></div></div>
         <div class="tx-name" data-t="sig6.name">스킨부스터</div>
         <p class="tx-desc" data-t="sig6.desc">피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술. 수분 충전, 모공·잔주름 개선, 미백 등 개인의 피부 고민에 따라 성분을 맞춤 선택합니다.</p>
@@ -945,7 +944,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
             <div class="cal-dn" data-t="d6">토</div>
           </div>
           <div id="time-pk" style="display:none;margin-top:1.4rem;">
-            <div class="time-lbl" data-t="bk.tl">시간 선택</div>
+            <div class="time-lbl"><span data-t="bk.tl">시간 선택</span><span id="chk-msg" style="display:none;color:var(--ink);font-weight:700;text-transform:none;letter-spacing:0;margin-left:.7rem;"></span></div>
             <div class="time-slots" id="time-slots"></div>
           </div>
         </div>
@@ -1656,12 +1655,15 @@ function selDate(dt, cell) {
 
   var myReqId = ++bkReqId; // 이번 날짜 선택에 대한 고유 요청 ID
 
-  // 조회 동안: 안내 문구 + 반짝이는 스켈레톤 (클릭 불가)
-  se.innerHTML =
-    '<div class="slots-chk-msg">'+tr("bk.chk")+'<span class="cdot">.</span><span class="cdot">.</span><span class="cdot">.</span></div>'
-    + times.map(function(t){
-      return '<div class="t-slot checking">'+t+'</div>';
-    }).join("");
+  // 조회 동안: '시간 선택' 옆에 안내 문구 + 반짝이는 스켈레톤 (슬롯 위치는 그대로)
+  var cm = document.getElementById("chk-msg");
+  if (cm) {
+    cm.innerHTML = tr("bk.chk")+'<span class="cdot">.</span><span class="cdot">.</span><span class="cdot">.</span>';
+    cm.style.display = "inline";
+  }
+  se.innerHTML = times.map(function(t){
+    return '<div class="t-slot checking">'+t+'</div>';
+  }).join("");
 
   // Sheets에서 예약된 시간 조회 후 disable
   var dateStr = dt.getFullYear() + "." +
@@ -1687,6 +1689,8 @@ function timeStrToMinutes(t){
 }
 
 function renderTimeSlots(busyMinutes, times, se){
+  var cm = document.getElementById("chk-msg");
+  if (cm) cm.style.display = "none";
   var BUFFER = 59; // 이 분(minute) 이내로 겹치면 같은 시간대로 간주해 막음 (시술 소요시간 감안)
   se.innerHTML = times.map(function(t){
     var slotMin = timeStrToMinutes(t);

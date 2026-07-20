@@ -138,13 +138,7 @@ nav.nav-scrolled{
 .btn-t:hover{gap:.85rem;}.btn-t::after{content:"→";}
 
 /* ABOUT */
-.about-img-full{width:100%;aspect-ratio:16/9;min-height:360px;margin-top:8rem;overflow:hidden;position:relative;background:#F5F2EE;}
-.about-img-inner{position:absolute;inset:0;background:url("images/elliya_about.jpeg") center/contain no-repeat;transform:scale(1.15);animation:aboutSlowZoomOut 10s ease-in-out infinite alternate;}
-@keyframes aboutSlowZoomOut{
-  from{transform:scale(1.15);}
-  to{transform:scale(1);}
-}
-.about-txt-block{max-width:680px;margin:0 auto;padding:4rem 5vw 3rem;text-align:center;}
+.about-txt-block{max-width:680px;margin:0 auto;padding:7rem 5vw 3rem;text-align:center;}
 .about-txt-block .btn-t{justify-content:center;}
 
 /* TREATMENTS */
@@ -418,7 +412,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 @media(max-width:900px){
   nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:block;}
   .lang-bar{padding:0 1rem;}.lang-btn{padding:0 .6rem;font-size:.67rem;}
-  .about-img-full{min-height:220px;}.visit-info{grid-template-columns:1fr 1fr;}
+  .visit-info{grid-template-columns:1fr 1fr;}
   .tx-grid{grid-template-columns:repeat(2,1fr);}.tx-card{border:none;}
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
@@ -450,7 +444,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v143</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v144</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -533,7 +527,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
     <!-- 마스코트 Elli -->
   </section>
 
-  <section class="about-img-full"><div class="about-img-inner"></div></section>
   <section class="about-txt-block fade-in">
     <p class="s-body" style="font-weight:700;" data-t="about.body">Your Room. Your Doctor. Your Time.<br>프라이빗 1인실에서,<br>원장이 직접 당신을 찾아갑니다.</p>
   </section>

@@ -37,17 +37,19 @@ a{color:inherit;text-decoration:none;}
 .lang-bar{display:none;}
 .lang-btn{
   padding:0 .55rem;height:28px;background:none;border:none;
-  border-right:0.5px solid rgba(0,0,0,.15);
-  color:rgba(20,17,15,.6);font-size:1.15rem;letter-spacing:0.06em;
+  border-right:0.5px solid rgba(255,255,255,.3);
+  color:rgba(255,255,255,.85);font-size:1.15rem;letter-spacing:0.06em;
   cursor:pointer;font-family:'Arial',sans-serif;
   transition:color .2s,opacity .2s;display:flex;align-items:center;gap:.3rem;white-space:nowrap;
   opacity:.55;
 }
 .lang-btn img{width:20px;height:auto;border-radius:2px;display:block;box-shadow:0 0 0 .5px rgba(0,0,0,.15);}
 .nav-scrolled .lang-btn{color:rgba(20,17,15,.55);border-right-color:rgba(0,0,0,.12);}
-.lang-btn:first-child{border-left:0.5px solid rgba(0,0,0,.15);}
 .nav-scrolled .lang-btn:first-child{border-left-color:rgba(0,0,0,.12);}
-.lang-btn:hover{color:var(--ink);}
+.nav-scrolled .hamburger{color:var(--ink);}
+.lang-btn:first-child{border-left:0.5px solid rgba(255,255,255,.3);}
+.nav-scrolled .lang-btn:first-child{border-left-color:rgba(0,0,0,.12);}
+.lang-btn:hover{color:var(--white);}
 .nav-scrolled .lang-btn:hover{color:var(--ink);background:rgba(0,0,0,.06);}
 .lang-btn.active{color:var(--gold-dark);font-weight:700;}
 .nav-scrolled .lang-btn.active{color:var(--gold-dark);}
@@ -57,10 +59,9 @@ nav{
   position:fixed;top:0;left:0;right:0;z-index:100;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 3rem;height:70px;
-  background:rgba(255,255,255,0.97);
-  backdrop-filter:blur(20px);
-  border-bottom:0.5px solid rgba(0,0,0,0.08);
-  box-shadow:0 2px 12px rgba(0,0,0,0.05);
+  background:transparent;
+  border-bottom:0.5px solid transparent;
+  box-shadow:none;
   transition:background .4s ease, box-shadow .4s ease, border-color .4s ease;
 }
 nav.nav-scrolled{
@@ -69,25 +70,25 @@ nav.nav-scrolled{
   border-bottom:0.5px solid rgba(0,0,0,0.08);
   box-shadow:0 2px 12px rgba(0,0,0,0.05);
 }
-.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--ink);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .4s;font-family:'Playfair Display',Georgia,serif;}
+.nav-logo{font-size:1.3rem;font-weight:700;letter-spacing:0.04em;color:var(--white);cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:.5rem;transition:color .4s;font-family:'Playfair Display',Georgia,serif;}
 .nav-scrolled .nav-logo{color:var(--ink);}
 .nav-logo span{color:var(--gold-light);transition:color .4s;}
 .nav-scrolled .nav-logo span{color:var(--gold-light);}
 .nav-links{display:flex;gap:2rem;list-style:none;font-size:.92rem;letter-spacing:.14em;text-transform:uppercase;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:500;}
-.nav-links a{color:var(--ink-mid);transition:color .4s;}
-.nav-scrolled .nav-links a{color:var(--ink-mid);}
+.nav-links a{color:rgba(255,255,255,.85);transition:color .4s;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+.nav-scrolled .nav-links a{color:var(--ink-mid);text-shadow:none;}
 .nav-links a:hover{color:var(--gold-dark);}
 .nav-scrolled .nav-links a:hover{color:var(--gold-dark);}
 .nav-book{padding:.5rem 1.5rem;background:var(--ink);border:1px solid var(--ink);color:var(--white)!important;border-radius:2px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .4s,border .4s,color .4s;}
 .nav-scrolled .nav-book{background:var(--ink);border-color:var(--ink);color:var(--white)!important;}
 .nav-scrolled .nav-book:hover{background:#000;color:var(--white)!important;}
 .nav-book:hover{background:#000;border-color:#000;}
-.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--ink);transition:color .4s;}
+.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;}
 .nav-scrolled .hamburger{color:var(--ink);}
 .pt{padding-top:70px;background:#FDFCFA;min-height:100vh;}
 
 /* HERO */
-.hero{width:100%;aspect-ratio:16/9;min-height:420px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
+.hero{width:100%;height:100vh;min-height:480px;display:flex;align-items:center;justify-content:flex-start;padding:0 8vw;position:relative;overflow:hidden;background:#1C1916;}
 .hero-bg{
   position:absolute;inset:0;
   overflow:hidden;
@@ -246,7 +247,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 
 
 /* NAV LOGO SVG */
-.nav-logo-svg{color:var(--ink);transition:color .4s;}
+.nav-logo-svg{color:var(--white);transition:color .4s;}
 .nav-scrolled .nav-logo-svg{color:var(--ink);}
 
 /* ── SCROLL FADE-IN ── */
@@ -449,7 +450,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v141</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v142</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1412,6 +1413,7 @@ function showPage(id) {
   document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
   var t = document.getElementById("page-"+id);
   if (t) { t.classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
+  if (typeof updNav === "function") setTimeout(updNav, 50);
 }
 
 // =====================================================
@@ -1995,11 +1997,16 @@ function searchBooking() {
 // Init
 buildCList(""); renderCal();
 
-// ── NAV: 항상 어두운 배경으로 고정 (스크롤과 무관) ──
-var navEl = document.querySelector("nav");
-if (navEl) navEl.classList.add("nav-scrolled");
-var navLangGroup = document.getElementById("nav-lang-group");
-if (navLangGroup) navLangGroup.style.borderLeftColor = "var(--border)";
+// ── NAV: 홈 첫 화면에선 투명, 스크롤하거나 다른 페이지에선 흰 바 ──
+function updNav() {
+  var nav = document.querySelector("nav");
+  if (!nav) return;
+  var home = document.getElementById("page-home");
+  var onHomeTop = home && home.classList.contains("active") && window.scrollY < 60;
+  nav.classList.toggle("nav-scrolled", !onHomeTop);
+}
+window.addEventListener("scroll", updNav, { passive: true });
+updNav();
 
 
 // ── SCROLL FADE-IN OBSERVER ──

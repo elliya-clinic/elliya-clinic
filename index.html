@@ -64,6 +64,12 @@ nav{
   box-shadow:none;
   transition:background .4s ease, box-shadow .4s ease, border-color .4s ease;
 }
+nav::before{
+  content:"";position:absolute;inset:0 0 -40px 0;z-index:-1;pointer-events:none;
+  background:linear-gradient(to bottom, rgba(0,0,0,.20) 0%, rgba(0,0,0,.08) 55%, transparent 100%);
+  opacity:1;transition:opacity .4s ease;
+}
+nav.nav-scrolled::before{opacity:0;}
 nav.nav-scrolled{
   background:rgba(255,255,255,0.97);
   backdrop-filter:blur(20px);
@@ -75,7 +81,7 @@ nav.nav-scrolled{
 .nav-logo span{color:var(--gold-light);transition:color .4s;}
 .nav-scrolled .nav-logo span{color:var(--gold-light);}
 .nav-links{display:flex;gap:2rem;list-style:none;font-size:.92rem;letter-spacing:.14em;text-transform:uppercase;font-family:'Cormorant Garamond','Playfair Display',serif;font-weight:500;}
-.nav-links a{color:rgba(255,255,255,.85);transition:color .4s;text-shadow:0 1px 4px rgba(0,0,0,.3);}
+.nav-links a{color:rgba(255,255,255,.92);transition:color .4s;text-shadow:0 1px 6px rgba(0,0,0,.5);}
 .nav-scrolled .nav-links a{color:var(--ink-mid);text-shadow:none;}
 .nav-links a:hover{color:var(--gold-dark);}
 .nav-scrolled .nav-links a:hover{color:var(--gold-dark);}
@@ -110,10 +116,10 @@ nav.nav-scrolled{
 }
 .hero-ov{display:none;}
 
-.hero-dots{position:absolute;z-index:3;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;}
-.hero-dot{width:2rem;height:2rem;border-radius:50%;border:1px solid rgba(255,255,255,.5);background:rgba(28,25,22,.35);color:rgba(255,255,255,.8);font-size:.78rem;font-family:'Arial',sans-serif;cursor:pointer;transition:background .2s,border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;}
-.hero-dot:hover{border-color:var(--gold);color:var(--white);}
-.hero-dot.active{background:var(--gold);border-color:var(--gold);color:var(--ink);font-weight:700;}
+.hero-dots{position:absolute;z-index:3;bottom:1.6rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem;}
+.hero-dot{width:6px;height:6px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.45);cursor:pointer;transition:background .25s,transform .25s;}
+.hero-dot:hover{background:rgba(255,255,255,.75);}
+.hero-dot.active{background:var(--white);transform:scale(1.35);}
 .hero-act .btn-p{background:var(--white);color:var(--ink);border:1px solid var(--white);}
 .hero-act .btn-p:hover{background:var(--ink);color:var(--white);border-color:var(--ink);transform:translateY(-1px);}
 .hero-act .btn-o{background:var(--white);color:var(--ink);border:1px solid var(--white);backdrop-filter:none;}
@@ -444,7 +450,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v144</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v147</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -513,11 +519,14 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 <!-- HOME PAGE -->
 <div id="page-home" class="page active">
   <section class="hero">
-    <div class="hero-bg">
-      <img class="hero-slide active" src="images/main_image1.jpg" alt="">
-      <img class="hero-slide" src="images/main_image2.jpg" alt="">
+    <div class="hero-bg" id="hero-bg">
+      <img class="hero-slide active" src="images/main_image1.jpg" alt="" data-idx="0">
+      <img class="hero-slide" src="images/main_image2.jpg" alt="" data-idx="1">
+      <img class="hero-slide hero-slide-opt" src="images/main_image3.jpg" alt="" data-idx="2" style="display:none;">
+      <img class="hero-slide hero-slide-opt" src="images/main_image4.jpg" alt="" data-idx="3" style="display:none;">
     </div>
     <div class="hero-ov"></div>
+    <div class="hero-dots" id="hero-dots"></div>
     <div class="hero-ct">
       <div class="hero-act">
         <button class="btn-p" onclick="showPage('booking');initBooking()" data-t="hero.book">예약하기</button>
@@ -2004,34 +2013,61 @@ updNav();
 
 // ── SCROLL FADE-IN OBSERVER ──
 // 히어로 이미지 슬라이드쇼
+var HERO_INTERVAL_MS = 12000; // 이미지 교체 주기 (원하는 만큼 조절: 1000 = 1초)
 var heroSlideIdx = 0;
 var heroSlideTimer = null;
-var heroSlideCount = document.querySelectorAll(".hero-slide").length;
+var heroSlideCount = 0;
 
-function heroGoSlide(idx) {
+function heroSetActive(idx) {
   heroSlideIdx = idx;
-  document.querySelectorAll(".hero-slide").forEach(function(el, i){ el.classList.toggle("active", i === idx); });
+  document.querySelectorAll(".hero-slide:not([style*='display: none'])").forEach(function(el){
+    el.classList.toggle("active", parseInt(el.dataset.idx,10) === idx);
+  });
   document.querySelectorAll(".hero-dot").forEach(function(el, i){ el.classList.toggle("active", i === idx); });
-  restartHeroTimer();
 }
+
+function heroGoSlide(idx) { heroSetActive(idx); restartHeroTimer(); }
+function heroGoSlideAuto(idx) { heroSetActive(idx); }
 
 function restartHeroTimer() {
   if (heroSlideTimer) clearInterval(heroSlideTimer);
   if (heroSlideCount < 2) return;
   heroSlideTimer = setInterval(function(){
-    if (heroSlideCount > 1) heroGoSlideAuto((heroSlideIdx + 1) % heroSlideCount);
-  }, 12000);
+    heroGoSlideAuto((heroSlideIdx + 1) % heroSlideCount);
+  }, HERO_INTERVAL_MS);
 }
 
-
-
-function heroGoSlideAuto(idx) {
-  heroSlideIdx = idx;
-  document.querySelectorAll(".hero-slide").forEach(function(el, i){ el.classList.toggle("active", i === idx); });
-  document.querySelectorAll(".hero-dot").forEach(function(el, i){ el.classList.toggle("active", i === idx); });
-}
-
-restartHeroTimer();
+// 선택 슬라이드(main_image3,4)가 실제 서버에 존재하는지 확인 후에만 활성화
+(function initHeroSlides(){
+  var optImgs = Array.prototype.slice.call(document.querySelectorAll(".hero-slide-opt"));
+  var pending = optImgs.length;
+  function finish(){
+    var active = Array.prototype.slice.call(document.querySelectorAll(".hero-slide")).filter(function(el){ return el.style.display !== "none"; });
+    heroSlideCount = active.length;
+    // 닷 생성
+    var dotsEl = document.getElementById("hero-dots");
+    if (dotsEl) {
+      dotsEl.innerHTML = "";
+      if (heroSlideCount > 1) {
+        active.forEach(function(el, i){
+          var b = document.createElement("button");
+          b.className = "hero-dot" + (i === 0 ? " active" : "");
+          b.setAttribute("aria-label", "slide " + (i+1));
+          b.onclick = function(){ heroGoSlide(i); };
+          dotsEl.appendChild(b);
+        });
+      }
+    }
+    restartHeroTimer();
+  }
+  if (pending === 0) { finish(); return; }
+  optImgs.forEach(function(img){
+    var test = new Image();
+    test.onload = function(){ img.style.display = ""; pending--; if (pending === 0) finish(); };
+    test.onerror = function(){ img.remove(); pending--; if (pending === 0) finish(); };
+    test.src = img.src;
+  });
+})();
 
 var fadeEls = document.querySelectorAll(".fade-in");
 var observer = new IntersectionObserver(function(entries) {

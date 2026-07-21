@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" dir="ltr">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XMDPY3J7MD"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XMDPY3J7MD');
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -450,7 +458,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v147</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v149</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1378,10 +1386,25 @@ cn: {
 // LANGUAGE ENGINE
 // =====================================================
 var lang = "ko";
+
+// ── 최초 방문 시 브라우저 언어 자동 감지 (재방문자는 저장된 선택 우선) ──
+(function autoDetectLang(){
+  var saved = localStorage.getItem("elliya_lang");
+  if (saved) { lang = saved; return; }
+  var nav = (navigator.language || navigator.userLanguage || "ko").toLowerCase();
+  var detected = "ko";
+  if (nav.indexOf("zh-tw") === 0 || nav.indexOf("zh-hant") === 0) detected = "zh"; // 대만(번체)
+  else if (nav.indexOf("zh") === 0) detected = "cn"; // 중국(간체)
+  else if (nav.indexOf("ja") === 0) detected = "ja";
+  else if (nav.indexOf("ar") === 0) detected = "ar";
+  else if (nav.indexOf("en") === 0) detected = "en";
+  lang = detected;
+})();
 var SHEET_URL = "https://script.google.com/macros/s/AKfycbxLK5JZSiWJ21C4fsyMrikIMhWhkEcdn8UdMt9WTXfT9dI6j95U9CW5XvJgS6GGCnuuZg/exec";
 
 function setLang(l) {
   lang = l;
+  localStorage.setItem("elliya_lang", l);
   document.documentElement.lang = l;
   document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
   ["ko","en","zh","ar","ja","cn"].forEach(function(x) {
@@ -1998,6 +2021,15 @@ function searchBooking() {
 
 // Init
 buildCList(""); renderCal();
+
+// 감지/저장된 언어를 실제 화면에 적용 + 국기 활성 표시 동기화
+document.documentElement.lang = lang;
+document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+["ko","en","zh","ar","ja","cn"].forEach(function(x){
+  var el = document.getElementById("lb-"+x);
+  if (el) el.classList.toggle("active", x === lang);
+});
+applyT();
 
 // ── NAV: 홈 첫 화면에선 투명, 스크롤하거나 다른 페이지에선 흰 바 ──
 function updNav() {

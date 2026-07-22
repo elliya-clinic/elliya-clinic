@@ -463,7 +463,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v153</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v154</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1668,6 +1668,15 @@ function onEmailChanged() {
   }
 }
 
+var VERIFY_T = {
+  ko:{subject:"[Elliya Clinic] 예약 인증번호",msg:"안녕하세요, 엘리야의원입니다.<br>예약 인증번호는 <b>{{code}}</b> 입니다.<br>5분 이내에 입력해 주세요."},
+  en:{subject:"[Elliya Clinic] Your Verification Code",msg:"Hello, this is Elliya Clinic.<br>Your verification code is <b>{{code}}</b>.<br>Please enter it within 5 minutes."},
+  zh:{subject:"[Elliya Clinic] 您的驗證碼",msg:"您好，這裡是 Elliya Clinic。<br>您的驗證碼是 <b>{{code}}</b>。<br>請於 5 分鐘內輸入。"},
+  cn:{subject:"[Elliya Clinic] 您的验证码",msg:"您好，这里是 Elliya Clinic。<br>您的验证码是 <b>{{code}}</b>。<br>请于 5 分钟内输入。"},
+  ja:{subject:"[Elliya Clinic] 認証番号のご案内",msg:"こんにちは、Elliya Clinicです。<br>認証番号は <b>{{code}}</b> です。<br>5分以内にご入力ください。"},
+  ar:{subject:"[Elliya Clinic] رمز التحقق الخاص بك",msg:"مرحباً، هذه عيادة Elliya Clinic.<br>رمز التحقق الخاص بك هو <b>{{code}}</b>.<br>يرجى إدخاله خلال 5 دقائق."}
+};
+
 function sendVerifyCode() {
   var em = document.getElementById("f-em").value.trim();
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1681,7 +1690,12 @@ function sendVerifyCode() {
   var btn = document.getElementById("btn-send-code");
   btn.disabled = true;
 
-  emailjs.send("service_43jsptp", "template_onu2oiq", { to_email: em, code: code }, "42rEudCYPKOr7mieW")
+  var vlang = detectEmailLang();
+  var vt = VERIFY_T[vlang] || VERIFY_T.en;
+  var vSubject = vt.subject;
+  var vMessage = vt.msg.split("{{code}}").join(code);
+
+  emailjs.send("service_43jsptp", "template_onu2oiq", { to_email: em, code: code, subject: vSubject, message: vMessage }, "42rEudCYPKOr7mieW")
     .then(function(){
       document.getElementById("grp-code").style.display = "block";
       document.getElementById("code-msg").style.color = "var(--ink-mid)";
@@ -1962,7 +1976,63 @@ function submitBk() {
   var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
   var cfmBtn=document.getElementById("btn-submit-bk");
   if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
-  var params={name:name,service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
+  // ── 전화번호 국가코드로 이메일 언어 결정 ──
+function detectEmailLang() {
+  var d = selC ? selC.d : "+82";
+  var map = {
+    "+82":"ko", "+886":"zh", "+852":"zh", "+86":"cn", "+81":"ja",
+    "+966":"ar", "+971":"ar"
+  };
+  return map[d] || "en"; // 매핑 없는 나라는 영어로 기본 발송
+}
+
+var EMAIL_T = {
+  ko: { subject:"{{n}}님 — [Elliya Clinic] 예약이 확인되었습니다",
+        greet:"{{n}} 님, 예약해 주셔서 감사합니다.", sub:"아래 내용으로 예약이 접수되었습니다.",
+        svc:"시술", dt:"날짜/시간", price:"예상비용", doc:"담당의", addr:"주소", contact:"문의", line:"LINE",
+        coord:"담당 코디네이터가 곧 연락드릴 예정입니다.", sign:"Elliya Clinic 드림" },
+  en: { subject:"{{n}} — [Elliya Clinic] Your appointment is confirmed",
+        greet:"Dear {{n}}, thank you for booking with us.", sub:"Your appointment has been received with the details below.",
+        svc:"Treatment", dt:"Date/Time", price:"Estimated Price", doc:"Doctor", addr:"Address", contact:"Contact", line:"LINE",
+        coord:"Our coordinator will contact you shortly.", sign:"Best regards,<br>Elliya Clinic" },
+  zh: { subject:"{{n}} 您好 — [Elliya Clinic] 您的預約已確認",
+        greet:"{{n}} 您好，感謝您的預約。", sub:"您的預約詳情如下：",
+        svc:"療程", dt:"日期/時間", price:"預估費用", doc:"主治醫師", addr:"地址", contact:"聯絡方式", line:"LINE",
+        coord:"專屬協調員將盡快與您聯繫。", sign:"Elliya Clinic 敬上" },
+  cn: { subject:"{{n}} 您好 — [Elliya Clinic] 您的预约已确认",
+        greet:"{{n}} 您好，感谢您的预约。", sub:"您的预约详情如下：",
+        svc:"疗程", dt:"日期/时间", price:"预估费用", doc:"主治医师", addr:"地址", contact:"联系方式", line:"LINE",
+        coord:"专属协调员将尽快与您联系。", sign:"Elliya Clinic 敬上" },
+  ja: { subject:"{{n}} 様 — [Elliya Clinic] ご予約が確定しました",
+        greet:"{{n}} 様、ご予約ありがとうございます。", sub:"以下の内容でご予約を承りました。",
+        svc:"施術", dt:"日時", price:"概算費用", doc:"担当医", addr:"住所", contact:"お問い合わせ", line:"LINE",
+        coord:"担当コーディネーターより追ってご連絡いたします。", sign:"Elliya Clinic" },
+  ar: { subject:"{{n}} — [Elliya Clinic] تم تأكيد حجزك",
+        greet:"عزيزي/عزيزتي {{n}}، شكراً لحجزك معنا.", sub:"تم استلام حجزك بالتفاصيل التالية:",
+        svc:"العلاج", dt:"التاريخ/الوقت", price:"السعر التقديري", doc:"الطبيب", addr:"العنوان", contact:"للتواصل", line:"LINE",
+        coord:"سيتواصل معك منسقنا قريباً.", sign:"Elliya Clinic" }
+};
+
+function buildEmailMessage(elang, name, service, dateTime, price) {
+  var t = EMAIL_T[elang] || EMAIL_T.en;
+  var subject = t.subject.replace("{{n}}", name);
+  var greet = t.greet.replace("{{n}}", name);
+  var message =
+    "<p>" + greet + "</p>" +
+    "<p>" + t.sub + "<br>............................................................................................</p>" +
+    "<p>" + t.svc + ": &nbsp; &nbsp; &nbsp;" + service + "<br>" +
+    t.dt + ": " + dateTime + "<br>" +
+    t.price + ": &nbsp;" + price + "</p>" +
+    "<p>" + t.doc + ": Dr. 홍준택<br>" +
+    t.addr + ": &nbsp; 서울 서초구 서초대로78길 26, 4층<br>" +
+    t.contact + ": &nbsp; biggerjohny@gmail.com<br>" +
+    t.line + ": &nbsp; @elliyaclinic<br>............................................................................................</p>" +
+    "<p>" + t.coord + "</p>" +
+    "<p>" + t.sign + "</p>";
+  return { subject: subject, message: message };
+}
+
+var params={name:name,service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
 
   // ── Google Sheets 저장 ──
   var now=new Date();

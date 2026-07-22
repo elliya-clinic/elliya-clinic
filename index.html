@@ -348,6 +348,11 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .f-grp{display:flex;flex-direction:column;gap:.4rem;}
 .f-lbl{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);font-family:'Arial',sans-serif;}
 .f-inp{padding:.58rem 1rem;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);font-size:.93rem;font-family:inherit;color:var(--ink);outline:none;transition:border-color .2s;}
+.f-inp.verified{border-color:#3A7D5C;background:#F4FAF7;}
+.btn-verify{flex-shrink:0;padding:0 1rem;border:1px solid var(--ink);border-radius:2px;background:var(--ink);color:var(--white);font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
+.btn-verify:disabled{opacity:.4;cursor:not-allowed;}
+.btn-verify.sent{background:var(--white);color:var(--ink);border-color:var(--border-mid);}
+.f-inline{display:flex;gap:.5rem;}
 .f-inp:focus{border-color:var(--gold);}.f-inp::placeholder{color:var(--ink-light);}
 /* Phone picker */
 .ph-row{display:flex;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);overflow:visible;position:relative;}
@@ -458,7 +463,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v149</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v152</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -998,7 +1003,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
         <div class="info-form">
           <div class="f-grp"><label class="f-lbl" data-t="fm.fn">성함 *</label><input class="f-inp" id="f-fn" type="text" placeholder="홍길동 / Full Name"></div>
           <input type="hidden" id="f-ln" value="">
-          <div class="f-grp"><label class="f-lbl" data-t="fm.em">이메일 *</label><input class="f-inp" id="f-em" type="email" placeholder="your@email.com"></div>
           <div class="f-grp">
             <label class="f-lbl" data-t="fm.ph">연락처 *</label>
             <div class="ph-row">
@@ -1016,8 +1020,21 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
               <input class="ph-inp" id="f-ph" type="tel" inputmode="numeric" placeholder="01000000000" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
             </div>
           </div>
-          <div class="f-grp"><label class="f-lbl" data-t="fm.na">국적</label><input class="f-inp" id="f-na" type="text" placeholder="Taiwan / Korea / Other"></div>
-          <div class="f-grp"><label class="f-lbl" data-t="fm.nt">특이사항</label><input class="f-inp" id="f-nt" type="text" placeholder="알레르기, 이전 시술 이력 등"></div>
+          <div class="f-grp">
+            <label class="f-lbl" data-t="fm.em">이메일 *</label>
+            <div class="f-inline">
+              <input class="f-inp" id="f-em" type="email" placeholder="your@email.com" oninput="onEmailChanged()" style="flex:1;">
+              <button type="button" id="btn-send-code" class="btn-verify" onclick="sendVerifyCode()" data-t="fm.sendcode">인증번호 발송</button>
+            </div>
+          </div>
+          <div class="f-grp" id="grp-code" style="display:none;">
+            <label class="f-lbl" data-t="fm.code">인증번호 *</label>
+            <div class="f-inline">
+              <input class="f-inp" id="f-code" type="text" inputmode="numeric" maxlength="6" placeholder="6자리 숫자" style="flex:1;" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+              <button type="button" id="btn-confirm-code" class="btn-verify" onclick="confirmVerifyCode()" data-t="fm.checkcode">확인</button>
+            </div>
+            <div id="code-msg" style="font-size:.78rem;margin-top:.4rem;"></div>
+          </div>
         </div>
         <div class="s-nav">
           <button class="btn-sb" onclick="gStep(2)" data-t="cm.back">&#8592; 이전</button>
@@ -1091,13 +1108,13 @@ ko: {
 "bk.sd1":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","bk.sd2":"3파장 동시 조사 — 올인원 4세대 리프팅",
 "bk.sd3":"고강도 초음파 — 진피부터 SMAS층까지","bk.sd4":"극초단파 컨투어링 — 지속적 콜라겐 리모델링","bk.sd5":"2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅","bk.sd6":"진피층 직접 주입 — 수분·모공·미백 맞춤 케어",
 "bk.tl":"시간 선택",
-"fm.fn":"성함 *","fm.ln":"성 *","fm.em":"이메일 *","fm.ph":"연락처 *","fm.na":"국적","fm.nt":"특이사항",
+"fm.fn":"성함 *","fm.ln":"성 *","fm.em":"이메일 *","fm.ph":"연락처 *","fm.sendcode":"인증번호 발송","fm.resend":"재발송","fm.codesent":"인증번호를 발송했습니다. 이메일을 확인해 주세요.","fm.codeok":"인증이 완료되었습니다.","fm.codewrong":"인증번호가 일치하지 않습니다.","fm.codeexpired":"인증번호를 다시 요청해 주세요.","fm.checkcode":"확인","fm.code":"인증번호",
 "ct.i":"항목","ct.d":"상세","ct.p":"금액","ct.s":"시술","ct.dt":"날짜","ct.n":"예약자","ct.c":"연락처",
 "ct.tot":"예상 비용 (상담 후 확정)","ct.edit":"← 수정하기","ct.cfm":"예약 완료 ✓",
 "dn.title":"예약이 완료되었습니다!","dn.sub":"입력하신 이메일로 예약 확인 메시지를 발송했습니다.","dn.home":"홈으로 돌아가기",
 "d0":"일","d1":"월","d2":"화","d3":"수","d4":"목","d5":"금","d6":"토",
 "cm.back":"← 이전","cm.next":"다음 →",
-"al.date":"날짜를 선택해 주세요.","al.time":"시간을 선택해 주세요.","al.name":"성함을 입력해 주세요.","al.email":"올바른 이메일 주소를 입력해 주세요. (예: name@example.com)","al.phone":"연락처를 입력해 주세요.",
+"al.date":"날짜를 선택해 주세요.","al.time":"시간을 선택해 주세요.","al.name":"성함을 입력해 주세요.","al.email":"올바른 이메일 주소를 입력해 주세요. (예: name@example.com)","al.phone":"연락처를 입력해 주세요.","al.codeerr":"인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.","al.needverify":"이메일 인증을 완료해 주세요.",
 "cr.svc":"시술","cr.date":"날짜 & 시간","cr.name":"예약자","cr.email":"이메일","cr.price":"예상 비용"
 },
 en: {
@@ -1147,13 +1164,13 @@ en: {
 "bk.sd1":"SUPERB™ Ultrasound — Dermal Collagen Lifting","bk.sd2":"3-Wavelength Laser — All-in-One 4th-Gen Lifting",
 "bk.sd3":"High-Intensity Ultrasound — Dermis to SMAS","bk.sd4":"Microwave Contouring — Ongoing Collagen Remodeling","bk.sd5":"2 Modes · 7 Cartridges — Customized Lifting","bk.sd6":"Direct Dermal Infusion — Custom Hydration & Brightening",
 "bk.tl":"Select Time",
-"fm.fn":"Full Name *","fm.ln":"Last Name *","fm.em":"Email *","fm.ph":"Phone *","fm.na":"Nationality","fm.nt":"Notes / Special Requests",
+"fm.fn":"Full Name *","fm.ln":"Last Name *","fm.em":"Email *","fm.ph":"Phone *","fm.sendcode":"Send Code","fm.resend":"Resend","fm.codesent":"Verification code sent. Please check your email.","fm.codeok":"Verified successfully.","fm.codewrong":"Incorrect code.","fm.codeexpired":"Please request a new code.","fm.checkcode":"Verify","fm.code":"Verification Code",
 "ct.i":"Item","ct.d":"Detail","ct.p":"Price","ct.s":"Treatment","ct.dt":"Date","ct.n":"Name","ct.c":"Contact",
 "ct.tot":"Estimated Cost (finalized after consultation)","ct.edit":"← Edit","ct.cfm":"Confirm Booking ✓",
 "dn.title":"Booking Confirmed!","dn.sub":"A confirmation has been sent to your email.","dn.home":"Back to Home",
 "d0":"Sun","d1":"Mon","d2":"Tue","d3":"Wed","d4":"Thu","d5":"Fri","d6":"Sat",
 "cm.back":"← Back","cm.next":"Next →",
-"al.date":"Please select a date.","al.time":"Please select a time.","al.name":"Please enter your full name.","al.email":"Please enter a valid email address (e.g. name@example.com).","al.phone":"Please enter your phone number.",
+"al.date":"Please select a date.","al.time":"Please select a time.","al.name":"Please enter your full name.","al.email":"Please enter a valid email address (e.g. name@example.com).","al.phone":"Please enter your phone number.","al.codeerr":"Failed to send the code. Please try again.","al.needverify":"Please verify your email.",
 "cr.svc":"Treatment","cr.date":"Date & Time","cr.name":"Name","cr.email":"Email","cr.price":"Est. Cost"
 },
 zh: {
@@ -1203,13 +1220,13 @@ zh: {
 "bk.sd1":"SUPERB™ 超音波技術 — 真皮層膠原拉提","bk.sd2":"三波長雷射同步 — 第四代全能拉提",
 "bk.sd3":"高強度超音波 — 真皮至筋膜層","bk.sd4":"極短波輪廓雕塑 — 持續膠原重塑","bk.sd5":"兩種模式・7種探頭 — 部位客製拉提","bk.sd6":"直接注入真皮層 — 補水・毛孔・美白客製",
 "bk.tl":"選擇時間",
-"fm.fn":"姓名 *","fm.ln":"姓氏 *","fm.em":"電子郵件 *","fm.ph":"電話 *","fm.na":"國籍","fm.nt":"備註 / 特殊需求",
+"fm.fn":"姓名 *","fm.ln":"姓氏 *","fm.em":"電子郵件 *","fm.ph":"電話 *","fm.sendcode":"發送驗證碼","fm.resend":"重新發送","fm.codesent":"驗證碼已發送，請查收您的電子郵件。","fm.codeok":"驗證成功。","fm.codewrong":"驗證碼不正確。","fm.codeexpired":"請重新發送驗證碼。","fm.checkcode":"確認","fm.code":"驗證碼",
 "ct.i":"項目","ct.d":"詳細","ct.p":"費用","ct.s":"療程","ct.dt":"日期","ct.n":"姓名","ct.c":"聯絡方式",
 "ct.tot":"預估費用（諮詢後確定）","ct.edit":"← 修改","ct.cfm":"確認預約 ✓",
 "dn.title":"預約完成！","dn.sub":"確認信已發送至您的電子郵件。","dn.home":"返回首頁",
 "d0":"日","d1":"一","d2":"二","d3":"三","d4":"四","d5":"五","d6":"六",
 "cm.back":"← 上一步","cm.next":"下一步 →",
-"al.date":"請選擇日期。","al.time":"請選擇時間。","al.name":"請輸入姓名。","al.email":"請輸入有效的電子郵件地址(例如:name@example.com)。","al.phone":"請輸入聯絡電話。",
+"al.date":"請選擇日期。","al.time":"請選擇時間。","al.name":"請輸入姓名。","al.email":"請輸入有效的電子郵件地址(例如:name@example.com)。","al.phone":"請輸入聯絡電話。","al.codeerr":"驗證碼發送失敗，請稍後再試。","al.needverify":"請完成電子郵件驗證。",
 "cr.svc":"療程","cr.date":"日期 & 時間","cr.name":"姓名","cr.email":"電子郵件","cr.price":"預估費用"
 },
 ar: {
@@ -1259,13 +1276,13 @@ ar: {
 "bk.sd1":"تقنية SUPERB™ للموجات فوق الصوتية","bk.sd2":"ثلاث موجات ليزر متزامنة",
 "bk.sd3":"موجات فوق صوتية عالية الكثافة","bk.sd4":"نحت بالموجات الدقيقة","bk.sd5":"وضعان و7 خراطيش","bk.sd6":"حقن مباشر في الأدمة",
 "bk.tl":"اختر الوقت",
-"fm.fn":"الاسم الكامل *","fm.ln":"اسم العائلة *","fm.em":"البريد الإلكتروني *","fm.ph":"رقم الهاتف *","fm.na":"الجنسية","fm.nt":"ملاحظات",
+"fm.fn":"الاسم الكامل *","fm.ln":"اسم العائلة *","fm.em":"البريد الإلكتروني *","fm.ph":"رقم الهاتف *","fm.sendcode":"إرسال الرمز","fm.resend":"إعادة الإرسال","fm.codesent":"تم إرسال رمز التحقق. يرجى مراجعة بريدك الإلكتروني.","fm.codeok":"تم التحقق بنجاح.","fm.codewrong":"الرمز غير صحيح.","fm.codeexpired":"يرجى طلب رمز جديد.","fm.checkcode":"تحقق","fm.code":"رمز التحقق",
 "ct.i":"البند","ct.d":"التفاصيل","ct.p":"السعر","ct.s":"العلاج","ct.dt":"التاريخ","ct.n":"الاسم","ct.c":"التواصل",
 "ct.tot":"التكلفة التقديرية","ct.edit":"تعديل ←","ct.cfm":"تأكيد الحجز ✓",
 "dn.title":"تم الحجز بنجاح!","dn.sub":"تم إرسال تأكيد الحجز إلى بريدك الإلكتروني.","dn.home":"العودة للرئيسية",
 "d0":"أح","d1":"إث","d2":"ثل","d3":"أر","d4":"خم","d5":"جم","d6":"سب",
 "cm.back":"السابق ←","cm.next":"التالي →",
-"al.date":"الرجاء اختيار تاريخ.","al.time":"الرجاء اختيار وقت.","al.name":"الرجاء إدخال الاسم الكامل.","al.email":"الرجاء إدخال بريد إلكتروني صحيح (مثال: name@example.com).","al.phone":"الرجاء إدخال رقم الهاتف.",
+"al.date":"الرجاء اختيار تاريخ.","al.time":"الرجاء اختيار وقت.","al.name":"الرجاء إدخال الاسم الكامل.","al.email":"الرجاء إدخال بريد إلكتروني صحيح (مثال: name@example.com).","al.phone":"الرجاء إدخال رقم الهاتف.","al.codeerr":"فشل إرسال الرمز. يرجى المحاولة مرة أخرى.","al.needverify":"يرجى التحقق من بريدك الإلكتروني.",
 "cr.svc":"العلاج","cr.date":"التاريخ والوقت","cr.name":"الاسم","cr.email":"البريد الإلكتروني","cr.price":"التكلفة التقديرية"
 },
 ja: {
@@ -1315,13 +1332,13 @@ ja: {
 "bk.sd1":"SUPERB™超音波 — 真皮層コラーゲンリフティング","bk.sd2":"3波長レーザー同時照射 — オールインワン第4世代リフティング",
 "bk.sd3":"高強度超音波 — 真皮層からSMAS層まで","bk.sd4":"マイクロ波コントアリング — 持続的コラーゲンリモデリング","bk.sd5":"2モード・7カートリッジ — 部位別カスタムリフティング","bk.sd6":"真皮層への直接注入 — 保湿・美白カスタムケア",
 "bk.tl":"時間を選択",
-"fm.fn":"お名前 *","fm.ln":"姓 *","fm.em":"メールアドレス *","fm.ph":"電話番号 *","fm.na":"国籍","fm.nt":"備考・ご要望",
+"fm.fn":"お名前 *","fm.ln":"姓 *","fm.em":"メールアドレス *","fm.ph":"電話番号 *","fm.sendcode":"認証番号を送信","fm.resend":"再送信","fm.codesent":"認証番号を送信しました。メールをご確認ください。","fm.codeok":"認証が完了しました。","fm.codewrong":"認証番号が一致しません。","fm.codeexpired":"認証番号を再度リクエストしてください。","fm.checkcode":"確認","fm.code":"認証番号",
 "ct.i":"項目","ct.d":"詳細","ct.p":"金額","ct.s":"施術","ct.dt":"日時","ct.n":"お名前","ct.c":"連絡先",
 "ct.tot":"予想費用（カウンセリング後確定）","ct.edit":"← 修正する","ct.cfm":"予約を確定する ✓",
 "dn.title":"ご予約が完了しました！","dn.sub":"ご入力いただいたメールアドレスに確認メールをお送りしました。","dn.home":"ホームへ戻る",
 "d0":"日","d1":"月","d2":"火","d3":"水","d4":"木","d5":"金","d6":"土",
 "cm.back":"← 戻る","cm.next":"次へ →",
-"al.date":"日付を選択してください。","al.time":"時間を選択してください。","al.name":"お名前をご入力ください。","al.email":"正しいメールアドレスをご入力ください（例：name@example.com）。","al.phone":"電話番号をご入力ください。",
+"al.date":"日付を選択してください。","al.time":"時間を選択してください。","al.name":"お名前をご入力ください。","al.email":"正しいメールアドレスをご入力ください（例：name@example.com）。","al.phone":"電話番号をご入力ください。","al.codeerr":"認証番号の送信に失敗しました。しばらくしてから再度お試しください。","al.needverify":"メール認証を完了してください。",
 "cr.svc":"施術","cr.date":"日時","cr.name":"お名前","cr.email":"メールアドレス","cr.price":"予想費用"
 },
 cn: {
@@ -1371,13 +1388,13 @@ cn: {
 "bk.sd1":"SUPERB™超声波 — 真皮层胶原蛋白提升","bk.sd2":"三波长激光同步 — 第四代全能提升",
 "bk.sd3":"高强度超声波 — 真皮层至SMAS层","bk.sd4":"微波轮廓雕塑 — 持续胶原蛋白重塑","bk.sd5":"两种模式・7种探头 — 部位定制提升","bk.sd6":"直接注入真皮层 — 定制补水与美白",
 "bk.tl":"选择时间",
-"fm.fn":"姓名 *","fm.ln":"姓氏 *","fm.em":"邮箱 *","fm.ph":"电话 *","fm.na":"国籍","fm.nt":"备注 / 特殊要求",
+"fm.fn":"姓名 *","fm.ln":"姓氏 *","fm.em":"邮箱 *","fm.ph":"电话 *","fm.sendcode":"发送验证码","fm.resend":"重新发送","fm.codesent":"验证码已发送，请查收您的邮箱。","fm.codeok":"验证成功。","fm.codewrong":"验证码不正确。","fm.codeexpired":"请重新获取验证码。","fm.checkcode":"确认","fm.code":"验证码",
 "ct.i":"项目","ct.d":"详情","ct.p":"金额","ct.s":"疗程","ct.dt":"日期","ct.n":"姓名","ct.c":"联系方式",
 "ct.tot":"预估费用（咨询后确定）","ct.edit":"← 修改","ct.cfm":"确认预约 ✓",
 "dn.title":"预约成功！","dn.sub":"确认邮件已发送至您填写的邮箱。","dn.home":"返回首页",
 "d0":"周日","d1":"周一","d2":"周二","d3":"周三","d4":"周四","d5":"周五","d6":"周六",
 "cm.back":"← 上一步","cm.next":"下一步 →",
-"al.date":"请选择日期。","al.time":"请选择时间。","al.name":"请填写姓名。","al.email":"请输入有效的邮箱地址（例如：name@example.com）。","al.phone":"请填写联系电话。",
+"al.date":"请选择日期。","al.time":"请选择时间。","al.name":"请填写姓名。","al.email":"请输入有效的邮箱地址（例如：name@example.com）。","al.phone":"请填写联系电话。","al.codeerr":"验证码发送失败，请稍后再试。","al.needverify":"请完成邮箱验证。",
 "cr.svc":"疗程","cr.date":"日期与时间","cr.name":"姓名","cr.email":"邮箱","cr.price":"预估费用"
 }
 };
@@ -1612,6 +1629,84 @@ function updStep(cur) {
   bk.step=cur;
 }
 
+// ── 이메일 인증 ──
+var emailVerified = null;
+var pendingCode = null;
+var pendingCodeEmail = null;
+var codeResendLock = false;
+
+function onEmailChanged() {
+  var em = document.getElementById("f-em").value.trim();
+  document.getElementById("f-em").classList.remove("verified");
+  if (emailVerified && em !== emailVerified) {
+    emailVerified = null;
+    document.getElementById("grp-code").style.display = "none";
+    document.getElementById("f-code").value = "";
+    document.getElementById("code-msg").textContent = "";
+  }
+}
+
+function sendVerifyCode() {
+  var em = document.getElementById("f-em").value.trim();
+  var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(em)) { alert(tr("al.email") || "올바른 이메일 주소를 입력해 주세요. (예: name@example.com)"); return; }
+  if (codeResendLock) return;
+
+  var code = String(Math.floor(100000 + Math.random()*900000));
+  pendingCode = code;
+  pendingCodeEmail = em;
+
+  var btn = document.getElementById("btn-send-code");
+  btn.disabled = true;
+
+  emailjs.send("service_43jsptp", "template_onu2oiq", { to_email: em, code: code }, "42rEudCYPKOr7mieW")
+    .then(function(){
+      document.getElementById("grp-code").style.display = "block";
+      document.getElementById("code-msg").style.color = "var(--ink-mid)";
+      document.getElementById("code-msg").textContent = tr("fm.codesent") || "인증번호를 발송했습니다. 이메일을 확인해 주세요.";
+      btn.classList.add("sent");
+      btn.textContent = tr("fm.resend") || "재발송";
+      codeResendLock = true;
+      var remain = 30;
+      var timer = setInterval(function(){
+        remain--;
+        btn.textContent = (tr("fm.resend") || "재발송") + " (" + remain + "s)";
+        if (remain <= 0) {
+          clearInterval(timer);
+          btn.disabled = false;
+          btn.textContent = tr("fm.resend") || "재발송";
+          codeResendLock = false;
+        }
+      }, 1000);
+    })
+    .catch(function(err){
+      console.error("EmailJS verify send error:", JSON.stringify(err));
+      btn.disabled = false;
+      alert(tr("al.codeerr") || "인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    });
+}
+
+function confirmVerifyCode() {
+  var input = document.getElementById("f-code").value.trim();
+  var em = document.getElementById("f-em").value.trim();
+  var msg = document.getElementById("code-msg");
+
+  if (!pendingCode || em !== pendingCodeEmail) {
+    msg.style.color = "#C0392B";
+    msg.textContent = tr("fm.codeexpired") || "인증번호를 다시 요청해 주세요.";
+    return;
+  }
+  if (input === pendingCode) {
+    emailVerified = em;
+    document.getElementById("f-em").classList.add("verified");
+    msg.style.color = "#3A7D5C";
+    msg.textContent = tr("fm.codeok") || "인증이 완료되었습니다.";
+  } else {
+    msg.style.color = "#C0392B";
+    msg.textContent = tr("fm.codewrong") || "인증번호가 일치하지 않습니다.";
+  }
+}
+
 function gStepFwdInfo() {
   var fn = document.getElementById("f-fn").value.trim();
   var em = document.getElementById("f-em").value.trim();
@@ -1619,10 +1714,12 @@ function gStepFwdInfo() {
 
   if (!fn) { alert(tr("al.name") || "성함을 입력해 주세요."); return; }
 
+  if (!ph) { alert(tr("al.phone") || "연락처를 입력해 주세요."); return; }
+
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(em)) { alert(tr("al.email") || "올바른 이메일 주소를 입력해 주세요. (예: name@example.com)"); return; }
 
-  if (!ph) { alert(tr("al.phone") || "연락처를 입력해 주세요."); return; }
+  if (emailVerified !== em) { alert(tr("al.needverify") || "이메일 인증을 완료해 주세요."); return; }
 
   submitBk();
 }
@@ -1838,12 +1935,12 @@ function submitBk() {
   var ln=document.getElementById("f-ln").value||"";
   var name=(fn+" "+ln).trim()||"-";
   var phone=getPhone();
-  var nation=document.getElementById("f-na").value||"-";
-  var notes=document.getElementById("f-nt").value||"없음";
+  var nation=(selC && selC.n) ? selC.n : "-";
+  var notes="없음";
   var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
   var cfmBtn=document.getElementById("btn-submit-bk");
   if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
-  var params={service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
+  var params={name:name,service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
 
   // ── Google Sheets 저장 ──
   var now=new Date();
@@ -1855,9 +1952,9 @@ function submitBk() {
     body:JSON.stringify({booked_at:bookedAt,service:params.service,date_time:params.date_time,patient_name:params.patient_name,patient_email:params.patient_email,phone:params.phone,nationality:params.nationality,notes:params.notes,price:params.price})
   }).catch(function(err){console.warn("Sheets 저장 실패:",err);});
 
-  emailjs.send("service_un9pb0a","template_pf8quwr",params)
+  emailjs.send("service_43jsptp","template_et2cdg7",params,"42rEudCYPKOr7mieW")
     .then(function(){
-      emailjs.send("service_un9pb0a","template_6vjlams",params);
+      emailjs.send("service_un9pb0a","template_pf8quwr",params);
       document.getElementById("cfm-details").innerHTML=
         "<div class=\"cfm-row\"><span>"+tr("cr.svc")+"</span><span>"+(bk.svc||"-")+"</span></div>"+
         "<div class=\"cfm-row\"><span>"+tr("cr.date")+"</span><span>"+ds+"</span></div>"+

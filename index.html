@@ -463,7 +463,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v152</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v153</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1607,6 +1607,28 @@ function initBooking(preSvc, prePr) {
     setTimeout(function() { hiSvc(preSvc); }, 60); // 시술은 미리 선택 표시만 해두고, 날짜 단계부터 시작
   }
   renderCal();
+  resetInfoForm(); // 이전 예약자의 이름/연락처/이메일/인증상태가 남지 않도록 초기화
+}
+
+function resetInfoForm() {
+  var fFn = document.getElementById("f-fn"); if (fFn) fFn.value = "";
+  var fPh = document.getElementById("f-ph"); if (fPh) fPh.value = "";
+  var fEm = document.getElementById("f-em"); if (fEm) { fEm.value = ""; fEm.classList.remove("verified"); }
+  var fCode = document.getElementById("f-code"); if (fCode) fCode.value = "";
+  var grpCode = document.getElementById("grp-code"); if (grpCode) grpCode.style.display = "none";
+  var codeMsg = document.getElementById("code-msg"); if (codeMsg) codeMsg.textContent = "";
+  var btnSend = document.getElementById("btn-send-code");
+  if (btnSend) { btnSend.disabled = false; btnSend.classList.remove("sent"); btnSend.textContent = tr("fm.sendcode") || "인증번호 발송"; }
+  emailVerified = null;
+  pendingCode = null;
+  pendingCodeEmail = null;
+  codeResendLock = false;
+  // 국가선택(전화번호)도 기본값(한국)으로
+  if (typeof CTRS !== "undefined" && CTRS.length) {
+    selC = CTRS[0];
+    var cFlag = document.getElementById("c-flag"); if (cFlag) cFlag.innerHTML = selC.f;
+    var cCode = document.getElementById("c-code"); if (cCode) cCode.textContent = selC.d;
+  }
 }
 
 function hiSvc(name) {

@@ -419,7 +419,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .pp-sec p{font-size:.95rem;color:var(--ink-mid);line-height:1.85;}
 
 /* ADMIN */
-.adm-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--white);border:none;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:background .2s;}
+.adm-fab{display:none;position:fixed;bottom:1.5rem;right:1.5rem;z-index:500;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--white);border:none;font-size:1.2rem;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:background .2s;}
+.adm-fab.adm-visible{display:block;}
 .adm-fab:hover{background:var(--gold-dark);}
 
 .adm-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(26,23,20,.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;}
@@ -483,7 +484,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v169</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v170</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -503,7 +504,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 </nav>
 
 <!-- ADMIN FAB -->
-<button class="adm-fab" onclick="openAdm()" title="문구 편집">&#9998;</button>
+<button class="adm-fab" id="adm-fab-btn" onclick="openAdm()" title="문구 편집">&#9998;</button>
 
 
 <!-- ADMIN OVERLAY -->
@@ -2393,6 +2394,15 @@ function searchBooking() {
 
 // Init
 buildCList(""); renderCal();
+
+// 관리자 편집 버튼: URL에 ?admin=elliya2026 있을 때만 노출 (일반 방문자에게는 항상 숨김)
+(function checkAdminAccess(){
+  var params = new URLSearchParams(window.location.search);
+  if (params.get("admin") === "elliya2026") {
+    var btn = document.getElementById("adm-fab-btn");
+    if (btn) btn.classList.add("adm-visible");
+  }
+})();
 
 // 감지/저장된 언어를 실제 화면에 적용 + 국기 활성 표시 동기화
 document.documentElement.lang = lang;

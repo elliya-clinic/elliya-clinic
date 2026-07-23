@@ -139,7 +139,8 @@ nav.nav-scrolled{
 .hero-title em{font-style:normal;color:var(--gold);}
 .hero-desc{font-size:1.1rem;color:rgba(255,255,255,.85);margin-bottom:2.4rem;max-width:500px;line-height:1.85;text-shadow:0 2px 8px rgba(0,0,0,.55);}
 .hero-act{display:flex;gap:1rem;flex-wrap:wrap;}
-.btn-p{padding:.85rem 2.2rem;background:var(--gold);color:var(--ink);font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:none;border-radius:2px;cursor:pointer;transition:background .2s,transform .15s;font-weight:700;}
+.btn-p{padding:.85rem 2.2rem;background:var(--ink);color:var(--white);font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:1px solid var(--ink);border-radius:2px;cursor:pointer;transition:background .2s,transform .15s;font-weight:700;}
+.btn-p:hover{background:#000;}
 .btn-p:hover{background:var(--gold-dark);color:var(--white);transform:translateY(-1px);}
 .btn-o{padding:.85rem 2.2rem;background:rgba(20,17,15,.4);backdrop-filter:blur(4px);color:var(--white);font-size:.92rem;letter-spacing:.12em;text-transform:uppercase;font-family:inherit;border:1px solid rgba(255,255,255,.55);border-radius:2px;cursor:pointer;transition:border-color .2s,background .2s;}
 .btn-o:hover{border-color:var(--gold);background:rgba(201,169,110,.12);}
@@ -469,7 +470,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v160</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v163</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1423,7 +1424,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbxLK5JZSiWJ21C4fsyMrikIMhWhkEcdn8UdMt9WTXfT9dI6j95U9CW5XvJgS6GGCnuuZg/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbzHn8zJmdEn8_CEpuRNvabo4yvRAKf1J_DMPp4ccugdYi3LOwQanlrXf6DgPJDxVOoiLg/exec";
 
 function setLang(l) {
   lang = l;
@@ -1729,7 +1730,7 @@ function sendVerifyCode() {
     .then(function(){
       document.getElementById("grp-code").style.display = "block";
       document.getElementById("f-code").value = "";
-      msg.style.color = "var(--ink-mid)";
+      msg.style.color = "#3A7D5C";
       msg.textContent = tr("fm.codesent") || "인증번호를 발송했습니다. 이메일을 확인해 주세요.";
       btn.classList.add("sent");
       codeResendLock = true;
@@ -2216,6 +2217,40 @@ function toggleMenu() {
 
 
 // ── 나의 예약확인 ──
+function encAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;"); }
+
+function cancelMyBooking(cardId) {
+  var card = document.getElementById(cardId);
+  if (!card) return;
+  var email = card.dataset.email;
+  var bookedAt = card.dataset.bookedat;
+  if (!confirm(tr("mb.cancelconfirm") || "정말 이 예약을 취소하시겠습니까?")) return;
+
+  var btn = card.querySelector(".btn-cancel-bk");
+  if (btn) { btn.disabled = true; btn.textContent = tr("mb.cancelling") || "취소 중..."; }
+
+  fetch(SHEET_URL + "?action=cancel_booking&email=" + encodeURIComponent(email) + "&booked_at=" + encodeURIComponent(bookedAt))
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res && res.ok) {
+        card.style.opacity = ".5";
+        card.querySelector(".btn-cancel-bk") && card.querySelector(".btn-cancel-bk").remove();
+        var doneMsg = document.createElement("div");
+        doneMsg.style.cssText = "margin-top:1rem;font-size:.82rem;color:#C0392B;font-weight:700;";
+        doneMsg.textContent = tr("mb.cancelled") || "취소된 예약입니다.";
+        card.appendChild(doneMsg);
+      } else {
+        alert(tr("mb.cancelfail") || "예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+        if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn") || "예약 취소"; }
+      }
+    })
+    .catch(function(err){
+      console.error("cancel error:", err);
+      alert(tr("mb.cancelfail") || "예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+      if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn") || "예약 취소"; }
+    });
+}
+
 function searchBooking() {
   var name  = document.getElementById("mb-name").value.trim();
   var email = document.getElementById("mb-email").value.trim();
@@ -2245,14 +2280,21 @@ function searchBooking() {
       if (data.bookings && data.bookings.length > 0) {
         found.style.display = "block";
         empty.style.display = "none";
-        list.innerHTML = data.bookings.map(function(b) {
-          return '<div style="background:var(--white);border-radius:12px;padding:1.5rem;box-shadow:0 2px 12px rgba(0,0,0,0.06);">' +
+        list.innerHTML = data.bookings.map(function(b, idx) {
+          var isCancelled = (b.status === "취소");
+          var cardId = "mb-card-" + idx;
+          return '<div class="mb-card" id="' + cardId + '" data-email="' + encAttr(email) + '" data-bookedat="' + encAttr(b.booked_at||"") + '" style="background:var(--white);border-radius:12px;padding:1.5rem;box-shadow:0 2px 12px rgba(0,0,0,0.06);' + (isCancelled ? "opacity:.5;" : "") + '">' +
             '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;">' +
             '<div><div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.3rem;">시술</div><div style="font-size:.92rem;font-weight:700;">' + (b.service||'-') + '</div></div>' +
             '<div><div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.3rem;">날짜/시간</div><div style="font-size:.92rem;font-weight:700;">' + (b.date_time||'-') + '</div></div>' +
             '<div><div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.3rem;">예약일</div><div style="font-size:.85rem;">' + (b.booked_at||'-') + '</div></div>' +
             '<div><div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.3rem;">예상비용</div><div style="font-size:.85rem;">' + (b.price||'-') + '</div></div>' +
-            '</div></div>';
+            '</div>' +
+            (isCancelled
+              ? '<div style="margin-top:1rem;font-size:.82rem;color:#C0392B;font-weight:700;">' + (tr("mb.cancelled") || "취소된 예약입니다.") + '</div>'
+              : '<button class="btn-cancel-bk" onclick="cancelMyBooking(\'' + cardId + '\')" style="margin-top:1rem;padding:.55rem 1.1rem;background:none;border:1px solid #C0392B;color:#C0392B;border-radius:2px;font-size:.82rem;cursor:pointer;">' + (tr("mb.cancelbtn") || "예약 취소") + '</button>'
+            ) +
+            '</div>';
         }).join('');
       } else {
         found.style.display = "none";

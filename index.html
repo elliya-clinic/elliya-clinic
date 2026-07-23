@@ -483,7 +483,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v167</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v169</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1437,7 +1437,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbzHn8zJmdEn8_CEpuRNvabo4yvRAKf1J_DMPp4ccugdYi3LOwQanlrXf6DgPJDxVOoiLg/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycby1RpUHyygsNIJD249t2mxj1IvLY5BnTheR8Vu5nQOwhgZyMz9ryOKlXgYxG7-pCxAnhg/exec";
 
 function setLang(l) {
   lang = l;
@@ -1651,7 +1651,7 @@ function resetInfoForm() {
   var btnSend = document.getElementById("btn-send-code");
   if (btnSend) { btnSend.disabled = false; btnSend.classList.remove("sent"); btnSend.textContent = tr("fm.sendcode") || "인증번호 발송"; }
   emailVerified = null;
-  pendingCode = null;
+  verifiedToken = null;
   pendingCodeEmail = null;
   codeResendLock = false;
   clearCodeCountdown();
@@ -1687,7 +1687,7 @@ function updStep(cur) {
 
 // ── 이메일 인증 ──
 var emailVerified = null;
-var pendingCode = null;
+var verifiedToken = null; // 서버가 발급한 1회용 인증토큰(예약접수 시 같이 제출)
 var pendingCodeEmail = null;
 var codeResendLock = false;
 
@@ -1696,25 +1696,18 @@ function onEmailChanged() {
   document.getElementById("f-em").classList.remove("verified");
   if (emailVerified && em !== emailVerified) {
     emailVerified = null;
+    verifiedToken = null;
     document.getElementById("grp-code").style.display = "none";
     document.getElementById("f-code").value = "";
     document.getElementById("code-msg").textContent = "";
   }
 }
 
-var VERIFY_T = {
-  ko:{subject:"[Elliya Clinic] 예약 인증번호",msg:"안녕하세요, 엘리야의원입니다.<br>예약 인증번호는 <b>{{code}}</b> 입니다.<br>3분 이내에 입력해 주세요."},
-  en:{subject:"[Elliya Clinic] Your Verification Code",msg:"Hello, this is Elliya Clinic.<br>Your verification code is <b>{{code}}</b>.<br>Please enter it within 3 minutes."},
-  zh:{subject:"[Elliya Clinic] 您的驗證碼",msg:"您好，這裡是 Elliya Clinic。<br>您的驗證碼是 <b>{{code}}</b>。<br>請於 3 分鐘內輸入。"},
-  cn:{subject:"[Elliya Clinic] 您的验证码",msg:"您好，这里是 Elliya Clinic。<br>您的验证码是 <b>{{code}}</b>。<br>请于 3 分钟内输入。"},
-  ja:{subject:"[Elliya Clinic] 認証番号のご案内",msg:"こんにちは、Elliya Clinicです。<br>認証番号は <b>{{code}}</b> です。<br>3分以内にご入力ください。"},
-  ar:{subject:"[Elliya Clinic] رمز التحقق الخاص بك",msg:"مرحباً، هذه عيادة Elliya Clinic.<br>رمز التحقق الخاص بك هو <b>{{code}}</b>.<br>يرجى إدخاله خلال 3 دقائق."}
-};
-
 function expireVerifyCode() {
   clearCodeCountdown();
-  pendingCode = null;
   pendingCodeEmail = null;
+  emailVerified = null;
+  verifiedToken = null;
   var grpCode = document.getElementById("grp-code");
   if (grpCode) grpCode.style.display = "none";
   var fCode = document.getElementById("f-code");
@@ -1737,21 +1730,23 @@ function sendVerifyCode() {
 
   var btn = document.getElementById("btn-send-code");
   var msg = document.getElementById("code-msg");
-  // 클릭 즉시: 이전 상태(빨간 오류 메시지 등) 초기화 + 버튼은 색 변화 없이 비활성화만
   btn.disabled = true;
   if (msg) { msg.style.color = "var(--ink-mid)"; msg.textContent = ""; }
 
-  var code = String(Math.floor(100000 + Math.random()*900000));
-  pendingCode = code;
-  pendingCodeEmail = em;
+  pendingCodeEmail = em; // 실제 코드값은 이제 서버만 알고 있음(보안상 클라이언트에 안 둠)
+  verifiedToken = null;
+  emailVerified = null;
 
   var vlang = detectEmailLang();
-  var vt = VERIFY_T[vlang] || VERIFY_T.en;
-  var vSubject = vt.subject;
-  var vMessage = vt.msg.split("{{code}}").join(code);
 
-  emailjs.send("service_43jsptp", "template_onu2oiq", { to_email: em, code: code, subject: vSubject, message: vMessage }, "42rEudCYPKOr7mieW")
-    .then(function(){
+  fetch(SHEET_URL + "?action=request_verification&email=" + encodeURIComponent(em) + "&lang=" + encodeURIComponent(vlang))
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (!res || !res.ok) {
+        btn.disabled = false;
+        alert(tr("al.codeerr") || "인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+        return;
+      }
       document.getElementById("grp-code").style.display = "block";
       document.getElementById("f-code").value = "";
       msg.style.color = "#3A7D5C";
@@ -1759,9 +1754,7 @@ function sendVerifyCode() {
       btn.classList.add("sent");
       codeResendLock = true;
 
-      // 하나의 타이머(180초=3분)로 통일: 재발송 잠금과 인증번호 유효시간을 동시에 관리
       clearCodeCountdown();
-      var thisCode = code;
       var remain = 180;
       function fmtMS(s){ var m=Math.floor(s/60), ss=s%60; return m+":"+(ss<10?"0":"")+ss; }
       btn.textContent = (tr("fm.resend") || "재발송") + " (" + fmtMS(remain) + ")";
@@ -1775,12 +1768,12 @@ function sendVerifyCode() {
           btn.disabled = false;
           btn.textContent = tr("fm.resend") || "재발송";
           codeResendLock = false;
-          if (pendingCode === thisCode) expireVerifyCode();
+          if (!emailVerified) expireVerifyCode();
         }
       }, 1000);
     })
     .catch(function(err){
-      console.error("EmailJS verify send error:", JSON.stringify(err));
+      console.error("request_verification error:", err);
       btn.disabled = false;
       alert(tr("al.codeerr") || "인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
     });
@@ -1791,27 +1784,44 @@ function confirmVerifyCode() {
   var em = document.getElementById("f-em").value.trim();
   var msg = document.getElementById("code-msg");
 
-  if (!pendingCode || em !== pendingCodeEmail) {
+  if (!pendingCodeEmail || em !== pendingCodeEmail) {
     msg.style.color = "#C0392B";
     msg.textContent = tr("fm.codeexpired") || "인증번호를 다시 요청해 주세요.";
     return;
   }
-  if (input === pendingCode) {
-    emailVerified = em;
-    document.getElementById("f-em").classList.add("verified");
-    msg.style.color = "#3A7D5C";
-    msg.textContent = (tr("fm.codeok") || "인증이 완료되었습니다.") + " " + (tr("fm.pleasesubmit") || "아래 \"예약 완료\" 버튼을 눌러 예약을 마쳐주세요.");
-    clearCodeCountdown();
-    var cfmBtn = document.getElementById("btn-submit-bk");
-    if (cfmBtn) {
-      cfmBtn.focus();
-      cfmBtn.classList.add("pulse-glow");
-      setTimeout(function(){ cfmBtn.classList.remove("pulse-glow"); }, 3600);
-    }
-  } else {
-    msg.style.color = "#C0392B";
-    msg.textContent = tr("fm.codewrong") || "인증번호가 일치하지 않습니다.";
-  }
+  if (!input) return;
+
+  var okBtn = document.getElementById("btn-confirm-code");
+  if (okBtn) okBtn.disabled = true;
+
+  fetch(SHEET_URL + "?action=verify_code&email=" + encodeURIComponent(em) + "&code=" + encodeURIComponent(input))
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (okBtn) okBtn.disabled = false;
+      if (res && res.ok && res.token) {
+        emailVerified = em;
+        verifiedToken = res.token;
+        document.getElementById("f-em").classList.add("verified");
+        msg.style.color = "#3A7D5C";
+        msg.textContent = (tr("fm.codeok") || "인증이 완료되었습니다.") + " " + (tr("fm.pleasesubmit") || "아래 \"예약 완료\" 버튼을 눌러 예약을 마쳐주세요.");
+        clearCodeCountdown();
+        var cfmBtn = document.getElementById("btn-submit-bk");
+        if (cfmBtn) {
+          cfmBtn.focus();
+          cfmBtn.classList.add("pulse-glow");
+          setTimeout(function(){ cfmBtn.classList.remove("pulse-glow"); }, 3600);
+        }
+      } else {
+        msg.style.color = "#C0392B";
+        msg.textContent = tr("fm.codewrong") || "인증번호가 일치하지 않습니다.";
+      }
+    })
+    .catch(function(err){
+      if (okBtn) okBtn.disabled = false;
+      console.error("verify_code error:", err);
+      msg.style.color = "#C0392B";
+      msg.textContent = tr("fm.codewrong") || "인증번호가 일치하지 않습니다.";
+    });
 }
 
 function gStepFwdInfo() {
@@ -2105,37 +2115,55 @@ function submitBk() {
     var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
     if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
 
+    if (emailVerified !== email || !verifiedToken) {
+      if (cfmBtn) { cfmBtn.disabled = false; cfmBtn.textContent = tr("ct.cfm") || "예약 완료"; }
+      alert(tr("al.needverify") || "이메일 인증을 완료해 주세요.");
+      return;
+    }
+
     var elang = detectEmailLang();
     var built = buildEmailMessage(elang, name, bk.svc||"-", ds, pr);
     var params={name:name,service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr,subject:built.subject,message:built.message};
 
-    // ── Google Sheets 저장 ──
+    // ── Google Sheets 저장 (인증토큰 동봉 — 서버가 검증 후 거부할 수 있음) ──
     var now=new Date();
     var bookedAt=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0")+" "+String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");
     fetch(SHEET_URL,{
       method:"POST",
-      mode:"no-cors",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({booked_at:bookedAt,service:params.service,date_time:params.date_time,patient_name:params.patient_name,patient_email:params.patient_email,phone:params.phone,nationality:params.nationality,notes:params.notes,price:params.price})
-    }).catch(function(err){console.warn("Sheets 저장 실패:",err);});
+      headers:{"Content-Type":"text/plain;charset=utf-8"}, // application/json으로 하면 프리플라이트가 걸려 Apps Script에서 막히므로 text/plain 사용(서버에서 JSON.parse는 그대로 동작)
+      body:JSON.stringify({booked_at:bookedAt,service:params.service,date_time:params.date_time,patient_name:params.patient_name,patient_email:params.patient_email,phone:params.phone,nationality:params.nationality,notes:params.notes,price:params.price,verify_token:verifiedToken})
+    })
+      .then(function(r){ return r.json(); })
+      .then(function(sheetRes){
+        if (!sheetRes || sheetRes.result !== "success") {
+          if(cfmBtn){cfmBtn.disabled=false;cfmBtn.textContent=tr("ct.cfm");}
+          alert((sheetRes && sheetRes.message) || "예약 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+          return;
+        }
 
-    emailjs.send("service_43jsptp","template_et2cdg7",params,"42rEudCYPKOr7mieW")
-      .then(function(){
-        emailjs.send("service_un9pb0a","template_pf8quwr",params).catch(function(err){
-          console.warn("직원알림 발송 실패:",err); // 직원알림 실패는 예약 자체를 막지 않음
-        });
-        document.getElementById("cfm-details").innerHTML=
-          "<div class=\"cfm-row\"><span>"+tr("cr.svc")+"</span><span>"+(bk.svc||"-")+"</span></div>"+
-          "<div class=\"cfm-row\"><span>"+tr("cr.date")+"</span><span>"+ds+"</span></div>"+
-          "<div class=\"cfm-row\"><span>"+tr("cr.name")+"</span><span>"+name+"</span></div>"+
-          "<div class=\"cfm-row\"><span>"+tr("cr.email")+"</span><span>"+email+"</span></div>"+
-          "<div class=\"cfm-row\"><span>"+tr("cr.price")+"</span><span>"+pr+"</span></div>";
-        gStep(4);
+        emailjs.send("service_43jsptp","template_et2cdg7",params,"42rEudCYPKOr7mieW")
+          .then(function(){
+            emailjs.send("service_un9pb0a","template_pf8quwr",params).catch(function(err){
+              console.warn("직원알림 발송 실패:",err); // 직원알림 실패는 예약 자체를 막지 않음
+            });
+            document.getElementById("cfm-details").innerHTML=
+              "<div class=\"cfm-row\"><span>"+tr("cr.svc")+"</span><span>"+(bk.svc||"-")+"</span></div>"+
+              "<div class=\"cfm-row\"><span>"+tr("cr.date")+"</span><span>"+ds+"</span></div>"+
+              "<div class=\"cfm-row\"><span>"+tr("cr.name")+"</span><span>"+name+"</span></div>"+
+              "<div class=\"cfm-row\"><span>"+tr("cr.email")+"</span><span>"+email+"</span></div>"+
+              "<div class=\"cfm-row\"><span>"+tr("cr.price")+"</span><span>"+pr+"</span></div>";
+            gStep(4);
+          })
+          .catch(function(err){
+            if(cfmBtn){cfmBtn.disabled=false;cfmBtn.textContent=tr("ct.cfm");}
+            alert("이메일 발송에 실패했습니다.\n잠시 후 다시 시도해 주세요.");
+            console.error("EmailJS error:",JSON.stringify(err));
+          });
       })
       .catch(function(err){
         if(cfmBtn){cfmBtn.disabled=false;cfmBtn.textContent=tr("ct.cfm");}
-        alert("이메일 발송에 실패했습니다.\n잠시 후 다시 시도해 주세요.");
-        console.error("EmailJS error:",JSON.stringify(err));
+        alert("예약 처리 중 오류가 발생했습니다.\n잠시 후 다시 시도해 주세요.");
+        console.error("Sheets 저장 실패:",err);
       });
   } catch (fatalErr) {
     // 위 로직 어디서든 예상치 못한 오류가 나도 버튼을 반드시 원상복구 + 원인 확인 가능하게

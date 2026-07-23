@@ -463,7 +463,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v154</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v155</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1963,19 +1963,6 @@ function fillCart() {
   document.getElementById("ct-tot").innerHTML=pr;
 }
 
-function submitBk() {
-  var d=bk.date, da=d?tr("d"+d.getDay()):"";
-  var ds=d?formatDateNaver(d,da,bk.time||""):"-";
-  var email=document.getElementById("f-em").value||"-";
-  var fn=document.getElementById("f-fn").value||"";
-  var ln=document.getElementById("f-ln").value||"";
-  var name=(fn+" "+ln).trim()||"-";
-  var phone=getPhone();
-  var nation=(selC && selC.n) ? selC.n : "-";
-  var notes="없음";
-  var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
-  var cfmBtn=document.getElementById("btn-submit-bk");
-  if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
   // ── 전화번호 국가코드로 이메일 언어 결정 ──
 function detectEmailLang() {
   var d = selC ? selC.d : "+82";
@@ -2032,7 +2019,23 @@ function buildEmailMessage(elang, name, service, dateTime, price) {
   return { subject: subject, message: message };
 }
 
-var params={name:name,service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr};
+function submitBk() {
+  var d=bk.date, da=d?tr("d"+d.getDay()):"";
+  var ds=d?formatDateNaver(d,da,bk.time||""):"-";
+  var email=document.getElementById("f-em").value||"-";
+  var fn=document.getElementById("f-fn").value||"";
+  var ln=document.getElementById("f-ln").value||"";
+  var name=(fn+" "+ln).trim()||"-";
+  var phone=getPhone();
+  var nation=(selC && selC.n) ? selC.n : "-";
+  var notes="없음";
+  var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
+  var cfmBtn=document.getElementById("btn-submit-bk");
+  if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
+
+var elang = detectEmailLang();
+  var built = buildEmailMessage(elang, name, bk.svc||"-", ds, pr);
+  var params={name:name,service:bk.svc||"-",date_time:ds,patient_name:name,patient_email:email,phone:phone,nationality:nation,notes:notes,price:pr,subject:built.subject,message:built.message};
 
   // ── Google Sheets 저장 ──
   var now=new Date();

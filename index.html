@@ -463,7 +463,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v157</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v158</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1623,7 +1623,7 @@ function resetInfoForm() {
   pendingCode = null;
   pendingCodeEmail = null;
   codeResendLock = false;
-  clearCodeExpireTimer();
+  clearCodeCountdown();
   var cfmBtn = document.getElementById("btn-submit-bk");
   if (cfmBtn) { cfmBtn.disabled = false; cfmBtn.textContent = tr("ct.cfm") || "예약 완료"; }
   // 국가선택(전화번호)도 기본값(한국)으로
@@ -1680,14 +1680,8 @@ var VERIFY_T = {
   ar:{subject:"[Elliya Clinic] رمز التحقق الخاص بك",msg:"مرحباً، هذه عيادة Elliya Clinic.<br>رمز التحقق الخاص بك هو <b>{{code}}</b>.<br>يرجى إدخاله خلال 5 دقائق."}
 };
 
-var codeExpireTimer = null;
-
-function clearCodeExpireTimer() {
-  if (codeExpireTimer) { clearInterval(codeExpireTimer); codeExpireTimer = null; }
-}
-
 function expireVerifyCode() {
-  clearCodeExpireTimer();
+  clearCodeCountdown();
   pendingCode = null;
   pendingCodeEmail = null;
   var grpCode = document.getElementById("grp-code");
@@ -1698,18 +1692,27 @@ function expireVerifyCode() {
   if (msg) { msg.style.color = "#C0392B"; msg.textContent = tr("fm.codetimeout") || "인증번호 유효시간이 만료되었습니다. 다시 발송해 주세요."; }
 }
 
+var codeCountdownTimer = null;
+
+function clearCodeCountdown() {
+  if (codeCountdownTimer) { clearInterval(codeCountdownTimer); codeCountdownTimer = null; }
+}
+
 function sendVerifyCode() {
   var em = document.getElementById("f-em").value.trim();
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(em)) { alert(tr("al.email") || "올바른 이메일 주소를 입력해 주세요. (예: name@example.com)"); return; }
   if (codeResendLock) return;
 
+  var btn = document.getElementById("btn-send-code");
+  var msg = document.getElementById("code-msg");
+  // 클릭 즉시: 이전 상태(빨간 오류 메시지 등) 초기화 + 버튼은 색 변화 없이 비활성화만
+  btn.disabled = true;
+  if (msg) { msg.style.color = "var(--ink-mid)"; msg.textContent = ""; }
+
   var code = String(Math.floor(100000 + Math.random()*900000));
   pendingCode = code;
   pendingCodeEmail = em;
-
-  var btn = document.getElementById("btn-send-code");
-  btn.disabled = true;
 
   var vlang = detectEmailLang();
   var vt = VERIFY_T[vlang] || VERIFY_T.en;
@@ -1720,31 +1723,29 @@ function sendVerifyCode() {
     .then(function(){
       document.getElementById("grp-code").style.display = "block";
       document.getElementById("f-code").value = "";
-      document.getElementById("code-msg").style.color = "var(--ink-mid)";
-      document.getElementById("code-msg").textContent = tr("fm.codesent") || "인증번호를 발송했습니다. 이메일을 확인해 주세요.";
+      msg.style.color = "var(--ink-mid)";
+      msg.textContent = tr("fm.codesent") || "인증번호를 발송했습니다. 이메일을 확인해 주세요.";
       btn.classList.add("sent");
-      btn.textContent = tr("fm.resend") || "재발송";
       codeResendLock = true;
 
-      // 재발송 잠금(30초): 이 시간 동안만 "재발송" 버튼이 막혀 있음
-      var remain = 30;
-      var timer = setInterval(function(){
+      // 하나의 타이머(60초)로 통일: 재발송 잠금과 인증번호 유효시간을 동시에 관리
+      clearCodeCountdown();
+      var thisCode = code;
+      var remain = 60;
+      btn.textContent = (tr("fm.resend") || "재발송") + " (" + remain + "s)";
+      codeCountdownTimer = setInterval(function(){
         remain--;
-        btn.textContent = (tr("fm.resend") || "재발송") + " (" + remain + "s)";
-        if (remain <= 0) {
-          clearInterval(timer);
+        if (remain > 0) {
+          btn.textContent = (tr("fm.resend") || "재발송") + " (" + remain + "s)";
+        } else {
+          clearInterval(codeCountdownTimer);
+          codeCountdownTimer = null;
           btn.disabled = false;
           btn.textContent = tr("fm.resend") || "재발송";
           codeResendLock = false;
+          if (pendingCode === thisCode) expireVerifyCode();
         }
       }, 1000);
-
-      // 인증번호 자체의 유효시간(60초): 이 시간이 지나면 입력창을 닫고 재발송을 유도
-      clearCodeExpireTimer();
-      var thisCode = code; // 재발송으로 code가 갱신돼도 이 타이머는 자기 code에만 반응
-      codeExpireTimer = setTimeout(function(){
-        if (pendingCode === thisCode) expireVerifyCode();
-      }, 60000);
     })
     .catch(function(err){
       console.error("EmailJS verify send error:", JSON.stringify(err));
@@ -1768,7 +1769,7 @@ function confirmVerifyCode() {
     document.getElementById("f-em").classList.add("verified");
     msg.style.color = "#3A7D5C";
     msg.textContent = tr("fm.codeok") || "인증이 완료되었습니다.";
-    clearCodeExpireTimer();
+    clearCodeCountdown();
   } else {
     msg.style.color = "#C0392B";
     msg.textContent = tr("fm.codewrong") || "인증번호가 일치하지 않습니다.";

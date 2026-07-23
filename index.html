@@ -128,7 +128,7 @@ nav.nav-scrolled{
 .hero-dot{width:6px;height:6px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.45);cursor:pointer;transition:background .25s,transform .25s;}
 .hero-dot:hover{background:rgba(255,255,255,.75);}
 .hero-dot.active{background:var(--white);transform:scale(1.35);}
-.hero-act .btn-p{background:var(--white);color:var(--ink);border:1px solid var(--white);}
+.hero-act .btn-p{background:var(--ink);color:var(--white);border:1px solid var(--ink);}
 .hero-act .btn-p:hover{background:var(--ink);color:var(--white);border-color:var(--ink);transform:translateY(-1px);}
 .hero-act .btn-o{background:var(--white);color:var(--ink);border:1px solid var(--white);backdrop-filter:none;}
 .hero-act .btn-o:hover{background:var(--ink);color:var(--white);border-color:var(--ink);}
@@ -470,7 +470,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v163</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v164</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -2224,10 +2224,10 @@ function cancelMyBooking(cardId) {
   if (!card) return;
   var email = card.dataset.email;
   var bookedAt = card.dataset.bookedat;
-  if (!confirm(tr("mb.cancelconfirm") || "정말 이 예약을 취소하시겠습니까?")) return;
+  if (!confirm("정말 이 예약을 취소하시겠습니까?")) return;
 
   var btn = card.querySelector(".btn-cancel-bk");
-  if (btn) { btn.disabled = true; btn.textContent = tr("mb.cancelling") || "취소 중..."; }
+  if (btn) { btn.disabled = true; btn.textContent = "취소 중..."; }
 
   fetch(SHEET_URL + "?action=cancel_booking&email=" + encodeURIComponent(email) + "&booked_at=" + encodeURIComponent(bookedAt))
     .then(function(r){ return r.json(); })
@@ -2237,17 +2237,17 @@ function cancelMyBooking(cardId) {
         card.querySelector(".btn-cancel-bk") && card.querySelector(".btn-cancel-bk").remove();
         var doneMsg = document.createElement("div");
         doneMsg.style.cssText = "margin-top:1rem;font-size:.82rem;color:#C0392B;font-weight:700;";
-        doneMsg.textContent = tr("mb.cancelled") || "취소된 예약입니다.";
+        doneMsg.textContent = "취소된 예약입니다.";
         card.appendChild(doneMsg);
       } else {
-        alert(tr("mb.cancelfail") || "예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
-        if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn") || "예약 취소"; }
+        alert("예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+        if (btn) { btn.disabled = false; btn.textContent = "예약 취소"; }
       }
     })
     .catch(function(err){
       console.error("cancel error:", err);
-      alert(tr("mb.cancelfail") || "예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
-      if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn") || "예약 취소"; }
+      alert("예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+      if (btn) { btn.disabled = false; btn.textContent = "예약 취소"; }
     });
 }
 
@@ -2291,8 +2291,8 @@ function searchBooking() {
             '<div><div style="font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:.3rem;">예상비용</div><div style="font-size:.85rem;">' + (b.price||'-') + '</div></div>' +
             '</div>' +
             (isCancelled
-              ? '<div style="margin-top:1rem;font-size:.82rem;color:#C0392B;font-weight:700;">' + (tr("mb.cancelled") || "취소된 예약입니다.") + '</div>'
-              : '<button class="btn-cancel-bk" onclick="cancelMyBooking(\'' + cardId + '\')" style="margin-top:1rem;padding:.55rem 1.1rem;background:none;border:1px solid #C0392B;color:#C0392B;border-radius:2px;font-size:.82rem;cursor:pointer;">' + (tr("mb.cancelbtn") || "예약 취소") + '</button>'
+              ? '<div style="margin-top:1rem;font-size:.82rem;color:#C0392B;font-weight:700;">' + ("취소된 예약입니다.") + '</div>'
+              : '<button class="btn-cancel-bk" onclick="cancelMyBooking(\'' + cardId + '\')" style="margin-top:1rem;padding:.55rem 1.1rem;background:none;border:1px solid #C0392B;color:#C0392B;border-radius:2px;font-size:.82rem;cursor:pointer;">' + ("예약 취소") + '</button>'
             ) +
             '</div>';
         }).join('');

@@ -354,6 +354,19 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .btn-verify:disabled{opacity:.4;cursor:not-allowed;}
 .btn-verify.sent{background:var(--white);color:var(--ink);border-color:var(--border-mid);}
 .f-inline{display:flex;gap:.5rem;}
+/* 커스텀 확인 모달 */
+.cf-overlay{position:fixed;inset:0;background:rgba(20,17,15,.55);z-index:9000;display:none;align-items:center;justify-content:center;padding:1.5rem;}
+.cf-overlay.show{display:flex;}
+.cf-box{background:var(--cream,#FDFBF7);max-width:360px;width:100%;border-radius:6px;padding:2rem 1.8rem 1.6rem;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);animation:cfPop .25s ease;}
+@keyframes cfPop{from{opacity:0;transform:translateY(10px) scale(.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+.cf-icon{width:44px;height:44px;border-radius:50%;background:#F1E9FB;color:#7C3AED;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;font-size:1.3rem;}
+.cf-msg{font-size:.98rem;color:var(--ink,#1C1916);line-height:1.6;margin-bottom:1.6rem;}
+.cf-btns{display:flex;gap:.6rem;}
+.cf-btns button{flex:1;padding:.7rem 0;border-radius:2px;font-size:.85rem;font-weight:700;cursor:pointer;border:1px solid var(--ink,#1C1916);}
+.cf-btn-cancel{background:var(--white,#fff);color:var(--ink,#1C1916);}
+.cf-btn-ok{background:#C0392B;color:#fff;border-color:#C0392B;}
+.cf-btn-cancel:hover{background:#F5F2EE;}
+.cf-btn-ok:hover{background:#a5321f;}
 .f-inp:focus{border-color:var(--gold);}.f-inp::placeholder{color:var(--ink-light);}
 /* Phone picker */
 .ph-row{display:flex;border:1px solid var(--border-mid);border-radius:2px;background:var(--white);overflow:visible;position:relative;}
@@ -470,7 +483,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v164</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v165</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -621,7 +634,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
       </div>
       <div class="vi-item">
         <div class="vi-lbl" data-t="visit.tl">코디네이터</div>
-        <div class="vi-val" data-t="visit.tw">中文 · English<br>LINE: @elliyaclinic</div>
+        <div class="vi-val" data-t="visit.tw">中文 · English<br>cs@elliya.clinic</div>
       </div>
     </div>
     <!-- 지도 -->
@@ -1054,7 +1067,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
           <h2 class="cfm-title" data-t="dn.title">예약이 완료되었습니다!</h2>
           <p class="cfm-sub" data-t="dn.sub">입력하신 이메일로 예약 확인 메시지를 발송했습니다.</p>
           <div class="cfm-details" id="cfm-details"></div>
-          <p style="font-size:.83rem;color:var(--ink-light);margin-top:1rem;">elliya@clinic.kr | LINE: @elliyaclinic</p>
+          <p style="font-size:.83rem;color:var(--ink-light);margin-top:1rem;">elliya@clinic.kr | cs@elliya.clinic</p>
           <button class="btn-p" style="margin-top:1.2rem;" onclick="showPage('home')" data-t="dn.home">홈으로 돌아가기</button>
         </div>
       </div>
@@ -1094,7 +1107,7 @@ ko: {
 "visit.eye":"Find Us","visit.title":"방문 안내",
 "visit.al":"주소","visit.addr":"서울 서초구 서초대로78길 26, 4층",
 "visit.hl":"진료 시간","visit.hours":"월·금 10:30-19:30<br>화·목 10:30-17:30<br>토&nbsp;&nbsp;&nbsp;10:30-15:30<br>수·일 휴무",
-"visit.cl":"연락처","visit.tl":"대만 코디네이터","visit.tw":"中文 · English · 한국어 · LINE: @elliyaclinic",
+"visit.cl":"연락처","visit.tl":"대만 코디네이터","visit.tw":"中文 · English · 한국어 · cs@elliya.clinic",
 "footer.desc":"서울의 안티에이징 & 리프팅 전문 피부과.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
 "detail.from":"Starting From","detail.join":"예약하기 · Join","detail.note":"상담 후 정확한 가격이 결정됩니다.",
 "pp.title":"엘리야의원의 철학","pp.intro":"저희 의원은 피부 본연의 건강과 아름다움이 스스로의 힘으로 빛날 수 있도록 돕는 것을 사명으로 삼고 있습니다.",
@@ -1150,7 +1163,7 @@ en: {
 "visit.eye":"Find Us","visit.title":"Visit Us",
 "visit.al":"Address","visit.addr":"26, Seocho-daero 78-gil, Seocho-gu, Seoul (4F)",
 "visit.hl":"Hours","visit.hours":"Mon &amp; Fri 10:30–19:30<br>Tue &amp; Thu 10:30–17:30<br>Sat 10:30–15:30<br>Closed Wed &amp; Sun",
-"visit.cl":"Contact","visit.tl":"Taiwan Coordinator","visit.tw":"中文 · English · Korean · LINE: @elliyaclinic",
+"visit.cl":"Contact","visit.tl":"Taiwan Coordinator","visit.tw":"中文 · English · Korean · cs@elliya.clinic",
 "footer.desc":"Seoul anti-aging & lifting dermatology specialists.","footer.tx":"Treatments","footer.clinic":"Clinic","footer.sns":"Connect",
 "detail.from":"Starting From","detail.join":"Book · Join","detail.note":"Exact pricing determined after consultation.",
 "pp.title":"Our Philosophy","pp.intro":"Our clinic is dedicated to helping the true health and beauty of your skin shine on its own terms.",
@@ -1206,7 +1219,7 @@ zh: {
 "visit.eye":"前來拜訪","visit.title":"交通資訊",
 "visit.al":"地址","visit.addr":"首爾市瑞草區瑞草大路78街26號 4樓",
 "visit.hl":"診療時間","visit.hours":"週一・五 10:30–19:30<br>週二・四 10:30–17:30<br>週六 10:30–15:30<br>週三・日休診",
-"visit.cl":"聯絡方式","visit.tl":"台灣協調員","visit.tw":"中文 · English · 韓文 · LINE: @elliyaclinic",
+"visit.cl":"聯絡方式","visit.tl":"台灣協調員","visit.tw":"中文 · English · 韓文 · cs@elliya.clinic",
 "footer.desc":"首爾抗老化 & 提升專科皮膚科。","footer.tx":"療程","footer.clinic":"診所","footer.sns":"聯絡我們",
 "detail.from":"起始費用","detail.join":"立即預約","detail.note":"確切費用於諮詢後確定。",
 "pp.title":"伊萊賈診所的理念","pp.intro":"我們的使命是幫助您的肌膚本身的健康與美麗自然綻放。",
@@ -1262,7 +1275,7 @@ ar: {
 "visit.eye":"زيارتنا","visit.title":"معلومات الزيارة",
 "visit.al":"العنوان","visit.addr":"26، شارع سيوتشو-دايرو 78، سيوتشو-غو، سيول، الطابق 4",
 "visit.hl":"ساعات العمل","visit.hours":"الإثنين والجمعة 10:30–19:30<br>الثلاثاء والخميس 10:30–17:30<br>السبت 10:30–15:30<br>إغلاق الأربعاء والأحد",
-"visit.cl":"التواصل","visit.tl":"منسق دولي","visit.tw":"中文 · English · عربي · LINE: @elliyaclinic",
+"visit.cl":"التواصل","visit.tl":"منسق دولي","visit.tw":"中文 · English · عربي · cs@elliya.clinic",
 "footer.desc":"متخصصون في مكافحة الشيخوخة والرفع بسيول.","footer.tx":"العلاجات","footer.clinic":"العيادة","footer.sns":"تواصل معنا",
 "detail.from":"ابتداءً من","detail.join":"احجز الآن","detail.note":"يتحدد السعر الدقيق بعد الاستشارة.",
 "pp.title":"فلسفة عيادة إيليا","pp.intro":"مهمتنا مساعدة صحة بشرتك وجمالها على الإشراق من تلقاء نفسها.",
@@ -1318,7 +1331,7 @@ ja: {
 "visit.eye":"Find Us","visit.title":"アクセス",
 "visit.al":"住所","visit.addr":"ソウル特別市瑞草区瑞草大路78キル26 (4階)",
 "visit.hl":"診療時間","visit.hours":"月・金 10:30–19:30<br>火・木 10:30–17:30<br>土 10:30–15:30<br>水・日休診",
-"visit.cl":"連絡先","visit.tl":"コーディネーター","visit.tw":"中文 · English · 韓国語 · LINE: @elliyaclinic",
+"visit.cl":"連絡先","visit.tl":"コーディネーター","visit.tw":"中文 · English · 韓国語 · cs@elliya.clinic",
 "footer.desc":"ソウルのアンチエイジング&リフティング専門皮膚科。","footer.tx":"施術","footer.clinic":"クリニック","footer.sns":"Connect",
 "detail.from":"料金目安","detail.join":"予約する","detail.note":"正確な料金はカウンセリング後に確定します。",
 "pp.title":"私たちの哲学","pp.intro":"当院は、お肌本来の健康と美しさがそのまま輝くお手伝いをすることに専念しています。",
@@ -1374,7 +1387,7 @@ cn: {
 "visit.eye":"Find Us","visit.title":"交通信息",
 "visit.al":"地址","visit.addr":"首尔特别市瑞草区瑞草大路78街26号 4楼",
 "visit.hl":"营业时间","visit.hours":"周一・周五 10:30–19:30<br>周二・周四 10:30–17:30<br>周六 10:30–15:30<br>周三・周日休息",
-"visit.cl":"联系方式","visit.tl":"协调员","visit.tw":"中文 · English · 韩语 · LINE: @elliyaclinic",
+"visit.cl":"联系方式","visit.tl":"协调员","visit.tw":"中文 · English · 韩语 · cs@elliya.clinic",
 "footer.desc":"首尔抗衰老与提升专科皮肤科。","footer.tx":"疗程","footer.clinic":"诊所","footer.sns":"Connect",
 "detail.from":"价格参考","detail.join":"立即预约","detail.note":"具体价格将在咨询后确定。",
 "pp.title":"我们的理念","pp.intro":"本诊所致力于帮助您展现肌肤本身真正的健康与美丽。",
@@ -2023,27 +2036,27 @@ function detectEmailLang() {
 var EMAIL_T = {
   ko: { subject:"{{n}}님 — [Elliya Clinic] 예약이 확인되었습니다",
         greet:"{{n}} 님, 예약해 주셔서 감사합니다.", sub:"아래 내용으로 예약이 접수되었습니다.",
-        svc:"시술", dt:"날짜/시간", price:"예상비용", doc:"담당의", addr:"주소", contact:"문의", line:"LINE",
+        svc:"시술", dt:"날짜/시간", price:"예상비용", doc:"담당의", addr:"주소", contact:"문의", line:"이메일",
         coord:"담당 코디네이터가 곧 연락드릴 예정입니다.", sign:"Elliya Clinic 드림" },
   en: { subject:"{{n}} — [Elliya Clinic] Your appointment is confirmed",
         greet:"Dear {{n}}, thank you for booking with us.", sub:"Your appointment has been received with the details below.",
-        svc:"Treatment", dt:"Date/Time", price:"Estimated Price", doc:"Doctor", addr:"Address", contact:"Contact", line:"LINE",
+        svc:"Treatment", dt:"Date/Time", price:"Estimated Price", doc:"Doctor", addr:"Address", contact:"Contact", line:"Email",
         coord:"Our coordinator will contact you shortly.", sign:"Best regards,<br>Elliya Clinic" },
   zh: { subject:"{{n}} 您好 — [Elliya Clinic] 您的預約已確認",
         greet:"{{n}} 您好，感謝您的預約。", sub:"您的預約詳情如下：",
-        svc:"療程", dt:"日期/時間", price:"預估費用", doc:"主治醫師", addr:"地址", contact:"聯絡方式", line:"LINE",
+        svc:"療程", dt:"日期/時間", price:"預估費用", doc:"主治醫師", addr:"地址", contact:"聯絡方式", line:"電子郵件",
         coord:"專屬協調員將盡快與您聯繫。", sign:"Elliya Clinic 敬上" },
   cn: { subject:"{{n}} 您好 — [Elliya Clinic] 您的预约已确认",
         greet:"{{n}} 您好，感谢您的预约。", sub:"您的预约详情如下：",
-        svc:"疗程", dt:"日期/时间", price:"预估费用", doc:"主治医师", addr:"地址", contact:"联系方式", line:"LINE",
+        svc:"疗程", dt:"日期/时间", price:"预估费用", doc:"主治医师", addr:"地址", contact:"联系方式", line:"邮箱",
         coord:"专属协调员将尽快与您联系。", sign:"Elliya Clinic 敬上" },
   ja: { subject:"{{n}} 様 — [Elliya Clinic] ご予約が確定しました",
         greet:"{{n}} 様、ご予約ありがとうございます。", sub:"以下の内容でご予約を承りました。",
-        svc:"施術", dt:"日時", price:"概算費用", doc:"担当医", addr:"住所", contact:"お問い合わせ", line:"LINE",
+        svc:"施術", dt:"日時", price:"概算費用", doc:"担当医", addr:"住所", contact:"お問い合わせ", line:"メール",
         coord:"担当コーディネーターより追ってご連絡いたします。", sign:"Elliya Clinic" },
   ar: { subject:"{{n}} — [Elliya Clinic] تم تأكيد حجزك",
         greet:"عزيزي/عزيزتي {{n}}، شكراً لحجزك معنا.", sub:"تم استلام حجزك بالتفاصيل التالية:",
-        svc:"العلاج", dt:"التاريخ/الوقت", price:"السعر التقديري", doc:"الطبيب", addr:"العنوان", contact:"للتواصل", line:"LINE",
+        svc:"العلاج", dt:"التاريخ/الوقت", price:"السعر التقديري", doc:"الطبيب", addr:"العنوان", contact:"للتواصل", line:"البريد الإلكتروني",
         coord:"سيتواصل معك منسقنا قريباً.", sign:"Elliya Clinic" }
 };
 
@@ -2060,7 +2073,7 @@ function buildEmailMessage(elang, name, service, dateTime, price) {
     "<p>" + t.doc + ": Dr. 홍준택<br>" +
     t.addr + ": &nbsp; 서울 서초구 서초대로78길 26, 4층<br>" +
     t.contact + ": &nbsp; elliyaclinic@gmail.com<br>" +
-    t.line + ": &nbsp; @elliyaclinic<br>............................................................................................</p>" +
+    t.line + ": &nbsp; cs@elliya.clinic<br>............................................................................................</p>" +
     "<p>" + t.coord + "</p>" +
     "<p>" + t.sign + "</p>";
   return { subject: subject, message: message };
@@ -2219,36 +2232,65 @@ function toggleMenu() {
 // ── 나의 예약확인 ──
 function encAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;"); }
 
+function showConfirmModal(message) {
+  return new Promise(function(resolve){
+    var overlay = document.getElementById("cf-overlay");
+    var msgEl = document.getElementById("cf-msg");
+    var okBtn = document.getElementById("cf-btn-ok");
+    var cancelBtn = document.getElementById("cf-btn-cancel");
+    msgEl.textContent = message;
+    overlay.classList.add("show");
+
+    function cleanup(result){
+      overlay.classList.remove("show");
+      okBtn.removeEventListener("click", onOk);
+      cancelBtn.removeEventListener("click", onCancel);
+      overlay.removeEventListener("click", onOverlay);
+      resolve(result);
+    }
+    function onOk(){ cleanup(true); }
+    function onCancel(){ cleanup(false); }
+    function onOverlay(e){ if (e.target === overlay) cleanup(false); }
+
+    okBtn.addEventListener("click", onOk);
+    cancelBtn.addEventListener("click", onCancel);
+    overlay.addEventListener("click", onOverlay);
+  });
+}
+
 function cancelMyBooking(cardId) {
   var card = document.getElementById(cardId);
   if (!card) return;
   var email = card.dataset.email;
   var bookedAt = card.dataset.bookedat;
-  if (!confirm("정말 이 예약을 취소하시겠습니까?")) return;
 
-  var btn = card.querySelector(".btn-cancel-bk");
-  if (btn) { btn.disabled = true; btn.textContent = "취소 중..."; }
+  showConfirmModal("정말 이 예약을 취소하시겠습니까?").then(function(confirmed){
+    if (!confirmed) return;
 
-  fetch(SHEET_URL + "?action=cancel_booking&email=" + encodeURIComponent(email) + "&booked_at=" + encodeURIComponent(bookedAt))
-    .then(function(r){ return r.json(); })
-    .then(function(res){
-      if (res && res.ok) {
-        card.style.opacity = ".5";
-        card.querySelector(".btn-cancel-bk") && card.querySelector(".btn-cancel-bk").remove();
-        var doneMsg = document.createElement("div");
-        doneMsg.style.cssText = "margin-top:1rem;font-size:.82rem;color:#C0392B;font-weight:700;";
-        doneMsg.textContent = "취소된 예약입니다.";
-        card.appendChild(doneMsg);
-      } else {
+    var btn = card.querySelector(".btn-cancel-bk");
+    if (btn) { btn.disabled = true; btn.textContent = "취소 중..."; }
+
+    fetch(SHEET_URL + "?action=cancel_booking&email=" + encodeURIComponent(email) + "&booked_at=" + encodeURIComponent(bookedAt))
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res && res.ok) {
+          card.style.opacity = ".5";
+          card.querySelector(".btn-cancel-bk") && card.querySelector(".btn-cancel-bk").remove();
+          var doneMsg = document.createElement("div");
+          doneMsg.style.cssText = "margin-top:1rem;font-size:.82rem;color:#3A7D5C;font-weight:700;";
+          doneMsg.textContent = "취소가 완료되었습니다.";
+          card.appendChild(doneMsg);
+        } else {
+          alert("예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+          if (btn) { btn.disabled = false; btn.textContent = "예약 취소"; }
+        }
+      })
+      .catch(function(err){
+        console.error("cancel error:", err);
         alert("예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
         if (btn) { btn.disabled = false; btn.textContent = "예약 취소"; }
-      }
-    })
-    .catch(function(err){
-      console.error("cancel error:", err);
-      alert("예약 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.");
-      if (btn) { btn.disabled = false; btn.textContent = "예약 취소"; }
-    });
+      });
+  });
 }
 
 function searchBooking() {
@@ -2401,5 +2443,15 @@ var observer = new IntersectionObserver(function(entries) {
 fadeEls.forEach(function(el) { observer.observe(el); });
 
 </script>
+<div class="cf-overlay" id="cf-overlay">
+  <div class="cf-box">
+    <div class="cf-icon">&#9888;</div>
+    <div class="cf-msg" id="cf-msg">정말 이 예약을 취소하시겠습니까?</div>
+    <div class="cf-btns">
+      <button class="cf-btn-cancel" id="cf-btn-cancel">아니요</button>
+      <button class="cf-btn-ok" id="cf-btn-ok">취소하기</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

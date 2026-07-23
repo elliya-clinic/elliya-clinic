@@ -131,7 +131,7 @@ nav.nav-scrolled{
 .hero-act .btn-p{background:var(--ink);color:var(--white);border:1px solid var(--ink);}
 .hero-act .btn-p:hover{background:var(--ink);color:var(--white);border-color:var(--ink);transform:translateY(-1px);}
 .hero-act .btn-o{background:var(--white);color:var(--ink);border:1px solid var(--white);backdrop-filter:none;}
-.hero-act .btn-o:hover{background:var(--ink);color:var(--white);border-color:var(--ink);}
+.hero-act .btn-o:hover{background:rgba(255,255,255,.18);color:var(--white);border-color:var(--white);}
 .hero-ct{position:absolute;z-index:2;bottom:3.5rem;left:50%;transform:translateX(-50%);width:auto;text-align:center;}
 .hero-act{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
 .hero-eye{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-family:'Arial',sans-serif;text-shadow:0 2px 6px rgba(0,0,0,.55);}
@@ -483,7 +483,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v165</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v166</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1476,6 +1476,17 @@ function showPage(id) {
   var t = document.getElementById("page-"+id);
   if (t) { t.classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
   if (typeof updNav === "function") setTimeout(updNav, 50);
+  if (id === "my-booking" && typeof resetMyBookingForm === "function") resetMyBookingForm();
+}
+
+function resetMyBookingForm() {
+  var nameEl = document.getElementById("mb-name"); if (nameEl) nameEl.value = "";
+  var emailEl = document.getElementById("mb-email"); if (emailEl) emailEl.value = "";
+  var result = document.getElementById("mb-result"); if (result) result.style.display = "none";
+  var found = document.getElementById("mb-found"); if (found) found.style.display = "none";
+  var empty = document.getElementById("mb-empty"); if (empty) empty.style.display = "none";
+  var list = document.getElementById("mb-list"); if (list) list.innerHTML = "";
+  var btn = document.getElementById("mb-btn"); if (btn) { btn.disabled = false; btn.textContent = "예약 확인하기"; }
 }
 
 // =====================================================

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>엘리야의원 · 네이버 차단 필요 목록</title>
+
+<!-- PWA 설정 -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1C1916">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="엘리야 예약">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
+
+<style>
+:root{
+  --ink:#1C1916; --ink-mid:#4A4440; --ink-light:#8A8480;
+  --cream:#FDFCFA; --cream-mid:#F5F2EE;
+  --gold:#C9A96E; --gold-dark:#9C7A3C; --gold-light:#E8D4AC;
+  --border:#EAE6DF; --border-mid:#DDD7CC;
+  --white:#FFFFFF;
+  --red:#C0392B; --red-bg:#FCEBE9;
+  --green:#3A7D5C;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body,body *{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif!important;}
+body{background:var(--cream);color:var(--ink);min-height:100vh;padding-bottom:2rem;}
+
+.top{position:sticky;top:0;z-index:10;background:var(--ink);color:var(--white);padding:1.1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;}
+.top h1{font-size:1rem;font-weight:700;font-family:'Playfair Display',serif!important;}
+.top .sub{font-size:.68rem;color:var(--gold-light);letter-spacing:.05em;margin-top:.15rem;}
+.refresh-btn{background:none;border:1px solid rgba(255,255,255,.3);color:var(--white);border-radius:6px;padding:.5rem .8rem;font-size:.78rem;cursor:pointer;}
+.refresh-btn:active{background:rgba(255,255,255,.15);}
+
+.gate{max-width:360px;margin:4rem auto;padding:2rem;text-align:center;}
+.gate h2{font-size:1.1rem;margin-bottom:1.2rem;}
+.gate input{width:100%;padding:.85rem 1rem;border:1px solid var(--border-mid);border-radius:6px;font-size:1rem;margin-bottom:.8rem;text-align:center;letter-spacing:.15em;}
+.gate button{width:100%;padding:.85rem;background:var(--ink);color:var(--white);border:none;border-radius:6px;font-size:.9rem;font-weight:700;cursor:pointer;}
+.gate .err{color:var(--red);font-size:.8rem;margin-top:.6rem;display:none;}
+
+.notice{max-width:640px;margin:1rem auto 0;padding:0 1rem;}
+.notice-box{background:var(--gold-light);border-radius:8px;padding:.8rem 1rem;font-size:.8rem;color:var(--ink);line-height:1.5;}
+
+.wrap{max-width:640px;margin:0 auto;padding:1rem;}
+.day-group{margin-bottom:1.4rem;}
+.day-hd{font-size:.78rem;font-weight:700;color:var(--gold-dark);letter-spacing:.06em;margin:1.2rem 0 .6rem;padding-left:.2rem;}
+.day-hd.today{color:var(--red);}
+
+.card{background:var(--white);border:1.5px solid var(--red);border-radius:10px;padding:1rem 1.1rem;margin-bottom:.7rem;box-shadow:0 1px 4px rgba(0,0,0,.04);position:relative;}
+.card.done{border-color:var(--border);opacity:.5;}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;}
+.card-time{font-size:1.25rem;font-weight:700;color:var(--ink);}
+.status-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:20px;margin-left:.5rem;vertical-align:middle;}
+.status-badge.confirmed{background:#E6F4EC;color:#2E7D4F;}
+.status-badge.cancelled{background:#F1E9FB;color:#7C3AED;}
+.card-name{font-size:.95rem;font-weight:700;margin-bottom:.15rem;}
+.card-svc{font-size:.83rem;color:var(--ink-mid);margin-bottom:.6rem;}
+.card-meta{display:flex;flex-wrap:wrap;gap:.4rem .9rem;font-size:.76rem;color:var(--ink-light);margin-bottom:.7rem;}
+
+.action-note{background:var(--red-bg);color:var(--red);font-size:.76rem;font-weight:700;padding:.5rem .7rem;border-radius:6px;display:flex;align-items:center;gap:.4rem;margin-bottom:.7rem;}
+.card.done .action-note{display:none;}
+.card.cancel-note{border-color:#9C6ADE;}
+.action-note.cancel{background:#F1E9FB;color:#7C3AED;}
+.card.done.cancel-note .action-note{display:none;}
+
+.done-toggle{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--ink-mid);cursor:pointer;user-select:none;}
+.done-toggle input{width:18px;height:18px;cursor:pointer;}
+.done-label{font-size:.72rem;color:var(--green);font-weight:700;display:none;}
+.card.done .done-label{display:inline;}
+
+.empty{text-align:center;color:var(--ink-light);padding:4rem 1rem;font-size:.9rem;}
+.loading{text-align:center;color:var(--ink-light);padding:4rem 1rem;font-size:.9rem;}
+</style>
+</head>
+<body>
+
+<div id="gate" class="gate">
+  <h2>엘리야 예약 현황</h2>
+  <input type="password" id="gate-key" placeholder="접근 코드 입력" autocomplete="off">
+  <button onclick="tryLogin()">입장</button>
+  <p class="err" id="gate-err">코드가 올바르지 않습니다.</p>
+</div>
+
+<div id="app" style="display:none;">
+  <div class="top">
+    <div>
+      <h1>네이버 차단 필요 목록</h1>
+      <div class="sub" id="update-time">불러오는 중...</div>
+    </div>
+    <button class="refresh-btn" onclick="loadBookings()">새로고침</button>
+  </div>
+  <div class="notice">
+    <div class="notice-box">홈페이지로 들어온 예약만 표시됩니다. 아래 시간을 <b>네이버 예약 관리자 페이지</b>에서 직접 막아주세요. 처리하셨으면 체크 표시해두시면 목록에서 흐리게 표시됩니다.</div>
+  </div>
+  <div class="wrap" id="list"><div class="loading">불러오는 중...</div></div>
+</div>
+
+<script>
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbwMlgSJ125FSUa_tL648T0CNVSJllRR4ESJ3QvmBqhJIMhNfoaDfKM8ogjkoRg6hfhvdg/exec";
+var STAFF_KEY_VAL = null; // 로그인 시 채워짐
+
+function markNaverDone(processedAt, checked, checkboxEl){
+  var key = localStorage.getItem('elliya_dash_key') || '';
+  checkboxEl.disabled = true;
+
+  var cbName = 'markCb' + Date.now();
+  var script = document.createElement('script');
+  var timeoutId = setTimeout(function(){
+    cleanup();
+    checkboxEl.disabled = false;
+    checkboxEl.checked = !checked; // 실패 시 원상복구
+    alert('저장에 실패했습니다. 다시 시도해 주세요.');
+  }, 8000);
+
+  function cleanup(){
+    delete window[cbName];
+    if(script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  window[cbName] = function(data){
+    clearTimeout(timeoutId);
+    cleanup();
+    checkboxEl.disabled = false;
+    if(!data || !data.ok){
+      checkboxEl.checked = !checked;
+      alert('해당 예약을 찾지 못해 저장하지 못했습니다.');
+      return;
+    }
+    var card = checkboxEl.closest('.card');
+    if(card) card.classList.toggle('done', checked);
+  };
+
+  script.onerror = function(){
+    clearTimeout(timeoutId);
+    cleanup();
+    checkboxEl.disabled = false;
+    checkboxEl.checked = !checked;
+    alert('저장 중 오류가 발생했습니다.');
+  };
+
+  script.src = SHEET_URL + '?action=mark_naver_done'
+    + '&key=' + encodeURIComponent(key)
+    + '&processed_at=' + encodeURIComponent(processedAt)
+    + '&value=' + (checked ? '1' : '')
+    + '&callback=' + cbName;
+  document.body.appendChild(script);
+}
+
+function tryLogin(){
+  var key = document.getElementById('gate-key').value.trim();
+  if(!key){ return; }
+  localStorage.setItem('elliya_dash_key', key);
+  document.getElementById('gate-err').style.display='none';
+  loadBookings();
+}
+
+function toAmPmSortKey(dateTime){
+  var m = dateTime.match(/(오전|오후)\s+(\d+):(\d+)/);
+  if(!m) return 9999;
+  var h = parseInt(m[2],10), min = parseInt(m[3],10);
+  if(m[1]==='오후' && h!==12) h += 12;
+  if(m[1]==='오전' && h===12) h = 0;
+  return h*60+min;
+}
+
+function loadBookings(){
+  var key = localStorage.getItem('elliya_dash_key') || '';
+  if(!key){
+    document.getElementById('gate').style.display='block';
+    document.getElementById('app').style.display='none';
+    return;
+  }
+
+  document.getElementById('list').innerHTML = '<div class="loading">불러오는 중...</div>';
+
+  var cbName = 'dashCb' + Date.now();
+  var script = document.createElement('script');
+  var timeoutId = setTimeout(function(){
+    document.getElementById('list').innerHTML = '<div class="empty">조회 시간 초과. 새로고침 해주세요.</div>';
+    cleanup();
+  }, 8000);
+
+  function cleanup(){
+    delete window[cbName];
+    if(script.parentNode) script.parentNode.removeChild(script);
+  }
+
+  window[cbName] = function(data){
+    clearTimeout(timeoutId);
+    cleanup();
+
+    if(data && data.error === 'unauthorized'){
+      localStorage.removeItem('elliya_dash_key');
+      document.getElementById('gate').style.display='block';
+      document.getElementById('app').style.display='none';
+      document.getElementById('gate-err').style.display='block';
+      return;
+    }
+
+    document.getElementById('gate').style.display='none';
+    document.getElementById('app').style.display='block';
+    renderBookings((data && data.bookings) || []);
+
+    var now = new Date();
+    document.getElementById('update-time').textContent =
+      '업데이트: ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  };
+
+  script.onerror = function(){
+    clearTimeout(timeoutId);
+    cleanup();
+    document.getElementById('list').innerHTML = '<div class="empty">불러오기 실패. 새로고침 해주세요.</div>';
+  };
+
+  script.src = SHEET_URL + '?action=list_bookings&key=' + encodeURIComponent(key) + '&callback=' + cbName;
+  document.body.appendChild(script);
+}
+
+function renderBookings(bookings){
+  var listEl = document.getElementById('list');
+  if(bookings.length===0){
+    listEl.innerHTML = '<div class="empty">네이버 차단이 필요한 홈페이지 예약이 없습니다.</div>';
+    return;
+  }
+
+  var groups = {};
+  bookings.forEach(function(b){
+    var d = b.date_only || '기타';
+    if(!groups[d]) groups[d]=[];
+    groups[d].push(b);
+  });
+
+  var dates = Object.keys(groups).sort();
+  var todayStr = (function(){
+    var n=new Date();
+    return n.getFullYear()+'.'+String(n.getMonth()+1).padStart(2,'0')+'.'+String(n.getDate()).padStart(2,'0');
+  })();
+
+  var html = '';
+  dates.forEach(function(d){
+    var items = groups[d].slice().sort(function(a,b){
+      return toAmPmSortKey(a.date_time) - toAmPmSortKey(b.date_time);
+    });
+    var isToday = d===todayStr;
+    html += '<div class="day-group">';
+    html += '<div class="day-hd'+(isToday?' today':'')+'">'+d+(isToday?' · 오늘':'')+'</div>';
+    items.forEach(function(b){
+      var timeMatch = (b.date_time||'').match(/(오전|오후)\s+\d+:\d+/);
+      var timeStr = timeMatch ? timeMatch[0] : b.date_time;
+      var processedAt = b.processed_at || '';
+      var isDone = !!(b.naver_done_at && String(b.naver_done_at).trim());
+      var isCancel = !!b.is_cancelled;
+      var cardCls = 'card' + (isDone?' done':'') + (isCancel?' cancel-note':'');
+      var noteText = isCancel ? '⚠ 예약이 취소되었습니다 — 네이버 차단 해제 필요' : '⚠ 네이버 예약에서 이 시간 차단 필요';
+      var noteCls = 'action-note' + (isCancel?' cancel':'');
+      var toggleLabel = isCancel ? '네이버에서 해제했어요' : '네이버에서 막았어요';
+      html += '<div class="'+cardCls+'">'
+        + '<div class="card-top">'
+        + '<span class="card-time">'+esc(timeStr)+'</span>'
+        + '<span class="status-badge '+(isCancel?'cancelled':'confirmed')+'">'+(isCancel?'취소':'확정')+'</span>'
+        + '<span class="done-label">✓ 처리완료 ('+esc(b.naver_done_at||'')+')</span>'
+        + '</div>'
+        + '<div class="card-name">'+esc(b.name||'-')+'</div>'
+        + '<div class="card-svc">'+esc(b.service||'-')+'</div>'
+        + '<div class="card-meta">'
+        + (b.phone ? '<span>'+esc(b.phone)+'</span>' : '')
+        + (b.email ? '<span>'+esc(b.email)+'</span>' : '')
+        + '</div>'
+        + '<div class="'+noteCls+'">'+noteText+'</div>'
+        + '<label class="done-toggle">'
+        + '<input type="checkbox" '+(isDone?'checked':'')+(processedAt?'':' disabled')+' onchange="markNaverDone(\''+esc(processedAt).replace(/'/g,"\\'")+'\', this.checked, this)">'
+        + toggleLabel
+        + '</label>'
+        + '</div>';
+    });
+    html += '</div>';
+  });
+
+  listEl.innerHTML = html;
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+// 자동 로그인 시도 (저장된 키 있으면)
+loadBookings();
+
+// 1분마다 자동 새로고침
+setInterval(loadBookings, 60000);
+
+// 서비스워커 등록 (설치 가능하게)
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(function(){});
+}
+</script>
+</body>
+</html>

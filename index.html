@@ -63,6 +63,16 @@
                    단계 요약박스에 시술명이 한국어("소프웨이브" 등)로 그대로
                    노출되던 문제 발견. 6개 시술 전체의 이름·부제·상세본문에
                    ja/cn 번역 추가하여 해결
+ v174  2026.07.24  [버그] 예약취소(cancel_booking)가 간헐적으로
+                   "실패했습니다" 오류. 콘솔 확인 결과 CORS 정책에 의해
+                   fetch 응답이 차단되는 현상(서버는 200 정상 응답, 브라우저가
+                   Access-Control-Allow-Origin 헤더 부재로 읽기를 거부) —
+                   Apps Script 배포 특성상 간헐적으로 발생 가능한 것으로 보임.
+                   fetch 대신 이미 dashboard.html에서 검증되어 쓰이고 있는
+                   JSONP(스크립트 태그 로딩) 방식으로 전환해 CORS 자체를
+                   우회하도록 근본적으로 변경(index.html·Code.gs 양쪽 수정)
+ v175  2026.07.24  Code.gs v8 배포 대응 SHEET_URL 교체(cancel_booking
+                   JSONP 지원이 추가된 배포에 맞춤)
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -550,7 +560,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v173</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v175</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1504,7 +1514,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbzTvyAobPRCYAjPhMVZ6uwCeNlNZsDb7HDfWHXq1fc8VXrE3psJEIQRzQQ-jwUe8InplA/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbwMlgSJ125FSUa_tL648T0CNVSJllRR4ESJ3QvmBqhJIMhNfoaDfKM8ogjkoRg6hfhvdg/exec";
 
 function setLang(l) {
   lang = l;
@@ -2390,26 +2400,46 @@ function cancelMyBooking(cardId) {
     var btn = card.querySelector(".btn-cancel-bk");
     if (btn) { btn.disabled = true; btn.textContent = tr("mb.cancelling"); }
 
-    fetch(SHEET_URL + "?action=cancel_booking&email=" + encodeURIComponent(email) + "&booked_at=" + encodeURIComponent(bookedAt))
-      .then(function(r){ return r.json(); })
-      .then(function(res){
-        if (res && res.ok) {
-          card.style.opacity = ".5";
-          card.querySelector(".btn-cancel-bk") && card.querySelector(".btn-cancel-bk").remove();
-          var doneMsg = document.createElement("div");
-          doneMsg.style.cssText = "margin-top:1rem;font-size:.82rem;color:#3A7D5C;font-weight:700;";
-          doneMsg.textContent = tr("mb.canceldone");
-          card.appendChild(doneMsg);
-        } else {
-          alert(tr("mb.cancelfail"));
-          if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn"); }
-        }
-      })
-      .catch(function(err){
-        console.error("cancel error:", err);
+    // JSONP(스크립트 태그) 방식으로 호출 — fetch/CORS 관련 간헐적 오류를
+    // 원천적으로 피하기 위해, 이미 검증된 dashboard.html과 동일한 패턴 사용
+    var cbName = "cancelCb" + Date.now();
+    var script = document.createElement("script");
+    var timeoutId = setTimeout(function(){
+      cleanup();
+      alert(tr("mb.cancelfail"));
+      if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn"); }
+    }, 8000);
+
+    function cleanup(){
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[cbName] = function(res){
+      clearTimeout(timeoutId);
+      cleanup();
+      if (res && res.ok) {
+        card.style.opacity = ".5";
+        card.querySelector(".btn-cancel-bk") && card.querySelector(".btn-cancel-bk").remove();
+        var doneMsg = document.createElement("div");
+        doneMsg.style.cssText = "margin-top:1rem;font-size:.82rem;color:#3A7D5C;font-weight:700;";
+        doneMsg.textContent = tr("mb.canceldone");
+        card.appendChild(doneMsg);
+      } else {
         alert(tr("mb.cancelfail"));
         if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn"); }
-      });
+      }
+    };
+
+    script.onerror = function(){
+      clearTimeout(timeoutId);
+      cleanup();
+      alert(tr("mb.cancelfail"));
+      if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn"); }
+    };
+
+    script.src = SHEET_URL + "?action=cancel_booking&email=" + encodeURIComponent(email) + "&booked_at=" + encodeURIComponent(bookedAt) + "&callback=" + cbName;
+    document.body.appendChild(script);
   });
 }
 

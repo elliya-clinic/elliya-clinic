@@ -92,6 +92,11 @@
                    지원하지 않아 조용히 무시되고 있었음. GmailApp.sendEmail
                    로 교체된 배포에 맞춤(자세한 내용은 Code.gs 변경이력
                    v12 참고)
+ v180  2026.07.24  예약완료 버튼 강조 애니메이션(pulse-glow) 2회 →
+                   20회로 확대(총 36초). 인증번호 발송 버튼에도 3분 대기
+                   카운트다운 동안 같은 속도로 계속 깜빡이는 효과 추가(아직
+                   인증 안 됐음을 계속 상기시킴), 인증 완료·만료·폼 리셋
+                   시 확실히 정지되도록 정리
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -488,7 +493,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .btn-sb{padding:.72rem 1.7rem;background:transparent;color:var(--ink-mid);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;font-weight:700;border:1px solid var(--border-mid);border-radius:2px;cursor:pointer;transition:border-color .2s,color .2s;}
 .btn-sb:hover{border-color:var(--ink-mid);color:var(--ink);}
 .btn-sn{padding:.72rem 2rem;background:var(--ink);color:var(--white);font-size:.9rem;letter-spacing:.1em;text-transform:uppercase;font-family:'Arial',sans-serif;font-weight:700;border:none;border-radius:2px;cursor:pointer;transition:background .2s;}
-.btn-sn.pulse-glow{animation:pulseGlow 1.8s ease-in-out 2;}
+.btn-sn.pulse-glow{animation:pulseGlow 1.8s ease-in-out 20;}
+.btn-verify.pulse-glow{animation:pulseGlow 1.8s ease-in-out infinite;}
 @keyframes pulseGlow{
   0%,100%{box-shadow:0 0 0 0 rgba(201,169,110,0);}
   50%{box-shadow:0 0 0 8px rgba(201,169,110,.35);}
@@ -579,7 +585,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v179</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v180</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1757,14 +1763,14 @@ function resetInfoForm() {
   var grpCode = document.getElementById("grp-code"); if (grpCode) grpCode.style.display = "none";
   var codeMsg = document.getElementById("code-msg"); if (codeMsg) codeMsg.textContent = "";
   var btnSend = document.getElementById("btn-send-code");
-  if (btnSend) { btnSend.disabled = false; btnSend.classList.remove("sent"); btnSend.textContent = tr("fm.sendcode") || "인증번호 발송"; }
+  if (btnSend) { btnSend.disabled = false; btnSend.classList.remove("sent"); btnSend.classList.remove("pulse-glow"); btnSend.textContent = tr("fm.sendcode") || "인증번호 발송"; }
   emailVerified = null;
   verifiedToken = null;
   pendingCodeEmail = null;
   codeResendLock = false;
   clearCodeCountdown();
   var cfmBtn = document.getElementById("btn-submit-bk");
-  if (cfmBtn) { cfmBtn.disabled = false; cfmBtn.textContent = tr("ct.cfm") || "예약 완료"; }
+  if (cfmBtn) { cfmBtn.disabled = false; cfmBtn.classList.remove("pulse-glow"); cfmBtn.textContent = tr("ct.cfm") || "예약 완료"; }
   // 국가선택(전화번호)도 기본값(한국)으로
   if (typeof CTRS !== "undefined" && CTRS.length) {
     selC = CTRS[0];
@@ -1860,6 +1866,7 @@ function sendVerifyCode() {
       msg.style.color = "#3A7D5C";
       msg.textContent = tr("fm.codesent") || "인증번호를 발송했습니다. 이메일을 확인해 주세요.";
       btn.classList.add("sent");
+      btn.classList.add("pulse-glow"); // 3분 대기 동안 계속 깜빡여 "아직 인증 안 됨"을 알림
       codeResendLock = true;
 
       clearCodeCountdown();
@@ -1876,6 +1883,7 @@ function sendVerifyCode() {
           btn.disabled = false;
           btn.textContent = tr("fm.resend") || "재발송";
           codeResendLock = false;
+          btn.classList.remove("pulse-glow");
           if (!emailVerified) expireVerifyCode();
         }
       }, 1000);
@@ -1917,7 +1925,9 @@ function confirmVerifyCode() {
         if (cfmBtn) {
           cfmBtn.focus();
           cfmBtn.classList.add("pulse-glow");
-          setTimeout(function(){ cfmBtn.classList.remove("pulse-glow"); }, 3600);
+          setTimeout(function(){ cfmBtn.classList.remove("pulse-glow"); }, 36000); // 1.8초 x 20회
+          var sendBtnStop = document.getElementById("btn-send-code");
+          if (sendBtnStop) sendBtnStop.classList.remove("pulse-glow"); // 인증 완료됐으니 발송 버튼 깜빡임 중지
         }
       } else {
         msg.style.color = "#C0392B";

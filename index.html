@@ -80,6 +80,12 @@
                    다른 근접 후보까지 알림창에 표시(Code.gs도 동시 수정 필요)
  v177  2026.07.24  Code.gs v9 배포 대응 SHEET_URL 교체(예약취소 진단
                    로그가 포함된 배포에 맞춤)
+ v178  2026.07.24  Code.gs v11 배포 대응 SHEET_URL 교체. 예약취소 실패의
+                   진짜 원인(checkNaverBooking이 Gmail 검색·읽기·파싱까지
+                   포함한 전체 과정을 통째로 락으로 감싸고 있던 것) 확정 후
+                   근본 수정된 배포에 맞춤 — 락은 이제 실제 시트 쓰기
+                   순간에만 짧게(5초) 걸리도록 전면 재구성됨(자세한 내용은
+                   Code.gs 변경이력 v11 참고)
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -567,7 +573,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v177</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v178</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1521,7 +1527,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbwxA99aH8zbyi5l6UP1CNAtAPL7O0tBjw83YUeXQCl904G7lh_65bTA2LB8dC-vQMo1FQ/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbySDMLQdigi8zumP6vjGGTa08Zzy_4IHRzecC8eEyjDekFCwTRyMBcmoLczgnR91UC5iA/exec";
 
 function setLang(l) {
   lang = l;

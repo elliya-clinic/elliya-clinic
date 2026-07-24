@@ -73,6 +73,13 @@
                    우회하도록 근본적으로 변경(index.html·Code.gs 양쪽 수정)
  v175  2026.07.24  Code.gs v8 배포 대응 SHEET_URL 교체(cancel_booking
                    JSONP 지원이 추가된 배포에 맞춤)
+ v176  2026.07.24  예약취소가 JSONP 전환(v174/v175) 후에도 계속 실패하는
+                   원인을 못 찾아, 콘솔/알림창에 정확한 실패 지점(타임아웃/
+                   서버가 못 찾음/스크립트 로딩 실패)이 그대로 찍히도록 진단
+                   로그 다수 추가. 서버가 못 찾을 경우 이메일은 같은데 시각이
+                   다른 근접 후보까지 알림창에 표시(Code.gs도 동시 수정 필요)
+ v177  2026.07.24  Code.gs v9 배포 대응 SHEET_URL 교체(예약취소 진단
+                   로그가 포함된 배포에 맞춤)
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -560,7 +567,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v175</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v177</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1514,7 +1521,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbwMlgSJ125FSUa_tL648T0CNVSJllRR4ESJ3QvmBqhJIMhNfoaDfKM8ogjkoRg6hfhvdg/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbwxA99aH8zbyi5l6UP1CNAtAPL7O0tBjw83YUeXQCl904G7lh_65bTA2LB8dC-vQMo1FQ/exec";
 
 function setLang(l) {
   lang = l;
@@ -2400,13 +2407,16 @@ function cancelMyBooking(cardId) {
     var btn = card.querySelector(".btn-cancel-bk");
     if (btn) { btn.disabled = true; btn.textContent = tr("mb.cancelling"); }
 
-    // JSONP(스크립트 태그) 방식으로 호출 — fetch/CORS 관련 간헐적 오류를
-    // 원천적으로 피하기 위해, 이미 검증된 dashboard.html과 동일한 패턴 사용
+    var reqUrl = SHEET_URL + "?action=cancel_booking&email=" + encodeURIComponent(email) + "&booked_at=" + encodeURIComponent(bookedAt);
+    console.log("[취소진단] 요청 URL:", reqUrl);
+    console.log("[취소진단] email:", email, "/ bookedAt:", bookedAt);
+
     var cbName = "cancelCb" + Date.now();
     var script = document.createElement("script");
     var timeoutId = setTimeout(function(){
+      console.error("[취소진단] 8초 타임아웃 — 서버 응답이 아예 안 옴(콜백 함수가 호출되지 않음)");
       cleanup();
-      alert(tr("mb.cancelfail"));
+      alert("[진단: 타임아웃] " + tr("mb.cancelfail") + "\n\n(서버가 8초 안에 응답하지 않았습니다. 콘솔에서 요청 URL을 확인해 새 탭에 직접 붙여넣어 보세요.)");
       if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn"); }
     }, 8000);
 
@@ -2416,6 +2426,7 @@ function cancelMyBooking(cardId) {
     }
 
     window[cbName] = function(res){
+      console.log("[취소진단] 서버 응답 도착:", JSON.stringify(res));
       clearTimeout(timeoutId);
       cleanup();
       if (res && res.ok) {
@@ -2426,15 +2437,18 @@ function cancelMyBooking(cardId) {
         doneMsg.textContent = tr("mb.canceldone");
         card.appendChild(doneMsg);
       } else {
-        alert(tr("mb.cancelfail"));
+        console.error("[취소진단] 서버가 ok:false 응답 — 서버 쪽에서 해당 예약(email+booked_at 일치)을 못 찾았거나 이미 취소상태임");
+        var nearInfo = (res && res.debug_near && res.debug_near.length) ? ("\n\n(참고: 이메일은 같은데 시각이 다른 예약 " + res.debug_near.length + "건 있음 — 시각 형식이 안 맞을 가능성)\n" + res.debug_near.slice(0,3).join("\n")) : "";
+        alert("[진단: 서버가 못 찾음] " + tr("mb.cancelfail") + "\n\n서버가 email/시각이 일치하는 예약을 찾지 못했습니다.\n요청한 email: " + email + "\n요청한 booked_at: " + bookedAt + nearInfo);
         if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn"); }
       }
     };
 
-    script.onerror = function(){
+    script.onerror = function(err){
+      console.error("[취소진단] script.onerror 발생 — 요청 자체가 네트워크/로딩 단계에서 실패:", err);
       clearTimeout(timeoutId);
       cleanup();
-      alert(tr("mb.cancelfail"));
+      alert("[진단: 스크립트 로딩 실패] " + tr("mb.cancelfail") + "\n\n요청이 서버에 도달하지 못했거나 응답이 유효한 형식이 아니었습니다.");
       if (btn) { btn.disabled = false; btn.textContent = tr("mb.cancelbtn"); }
     };
 

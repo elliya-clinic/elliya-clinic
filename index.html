@@ -97,6 +97,12 @@
                    카운트다운 동안 같은 속도로 계속 깜빡이는 효과 추가(아직
                    인증 안 됐음을 계속 상기시킴), 인증 완료·만료·폼 리셋
                    시 확실히 정지되도록 정리
+ v181  2026.07.24  [버그] v180에서 깜빡임 효과를 잘못된 버튼("재발송"
+                   버튼)에 넣었음 — 실제로는 사용자가 인증번호를 입력하고
+                   눌러야 하는 "확인" 버튼(btn-confirm-code)에 넣었어야
+                   했음. 대상을 정정: 인증번호 발송 성공 시 "확인" 버튼이
+                   3분 동안 계속 깜빡이며, 인증 성공/만료/폼 리셋 시
+                   정확히 그 버튼의 깜빡임이 정지되도록 수정
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -585,7 +591,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v180</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v181</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1763,7 +1769,9 @@ function resetInfoForm() {
   var grpCode = document.getElementById("grp-code"); if (grpCode) grpCode.style.display = "none";
   var codeMsg = document.getElementById("code-msg"); if (codeMsg) codeMsg.textContent = "";
   var btnSend = document.getElementById("btn-send-code");
-  if (btnSend) { btnSend.disabled = false; btnSend.classList.remove("sent"); btnSend.classList.remove("pulse-glow"); btnSend.textContent = tr("fm.sendcode") || "인증번호 발송"; }
+  if (btnSend) { btnSend.disabled = false; btnSend.classList.remove("sent"); btnSend.textContent = tr("fm.sendcode") || "인증번호 발송"; }
+  var btnConfirmReset = document.getElementById("btn-confirm-code");
+  if (btnConfirmReset) btnConfirmReset.classList.remove("pulse-glow");
   emailVerified = null;
   verifiedToken = null;
   pendingCodeEmail = null;
@@ -1866,8 +1874,9 @@ function sendVerifyCode() {
       msg.style.color = "#3A7D5C";
       msg.textContent = tr("fm.codesent") || "인증번호를 발송했습니다. 이메일을 확인해 주세요.";
       btn.classList.add("sent");
-      btn.classList.add("pulse-glow"); // 3분 대기 동안 계속 깜빡여 "아직 인증 안 됨"을 알림
       codeResendLock = true;
+      var okBtnGlow = document.getElementById("btn-confirm-code");
+      if (okBtnGlow) okBtnGlow.classList.add("pulse-glow"); // 3분 대기 동안 "확인" 버튼이 계속 깜빡여 인증번호 입력을 유도
 
       clearCodeCountdown();
       var remain = 180;
@@ -1883,7 +1892,8 @@ function sendVerifyCode() {
           btn.disabled = false;
           btn.textContent = tr("fm.resend") || "재발송";
           codeResendLock = false;
-          btn.classList.remove("pulse-glow");
+          var okBtnStop = document.getElementById("btn-confirm-code");
+          if (okBtnStop) okBtnStop.classList.remove("pulse-glow");
           if (!emailVerified) expireVerifyCode();
         }
       }, 1000);
@@ -1926,8 +1936,8 @@ function confirmVerifyCode() {
           cfmBtn.focus();
           cfmBtn.classList.add("pulse-glow");
           setTimeout(function(){ cfmBtn.classList.remove("pulse-glow"); }, 36000); // 1.8초 x 20회
-          var sendBtnStop = document.getElementById("btn-send-code");
-          if (sendBtnStop) sendBtnStop.classList.remove("pulse-glow"); // 인증 완료됐으니 발송 버튼 깜빡임 중지
+          var okBtnDone = document.getElementById("btn-confirm-code");
+          if (okBtnDone) okBtnDone.classList.remove("pulse-glow"); // 인증 완료됐으니 확인 버튼 깜빡임 중지
         }
       } else {
         msg.style.color = "#C0392B";

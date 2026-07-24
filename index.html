@@ -1,4 +1,65 @@
 <!DOCTYPE html>
+<!--
+═══════════════════════════════════════════════════════════
+ Elliya Clinic — index.html 변경 이력
+ (v149 이전 이력은 별도 "작업내역" 문서에 정리되어 있음)
+═══════════════════════════════════════════════════════════
+ v150  2026.07.23  국적/특이사항 입력칸 삭제(국적은 전화번호 국가선택에서
+                   자동 추출). 이메일 인증 UI 최초 추가(이때는 인증번호를
+                   클라이언트에서 생성/검증 — 이후 v168에서 서버 검증으로 교체)
+ v151  2026.07.23  이메일 발송 계정 분리: 고객확인·인증번호는 신규
+                   elliyaclinic 계정, 직원알림은 기존 계정 유지
+ v152  2026.07.23  직원알림 템플릿ID 오류 수정(실수로 고객용 템플릿을
+                   직원알림 자리에 연결했던 것을 pf8quwr로 정정)
+ v153  2026.07.23  예약 페이지 재진입 시 이전 입력값(이름/연락처/이메일/
+                   인증상태)이 안 지워지던 버그 수정
+ v154  2026.07.23  인증메일 다국어화 1차 시도(전화 국가코드→언어 매핑)
+ v155  2026.07.23  [버그] detectEmailLang이 다른 함수 내부에 중첩 정의돼
+                   외부에서 호출 시 "정의되지 않음" 오류 — 전역으로 이동해 수정
+ v156  2026.07.23  submitBk 전체를 try/catch로 감싸 오류 시 버튼이 "발송
+                   중..."에서 멈추지 않고 항상 복구되도록 안전망 추가.
+                   이메일 본문 연락처 주소 오기 수정
+ v157  2026.07.23  인증번호 60초 유효시간 타이머 추가(만료 시 입력창 닫힘)
+ v158  2026.07.23  재발송 잠금 타이머와 유효시간 타이머가 서로 달라 혼란을
+                   주던 것을 하나로 통일. 재발송 클릭 시 이전 빨간 오류
+                   문구가 잠깐 남아있던 것 즉시 초기화하도록 수정
+ v159  2026.07.23  인증 완료 안내문구에 "예약완료 버튼을 눌러주세요" 추가
+                   (인증 성공과 예약 완료를 혼동하는 사용자 피드백 반영)
+ v160  2026.07.23  인증 유효시간 5분/1분 불일치를 3분으로 통일, mm:ss 표시로
+                   개선. 인증 완료 시 예약완료 버튼에 포커스+은은한 강조 효과
+ v161  2026.07.23  발송완료 안내문구 색상을 그린톤으로, 히어로 "예약하기"
+                   버튼을 메뉴바와 동일한 검정바탕/흰글씨로 변경
+ v162  2026.07.23  "나의 예약확인" 페이지에 예약취소 기능 신설(프론트엔드)
+ v163  2026.07.23  Code.gs 신규배포 대응 SHEET_URL 교체. tr() 함수가 없는
+                   키를 만나면 키 이름 자체를 반환하는 구조라 mb.* 관련
+                   문구가 화면에 그대로 노출되던 버그 수정
+ v164  2026.07.23  [버그] .hero-act .btn-p 전용 규칙이 전역 버튼 스타일을
+                   덮어써 v161 수정이 히어로 안에서는 반영 안 되던 것을 수정
+ v165  2026.07.23  브라우저 기본 confirm() 팝업을 사이트 톤에 맞춘 커스텀
+                   모달로 교체. 사이트 내 모든 "LINE:@elliyaclinic" 표기(9곳,
+                   6개 언어 포함)를 "cs@elliya.clinic"으로 일괄 교체
+ v166  2026.07.23  "예약확인하기" 버튼 호버 시 글씨색까지 반전되던 것을
+                   배경색만 바뀌도록 수정. 예약확인 페이지 재진입 시 폼 리셋
+                   추가. "나의 예약확인" 페이지 전체 6개 언어 대응 완료
+ v167  2026.07.23  버전 번호 누락 정정(내용은 v166과 동일, 표기만 수정)
+ v168  2026.07.23  [중요/보안] 서버측 인증 재설계 — 인증번호 생성·검증을
+                   클라이언트에서 서버(Code.gs)로 이전. 예약접수 시 서버가
+                   발급한 1회용 토큰을 함께 제출해야만 저장되도록 변경(기존엔
+                   화면을 거치지 않고 직접 서버에 요청하면 인증 없이도 예약
+                   주입이 가능했던 구조였음). 예약 저장 요청을 mode:"no-cors"
+                   에서 벗어나 실제 서버 응답을 읽고 실패 시 사용자에게
+                   정확히 안내하도록 변경
+ v169  2026.07.23  Code.gs 신규배포 대응 SHEET_URL 교체
+ v170  2026.07.23  관리자 편집 버튼(연필 아이콘)을 URL 파라미터
+                   (?admin=elliya2026) 없이는 안 보이도록 숨김 처리
+                   (그동안 모든 방문자에게 노출되고 있었음)
+ v171  2026.07.24  Code.gs v7 배포 대응 SHEET_URL 교체(시트 참조 방식을
+                   getActiveSheet()에서 getSheetByName("예약현황원본")로
+                   전면 변경한 배포에 맞춤)
+ v172  2026.07.24  Code.gs 재배포 대응 SHEET_URL 교체(인증메일 발신자를
+                   elliyaclinic@gmail.com Gmail 별칭으로 전환한 배포에 맞춤)
+═══════════════════════════════════════════════════════════
+-->
 <html lang="ko" dir="ltr">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -484,7 +545,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v171</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v172</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1438,7 +1499,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycby1RpUHyygsNIJD249t2mxj1IvLY5BnTheR8Vu5nQOwhgZyMz9ryOKlXgYxG7-pCxAnhg/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbzTvyAobPRCYAjPhMVZ6uwCeNlNZsDb7HDfWHXq1fc8VXrE3psJEIQRzQQ-jwUe8InplA/exec";
 
 function setLang(l) {
   lang = l;
@@ -1495,64 +1556,52 @@ function resetMyBookingForm() {
 // =====================================================
 var SVCS = [
   { price: 900000, priceStr: "&#8361; 900,000~",
-    name: {"ko":"소프웨이브","en":"Sofwave","zh":"Sofwave 舒芙波","ar":"سوفويف","ja":"ソフウェーブ","cn":"Sofwave"},
-    sub:  {"ko":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","en":"SUPERB™ Ultrasound — Dermal Collagen Lifting","zh":"SUPERB™ 超音波技術 — 真皮層膠原拉提","ar":"تقنية SUPERB™ للموجات فوق الصوتية","ja":"SUPERB™超音波 — 真皮層コラーゲンリフティング","cn":"SUPERB™超声波 — 真皮层胶原蛋白提升"},
+    name: {"ko":"소프웨이브","en":"Sofwave","zh":"Sofwave 舒芙波","ar":"سوفويف"},
+    sub:  {"ko":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","en":"SUPERB™ Ultrasound — Dermal Collagen Lifting","zh":"SUPERB™ 超音波技術 — 真皮層膠原拉提","ar":"تقنية SUPERB™ للموجات فوق الصوتية"},
     body: {"ko":"<h2>소프웨이브란?</h2><p>SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>진피층 콜라겐·엘라스틴 재생</li><li>넓고 균일한 에너지 전달로 자연스러운 탄력 개선</li><li>다운타임 없이 일상생활 바로 가능</li></ul>",
            "en":"<h2>What is Sofwave?</h2><p>Using SUPERB™ ultrasound technology, energy is delivered broadly and evenly to the dermis at a 1.5mm depth — regenerating elasticity and collagen.</p><h2>Expected Results</h2><ul><li>Collagen and elastin regeneration in the dermis</li><li>Even, broad energy delivery for natural elasticity</li><li>No downtime</li></ul>",
            "zh":"<h2>什麼是 Sofwave？</h2><p>採用 SUPERB™ 超音波技術，將能量廣泛均勻地傳遞至1.5mm深的真皮層，促進彈力與膠原蛋白再生。</p><h2>預期效果</h2><ul><li>真皮層膠原蛋白與彈力蛋白再生</li><li>均勻能量傳遞，自然改善彈力</li><li>無恢復期</li></ul>",
-           "ar":"<h2>ما هو سوفويف؟</h2><p>يستخدم تقنية SUPERB™ لتوصيل الطاقة بشكل واسع ومتساوٍ إلى طبقة الأدمة بعمق 1.5 مم.</p><h2>النتائج المتوقعة</h2><ul><li>تجديد الكولاجين والإيلاستين</li><li>توصيل طاقة متساوٍ لمرونة طبيعية</li><li>دون فترة تعافٍ</li></ul>",
-           "ja":"<h2>ソフウェーブとは？</h2><p>SUPERB™超音波技術により、深さ1.5mmの真皮層に広く均一にエネルギーを伝達し、弾力とコラーゲンを再生させるリフティング機器です。</p><h2>期待できる効果</h2><ul><li>真皮層のコラーゲン・エラスチン再生</li><li>広く均一なエネルギー伝達による自然な弾力改善</li><li>ダウンタイムなしですぐに日常生活が可能</li></ul>",
-           "cn":"<h2>什么是Sofwave？</h2><p>采用SUPERB™超声波技术，将能量广泛均匀地传递至1.5mm深的真皮层，促进弹力与胶原蛋白再生。</p><h2>预期效果</h2><ul><li>真皮层胶原蛋白与弹力蛋白再生</li><li>均匀能量传递，自然改善弹力</li><li>无恢复期，可立即恢复日常生活</li></ul>"}
+           "ar":"<h2>ما هو سوفويف؟</h2><p>يستخدم تقنية SUPERB™ لتوصيل الطاقة بشكل واسع ومتساوٍ إلى طبقة الأدمة بعمق 1.5 مم.</p><h2>النتائج المتوقعة</h2><ul><li>تجديد الكولاجين والإيلاستين</li><li>توصيل طاقة متساوٍ لمرونة طبيعية</li><li>دون فترة تعافٍ</li></ul>"}
   },
   { price: 490000, priceStr: "&#8361; 490,000~",
-    name: {"ko":"티타늄","en":"Titanium","zh":"鈦金拉提","ar":"تيتانيوم","ja":"チタニウム","cn":"钛金"},
-    sub:  {"ko":"3파장 동시 조사 — 올인원 4세대 리프팅","en":"3-Wavelength Laser — All-in-One 4th-Gen Lifting","zh":"三波長雷射同步 — 第四代全能拉提","ar":"ثلاث موجات ليزر متزامنة","ja":"3波長レーザー同時照射 — オールインワン第4世代リフティング","cn":"三波长激光同步 — 第四代全能提升"},
+    name: {"ko":"티타늄","en":"Titanium","zh":"鈦金拉提","ar":"تيتانيوم"},
+    sub:  {"ko":"3파장 동시 조사 — 올인원 4세대 리프팅","en":"3-Wavelength Laser — All-in-One 4th-Gen Lifting","zh":"三波長雷射同步 — 第四代全能拉提","ar":"ثلاث موجات ليزر متزامنة"},
     body: {"ko":"<h2>티타늄이란?</h2><p>3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅입니다.</p><h2>기대 효과</h2><ul><li>피부결 개선</li><li>탄력 강화</li><li>화이트닝 효과</li></ul>",
            "en":"<h2>What is Titanium?</h2><p>Three laser wavelengths delivered simultaneously for an all-in-one 4th-generation lifting treatment with no downtime.</p><h2>Expected Results</h2><ul><li>Improved skin texture</li><li>Enhanced elasticity</li><li>Brightening effect</li></ul>",
            "zh":"<h2>什麼是鈦金拉提？</h2><p>三種波長雷射同時照射，無恢復期即可達到膚質、彈力、美白三合一效果的第四代全能拉提技術。</p><h2>預期效果</h2><ul><li>改善膚質</li><li>增強彈力</li><li>美白效果</li></ul>",
-           "ar":"<h2>ما هو تيتانيوم؟</h2><p>ثلاث موجات ليزر تُبث في وقت واحد لتحقيق شد شامل من الجيل الرابع دون فترة تعافٍ.</p><h2>النتائج المتوقعة</h2><ul><li>تحسين ملمس البشرة</li><li>تعزيز المرونة</li><li>تفتيح البشرة</li></ul>",
-           "ja":"<h2>チタニウムとは？</h2><p>3つの波長のレーザーが同時に照射され、ダウンタイムなしで肌質・弾力・美白の3つの効果が得られるオールインワン第4世代リフティングです。</p><h2>期待できる効果</h2><ul><li>肌質改善</li><li>弾力強化</li><li>美白効果</li></ul>",
-           "cn":"<h2>什么是钛金？</h2><p>三种波长激光同时照射，无恢复期即可实现肤质、弹力、美白三合一效果的第四代全能提升技术。</p><h2>预期效果</h2><ul><li>改善肤质</li><li>增强弹力</li><li>美白效果</li></ul>"}
+           "ar":"<h2>ما هو تيتانيوم؟</h2><p>ثلاث موجات ليزر تُبث في وقت واحد لتحقيق شد شامل من الجيل الرابع دون فترة تعافٍ.</p><h2>النتائج المتوقعة</h2><ul><li>تحسين ملمس البشرة</li><li>تعزيز المرونة</li><li>تفتيح البشرة</li></ul>"}
   },
   { price: 1090000, priceStr: "&#8361; 1,090,000~",
-    name: {"ko":"울쎄라피 프라임","en":"Ultherapy Prime","zh":"Ultherapy Prime 極線音波尊爵版","ar":"ألثيرابي برايم","ja":"ウルセラピープライム","cn":"Ultherapy Prime"},
-    sub:  {"ko":"고강도 초음파 — 진피부터 SMAS층까지","en":"High-Intensity Ultrasound — Dermis to SMAS","zh":"高強度超音波 — 真皮至筋膜層","ar":"موجات فوق صوتية عالية الكثافة","ja":"高強度超音波 — 真皮層からSMAS層まで","cn":"高强度超声波 — 真皮层至SMAS层"},
+    name: {"ko":"울쎄라피 프라임","en":"Ultherapy Prime","zh":"Ultherapy Prime 極線音波尊爵版","ar":"ألثيرابي برايم"},
+    sub:  {"ko":"고강도 초음파 — 진피부터 SMAS층까지","en":"High-Intensity Ultrasound — Dermis to SMAS","zh":"高強度超音波 — 真皮至筋膜層","ar":"موجات فوق صوتية عالية الكثافة"},
     body: {"ko":"<h2>울쎄라피 프라임이란?</h2><p>고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>SMAS층까지 다각도 공략</li><li>지방층 정리</li><li>콜라겐 생성 촉진</li></ul>",
            "en":"<h2>What is Ultherapy Prime?</h2><p>High-intensity focused ultrasound targets every layer of the skin from the dermis to the SMAS layer, refining fat and stimulating collagen.</p><h2>Expected Results</h2><ul><li>Multi-angle targeting down to SMAS</li><li>Fat layer refinement</li><li>Collagen stimulation</li></ul>",
            "zh":"<h2>什麼是 Ultherapy Prime？</h2><p>高強度聚焦超音波從真皮層到筋膜層（SMAS）多角度作用，整理脂肪層並促進膠原蛋白生成。</p><h2>預期效果</h2><ul><li>多角度作用至SMAS層</li><li>整理脂肪層</li><li>促進膠原蛋白生成</li></ul>",
-           "ar":"<h2>ما هو ألثيرابي برايم؟</h2><p>موجات فوق صوتية مركزة تستهدف جميع طبقات الجلد من الأدمة حتى طبقة SMAS.</p><h2>النتائج المتوقعة</h2><ul><li>استهداف متعدد الزوايا حتى SMAS</li><li>تحسين طبقة الدهون</li><li>تحفيز الكولاجين</li></ul>",
-           "ja":"<h2>ウルセラピープライムとは？</h2><p>高強度超音波エネルギーを真皮から筋膜層(SMAS)まで多角的に照射し、脂肪層の整理とコラーゲン生成を促すリフティング機器です。</p><h2>期待できる効果</h2><ul><li>SMAS層まで多角的にアプローチ</li><li>脂肪層の整理</li><li>コラーゲン生成促進</li></ul>",
-           "cn":"<h2>什么是Ultherapy Prime？</h2><p>高强度聚焦超声波从真皮层到筋膜层(SMAS)多角度作用，整理脂肪层并促进胶原蛋白生成。</p><h2>预期效果</h2><ul><li>多角度作用至SMAS层</li><li>整理脂肪层</li><li>促进胶原蛋白生成</li></ul>"}
+           "ar":"<h2>ما هو ألثيرابي برايم؟</h2><p>موجات فوق صوتية مركزة تستهدف جميع طبقات الجلد من الأدمة حتى طبقة SMAS.</p><h2>النتائج المتوقعة</h2><ul><li>استهداف متعدد الزوايا حتى SMAS</li><li>تحسين طبقة الدهون</li><li>تحفيز الكولاجين</li></ul>"}
   },
   { price: 360000, priceStr: "&#8361; 360,000~",
-    name: {"ko":"온다","en":"Onda","zh":"Onda 鳳凰儀","ar":"أوندا","ja":"オンダ","cn":"Onda"},
-    sub:  {"ko":"극초단파 컨투어링 — 지속적 콜라겐 리모델링","en":"Microwave Contouring — Ongoing Collagen Remodeling","zh":"極短波輪廓雕塑 — 持續膠原重塑","ar":"نحت بالموجات الدقيقة","ja":"マイクロ波コントアリング — 持続的コラーゲンリモデリング","cn":"微波轮廓雕塑 — 持续胶原蛋白重塑"},
+    name: {"ko":"온다","en":"Onda","zh":"Onda 鳳凰儀","ar":"أوندا"},
+    sub:  {"ko":"극초단파 컨투어링 — 지속적 콜라겐 리모델링","en":"Microwave Contouring — Ongoing Collagen Remodeling","zh":"極短波輪廓雕塑 — 持續膠原重塑","ar":"نحت بالموجات الدقيقة"},
     body: {"ko":"<h2>온다란?</h2><p>극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비입니다.</p><h2>기대 효과</h2><ul><li>피부 타이트닝</li><li>지속적 콜라겐 리모델링</li><li>부위별 컨투어링</li></ul>",
            "en":"<h2>What is Onda?</h2><p>Next-generation microwave technology and handpiece deliver skin tightening and continuous collagen remodeling for contouring.</p><h2>Expected Results</h2><ul><li>Skin tightening</li><li>Ongoing collagen remodeling</li><li>Targeted contouring</li></ul>",
            "zh":"<h2>什麼是 Onda？</h2><p>採用新概念極短波（微波）技術與探頭，達到肌膚緊緻與持續膠原蛋白重塑的輪廓雕塑效果。</p><h2>預期效果</h2><ul><li>肌膚緊緻</li><li>持續膠原重塑</li><li>部位輪廓雕塑</li></ul>",
-           "ar":"<h2>ما هو أوندا؟</h2><p>يستخدم تقنية الموجات الدقيقة الجديدة لشد الجلد وإعادة بناء الكولاجين المستمر لتحديد الملامح.</p><h2>النتائج المتوقعة</h2><ul><li>شد الجلد</li><li>إعادة بناء الكولاجين المستمر</li><li>نحت مناطق محددة</li></ul>",
-           "ja":"<h2>オンダとは？</h2><p>新概念のマイクロ波技術とハンドピースを用い、肌の引き締めと持続的なコラーゲンリモデリングでコントアリングする機器です。</p><h2>期待できる効果</h2><ul><li>肌の引き締め</li><li>持続的なコラーゲンリモデリング</li><li>部位別コントアリング</li></ul>",
-           "cn":"<h2>什么是Onda？</h2><p>采用新概念微波技术与探头，实现肌肤紧致与持续胶原蛋白重塑的轮廓雕塑效果。</p><h2>预期效果</h2><ul><li>肌肤紧致</li><li>持续胶原蛋白重塑</li><li>部位轮廓雕塑</li></ul>"}
+           "ar":"<h2>ما هو أوندا؟</h2><p>يستخدم تقنية الموجات الدقيقة الجديدة لشد الجلد وإعادة بناء الكولاجين المستمر لتحديد الملامح.</p><h2>النتائج المتوقعة</h2><ul><li>شد الجلد</li><li>إعادة بناء الكولاجين المستمر</li><li>نحت مناطق محددة</li></ul>"}
   },
   { price: 150000, priceStr: "&#8361; 150,000~",
-    name: {"ko":"슈링크 유니버스","en":"Shurink Universe","zh":"Shurink Universe 聚焦音波宇宙版","ar":"شرينك يونيفرس","ja":"シュリンクユニバース","cn":"Shurink Universe"},
-    sub:  {"ko":"2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅","en":"2 Modes · 7 Cartridges — Customized Lifting","zh":"兩種模式・7種探頭 — 部位客製拉提","ar":"وضعان و7 خراطيش","ja":"2モード・7カートリッジ — 部位別カスタムリフティング","cn":"两种模式・7种探头 — 部位定制提升"},
+    name: {"ko":"슈링크 유니버스","en":"Shurink Universe","zh":"Shurink Universe 聚焦音波宇宙版","ar":"شرينك يونيفرس"},
+    sub:  {"ko":"2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅","en":"2 Modes · 7 Cartridges — Customized Lifting","zh":"兩種模式・7種探頭 — 部位客製拉提","ar":"وضعان و7 خراطيش"},
     body: {"ko":"<h2>슈링크 유니버스란?</h2><p>2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술입니다.</p><h2>기대 효과</h2><ul><li>부위별 맞춤 시술</li><li>깊은 층까지 빈틈없는 리프팅</li><li>탄력 개선</li></ul>",
            "en":"<h2>What is Shurink Universe?</h2><p>Two modes and 7 cartridges deliver customized, gap-free elasticity lifting deep within the skin.</p><h2>Expected Results</h2><ul><li>Customized per area</li><li>Gap-free deep lifting</li><li>Improved elasticity</li></ul>",
            "zh":"<h2>什麼是 Shurink Universe？</h2><p>兩種模式、7種探頭，深入肌膚各層，提供部位客製化、無死角的彈力拉提療程。</p><h2>預期效果</h2><ul><li>部位客製化療程</li><li>深層無死角拉提</li><li>改善彈力</li></ul>",
-           "ar":"<h2>ما هو شرينك يونيفرس؟</h2><p>وضعان و7 خراطيش توفر شدًا مرنًا مخصصًا لكل منطقة بعمق داخل الجلد دون فجوات.</p><h2>النتائج المتوقعة</h2><ul><li>مخصص لكل منطقة</li><li>شد عميق دون فجوات</li><li>تحسين المرونة</li></ul>",
-           "ja":"<h2>シュリンクユニバースとは？</h2><p>2つのモードと7種のカートリッジで、肌の深層まで隙間なく部位別にカスタマイズされた弾力リフティング施術です。</p><h2>期待できる効果</h2><ul><li>部位別カスタム施術</li><li>深層まで隙間のないリフティング</li><li>弾力改善</li></ul>",
-           "cn":"<h2>什么是Shurink Universe？</h2><p>两种模式、7种探头，深入肌肤各层，提供部位定制化、无死角的弹力提升疗程。</p><h2>预期效果</h2><ul><li>部位定制化疗程</li><li>深层无死角提升</li><li>改善弹力</li></ul>"}
+           "ar":"<h2>ما هو شرينك يونيفرس؟</h2><p>وضعان و7 خراطيش توفر شدًا مرنًا مخصصًا لكل منطقة بعمق داخل الجلد دون فجوات.</p><h2>النتائج المتوقعة</h2><ul><li>مخصص لكل منطقة</li><li>شد عميق دون فجوات</li><li>تحسين المرونة</li></ul>"}
   },
   { price: 40000, priceStr: "&#8361; 40,000~",
-    name: {"ko":"스킨부스터","en":"Skin Booster","zh":"水光針 Skin Booster","ar":"حقن التألق","ja":"スキンブースター","cn":"水光针"},
-    sub:  {"ko":"진피층 직접 주입 — 수분·모공·미백 맞춤 케어","en":"Direct Dermal Infusion — Custom Hydration & Brightening","zh":"直接注入真皮層 — 補水・毛孔・美白客製","ar":"حقن مباشر في الأدمة","ja":"真皮層への直接注入 — 保湿・美白カスタムケア","cn":"直接注入真皮层 — 定制补水与美白"},
+    name: {"ko":"스킨부스터","en":"Skin Booster","zh":"水光針 Skin Booster","ar":"حقن التألق"},
+    sub:  {"ko":"진피층 직접 주입 — 수분·모공·미백 맞춤 케어","en":"Direct Dermal Infusion — Custom Hydration & Brightening","zh":"直接注入真皮層 — 補水・毛孔・美白客製","ar":"حقن مباشر في الأدمة"},
     body: {"ko":"<h2>스킨부스터란?</h2><p>피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술입니다.</p><h2>기대 효과</h2><ul><li>수분 충전</li><li>모공·잔주름 개선</li><li>미백 등 개인 맞춤 성분 선택 가능</li></ul>",
            "en":"<h2>What is Skin Booster?</h2><p>A cosmetic treatment that injects or infuses active ingredients directly into the dermis to support skin regeneration and elasticity.</p><h2>Expected Results</h2><ul><li>Hydration</li><li>Pore and fine-line improvement</li><li>Custom ingredients incl. brightening</li></ul>",
            "zh":"<h2>什麼是水光針？</h2><p>將有助於肌膚再生與彈力改善的有效成分直接注入或滲透至真皮層的美容療程。</p><h2>預期效果</h2><ul><li>補水</li><li>改善毛孔與細紋</li><li>可客製美白等成分</li></ul>",
-           "ar":"<h2>ما هو حقن التألق؟</h2><p>علاج تجميلي يحقن مكونات فعالة مباشرة إلى طبقة الأدمة لدعم تجدد البشرة ومرونتها.</p><h2>النتائج المتوقعة</h2><ul><li>الترطيب</li><li>تحسين المسام والخطوط الدقيقة</li><li>مكونات مخصصة تشمل التفتيح</li></ul>",
-           "ja":"<h2>スキンブースターとは？</h2><p>肌の再生と弾力改善を助ける有効成分を真皮層に直接注入・浸透させる美容施術です。</p><h2>期待できる効果</h2><ul><li>保湿</li><li>毛穴・小じわ改善</li><li>美白など個人の肌悩みに合わせた成分カスタマイズ</li></ul>",
-           "cn":"<h2>什么是水光针？</h2><p>将有助于肌肤再生与弹力改善的有效成分直接注入或渗透至真皮层的美容疗程。</p><h2>预期效果</h2><ul><li>补水</li><li>改善毛孔与细纹</li><li>可定制美白等成分</li></ul>"}
+           "ar":"<h2>ما هو حقن التألق؟</h2><p>علاج تجميلي يحقن مكونات فعالة مباشرة إلى طبقة الأدمة لدعم تجدد البشرة ومرونتها.</p><h2>النتائج المتوقعة</h2><ul><li>الترطيب</li><li>تحسين المسام والخطوط الدقيقة</li><li>مكونات مخصصة تشمل التفتيح</li></ul>"}
   }
 ];
 

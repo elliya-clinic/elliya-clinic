@@ -86,6 +86,12 @@
                    근본 수정된 배포에 맞춤 — 락은 이제 실제 시트 쓰기
                    순간에만 짧게(5초) 걸리도록 전면 재구성됨(자세한 내용은
                    Code.gs 변경이력 v11 참고)
+ v179  2026.07.24  Code.gs v12 배포 대응 SHEET_URL 교체. 인증메일
+                   발신자가 계속 개인계정(biggerjohny)으로 오던 문제의
+                   진짜 원인 확정 — MailApp.sendEmail은 애초에 from 옵션을
+                   지원하지 않아 조용히 무시되고 있었음. GmailApp.sendEmail
+                   로 교체된 배포에 맞춤(자세한 내용은 Code.gs 변경이력
+                   v12 참고)
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -573,7 +579,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v178</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v179</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1527,7 +1533,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbySDMLQdigi8zumP6vjGGTa08Zzy_4IHRzecC8eEyjDekFCwTRyMBcmoLczgnR91UC5iA/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbztLpcdHnilUl8HoZprRSZt88oorcQ3BxxFIkPvtAavsKgjgMAzUiCdzdFROjGDusplHw/exec";
 
 function setLang(l) {
   lang = l;

@@ -103,71 +103,6 @@
                    했음. 대상을 정정: 인증번호 발송 성공 시 "확인" 버튼이
                    3분 동안 계속 깜빡이며, 인증 성공/만료/폼 리셋 시
                    정확히 그 버튼의 깜빡임이 정지되도록 수정
- v182  2026.07.25  [모바일 버그] 시술 카드(SIGNATURE TREATMENTS)가 모바일에서
-                   심하게 깨지던 문제 수정. 원인은 .tx-grid의
-                   max-width:calc(100% - 360px)가 모바일 미디어쿼리에서
-                   해제되지 않아, 좁은 화면에서 카드 그리드가 30px 안팎의
-                   띠에 갇히면서 제목("소프웨이/브")·본문이 세로로 쪼개진 것.
-                   900px 이하에서 max-width:none로 풀고, 좌우여백 4vw,
-                   word-break:keep-all(단어 중간 줄바꿈 방지), 글자
-                   clamp()로 폭에 유연하게 대응하도록 정리. 카드 비율은
-                   기존(900/1264) 그대로 유지.
-                   ※ CSS만 수정, HTML/JS·데스크톱 레이아웃은 손대지 않음
- v183  2026.07.25  [모바일 히어로] 인물이 좌/우 가장자리에 치우친 사진이
-                   모바일 세로화면에서 object-fit:cover로 잘려 배경만
-                   보이던 문제 수정. 모바일(900px↓)에서만 object-fit을
-                   contain으로 바꿔, 어떤 사진을 올려도 코드 수정 없이
-                   인물이 잘리지 않고 전부 보이도록 함(원장님 요구:
-                   이미지 교체 시 재작업 불필요). 이미지는 위쪽 정렬,
-                   생기는 아래 여백은 배경 크림톤 처리, 하단 고정 버튼이
-                   그 위에 자연스럽게 놓임. 모바일에선 켄번즈 줌
-                   애니메이션 정지(contain과 함께 쓰면 어색해서).
-                   ※ PC(901px↑) 히어로는 기존 cover 방식 그대로,
-                     슬라이드 개수 자동판별 로직도 미변경
- v184  2026.07.25  [모바일 3건 수정, 모두 모바일 CSS/JS만 · PC 미변경]
-                   (1) 히어로 줌 복원: v183에서 껐던 켄번즈 줌(zoom-in)을
-                       모바일에도 되살림(animation:none 제거) — PC와 동일한
-                       은은한 확대 효과. 전환이 정적으로 툭툭 바뀌던 것 해소.
-                   (2) 히어로 버튼 위치: 화면 하단 3.5rem→10rem로 올려
-                       이미지와 가깝게(.hero-ct bottom, 모바일만). 버튼은
-                       화면 기준 고정이라 이미지 높이가 슬라이드마다 달라도
-                       항상 같은 자리.
-                   (3) 다국어 드롭다운: 좁은 화면에서 국기 6개가 오른쪽으로
-                       잘려나가던 문제 해결. 모바일에선 현재 언어 국기1개+
-                       화살표만 표시, 탭하면 세로 목록으로 펼침(바깥 탭 시 닫힘).
-                       PC는 기존처럼 국기 6개 나열 그대로.
-                       - nav-lang-group에 토글버튼+lang-list 래퍼 추가
-                       - toggleLangDrop() 신규 함수, setLang 끝에 토글국기
-                         갱신+닫기 후처리 추가(기존 로직은 불변)
-                       - 미사용 상태였던 구 .lang-bar 블록은 lb-* ID 중복
-                         방지 위해 주석 처리(삭제 아님, 복원 가능)
- v185  2026.07.25  [모바일 히어로·메뉴 재구성 · 전부 모바일만, PC 미변경]
-                   (1) 히어로 1장 고정: 모바일에선 슬라이드·도트·자동전환을
-                       끄고 main_image1 한 장만 표출. 2~4번 슬라이드/도트는
-                       CSS로 숨김, 자동전환은 restartHeroTimer에서 모바일이면
-                       return(PC 슬라이드 로직·개수판별은 그대로).
-                   (2) 히어로 구도: 이미지 영역 56vh 고정, cover로 크게,
-                       인물이 오른쪽에 오되 등 뒤 여백이 남도록
-                       object-position:72% center(실물 보고 % 미세조정 가능).
-                       버튼은 이미지 바로 아래 일반 흐름에 배치.
-                   (3) 햄버거 메뉴: 기존의 nav-links 펼침(허접)방식을 버리고
-                       xenia식 전체화면 오버레이(.mmenu)로 교체. 상단에 국기
-                       6개+닫기(X), 아래에 홈/시술/오시는길/예약하기. 국기 선택
-                       시 언어 변경+메뉴 닫힘, 열릴 때 뒤 배경 스크롤 잠금.
-                       상단 국기 드롭다운(v184)은 그대로 유지(메뉴 열기 전 노출).
- v186  2026.07.25  [모바일 메뉴 버그 수정] v185 전체화면 메뉴에서
-                   (1)국기와 메뉴 항목이 겹치고 (2)국기/X 클릭이 안 먹던
-                   문제 대응. 원인 후보를 정리해 수정:
-                   - .mmenu의 display:none/flex 구조가 flex-direction과
-                     충돌할 여지 → .open일 때 flex 레이아웃을 한 번에 지정.
-                   - z-index 1000→9500으로 올려 nav 등에 클릭 가로채이지
-                     않게 함.
-                   - 국기 크기 40→32px, 간격 축소로 겹침 방지.
-                   - 국기 onclick 순서를 closeMenu() 먼저로 바꿔, setLang이
-                     지연돼도 메뉴는 확실히 닫히게.
-                   ※ 전부 모바일 한정, PC·서버(Code.gs) 무관.
-                   ※ 예약화면 달력잘림/시간대, 인증메일 미도착은 별개 사안
-                     (booking UI·서버측)으로 이 버전 범위 아님.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -232,9 +167,6 @@ a{color:inherit;text-decoration:none;}
 .nav-scrolled .lang-btn:hover{color:var(--ink);background:rgba(0,0,0,.06);}
 .lang-btn.active{color:var(--gold-dark);font-weight:700;}
 .nav-scrolled .lang-btn.active{color:var(--gold-dark);}
-/* 언어 드롭다운: PC 기본값 — 토글 버튼 숨기고 국기 6개 그대로 나열(기존과 동일) */
-.lang-toggle{display:none;}
-.lang-list{display:flex;align-items:center;gap:0;}
 
 /* NAV */
 nav{
@@ -273,20 +205,6 @@ nav.nav-scrolled{
 .nav-book:hover{background:#000;border-color:#000;}
 .hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;}
 .nav-scrolled .hamburger{color:var(--ink);}
-/* 전체화면 모바일 메뉴(xenia 스타일): 기본 숨김, .open일 때 전체 표시.
-   PC에선 햄버거 자체가 안 보여 호출되지 않음.
-   z-index를 nav/기타 오버레이보다 확실히 높게(9500) 두어 클릭 가로채기 방지 */
-.mmenu{display:none;}
-.mmenu.open{display:flex;flex-direction:column;position:fixed;inset:0;z-index:9500;background:var(--white);overflow-y:auto;}
-.mmenu-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:1rem 1rem;border-bottom:.5px solid var(--border);flex:0 0 auto;}
-.mmenu-flags{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}
-.mm-flag{background:none;border:none;padding:.15rem;cursor:pointer;line-height:0;border-radius:3px;}
-.mm-flag img{width:32px;height:auto;border-radius:2px;box-shadow:0 0 0 .5px rgba(0,0,0,.15);display:block;}
-.mm-flag.active{box-shadow:0 0 0 2px var(--gold-dark);}
-.mmenu-close{background:none;border:none;font-size:2rem;line-height:1;color:var(--ink);cursor:pointer;padding:.2rem .5rem;flex:0 0 auto;}
-.mmenu-links{display:flex;flex-direction:column;padding:.5rem 0;}
-.mmenu-links a{display:block;text-align:center;padding:1.4rem 1rem;font-size:1.15rem;color:var(--ink);border-bottom:.5px solid var(--border);font-family:'Noto Serif KR','Georgia',serif;letter-spacing:.02em;}
-.mmenu-links a:active{background:var(--cream-mid);}
 .pt{padding-top:70px;background:#FDFCFA;min-height:100vh;}
 
 /* HERO */
@@ -641,54 +559,17 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 @media(max-width:900px){
   nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:block;}
   .lang-bar{padding:0 1rem;}.lang-btn{padding:0 .6rem;font-size:.67rem;}
-  /* 언어 드롭다운(모바일 전용): 국기 6개가 좁은 화면에서 잘려나가던 문제 해결.
-     평소엔 현재 언어 국기 1개+화살표만 표시, 탭하면 나머지가 세로로 펼쳐짐.
-     ※ PC(901px↑)는 위 기본값(토글 숨김/국기 나열) 그대로 */
-  .lang-toggle{display:flex;align-items:center;gap:.25rem;background:none;border:none;cursor:pointer;padding:.3rem .4rem;}
-  .lang-toggle img{width:22px;height:auto;border-radius:2px;display:block;box-shadow:0 0 0 .5px rgba(0,0,0,.15);}
-  .lang-toggle-arrow{font-size:.6rem;color:var(--ink-light);transition:transform .2s;}
-  #nav-lang-group.open .lang-toggle-arrow{transform:rotate(180deg);}
-  #nav-lang-group{position:relative;margin-left:.6rem;border-left:none;}
-  .lang-list{display:none;position:absolute;top:calc(100% + .5rem);right:0;flex-direction:column;background:var(--white);border:0.5px solid var(--border-mid);border-radius:6px;box-shadow:0 6px 20px rgba(0,0,0,.14);padding:.3rem;z-index:200;min-width:56px;}
-  #nav-lang-group.open .lang-list{display:flex;}
-  .lang-list .lang-btn{border:none;padding:.5rem .6rem;justify-content:center;border-radius:4px;}
-  .lang-list .lang-btn:first-child{border-left:none;}
-  .lang-list .lang-btn img{width:26px;}
-  .lang-list .lang-btn.active{background:rgba(201,169,110,.12);}
   .visit-info{grid-template-columns:1fr 1fr;}
-  .tx-grid{grid-template-columns:repeat(2,1fr);max-width:none;gap:2rem 1rem;padding:0 4vw 1rem;}
-  .tx-card{border:none;}
-  .tx-name{font-size:clamp(.82rem,3.6vw,.95rem);margin:.6rem 0 .25rem;word-break:keep-all;}
-  .tx-desc{font-size:clamp(.68rem,3vw,.78rem);line-height:1.55;word-break:keep-all;}
-  .tx-sec{padding:1.5rem 0 1.2rem;}
+  .tx-grid{grid-template-columns:repeat(2,1fr);}.tx-card{border:none;}
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
   .f-row{grid-template-columns:1fr;}
-  /* 히어로(모바일 전용): main_image1 한 장만 고정 표출(슬라이드·도트·자동전환 OFF).
-     - 2~4번 슬라이드와 도트는 숨김. 1번만 중앙에 크게.
-     - 인물이 오른쪽에 오되 등 뒤(오른쪽)에 여백이 남도록 object-position 조정.
-     - 이미지 영역 높이 고정(56vh), 버튼은 이미지 바로 아래 일반 흐름에 배치.
-     ※ PC(901px↑)는 기존 cover 슬라이드 방식 그대로. JS 슬라이드 로직도 불변
-       (모바일 자동전환만 타이머에서 정지). */
-  .hero{height:auto;min-height:0;flex-direction:column;justify-content:flex-start;padding:0;background:var(--white);}
-  .hero-bg{position:relative;inset:auto;width:100%;height:56vh;}
-  .hero-slide{object-fit:cover;object-position:72% center;animation:none;transform:none;}
-  .hero-slide:nth-child(2){object-position:72% center;}
-  /* 1번 외 슬라이드와 도트 숨김 → 1장만 보이게 */
-  .hero-slide[data-idx="1"],
-  .hero-slide[data-idx="2"],
-  .hero-slide[data-idx="3"]{display:none!important;}
-  .hero-dots{display:none;}
-  /* 버튼: 이미지 바로 아래 일반 흐름 */
-  .hero-ct{position:static;transform:none;left:auto;bottom:auto;width:100%;padding:1.6rem 1.2rem 2.4rem;}
-  .hero-act{justify-content:center;}
 }
 </style>
 </head>
 <body>
 
-<!-- LANG BAR (구버전 · display:none으로 미사용 상태였음. v184에서 nav 드롭다운
-     도입 시 lb-* ID 중복 방지를 위해 주석 처리. 삭제 대신 보존 — 필요시 복원)
+<!-- LANG BAR -->
 <div class="lang-bar">
   <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
   <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
@@ -697,7 +578,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
   <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
 </div>
--->
 
 <!-- NAV -->
 <nav>
@@ -711,7 +591,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v186</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v181</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -720,42 +600,15 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:0.5px solid var(--border);" id="nav-lang-group">
-    <button class="lang-toggle" id="lang-toggle" onclick="toggleLangDrop(event)" aria-label="언어 선택">
-      <img id="lang-toggle-flag" src="https://flagcdn.com/w40/kr.png" alt="">
-      <span class="lang-toggle-arrow">&#9662;</span>
-    </button>
-    <div class="lang-list" id="lang-list">
-      <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
-      <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
-      <button class="lang-btn" id="lb-ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
-      <button class="lang-btn" id="lb-cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
-      <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
-      <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
-    </div>
+    <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
+    <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+    <button class="lang-btn" id="lb-ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
+    <button class="lang-btn" id="lb-cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
+    <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
+    <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
   </div>
   <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
 </nav>
-
-<!-- MOBILE MENU (전체화면 · 모바일 전용) -->
-<div class="mmenu" id="mmenu">
-  <div class="mmenu-top">
-    <div class="mmenu-flags">
-      <button class="mm-flag" onclick="closeMenu();setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
-      <button class="mm-flag" onclick="closeMenu();setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
-      <button class="mm-flag" onclick="closeMenu();setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
-      <button class="mm-flag" onclick="closeMenu();setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
-      <button class="mm-flag" onclick="closeMenu();setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
-      <button class="mm-flag" onclick="closeMenu();setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
-    </div>
-    <button class="mmenu-close" onclick="closeMenu()" aria-label="닫기">&times;</button>
-  </div>
-  <nav class="mmenu-links">
-    <a href="#" onclick="closeMenu();showPage('home');return false;" data-t="nav.home">홈</a>
-    <a href="#" onclick="closeMenu();showPage('home');setTimeout(function(){document.getElementById('treatments').scrollIntoView({behavior:'smooth'})},100);return false;" data-t="nav.tx">시술</a>
-    <a href="#" onclick="closeMenu();showPage('home');setTimeout(function(){document.getElementById('visit').scrollIntoView({behavior:'smooth'})},100);return false;" data-t="nav.visit">오시는 길</a>
-    <a href="#" onclick="closeMenu();showPage('booking');initBooking();return false;" data-t="nav.book">예약하기</a>
-  </nav>
-</div>
 
 <!-- ADMIN FAB -->
 <button class="adm-fab" id="adm-fab-btn" onclick="openAdm()" title="문구 편집">&#9998;</button>
@@ -1709,27 +1562,7 @@ function setLang(l) {
     mk.style.display = (l === "ko") ? "block" : "none";
     mg.style.display = (l === "ko") ? "none" : "block";
   }
-  // 모바일 언어 드롭다운: 현재 언어 국기로 토글 버튼 갱신 + 드롭다운 닫기
-  var flagMap = {ko:"kr",en:"us",ja:"jp",cn:"cn",zh:"tw",ar:"sa"};
-  var tf = document.getElementById("lang-toggle-flag");
-  if (tf && flagMap[l]) tf.src = "https://flagcdn.com/w40/" + flagMap[l] + ".png";
-  var grp = document.getElementById("nav-lang-group");
-  if (grp) grp.classList.remove("open");
 }
-
-// 모바일 언어 드롭다운 열기/닫기 (PC에선 토글 버튼이 숨겨져 있어 호출되지 않음)
-function toggleLangDrop(e) {
-  if (e) e.stopPropagation();
-  var grp = document.getElementById("nav-lang-group");
-  if (grp) grp.classList.toggle("open");
-}
-// 바깥 영역 탭하면 드롭다운 닫기
-document.addEventListener("click", function(e) {
-  var grp = document.getElementById("nav-lang-group");
-  if (grp && grp.classList.contains("open") && !grp.contains(e.target)) {
-    grp.classList.remove("open");
-  }
-});
 
 function tr(k) {
   return (T[lang] && T[lang][k] !== undefined ? T[lang][k] : (T.ko[k] || k));
@@ -2557,24 +2390,9 @@ function saveAndTranslate() {
 }
 
 function toggleMenu() {
-  var m = document.getElementById("mmenu");
-  if (!m) return;
-  if (m.classList.contains("open")) { closeMenu(); return; }
-  syncMenuFlags();
-  m.classList.add("open");
-  document.body.style.overflow = "hidden"; // 뒤 배경 스크롤 잠금
-}
-function closeMenu() {
-  var m = document.getElementById("mmenu");
-  if (m) m.classList.remove("open");
-  document.body.style.overflow = "";
-}
-// 전체화면 메뉴 국기 중 현재 언어에 active 표시
-function syncMenuFlags() {
-  var order = ["ko","en","ja","cn","zh","ar"];
-  document.querySelectorAll(".mm-flag").forEach(function(el, i){
-    el.classList.toggle("active", order[i] === lang);
-  });
+  var links=document.querySelector(".nav-links");
+  if(links.style.display==="flex") links.style.display="";
+  else links.style.cssText="display:flex;flex-direction:column;position:fixed;top:98px;left:0;right:0;background:var(--cream);padding:1.5rem 2rem;border-bottom:.5px solid var(--border-mid);z-index:99;gap:1.2rem;";
 }
 
 
@@ -2747,12 +2565,6 @@ document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
   var el = document.getElementById("lb-"+x);
   if (el) el.classList.toggle("active", x === lang);
 });
-// 모바일 언어 드롭다운 토글 버튼 국기도 초기 언어로 동기화
-(function(){
-  var flagMap = {ko:"kr",en:"us",ja:"jp",cn:"cn",zh:"tw",ar:"sa"};
-  var tf = document.getElementById("lang-toggle-flag");
-  if (tf && flagMap[lang]) tf.src = "https://flagcdn.com/w40/" + flagMap[lang] + ".png";
-})();
 applyT();
 
 // ── NAV: 홈 첫 화면에선 투명, 스크롤하거나 다른 페이지에선 흰 바 ──
@@ -2787,8 +2599,6 @@ function heroGoSlideAuto(idx) { heroSetActive(idx); }
 
 function restartHeroTimer() {
   if (heroSlideTimer) clearInterval(heroSlideTimer);
-  // 모바일(≤900px)에선 1장만 고정 표출 → 자동전환 안 함
-  if (window.matchMedia("(max-width:900px)").matches) return;
   if (heroSlideCount < 2) return;
   heroSlideTimer = setInterval(function(){
     heroGoSlideAuto((heroSlideIdx + 1) % heroSlideCount);

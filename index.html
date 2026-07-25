@@ -103,6 +103,27 @@
                    했음. 대상을 정정: 인증번호 발송 성공 시 "확인" 버튼이
                    3분 동안 계속 깜빡이며, 인증 성공/만료/폼 리셋 시
                    정확히 그 버튼의 깜빡임이 정지되도록 수정
+ v182  2026.07.25  [모바일 전면 대응] 그동안 PC 위주로만 검증했던 것을
+                   모바일로 확장. 실제 접속은 모바일이 더 많은데 상단바가
+                   깨져 있었음.
+                   (1) 전 페이지 가로 넘침 차단(html,body에 overflow-x:hidden,
+                       body max-width:100%). 원인: 상단 국기 6개 줄이 폰 폭을
+                       넘겨 국기가 잘리고 햄버거가 화면 밖으로 밀렸으며, 그
+                       넘침 때문에 그 페이지만 옆으로 스크롤돼 페이지 간
+                       일관성이 없었음.
+                   (2) 모바일 언어선택을 국기 드롭다운(현재 국기+▾)으로,
+                       PC의 국기 일렬 나열은 모바일에서 숨김. 햄버거를 누르면
+                       전체화면 오버레이(국기 줄 + 홈/시술/오시는 길/예약하기/
+                       예약확인하기 + 닫기 X)가 뜨도록 신설.
+                   (3) 죽은 .lang-bar 블록 제거. id(lb-*)가 nav 국기와 중복돼
+                       getElementById가 숨은 쪽을 잡는 바람에 국기 활성표시가
+                       실제로는 숨은 버튼에 걸리던 잠복버그였음. 활성동기화를
+                       querySelectorAll([data-lang]) 방식으로 교체(모든 국기
+                       컨트롤이 함께 갱신됨).
+                   (4) 모바일 히어로에서 인물이 안 보이던 문제: 이미지 파일은
+                       건드리지 않고 object-position만 인물 쪽(72%)으로 조정.
+                       크롭이 어색하면 이 값만 바꾸면 됨(@media 900px 내
+                       .hero-slide{object-position:__% center}).
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -142,13 +163,13 @@
   --border:rgba(184,150,90,0.18);
   --border-mid:rgba(184,150,90,0.3);
 }
-*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
-body{font-family:'Noto Serif KR','Georgia',serif;background:#FDFCFA;color:var(--ink);line-height:1.85;font-size:17px;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;overflow-x:hidden;}
+body{font-family:'Noto Serif KR','Georgia',serif;background:#FDFCFA;color:var(--ink);line-height:1.85;font-size:17px;overflow-x:hidden;max-width:100%;}
+body.menu-open{overflow:hidden;}
 body, body *{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif!important;}
 a{color:inherit;text-decoration:none;}
 
 /* LANG BAR */
-.lang-bar{display:none;}
 .lang-btn{
   padding:0 .55rem;height:28px;background:none;border:none;
   border-right:0.5px solid rgba(255,255,255,.3);
@@ -203,8 +224,38 @@ nav.nav-scrolled{
 .nav-scrolled .nav-book{background:var(--ink);border-color:var(--ink);color:var(--white)!important;}
 .nav-scrolled .nav-book:hover{background:#000;color:var(--white)!important;}
 .nav-book:hover{background:#000;border-color:#000;}
-.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;}
+.hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;line-height:1;}
 .nav-scrolled .hamburger{color:var(--ink);}
+
+/* 상단 국기 그룹(PC) */
+.nav-lang-group{display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:.5px solid var(--border);}
+
+/* 모바일 언어 드롭다운(현재 국기 + ▾) */
+.m-lang{display:none;position:relative;margin-left:.3rem;}
+.m-lang-cur{display:flex;align-items:center;gap:.25rem;background:none;border:none;cursor:pointer;padding:.3rem .25rem;}
+.m-lang-cur img{width:24px;height:auto;border-radius:2px;display:block;box-shadow:0 0 0 .5px rgba(0,0,0,.15);}
+.m-lang-caret{font-size:.7rem;color:var(--white);transition:color .4s,transform .25s;}
+.nav-scrolled .m-lang-caret{color:var(--ink);}
+.m-lang.open .m-lang-caret{transform:rotate(180deg);}
+.m-lang-list{position:absolute;top:calc(100% + .5rem);right:0;background:var(--white);border:.5px solid var(--border-mid);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,.14);padding:.4rem;min-width:150px;display:none;flex-direction:column;z-index:120;}
+.m-lang.open .m-lang-list{display:flex;}
+.m-lang-list .lang-btn{display:flex;align-items:center;gap:.6rem;width:100%;padding:.55rem .7rem;border:none;background:none;border-radius:7px;cursor:pointer;font-family:'Noto Serif KR','Georgia',serif;font-size:.9rem;color:var(--ink-mid);opacity:1;height:auto;justify-content:flex-start;}
+.m-lang-list .lang-btn img{width:24px;}
+.m-lang-list .lang-btn:hover{background:var(--cream-mid);color:var(--ink-mid);}
+.m-lang-list .lang-btn.active{color:var(--gold-dark);font-weight:700;background:var(--cream-mid);}
+
+/* 모바일 전체화면 메뉴(이미지3 스타일) */
+.m-menu{position:fixed;inset:0;z-index:200;background:var(--white);padding:1.2rem 1.4rem 2rem;display:flex;flex-direction:column;opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity .25s ease,transform .25s ease,visibility .25s;}
+.m-menu.open{opacity:1;visibility:visible;transform:translateY(0);}
+.m-menu-close{align-self:flex-end;background:none;border:none;font-size:1.5rem;color:var(--ink);cursor:pointer;line-height:1;padding:.3rem .4rem;}
+.m-menu-flags{display:flex;justify-content:center;gap:.35rem;flex-wrap:wrap;padding:.4rem 0 1.3rem;border-bottom:.5px solid var(--border);}
+.m-menu-flags .lang-btn{padding:.3rem;height:auto;opacity:1;border:none;background:none;cursor:pointer;border-radius:5px;}
+.m-menu-flags .lang-btn img{width:34px;height:auto;border-radius:3px;display:block;box-shadow:0 0 0 .5px rgba(0,0,0,.15);}
+.m-menu-flags .lang-btn.active{box-shadow:0 0 0 2px var(--gold-dark);}
+.m-menu-links{display:flex;flex-direction:column;}
+.m-menu-links a{display:block;padding:1.15rem .2rem;text-align:center;font-family:'Noto Serif KR','Georgia',serif;font-size:1.05rem;color:var(--ink);cursor:pointer;border-bottom:.5px solid var(--border);transition:background .15s;}
+.m-menu-links a:active{background:var(--cream-mid);}
+
 .pt{padding-top:70px;background:#FDFCFA;min-height:100vh;}
 
 /* HERO */
@@ -557,8 +608,9 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 
 /* Responsive */
 @media(max-width:900px){
-  nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:block;}
-  .lang-bar{padding:0 1rem;}.lang-btn{padding:0 .6rem;font-size:.67rem;}
+  nav{padding:0 1.2rem;}.nav-links{display:none;}.hamburger{display:block;}
+  .nav-lang-group{display:none;}.m-lang{display:block;}
+  .hero-slide{object-position:72% center;}
   .visit-info{grid-template-columns:1fr 1fr;}
   .tx-grid{grid-template-columns:repeat(2,1fr);}.tx-card{border:none;}
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
@@ -568,16 +620,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 </style>
 </head>
 <body>
-
-<!-- LANG BAR -->
-<div class="lang-bar">
-  <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
-  <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
-  <button class="lang-btn" id="lb-ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
-  <button class="lang-btn" id="lb-cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
-  <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
-  <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
-</div>
 
 <!-- NAV -->
 <nav>
@@ -591,7 +633,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v181</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v182</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -599,16 +641,50 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
     <li><a href="#" onclick="showPage('home');setTimeout(function(){document.getElementById('visit').scrollIntoView({behavior:'smooth'})},100)" data-t="nav.visit">오시는 길</a></li>
     <li><a href="#" onclick="showPage('booking');initBooking()" class="nav-book" data-t="nav.book">예약하기</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:0;margin-left:1.5rem;border-left:0.5px solid var(--border);" id="nav-lang-group">
-    <button class="lang-btn active" id="lb-ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
-    <button class="lang-btn" id="lb-en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
-    <button class="lang-btn" id="lb-ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
-    <button class="lang-btn" id="lb-cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
-    <button class="lang-btn" id="lb-zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
-    <button class="lang-btn" id="lb-ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
+  <div class="nav-lang-group" id="nav-lang-group">
+    <button class="lang-btn active" data-lang="ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+    <button class="lang-btn" data-lang="ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
+    <button class="lang-btn" data-lang="cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
+    <button class="lang-btn" data-lang="zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
+    <button class="lang-btn" data-lang="ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
+  </div>
+  <!-- 모바일 언어 드롭다운 -->
+  <div class="m-lang" id="m-lang">
+    <button class="m-lang-cur" onclick="toggleLangMenu(event)" aria-label="언어 선택" aria-haspopup="true">
+      <img id="m-lang-flag" src="https://flagcdn.com/w40/kr.png" alt=""><span class="m-lang-caret">&#9662;</span>
+    </button>
+    <div class="m-lang-list" id="m-lang-list">
+      <button class="lang-btn" data-lang="ko" onclick="setLang('ko');closeLangMenu()"><img src="https://flagcdn.com/w40/kr.png" alt=""><span>한국어</span></button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en');closeLangMenu()"><img src="https://flagcdn.com/w40/us.png" alt=""><span>English</span></button>
+      <button class="lang-btn" data-lang="ja" onclick="setLang('ja');closeLangMenu()"><img src="https://flagcdn.com/w40/jp.png" alt=""><span>日本語</span></button>
+      <button class="lang-btn" data-lang="cn" onclick="setLang('cn');closeLangMenu()"><img src="https://flagcdn.com/w40/cn.png" alt=""><span>简体中文</span></button>
+      <button class="lang-btn" data-lang="zh" onclick="setLang('zh');closeLangMenu()"><img src="https://flagcdn.com/w40/tw.png" alt=""><span>繁體中文</span></button>
+      <button class="lang-btn" data-lang="ar" onclick="setLang('ar');closeLangMenu()"><img src="https://flagcdn.com/w40/sa.png" alt=""><span>العربية</span></button>
+    </div>
   </div>
   <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
 </nav>
+
+<!-- MOBILE MENU (전체화면 오버레이) -->
+<div class="m-menu" id="m-menu" aria-hidden="true">
+  <button class="m-menu-close" onclick="toggleMenu()" aria-label="닫기">&#10005;</button>
+  <div class="m-menu-flags">
+    <button class="lang-btn" data-lang="ko" onclick="setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+    <button class="lang-btn" data-lang="ja" onclick="setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
+    <button class="lang-btn" data-lang="cn" onclick="setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
+    <button class="lang-btn" data-lang="zh" onclick="setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
+    <button class="lang-btn" data-lang="ar" onclick="setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
+  </div>
+  <div class="m-menu-links">
+    <a onclick="mNav(function(){showPage('home')})" data-t="nav.home">홈</a>
+    <a onclick="mNav(function(){showPage('home');setTimeout(function(){var t=document.getElementById('treatments');if(t)t.scrollIntoView({behavior:'smooth'})},150)})" data-t="nav.tx">시술</a>
+    <a onclick="mNav(function(){showPage('home');setTimeout(function(){var t=document.getElementById('visit');if(t)t.scrollIntoView({behavior:'smooth'})},150)})" data-t="nav.visit">오시는 길</a>
+    <a onclick="mNav(function(){showPage('booking');initBooking()})" data-t="nav.book">예약하기</a>
+    <a onclick="mNav(function(){showPage('my-booking')})" data-t="hero.learn">예약확인하기</a>
+  </div>
+</div>
 
 <!-- ADMIN FAB -->
 <button class="adm-fab" id="adm-fab-btn" onclick="openAdm()" title="문구 편집">&#9998;</button>
@@ -1547,14 +1623,20 @@ var lang = "ko";
 })();
 var SHEET_URL = "https://script.google.com/macros/s/AKfycbztLpcdHnilUl8HoZprRSZt88oorcQ3BxxFIkPvtAavsKgjgMAzUiCdzdFROjGDusplHw/exec";
 
+var LANG_FLAG = { ko:"kr", en:"us", ja:"jp", cn:"cn", zh:"tw", ar:"sa" };
+function syncLangUI(l) {
+  document.querySelectorAll("[data-lang]").forEach(function(el){
+    el.classList.toggle("active", el.getAttribute("data-lang") === l);
+  });
+  var mf = document.getElementById("m-lang-flag");
+  if (mf && LANG_FLAG[l]) mf.src = "https://flagcdn.com/w40/" + LANG_FLAG[l] + ".png";
+}
 function setLang(l) {
   lang = l;
   localStorage.setItem("elliya_lang", l);
   document.documentElement.lang = l;
   document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
-  ["ko","en","zh","ar","ja","cn"].forEach(function(x) {
-    document.getElementById("lb-"+x).classList.toggle("active", x === l);
-  });
+  syncLangUI(l);
   applyT();
   renderCal();
   var mk = document.getElementById("map-ko"), mg = document.getElementById("map-global");
@@ -2390,10 +2472,30 @@ function saveAndTranslate() {
 }
 
 function toggleMenu() {
-  var links=document.querySelector(".nav-links");
-  if(links.style.display==="flex") links.style.display="";
-  else links.style.cssText="display:flex;flex-direction:column;position:fixed;top:98px;left:0;right:0;background:var(--cream);padding:1.5rem 2rem;border-bottom:.5px solid var(--border-mid);z-index:99;gap:1.2rem;";
+  var m = document.getElementById("m-menu");
+  if (!m) return;
+  var open = m.classList.toggle("open");
+  m.setAttribute("aria-hidden", open ? "false" : "true");
+  document.body.classList.toggle("menu-open", open);
+  if (open) closeLangMenu();
 }
+function mNav(fn) {
+  toggleMenu();
+  if (typeof fn === "function") setTimeout(fn, 60);
+}
+function toggleLangMenu(e) {
+  if (e) e.stopPropagation();
+  var w = document.getElementById("m-lang");
+  if (w) w.classList.toggle("open");
+}
+function closeLangMenu() {
+  var w = document.getElementById("m-lang");
+  if (w) w.classList.remove("open");
+}
+document.addEventListener("click", function(e) {
+  var w = document.getElementById("m-lang");
+  if (w && w.classList.contains("open") && !w.contains(e.target)) w.classList.remove("open");
+});
 
 
 // ── 나의 예약확인 ──
@@ -2561,10 +2663,7 @@ buildCList(""); renderCal();
 // 감지/저장된 언어를 실제 화면에 적용 + 국기 활성 표시 동기화
 document.documentElement.lang = lang;
 document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
-["ko","en","zh","ar","ja","cn"].forEach(function(x){
-  var el = document.getElementById("lb-"+x);
-  if (el) el.classList.toggle("active", x === lang);
-});
+syncLangUI(lang);
 applyT();
 
 // ── NAV: 홈 첫 화면에선 투명, 스크롤하거나 다른 페이지에선 흰 바 ──

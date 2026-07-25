@@ -145,6 +145,13 @@
                    고정폭을 준 게 아니라 이 최소폭에 걸린 것. 해결: 관련
                    그리드를 minmax(0,1fr)로, .cal-d/.t-slot/.bk-ct에 min-width:0
                    추가해 폭에 맞춰 줄어들게 함. 모바일 시간칸은 2열(탭 편의).
+ v185  2026.07.25  [모바일 정보입력 — 인증버튼 잘림] 이메일/인증번호 행
+                   (.f-inline)이 flex-wrap 없이 한 줄인데 입력칸에 min-width:0
+                   이 없어 안 줄고 .btn-verify는 flex-shrink:0이라, 합이 폭을
+                   넘겨 "인증번호 발송/재발송/확인" 버튼이 오른쪽으로 잘렸음.
+                   .f-inline에 flex-wrap:wrap, .f-inline .f-inp에 min-width:0
+                   추가 → 입력칸이 줄어 버튼이 화면 안에 들어오고, 정 좁으면
+                   버튼이 아래 줄로 내려감.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -531,7 +538,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .btn-verify{flex-shrink:0;padding:0 1rem;border:1px solid var(--ink);border-radius:2px;background:var(--ink);color:var(--white);font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity .2s;}
 .btn-verify:disabled{opacity:.4;cursor:not-allowed;}
 .btn-verify.sent{background:var(--white);color:var(--ink);border-color:var(--border-mid);}
-.f-inline{display:flex;gap:.5rem;}
+.f-inline{display:flex;gap:.5rem;flex-wrap:wrap;}
+.f-inline .f-inp{min-width:0;flex:1 1 9rem;}
 /* 커스텀 확인 모달 */
 .cf-overlay{position:fixed;inset:0;background:rgba(20,17,15,.55);z-index:9000;display:none;align-items:center;justify-content:center;padding:1.5rem;}
 .cf-overlay.show{display:flex;}
@@ -658,7 +666,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v184</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v185</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

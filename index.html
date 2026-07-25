@@ -155,6 +155,19 @@
                        6개+닫기(X), 아래에 홈/시술/오시는길/예약하기. 국기 선택
                        시 언어 변경+메뉴 닫힘, 열릴 때 뒤 배경 스크롤 잠금.
                        상단 국기 드롭다운(v184)은 그대로 유지(메뉴 열기 전 노출).
+ v186  2026.07.25  [모바일 메뉴 버그 수정] v185 전체화면 메뉴에서
+                   (1)국기와 메뉴 항목이 겹치고 (2)국기/X 클릭이 안 먹던
+                   문제 대응. 원인 후보를 정리해 수정:
+                   - .mmenu의 display:none/flex 구조가 flex-direction과
+                     충돌할 여지 → .open일 때 flex 레이아웃을 한 번에 지정.
+                   - z-index 1000→9500으로 올려 nav 등에 클릭 가로채이지
+                     않게 함.
+                   - 국기 크기 40→32px, 간격 축소로 겹침 방지.
+                   - 국기 onclick 순서를 closeMenu() 먼저로 바꿔, setLang이
+                     지연돼도 메뉴는 확실히 닫히게.
+                   ※ 전부 모바일 한정, PC·서버(Code.gs) 무관.
+                   ※ 예약화면 달력잘림/시간대, 인증메일 미도착은 별개 사안
+                     (booking UI·서버측)으로 이 버전 범위 아님.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -261,17 +274,18 @@ nav.nav-scrolled{
 .hamburger{display:none;cursor:pointer;font-size:1.4rem;color:var(--white);transition:color .4s;}
 .nav-scrolled .hamburger{color:var(--ink);}
 /* 전체화면 모바일 메뉴(xenia 스타일): 기본 숨김, .open일 때 전체 표시.
-   PC에선 햄버거 자체가 안 보여 호출되지 않음 */
-.mmenu{display:none;position:fixed;inset:0;z-index:1000;background:var(--white);flex-direction:column;}
-.mmenu.open{display:flex;}
-.mmenu-top{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 1.2rem;border-bottom:.5px solid var(--border);}
-.mmenu-flags{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;}
-.mm-flag{background:none;border:none;padding:0;cursor:pointer;line-height:0;}
-.mm-flag img{width:40px;height:auto;border-radius:3px;box-shadow:0 0 0 .5px rgba(0,0,0,.15);display:block;}
-.mm-flag.active img{box-shadow:0 0 0 2px var(--gold-dark);}
-.mmenu-close{background:none;border:none;font-size:2rem;line-height:1;color:var(--ink);cursor:pointer;padding:0 .3rem;}
-.mmenu-links{display:flex;flex-direction:column;padding:1rem 0;}
-.mmenu-links a{display:block;text-align:center;padding:1.3rem 1rem;font-size:1.15rem;color:var(--ink);border-bottom:.5px solid var(--border);font-family:'Noto Serif KR','Georgia',serif;letter-spacing:.02em;}
+   PC에선 햄버거 자체가 안 보여 호출되지 않음.
+   z-index를 nav/기타 오버레이보다 확실히 높게(9500) 두어 클릭 가로채기 방지 */
+.mmenu{display:none;}
+.mmenu.open{display:flex;flex-direction:column;position:fixed;inset:0;z-index:9500;background:var(--white);overflow-y:auto;}
+.mmenu-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;padding:1rem 1rem;border-bottom:.5px solid var(--border);flex:0 0 auto;}
+.mmenu-flags{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;}
+.mm-flag{background:none;border:none;padding:.15rem;cursor:pointer;line-height:0;border-radius:3px;}
+.mm-flag img{width:32px;height:auto;border-radius:2px;box-shadow:0 0 0 .5px rgba(0,0,0,.15);display:block;}
+.mm-flag.active{box-shadow:0 0 0 2px var(--gold-dark);}
+.mmenu-close{background:none;border:none;font-size:2rem;line-height:1;color:var(--ink);cursor:pointer;padding:.2rem .5rem;flex:0 0 auto;}
+.mmenu-links{display:flex;flex-direction:column;padding:.5rem 0;}
+.mmenu-links a{display:block;text-align:center;padding:1.4rem 1rem;font-size:1.15rem;color:var(--ink);border-bottom:.5px solid var(--border);font-family:'Noto Serif KR','Georgia',serif;letter-spacing:.02em;}
 .mmenu-links a:active{background:var(--cream-mid);}
 .pt{padding-top:70px;background:#FDFCFA;min-height:100vh;}
 
@@ -697,7 +711,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v185</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v186</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -726,12 +740,12 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 <div class="mmenu" id="mmenu">
   <div class="mmenu-top">
     <div class="mmenu-flags">
-      <button class="mm-flag" onclick="setLang('ko');closeMenu()"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
-      <button class="mm-flag" onclick="setLang('en');closeMenu()"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
-      <button class="mm-flag" onclick="setLang('ja');closeMenu()"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
-      <button class="mm-flag" onclick="setLang('cn');closeMenu()"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
-      <button class="mm-flag" onclick="setLang('zh');closeMenu()"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
-      <button class="mm-flag" onclick="setLang('ar');closeMenu()"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
+      <button class="mm-flag" onclick="closeMenu();setLang('ko')"><img src="https://flagcdn.com/w40/kr.png" alt="KR"></button>
+      <button class="mm-flag" onclick="closeMenu();setLang('en')"><img src="https://flagcdn.com/w40/us.png" alt="US"></button>
+      <button class="mm-flag" onclick="closeMenu();setLang('ja')"><img src="https://flagcdn.com/w40/jp.png" alt="JP"></button>
+      <button class="mm-flag" onclick="closeMenu();setLang('cn')"><img src="https://flagcdn.com/w40/cn.png" alt="CN"></button>
+      <button class="mm-flag" onclick="closeMenu();setLang('zh')"><img src="https://flagcdn.com/w40/tw.png" alt="TW"></button>
+      <button class="mm-flag" onclick="closeMenu();setLang('ar')"><img src="https://flagcdn.com/w40/sa.png" alt="SA"></button>
     </div>
     <button class="mmenu-close" onclick="closeMenu()" aria-label="닫기">&times;</button>
   </div>

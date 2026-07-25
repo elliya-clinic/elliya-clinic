@@ -103,6 +103,16 @@
                    했음. 대상을 정정: 인증번호 발송 성공 시 "확인" 버튼이
                    3분 동안 계속 깜빡이며, 인증 성공/만료/폼 리셋 시
                    정확히 그 버튼의 깜빡임이 정지되도록 수정
+ v182  2026.07.25  [모바일 버그] 시술 카드(SIGNATURE TREATMENTS)가 모바일에서
+                   심하게 깨지던 문제 수정. 원인은 .tx-grid의
+                   max-width:calc(100% - 360px)가 모바일 미디어쿼리에서
+                   해제되지 않아, 좁은 화면에서 카드 그리드가 30px 안팎의
+                   띠에 갇히면서 제목("소프웨이/브")·본문이 세로로 쪼개진 것.
+                   900px 이하에서 max-width:none로 풀고, 좌우여백 4vw,
+                   word-break:keep-all(단어 중간 줄바꿈 방지), 글자
+                   clamp()로 폭에 유연하게 대응하도록 정리. 카드 비율은
+                   기존(900/1264) 그대로 유지.
+                   ※ CSS만 수정, HTML/JS·데스크톱 레이아웃은 손대지 않음
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -560,7 +570,11 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   nav{padding:0 1.5rem;}.nav-links{display:none;}.hamburger{display:block;}
   .lang-bar{padding:0 1rem;}.lang-btn{padding:0 .6rem;font-size:.67rem;}
   .visit-info{grid-template-columns:1fr 1fr;}
-  .tx-grid{grid-template-columns:repeat(2,1fr);}.tx-card{border:none;}
+  .tx-grid{grid-template-columns:repeat(2,1fr);max-width:none;gap:2rem 1rem;padding:0 4vw 1rem;}
+  .tx-card{border:none;}
+  .tx-name{font-size:clamp(.82rem,3.6vw,.95rem);margin:.6rem 0 .25rem;word-break:keep-all;}
+  .tx-desc{font-size:clamp(.68rem,3vw,.78rem);line-height:1.55;word-break:keep-all;}
+  .tx-sec{padding:1.5rem 0 1.2rem;}
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
   .f-row{grid-template-columns:1fr;}
@@ -591,7 +605,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v181</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v182</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

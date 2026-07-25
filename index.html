@@ -124,6 +124,18 @@
                    애니메이션 정지(contain과 함께 쓰면 어색해서).
                    ※ PC(901px↑) 히어로는 기존 cover 방식 그대로,
                      슬라이드 개수 자동판별 로직도 미변경
+ v184  2026.07.25  [모바일 히어로 재설계] v183 contain 방식이 사진마다
+                   종횡비가 달라 이미지 영역 높이가 슬라이드별로 들쭉날쭉
+                   하고, 이미지와 버튼 사이가 휑하게 벌어지던 문제 해결.
+                   이미지 영역(.hero-bg) 높이를 58vh로 고정하고 그 안에서
+                   contain 처리 → 어떤 비율의 사진을 올려도 (1)인물 안 잘림
+                   (2)영역 높이 항상 일정 (3)버튼 위치 항상 고정. 사진이 못
+                   채우는 부분은 배경 크림톤(cream-mid)으로 흡수. 버튼·도트는
+                   절대위치를 풀어 이미지 영역 아래 일반 흐름으로 배치, 도트는
+                   밝은 배경에 맞게 어두운 색으로 조정.
+                   ★ 원장님이 어떤 사진을 올려도 코드 수정 없이 일정하게
+                     나오게 하는 것이 목적(이미지 교체 시 재작업 불필요).
+                   ※ PC(901px↑)는 기존 cover 레이아웃 그대로, 개수 로직 미변경
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -589,13 +601,21 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
   .f-row{grid-template-columns:1fr;}
-  /* 히어로: 모바일에서만 사진 전체가 보이도록 contain 처리(인물 잘림 방지).
-     어떤 사진을 올려도 코드 수정 없이 전부 보이게 하는 것이 목적.
-     여백은 배경 크림톤으로 자연스럽게, 이미지는 위쪽 정렬해 아래 여백에 버튼이 놓이도록 함.
-     ※ PC(901px↑)는 기존 cover 방식 그대로 유지 */
-  .hero{background:var(--cream);}
-  .hero-slide{object-fit:contain;object-position:center top;animation:none;transform:none;}
-  .hero-slide:nth-child(2){object-position:center top;}
+  /* 히어로(모바일 전용): 사진 비율이 제각각이어도 항상 일정하게 보이도록 재구성.
+     - 이미지 영역 높이를 고정(58vh)하고 그 안에서 contain → 어떤 비율의 사진도
+       인물 안 잘리고 전부 보임. 사진이 못 채우는 부분은 배경 크림톤으로 흡수.
+     - 슬라이드를 넘겨도 이미지 영역 높이가 항상 같아 버튼 위치도 고정됨.
+     - 버튼은 절대위치를 풀고 이미지 영역 바로 아래 일반 흐름에 배치.
+     ★ 목적: 원장님이 어떤 사진을 올려도 코드 수정 없이 일정하게 나오게 함.
+     ※ PC(901px↑)는 기존 cover 방식·레이아웃 그대로 유지 */
+  .hero{height:auto;min-height:0;flex-direction:column;justify-content:flex-start;padding:0;background:var(--white);}
+  .hero-bg{position:relative;inset:auto;width:100%;height:58vh;background:var(--cream-mid);}
+  .hero-slide{position:absolute;inset:0;object-fit:contain;object-position:center;background:var(--cream-mid);animation:none;transform:none;}
+  .hero-slide:nth-child(2){object-position:center;}
+  .hero-ct{position:static;transform:none;left:auto;bottom:auto;width:100%;padding:1.6rem 1rem 2.2rem;}
+  .hero-dots{position:static;transform:none;left:auto;bottom:auto;justify-content:center;margin-top:1.4rem;}
+  .hero-dot{background:rgba(28,25,22,.25);}
+  .hero-dot.active{background:var(--ink);}
 }
 </style>
 </head>
@@ -623,7 +643,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v183</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v184</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

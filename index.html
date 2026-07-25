@@ -124,6 +124,18 @@
                        건드리지 않고 object-position만 인물 쪽(72%)으로 조정.
                        크롭이 어색하면 이 값만 바꾸면 됨(@media 900px 내
                        .hero-slide{object-position:__% center}).
+ v183  2026.07.25  [모바일 2차] v182 배포 후 발견된 모바일 이슈 정리.
+                   (1) 시술카드 찌그러짐: .tx-grid에 걸린 PC용
+                       max-width:calc(100% - 360px)가 모바일에서 폭을 거의
+                       0으로 만들어 카드가 가운데로 짜부라졌음. 모바일에서
+                       max-width:100%로 풀고 2열 간격을 정상화.
+                   (2) 예약화면: 예약하기를 누르면 단계목록(1·2·3·4)이 먼저
+                       뜨던 것을 모바일에선 .bk-steps 숨김 → 달력이 바로
+                       보이도록 변경. .bk-inner 좌우 여백을 줄여 달력·시간·
+                       "다음" 버튼이 폭 안에 들어오게 정리(v181에서 달력/시각이
+                       잘리고 다음 버튼이 안 보이던 건 국기줄 넘침이 레이아웃
+                       폭을 늘린 탓이었고, v182에서 국기줄을 숨기며 해소됨.
+                       여기선 여백만 추가 정리).
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -612,8 +624,12 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   .nav-lang-group{display:none;}.m-lang{display:block;}
   .hero-slide{object-position:72% center;}
   .visit-info{grid-template-columns:1fr 1fr;}
-  .tx-grid{grid-template-columns:repeat(2,1fr);}.tx-card{border:none;}
-  .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
+  .tx-grid{grid-template-columns:repeat(2,1fr);max-width:100%;gap:2rem 1rem;padding-bottom:.5rem;}.tx-card{border:none;}
+  .philo-grid{grid-template-columns:1fr;}
+  .bk-inner{grid-template-columns:1fr;padding:1.4rem 1.1rem 3rem;}
+  .bk-steps{display:none;}
+  .cal-wrap{padding:.85rem;}
+  .time-slots{grid-template-columns:repeat(3,1fr);gap:.55rem;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
   .f-row{grid-template-columns:1fr;}
 }
@@ -633,7 +649,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v182</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v183</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

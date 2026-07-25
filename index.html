@@ -113,6 +113,17 @@
                    clamp()로 폭에 유연하게 대응하도록 정리. 카드 비율은
                    기존(900/1264) 그대로 유지.
                    ※ CSS만 수정, HTML/JS·데스크톱 레이아웃은 손대지 않음
+ v183  2026.07.25  [모바일 히어로] 인물이 좌/우 가장자리에 치우친 사진이
+                   모바일 세로화면에서 object-fit:cover로 잘려 배경만
+                   보이던 문제 수정. 모바일(900px↓)에서만 object-fit을
+                   contain으로 바꿔, 어떤 사진을 올려도 코드 수정 없이
+                   인물이 잘리지 않고 전부 보이도록 함(원장님 요구:
+                   이미지 교체 시 재작업 불필요). 이미지는 위쪽 정렬,
+                   생기는 아래 여백은 배경 크림톤 처리, 하단 고정 버튼이
+                   그 위에 자연스럽게 놓임. 모바일에선 켄번즈 줌
+                   애니메이션 정지(contain과 함께 쓰면 어색해서).
+                   ※ PC(901px↑) 히어로는 기존 cover 방식 그대로,
+                     슬라이드 개수 자동판별 로직도 미변경
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -578,6 +589,13 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   .philo-grid{grid-template-columns:1fr;}.bk-inner{grid-template-columns:1fr;}.bk-steps{position:static;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
   .f-row{grid-template-columns:1fr;}
+  /* 히어로: 모바일에서만 사진 전체가 보이도록 contain 처리(인물 잘림 방지).
+     어떤 사진을 올려도 코드 수정 없이 전부 보이게 하는 것이 목적.
+     여백은 배경 크림톤으로 자연스럽게, 이미지는 위쪽 정렬해 아래 여백에 버튼이 놓이도록 함.
+     ※ PC(901px↑)는 기존 cover 방식 그대로 유지 */
+  .hero{background:var(--cream);}
+  .hero-slide{object-fit:contain;object-position:center top;animation:none;transform:none;}
+  .hero-slide:nth-child(2){object-position:center top;}
 }
 </style>
 </head>
@@ -605,7 +623,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v182</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v183</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

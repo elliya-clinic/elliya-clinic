@@ -152,6 +152,22 @@
                    .f-inline에 flex-wrap:wrap, .f-inline .f-inp에 min-width:0
                    추가 → 입력칸이 줄어 버튼이 화면 안에 들어오고, 정 좁으면
                    버튼이 아래 줄로 내려감.
+ v186  2026.07.25  [모바일 완료화면 + 중국어 통일]
+                   (1) 예약완료 상세(.cfm-row)가 모바일에서 라벨-값 좌우
+                       배치라 값이 줄바꿈되며 어수선했음 → 모바일에선 라벨/값
+                       세로로 쌓고 왼쪽 정렬(PC는 기존 좌우정렬 유지).
+                   (2) 중국어 간체(cn) 시술 표시이름(T.cn)이 절반은 영어로
+                       비어 목록에 영어가 섞여 보였음. 저장용 SVCS.name.cn은
+                       이미 "브랜드+중국어"로 통일돼 있어(sig1만 빠짐) 그
+                       형식에 맞춰 T.cn 6개 이름 통일 + SVCS sig1 cn도 보완.
+                       (예: Sofwave→Sofwave 舒芙波, 钛金→钛金拉提). 이제
+                       목록·예약요약·완료화면 모두 동일 표기.
+ v187  2026.07.25  [인증메일 JSONP 전환 + 새 배포 반영] Code.gs v13 배포에
+                   맞춰 (1) request_verification/verify_code 호출을 fetch →
+                   JSONP(스크립트태그, jsonpRequest 헬퍼)로 전환 → CORS 간헐
+                   실패 및 실패로 보여도 메일이 나가던 중복발송 위험 해소.
+                   (2) SHEET_URL을 v13 새 배포 주소로 교체(index.html +
+                   dashboard.html 동일하게). 인증 로직/화면은 그대로.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -649,6 +665,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   .time-slots{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem;}
   .dt-body{grid-template-columns:1fr;}.dt-side{padding-left:0;border-left:none;border-top:.5px solid var(--border-mid);padding-top:2rem;}
   .f-row{grid-template-columns:1fr;}
+  .cfm-box{padding:1.4rem 1.2rem;}
+  .cfm-row{flex-direction:column;align-items:flex-start;gap:.1rem;}
 }
 </style>
 </head>
@@ -666,7 +684,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v185</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v187</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1587,12 +1605,12 @@ cn: {
 "about.body":"Your Room. Your Doctor. Your Time.<br>在专属私人诊室内，<br>院长亲自为您诊疗。",
 "about.philo":"查看理念",
 "tx.eye":"Signature Treatments","tx.title":"您的蜕变即将开始。",
-"sig1.name":"Sofwave","sig1.desc":"采用SUPERB™超声波技术，将能量广泛均匀地传递至1.5mm深的真皮层，促进弹力与胶原蛋白再生的提升仪器。",
-"sig2.name":"钛金","sig2.desc":"三种波长激光同时照射，无恢复期即可实现肤质、弹力、美白三合一效果的第四代全能提升技术。",
-"sig3.name":"Ultherapy Prime","sig3.desc":"高强度聚焦超声波从真皮层到筋膜层(SMAS)多角度作用，整理脂肪层并促进胶原蛋白生成的提升仪器。",
-"sig4.name":"Onda","sig4.desc":"采用新概念微波技术与探头，实现肌肤紧致与持续胶原蛋白重塑的轮廓雕塑仪器。",
-"sig5.name":"Shurink Universe","sig5.desc":"两种模式、7种探头，深入肌肤各层，提供部位定制化、无死角的弹力提升疗程。",
-"sig6.name":"水光针","sig6.desc":"将有助于肌肤再生与弹力改善的有效成分直接注入或渗透至真皮层的美容疗程。可根据个人肌肤需求定制补水、毛孔细纹改善、美白等成分。",
+"sig1.name":"Sofwave 舒芙波","sig1.desc":"采用SUPERB™超声波技术，将能量广泛均匀地传递至1.5mm深的真皮层，促进弹力与胶原蛋白再生的提升仪器。",
+"sig2.name":"钛金拉提","sig2.desc":"三种波长激光同时照射，无恢复期即可实现肤质、弹力、美白三合一效果的第四代全能提升技术。",
+"sig3.name":"Ultherapy Prime 极线音波尊爵版","sig3.desc":"高强度聚焦超声波从真皮层到筋膜层(SMAS)多角度作用，整理脂肪层并促进胶原蛋白生成的提升仪器。",
+"sig4.name":"Onda 凤凰仪","sig4.desc":"采用新概念微波技术与探头，实现肌肤紧致与持续胶原蛋白重塑的轮廓雕塑仪器。",
+"sig5.name":"Shurink Universe 聚焦音波宇宙版","sig5.desc":"两种模式、7种探头，深入肌肤各层，提供部位定制化、无死角的弹力提升疗程。",
+"sig6.name":"水光针 Skin Booster","sig6.desc":"将有助于肌肤再生与弹力改善的有效成分直接注入或渗透至真皮层的美容疗程。可根据个人肌肤需求定制补水、毛孔细纹改善、美白等成分。",
 "tx1.name":"HIFU聚焦提升","tx1.desc":"聚焦超声波作用于SMAS层，提升松弛轮廓——非手术、无痛、自然。",
 "tx2.name":"埋线提升","tx2.desc":"可吸收线材带来即刻提升效果，并持续数月刺激胶原蛋白生成。",
 "tx3.name":"玻尿酸与肉毒杆菌","tx3.desc":"容量修复与皱纹改善相结合，呈现自然年轻的外观。",
@@ -1654,7 +1672,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbztLpcdHnilUl8HoZprRSZt88oorcQ3BxxFIkPvtAavsKgjgMAzUiCdzdFROjGDusplHw/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbwsNALJlzsp6sjt7e52dbnUtwxEY2gKMKEAytUNuXVPfBz6QEd2n-p32iIaMLPBYom7_w/exec";
 
 var LANG_FLAG = { ko:"kr", en:"us", ja:"jp", cn:"cn", zh:"tw", ar:"sa" };
 function syncLangUI(l) {
@@ -1717,7 +1735,7 @@ function resetMyBookingForm() {
 // =====================================================
 var SVCS = [
   { price: 900000, priceStr: "&#8361; 900,000~",
-    name: {"ko":"소프웨이브","en":"Sofwave","zh":"Sofwave 舒芙波","ar":"سوفويف","ja":"ソフウェーブ","cn":"Sofwave"},
+    name: {"ko":"소프웨이브","en":"Sofwave","zh":"Sofwave 舒芙波","ar":"سوفويف","ja":"ソフウェーブ","cn":"Sofwave 舒芙波"},
     sub:  {"ko":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","en":"SUPERB™ Ultrasound — Dermal Collagen Lifting","zh":"SUPERB™ 超音波技術 — 真皮層膠原拉提","ar":"تقنية SUPERB™ للموجات فوق الصوتية","ja":"SUPERB™超音波技術 — 真皮層コラーゲン再生リフティング","cn":"SUPERB™超声波技术 — 真皮层胶原蛋白再生提升"},
     body: {"ko":"<h2>소프웨이브란?</h2><p>SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>진피층 콜라겐·엘라스틴 재생</li><li>넓고 균일한 에너지 전달로 자연스러운 탄력 개선</li><li>다운타임 없이 일상생활 바로 가능</li></ul>",
            "en":"<h2>What is Sofwave?</h2><p>Using SUPERB™ ultrasound technology, energy is delivered broadly and evenly to the dermis at a 1.5mm depth — regenerating elasticity and collagen.</p><h2>Expected Results</h2><ul><li>Collagen and elastin regeneration in the dermis</li><li>Even, broad energy delivery for natural elasticity</li><li>No downtime</li></ul>",
@@ -1959,6 +1977,32 @@ function clearCodeCountdown() {
   if (codeCountdownTimer) { clearInterval(codeCountdownTimer); codeCountdownTimer = null; }
 }
 
+// JSONP 요청 헬퍼 — CORS 우회(스크립트태그). request_verification/verify_code용(Code.gs v13 대응)
+function jsonpRequest(url, onData, onErr, timeoutMs) {
+  var cbName = "jp_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+  var script = document.createElement("script");
+  var done = false;
+  function cleanup() {
+    clearTimeout(to);
+    try { delete window[cbName]; } catch (e) { window[cbName] = undefined; }
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+  var to = setTimeout(function () {
+    if (done) return; done = true; cleanup();
+    if (onErr) onErr(new Error("timeout"));
+  }, timeoutMs || 12000);
+  window[cbName] = function (data) {
+    if (done) return; done = true; cleanup();
+    if (onData) onData(data);
+  };
+  script.onerror = function () {
+    if (done) return; done = true; cleanup();
+    if (onErr) onErr(new Error("network"));
+  };
+  script.src = url + (url.indexOf("?") >= 0 ? "&" : "?") + "callback=" + cbName;
+  document.body.appendChild(script);
+}
+
 function sendVerifyCode() {
   var em = document.getElementById("f-em").value.trim();
   var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1976,9 +2020,8 @@ function sendVerifyCode() {
 
   var vlang = detectEmailLang();
 
-  fetch(SHEET_URL + "?action=request_verification&email=" + encodeURIComponent(em) + "&lang=" + encodeURIComponent(vlang))
-    .then(function(r){ return r.json(); })
-    .then(function(res){
+  jsonpRequest(SHEET_URL + "?action=request_verification&email=" + encodeURIComponent(em) + "&lang=" + encodeURIComponent(vlang),
+    function(res){
       if (!res || !res.ok) {
         btn.disabled = false;
         alert(tr("al.codeerr") || "인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
@@ -2012,8 +2055,8 @@ function sendVerifyCode() {
           if (!emailVerified) expireVerifyCode();
         }
       }, 1000);
-    })
-    .catch(function(err){
+    },
+    function(err){
       console.error("request_verification error:", err);
       btn.disabled = false;
       alert(tr("al.codeerr") || "인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요.");
@@ -2035,9 +2078,8 @@ function confirmVerifyCode() {
   var okBtn = document.getElementById("btn-confirm-code");
   if (okBtn) okBtn.disabled = true;
 
-  fetch(SHEET_URL + "?action=verify_code&email=" + encodeURIComponent(em) + "&code=" + encodeURIComponent(input))
-    .then(function(r){ return r.json(); })
-    .then(function(res){
+  jsonpRequest(SHEET_URL + "?action=verify_code&email=" + encodeURIComponent(em) + "&code=" + encodeURIComponent(input),
+    function(res){
       if (okBtn) okBtn.disabled = false;
       if (res && res.ok && res.token) {
         emailVerified = em;
@@ -2058,8 +2100,8 @@ function confirmVerifyCode() {
         msg.style.color = "#C0392B";
         msg.textContent = tr("fm.codewrong") || "인증번호가 일치하지 않습니다.";
       }
-    })
-    .catch(function(err){
+    },
+    function(err){
       if (okBtn) okBtn.disabled = false;
       console.error("verify_code error:", err);
       msg.style.color = "#C0392B";

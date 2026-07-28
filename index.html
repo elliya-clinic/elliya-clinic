@@ -168,6 +168,16 @@
                    실패 및 실패로 보여도 메일이 나가던 중복발송 위험 해소.
                    (2) SHEET_URL을 v13 새 배포 주소로 교체(index.html +
                    dashboard.html 동일하게). 인증 로직/화면은 그대로.
+ v188  2026.07.28  [아랍어 RTL 특수처리 제거 + 날짜 통일] 아랍어를 다른 언어
+                   (영·일·중)와 완전히 동일한 구조로. (1) dir을 아랍어일 때만
+                   rtl로 바꾸던 것을 항상 ltr로 고정(setLang·초기화 2곳) — 화면
+                   좌우 반전으로 생기던 정렬 버그 제거, 아랍어 글자는 그대로.
+                   (2) 죽은 [dir="rtl"] 전용 CSS 3줄 삭제. (3) 시술일시 요일이
+                   손님 언어로 저장돼(아랍어면 "(خم)") 시트가 깨지던 버그:
+                   formatDateNaver가 요일을 항상 한국어(KO_DAYS)로 만들도록 수정
+                   → 시트·화면·이메일 모두 "(목) 오후 1:30" 한국식 통일(네이버
+                   형식과 동일). 달력 상단 요일 헤더(일/월/화…)는 UI라 손님 언어
+                   유지(영어면 Sun/Mon…). 아랍어 번역 자체는 그대로 유지.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -647,9 +657,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* RTL */
-[dir="rtl"] .nav-links{flex-direction:row-reverse;}
-[dir="rtl"] .hero-ct{text-align:right;}
-[dir="rtl"] .hero-act{flex-direction:row-reverse;}
+/* 아랍어 RTL 반전 제거(v188): 아랍어도 다른 언어와 동일하게 LTR로 표시 → 전용 [dir=rtl] 규칙 삭제 */
 
 /* Responsive */
 @media(max-width:900px){
@@ -684,7 +692,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v187</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v188</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1686,7 +1694,7 @@ function setLang(l) {
   lang = l;
   localStorage.setItem("elliya_lang", l);
   document.documentElement.lang = l;
-  document.documentElement.dir = l === "ar" ? "rtl" : "ltr";
+  document.documentElement.dir = "ltr"; // 아랍어도 화면 방향은 LTR 고정(글자만 아랍어, 레이아웃 반전 안 함)
   syncLangUI(l);
   applyT();
   renderCal();
@@ -2293,10 +2301,15 @@ function toAmPm(timeStr) {
   var h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
   return ampm + " " + h12 + ":" + m;
 }
+var KO_DAYS = ["일","월","화","수","목","금","토"];
 function formatDateNaver(d, dayStr, timeStr) {
+  // 시술일시의 요일은 UI 언어와 무관하게 항상 한국어로 통일한다.
+  // (시트 저장·화면·이메일 일관 + 네이버 예약 형식과 동일. 아랍어 등에서 요일이
+  //  손님 언어로 저장돼 시트가 깨지던 버그 제거 — v188). dayStr 인자는 하위호환용으로
+  //  받되 무시한다. 참고: 달력 상단 요일 헤더(일/월/화…)는 별도이며 손님 언어 유지.
   return d.getFullYear() + "." +
     String(d.getMonth()+1).padStart(2,"0") + "." +
-    String(d.getDate()).padStart(2,"0") + ".(" + dayStr + ") " +
+    String(d.getDate()).padStart(2,"0") + ".(" + KO_DAYS[d.getDay()] + ") " +
     toAmPm(timeStr);
 }
 
@@ -2737,7 +2750,7 @@ buildCList(""); renderCal();
 
 // 감지/저장된 언어를 실제 화면에 적용 + 국기 활성 표시 동기화
 document.documentElement.lang = lang;
-document.documentElement.dir = (lang === "ar") ? "rtl" : "ltr";
+document.documentElement.dir = "ltr"; // 아랍어도 LTR 고정(RTL 반전 제거)
 syncLangUI(lang);
 applyT();
 

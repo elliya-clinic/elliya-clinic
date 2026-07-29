@@ -187,6 +187,11 @@
  v190  2026.07.29  [SHEET_URL 교체 — Code.gs v19 새 배포] get_booked_times 컬럼
                    축소(v19)로 새 배포하면서 /exec URL 변경 → index.html·dashboard.html
                    SHEET_URL을 새 주소로 교체. 동작·화면 변경 없음.
+ v191  2026.07.29  [로딩 표시 강화] 날짜 클릭 후 예약시간 조회 대기 동안, '시간 선택'
+                   옆 안내를 스피너(회전) + "예약 가능한 시간을 불러오는 중입니다…
+                   잠시만 기다려 주세요"로 변경(6개 언어). 기존 점(...) 애니메이션 →
+                   스피너로 교체. 실제 속도가 아니라 대기 체감(멈춘 것 아님)을 개선하는
+                   용도. 슬롯 자리 shimmer 스켈레톤은 그대로.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -546,6 +551,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 #chk-msg .cdot{display:inline-block;animation:cdot 1.2s infinite;}
 #chk-msg .cdot:nth-child(2){animation-delay:.2s;}
 #chk-msg .cdot:nth-child(3){animation-delay:.4s;}
+#chk-msg .chk-spin{display:inline-block;width:12px;height:12px;border:2px solid #E8D4AC;border-top-color:#9C7A3C;border-radius:50%;animation:chkspin .8s linear infinite;vertical-align:-2px;margin-right:6px;}
+@keyframes chkspin{to{transform:rotate(360deg);}}
 @keyframes cdot{0%,60%,100%{opacity:.2;}30%{opacity:1;}}
 .t-slot.checking{color:transparent;cursor:wait;border-color:var(--border);background:linear-gradient(90deg,#F1EDE6 25%,#FBF9F5 50%,#F1EDE6 75%);background-size:200% 100%;animation:shimmer 1.2s linear infinite;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
@@ -701,7 +708,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v190</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v191</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1374,7 +1381,7 @@ ko: {
 "bk.s3":"정보 입력","bk.s3s":"연락처 & 이름",
 "bk.s4":"예약 확인","bk.s4s":"내용 검토","bk.s5":"완료","bk.s5s":"예약 완료",
 "bk.s1h":"시술을 선택해 주세요","bk.s1p":"원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.",
-"bk.s2h":"날짜와 시간을 선택해 주세요","bk.s2p":"날짜를 선택하신 후 시간을 선택해 주세요.","bk.chk":"예약 가능 시간 확인 중",
+"bk.s2h":"날짜와 시간을 선택해 주세요","bk.s2p":"날짜를 선택하신 후 시간을 선택해 주세요.","bk.chk":"예약 가능한 시간을 불러오는 중입니다… 잠시만 기다려 주세요",
 "bk.s3h":"정보를 입력해 주세요","bk.s3p":"예약 확인을 위해 아래 정보를 입력해 주세요.",
 "bk.s4h":"예약 내용을 확인해 주세요","bk.s4p":"아래 내용이 맞으면 예약 완료 버튼을 눌러주세요.",
 "bk.sd1":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","bk.sd2":"3파장 동시 조사 — 올인원 4세대 리프팅",
@@ -1430,7 +1437,7 @@ en: {
 "bk.s3":"Your Info","bk.s3s":"Contact & name",
 "bk.s4":"Confirm","bk.s4s":"Review details","bk.s5":"Done","bk.s5s":"Booking complete",
 "bk.s1h":"Select a Treatment","bk.s1p":"Choose a service and you will advance to the next step automatically.",
-"bk.s2h":"Choose Date & Time","bk.s2p":"Select a date, then pick your preferred time.","bk.chk":"Checking available times",
+"bk.s2h":"Choose Date & Time","bk.s2p":"Select a date, then pick your preferred time.","bk.chk":"Loading available times… please wait a moment",
 "bk.s3h":"Your Information","bk.s3p":"Please fill in your details so we can confirm your booking.",
 "bk.s4h":"Review Your Booking","bk.s4p":"Please confirm everything looks correct before submitting.",
 "bk.sd1":"SUPERB™ Ultrasound — Dermal Collagen Lifting","bk.sd2":"3-Wavelength Laser — All-in-One 4th-Gen Lifting",
@@ -1486,7 +1493,7 @@ zh: {
 "bk.s3":"填寫資料","bk.s3s":"聯絡資訊",
 "bk.s4":"確認預約","bk.s4s":"確認內容","bk.s5":"完成","bk.s5s":"預約完成",
 "bk.s1h":"請選擇療程","bk.s1p":"選擇後將自動進入下一步。",
-"bk.s2h":"請選擇日期與時間","bk.s2p":"選擇日期後，請選擇您偏好的時間。","bk.chk":"正在確認可預約時間",
+"bk.s2h":"請選擇日期與時間","bk.s2p":"選擇日期後，請選擇您偏好的時間。","bk.chk":"正在載入可預約時間…請稍候",
 "bk.s3h":"請填寫您的資料","bk.s3p":"請填寫以下資料以確認您的預約。",
 "bk.s4h":"確認預約內容","bk.s4p":"確認無誤後，請點擊確認預約。",
 "bk.sd1":"SUPERB™ 超音波技術 — 真皮層膠原拉提","bk.sd2":"三波長雷射同步 — 第四代全能拉提",
@@ -1542,7 +1549,7 @@ ar: {
 "bk.s3":"بياناتك","bk.s3s":"معلومات التواصل",
 "bk.s4":"تأكيد الحجز","bk.s4s":"مراجعة التفاصيل","bk.s5":"تم","bk.s5s":"اكتمل الحجز",
 "bk.s1h":"اختر علاجاً","bk.s1p":"اختر خدمة وسيتقدم النظام تلقائياً للخطوة التالية.",
-"bk.s2h":"اختر التاريخ والوقت","bk.s2p":"حدد تاريخاً ثم اختر وقتك المفضل.","bk.chk":"جارٍ التحقق من الأوقات المتاحة",
+"bk.s2h":"اختر التاريخ والوقت","bk.s2p":"حدد تاريخاً ثم اختر وقتك المفضل.","bk.chk":"جارٍ تحميل الأوقات المتاحة… يرجى الانتظار قليلاً",
 "bk.s3h":"أدخل بياناتك","bk.s3p":"يرجى ملء البيانات أدناه لتأكيد حجزك.",
 "bk.s4h":"راجع حجزك","bk.s4p":"تأكد من صحة المعلومات ثم اضغط تأكيد الحجز.",
 "bk.sd1":"تقنية SUPERB™ للموجات فوق الصوتية","bk.sd2":"ثلاث موجات ليزر متزامنة",
@@ -1598,7 +1605,7 @@ ja: {
 "bk.s3":"お客様情報","bk.s3s":"連絡先とお名前",
 "bk.s4":"確認","bk.s4s":"内容確認","bk.s5":"完了","bk.s5s":"予約完了",
 "bk.s1h":"施術を選択してください","bk.s1p":"ご希望の施術を選択すると自動的に次のステップへ進みます。",
-"bk.s2h":"日付と時間を選択してください","bk.s2p":"日付を選択した後、ご希望の時間をお選びください。","bk.chk":"予約可能な時間を確認中",
+"bk.s2h":"日付と時間を選択してください","bk.s2p":"日付を選択した後、ご希望の時間をお選びください。","bk.chk":"予約可能な時間を読み込んでいます…少々お待ちください",
 "bk.s3h":"お客様情報","bk.s3p":"予約確定のため、必要事項をご入力ください。",
 "bk.s4h":"予約内容のご確認","bk.s4p":"送信前に内容に誤りがないかご確認ください。",
 "bk.sd1":"SUPERB™超音波 — 真皮層コラーゲンリフティング","bk.sd2":"3波長レーザー同時照射 — オールインワン第4世代リフティング",
@@ -1654,7 +1661,7 @@ cn: {
 "bk.s3":"填写信息","bk.s3s":"联系方式与姓名",
 "bk.s4":"确认","bk.s4s":"核对信息","bk.s5":"完成","bk.s5s":"预约完成",
 "bk.s1h":"请选择疗程","bk.s1p":"选择所需疗程后将自动进入下一步。",
-"bk.s2h":"请选择日期与时间","bk.s2p":"选择日期后，请选择您希望的时间。","bk.chk":"正在确认可预约时间",
+"bk.s2h":"请选择日期与时间","bk.s2p":"选择日期后，请选择您希望的时间。","bk.chk":"正在加载可预约时间…请稍候",
 "bk.s3h":"填写您的信息","bk.s3p":"请填写以下信息以确认您的预约。",
 "bk.s4h":"确认您的预约","bk.s4p":"提交前请确认所有信息无误。",
 "bk.sd1":"SUPERB™超声波 — 真皮层胶原蛋白提升","bk.sd2":"三波长激光同步 — 第四代全能提升",
@@ -2217,7 +2224,7 @@ function selDate(dt, cell) {
   // 조회 동안: '시간 선택' 옆에 안내 문구 + 반짝이는 스켈레톤 (슬롯 위치는 그대로)
   var cm = document.getElementById("chk-msg");
   if (cm) {
-    cm.innerHTML = tr("bk.chk")+'<span class="cdot">.</span><span class="cdot">.</span><span class="cdot">.</span>';
+    cm.innerHTML = '<span class="chk-spin"></span>'+tr("bk.chk");
     cm.style.display = "inline";
   }
   se.innerHTML = times.map(function(t){

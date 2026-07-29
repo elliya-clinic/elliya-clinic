@@ -184,6 +184,9 @@
                    dashboard.html의 SHEET_URL을 새 주소로 교체. 홈페이지 동작·화면
                    변경 없음(차단은 기존 get_booked_times가 "차단" 행을 읽어 막는
                    방식 그대로).
+ v190  2026.07.29  [SHEET_URL 교체 — Code.gs v19 새 배포] get_booked_times 컬럼
+                   축소(v19)로 새 배포하면서 /exec URL 변경 → index.html·dashboard.html
+                   SHEET_URL을 새 주소로 교체. 동작·화면 변경 없음.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -698,7 +701,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v189</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v190</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1686,7 +1689,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbypMgpGFGsMLQeIESrteNT0syEyGHnD1Max0PLAd6ktAhL88JPtUy3E_zFOsl7MJ0YZXg/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbwRt4q7wtf4N4iKlFuDmB6vy9KBH6n2Of7GhaLS9GaHs99wIH4HxIhCJrL03cMJbpUjNQ/exec";
 
 var LANG_FLAG = { ko:"kr", en:"us", ja:"jp", cn:"cn", zh:"tw", ar:"sa" };
 function syncLangUI(l) {

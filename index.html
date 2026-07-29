@@ -178,6 +178,12 @@
                    → 시트·화면·이메일 모두 "(목) 오후 1:30" 한국식 통일(네이버
                    형식과 동일). 달력 상단 요일 헤더(일/월/화…)는 UI라 손님 언어
                    유지(영어면 Sun/Mon…). 아랍어 번역 자체는 그대로 유지.
+ v189  2026.07.29  [SHEET_URL 교체 — Code.gs v17 새 배포] 홈페이지 차단을 폰
+                   대시보드에서 하기 위해 Code.gs에 doGet 액션(day_slots/add_block/
+                   remove_block)을 추가·새 배포하면서 /exec URL이 바뀜. index.html과
+                   dashboard.html의 SHEET_URL을 새 주소로 교체. 홈페이지 동작·화면
+                   변경 없음(차단은 기존 get_booked_times가 "차단" 행을 읽어 막는
+                   방식 그대로).
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -692,7 +698,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v188</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v189</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1680,7 +1686,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbwsNALJlzsp6sjt7e52dbnUtwxEY2gKMKEAytUNuXVPfBz6QEd2n-p32iIaMLPBYom7_w/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbypMgpGFGsMLQeIESrteNT0syEyGHnD1Max0PLAd6ktAhL88JPtUy3E_zFOsl7MJ0YZXg/exec";
 
 var LANG_FLAG = { ko:"kr", en:"us", ja:"jp", cn:"cn", zh:"tw", ar:"sa" };
 function syncLangUI(l) {

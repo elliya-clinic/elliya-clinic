@@ -3,7 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>엘리야의원 · 네이버 차단 필요 목록</title>
+<title>엘리야의원 · 예약 관리</title>
+
+<!-- ═══════════════════════════════════════════════════════════
+  dashboard.html 변경 이력
+  v2  2026.07.29  [탭 분리 + 홈페이지 차단]
+                  · 상단 탭 2개로 분기: ①네이버 차단 필요 ②홈페이지 차단
+                  · 홈페이지 차단: 날짜(달력+수동) 선택 → 그날 슬롯을 상태별로
+                    표시(open/booked/blocked), 탭으로 차단/해제 토글.
+                    Code.gs v17의 day_slots/add_block/remove_block(JSONP) 사용.
+                  · SHEET_URL을 Code.gs v17 새 배포 주소로 교체.
+                  · 기존 네이버 목록·로그인·PWA 로직은 그대로 유지.
+═══════════════════════════════════════════════════════════ -->
 
 <!-- PWA 설정 -->
 <link rel="manifest" href="manifest.json">
@@ -29,13 +40,18 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body,body *{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,system-ui,Roboto,sans-serif!important;}
-body{background:var(--cream);color:var(--ink);min-height:100vh;padding-bottom:2rem;}
+body{background:var(--cream);color:var(--ink);min-height:100vh;padding-bottom:2rem;overflow-x:hidden;}
 
 .top{position:sticky;top:0;z-index:10;background:var(--ink);color:var(--white);padding:1.1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;}
 .top h1{font-size:1rem;font-weight:700;font-family:'Playfair Display',serif!important;}
 .top .sub{font-size:.68rem;color:var(--gold-light);letter-spacing:.05em;margin-top:.15rem;}
 .refresh-btn{background:none;border:1px solid rgba(255,255,255,.3);color:var(--white);border-radius:6px;padding:.5rem .8rem;font-size:.78rem;cursor:pointer;}
 .refresh-btn:active{background:rgba(255,255,255,.15);}
+
+/* 탭 */
+.tabs{position:sticky;top:0;z-index:9;display:flex;background:var(--ink);border-top:1px solid rgba(255,255,255,.12);}
+.tab{flex:1;text-align:center;padding:.85rem .4rem;font-size:.85rem;font-weight:700;color:rgba(255,255,255,.55);cursor:pointer;border-bottom:2.5px solid transparent;}
+.tab.active{color:var(--white);border-bottom-color:var(--gold);}
 
 .gate{max-width:360px;margin:4rem auto;padding:2rem;text-align:center;}
 .gate h2{font-size:1.1rem;margin-bottom:1.2rem;}
@@ -75,6 +91,28 @@ body{background:var(--cream);color:var(--ink);min-height:100vh;padding-bottom:2r
 
 .empty{text-align:center;color:var(--ink-light);padding:4rem 1rem;font-size:.9rem;}
 .loading{text-align:center;color:var(--ink-light);padding:4rem 1rem;font-size:.9rem;}
+
+/* ── 홈페이지 차단 뷰 ── */
+.blk-head{max-width:640px;margin:1rem auto 0;padding:0 1rem;}
+.blk-date-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.4rem;}
+.blk-date-row label{font-size:.85rem;font-weight:700;color:var(--ink-mid);}
+.blk-date-row input[type=date]{flex:1;min-width:0;padding:.7rem .8rem;border:1px solid var(--border-mid);border-radius:8px;font-size:1rem;color:var(--ink);background:var(--white);}
+.blk-legend{display:flex;flex-wrap:wrap;gap:.3rem 1rem;font-size:.72rem;color:var(--ink-light);margin:.5rem 0 .2rem;}
+.blk-legend b{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:.25rem;}
+.lg-open{background:var(--white);border:1.5px solid var(--border-mid);}
+.lg-blocked{background:var(--red);}
+.lg-booked{background:var(--cream-mid);border:1.5px solid var(--border-mid);}
+
+.slot-grid{max-width:640px;margin:0 auto;padding:1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;}
+.slot-btn{padding:1rem .4rem;border-radius:10px;border:1.5px solid var(--border-mid);background:var(--white);font-size:1.05rem;font-weight:700;color:var(--ink);cursor:pointer;text-align:center;position:relative;transition:transform .05s;}
+.slot-btn:active{transform:scale(.96);}
+.slot-btn .slot-tag{display:block;font-size:.66rem;font-weight:600;margin-top:.2rem;color:var(--ink-light);}
+.slot-btn.blocked{background:var(--red);border-color:var(--red);color:var(--white);}
+.slot-btn.blocked .slot-tag{color:rgba(255,255,255,.85);}
+.slot-btn.booked{background:var(--cream-mid);color:var(--ink-light);cursor:not-allowed;border-style:dashed;}
+.slot-btn.busy{opacity:.6;pointer-events:none;}
+.blk-msg{max-width:640px;margin:0 auto;padding:0 1rem;text-align:center;color:var(--ink-light);font-size:.85rem;}
+.blk-closed{text-align:center;color:var(--ink-light);padding:3rem 1rem;font-size:.95rem;}
 </style>
 </head>
 <body>
@@ -89,20 +127,144 @@ body{background:var(--cream);color:var(--ink);min-height:100vh;padding-bottom:2r
 <div id="app" style="display:none;">
   <div class="top">
     <div>
-      <h1>네이버 차단 필요 목록</h1>
+      <h1>엘리야 예약 관리</h1>
       <div class="sub" id="update-time">불러오는 중...</div>
     </div>
-    <button class="refresh-btn" onclick="loadBookings()">새로고침</button>
+    <button class="refresh-btn" onclick="refreshCurrent()">새로고침</button>
   </div>
-  <div class="notice">
-    <div class="notice-box">홈페이지로 들어온 예약만 표시됩니다. 아래 시간을 <b>네이버 예약 관리자 페이지</b>에서 직접 막아주세요. 처리하셨으면 체크 표시해두시면 목록에서 흐리게 표시됩니다.</div>
+
+  <!-- 탭 -->
+  <div class="tabs">
+    <div class="tab active" id="tab-naver" onclick="showView('naver')">네이버 차단 필요</div>
+    <div class="tab" id="tab-block" onclick="showView('block')">홈페이지 차단</div>
   </div>
-  <div class="wrap" id="list"><div class="loading">불러오는 중...</div></div>
+
+  <!-- 뷰 1: 네이버 차단 필요 -->
+  <div id="view-naver">
+    <div class="notice">
+      <div class="notice-box">홈페이지로 들어온 예약만 표시됩니다. 아래 시간을 <b>네이버 예약 관리자 페이지</b>에서 직접 막아주세요. 처리하셨으면 체크 표시해두시면 목록에서 흐리게 표시됩니다.</div>
+    </div>
+    <div class="wrap" id="list"><div class="loading">불러오는 중...</div></div>
+  </div>
+
+  <!-- 뷰 2: 홈페이지 차단 -->
+  <div id="view-block" style="display:none;">
+    <div class="blk-head">
+      <div class="blk-date-row">
+        <label for="blk-date">날짜</label>
+        <input type="date" id="blk-date" onchange="loadDaySlots()">
+      </div>
+      <div class="blk-legend">
+        <span><b class="lg-open"></b>예약가능(탭하면 차단)</span>
+        <span><b class="lg-blocked"></b>차단됨(탭하면 해제)</span>
+        <span><b class="lg-booked"></b>예약있음</span>
+      </div>
+    </div>
+    <div class="slot-grid" id="blk-slots"></div>
+    <div class="blk-msg" id="blk-msg"></div>
+  </div>
 </div>
 
 <script>
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbwsNALJlzsp6sjt7e52dbnUtwxEY2gKMKEAytUNuXVPfBz6QEd2n-p32iIaMLPBYom7_w/exec";
-var STAFF_KEY_VAL = null; // 로그인 시 채워짐
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbypMgpGFGsMLQeIESrteNT0syEyGHnD1Max0PLAd6ktAhL88JPtUy3E_zFOsl7MJ0YZXg/exec";
+var currentView = 'naver';
+
+/* ── 공용 JSONP 헬퍼 ── */
+function jsonp(action, extra, onData, onErr){
+  var key = localStorage.getItem('elliya_dash_key') || '';
+  var cbName = 'jp' + Date.now() + Math.floor(Math.random()*100000);
+  var script = document.createElement('script');
+  var done = false;
+  function cleanup(){ clearTimeout(to); try{ delete window[cbName]; }catch(e){ window[cbName]=undefined; } if(script.parentNode) script.parentNode.removeChild(script); }
+  var to = setTimeout(function(){ if(done)return; done=true; cleanup(); if(onErr) onErr('timeout'); }, 10000);
+  window[cbName] = function(d){ if(done)return; done=true; cleanup(); if(onData) onData(d); };
+  script.onerror = function(){ if(done)return; done=true; cleanup(); if(onErr) onErr('network'); };
+  var qs = '?action=' + action + '&key=' + encodeURIComponent(key);
+  if(extra){ for(var k in extra){ qs += '&' + k + '=' + encodeURIComponent(extra[k]); } }
+  script.src = SHEET_URL + qs + '&callback=' + cbName;
+  document.body.appendChild(script);
+}
+
+/* ── 탭 전환 ── */
+function showView(v){
+  currentView = v;
+  document.getElementById('tab-naver').classList.toggle('active', v==='naver');
+  document.getElementById('tab-block').classList.toggle('active', v==='block');
+  document.getElementById('view-naver').style.display = (v==='naver') ? 'block' : 'none';
+  document.getElementById('view-block').style.display = (v==='block') ? 'block' : 'none';
+  if(v==='block'){
+    var di = document.getElementById('blk-date');
+    if(!di.value){ di.value = todayISO(); }
+    loadDaySlots();
+  }
+}
+function refreshCurrent(){
+  if(currentView==='block') loadDaySlots();
+  else loadBookings();
+}
+function todayISO(){
+  var n=new Date();
+  return n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
+}
+
+/* ── 홈페이지 차단: 슬롯 로드/렌더 ── */
+function loadDaySlots(){
+  var date = document.getElementById('blk-date').value;
+  var grid = document.getElementById('blk-slots');
+  var msg = document.getElementById('blk-msg');
+  msg.textContent = '';
+  if(!date){ grid.innerHTML=''; return; }
+  grid.innerHTML = '<div class="loading" style="grid-column:1/-1;">불러오는 중...</div>';
+  jsonp('day_slots', {date:date}, function(data){
+    if(data && data.error==='unauthorized'){ forceRelogin(); return; }
+    if(!data || !data.ok){ grid.innerHTML=''; msg.textContent='슬롯을 불러오지 못했습니다.'; return; }
+    if(data.closed || !data.slots || data.slots.length===0){
+      grid.innerHTML=''; msg.innerHTML='<div class="blk-closed">이 날짜는 휴무일입니다.</div>'; return;
+    }
+    renderSlots(date, data.slots);
+  }, function(){ grid.innerHTML=''; msg.textContent='불러오기 실패. 새로고침 해주세요.'; });
+}
+
+function renderSlots(date, slots){
+  var grid = document.getElementById('blk-slots');
+  var html = '';
+  slots.forEach(function(s){
+    var cls = 'slot-btn' + (s.status==='blocked'?' blocked':'') + (s.status==='booked'?' booked':'');
+    var tag = s.status==='blocked' ? '차단됨 · 탭하면 해제'
+            : s.status==='booked'  ? '예약있음'
+            : '탭하면 차단';
+    var onclick = (s.status==='booked') ? '' :
+      ' onclick="toggleSlot(\''+date+'\',\''+s.time+'\',\''+s.status+'\',this)"';
+    html += '<button class="'+cls+'"'+onclick+'>'+esc(s.time)+'<span class="slot-tag">'+tag+'</span></button>';
+  });
+  grid.innerHTML = html;
+}
+
+function toggleSlot(date, time, status, btn){
+  btn.classList.add('busy');
+  var act = (status==='blocked') ? 'remove_block' : 'add_block';
+  jsonp(act, {date:date, time:time}, function(data){
+    if(data && data.error==='unauthorized'){ forceRelogin(); return; }
+    if(!data || !data.ok){
+      btn.classList.remove('busy');
+      alert(act==='add_block' ? '차단에 실패했습니다.' : '차단 해제에 실패했습니다.');
+      return;
+    }
+    loadDaySlots(); // 최신 상태로 다시 그림
+  }, function(){
+    btn.classList.remove('busy');
+    alert('처리 중 오류가 발생했습니다. 다시 시도해 주세요.');
+  });
+}
+
+function forceRelogin(){
+  localStorage.removeItem('elliya_dash_key');
+  document.getElementById('gate').style.display='block';
+  document.getElementById('app').style.display='none';
+  document.getElementById('gate-err').style.display='block';
+}
+
+/* ══════════ 이하: 기존 네이버 목록 로직 (그대로 유지) ══════════ */
 
 function markNaverDone(processedAt, checked, checkboxEl){
   var key = localStorage.getItem('elliya_dash_key') || '';
@@ -293,8 +455,8 @@ function esc(s){
 // 자동 로그인 시도 (저장된 키 있으면)
 loadBookings();
 
-// 1분마다 자동 새로고침
-setInterval(loadBookings, 60000);
+// 1분마다 자동 새로고침 (네이버 목록 뷰일 때만)
+setInterval(function(){ if(currentView==='naver') loadBookings(); }, 60000);
 
 // 서비스워커 등록 (설치 가능하게)
 if('serviceWorker' in navigator){

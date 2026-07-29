@@ -1,0 +1,19 @@
+{
+  "name": "엘리야 예약 관리",
+  "short_name": "엘리야 예약",
+  "description": "엘리야의원 예약 관리 대시보드 (네이버 차단 / 홈페이지 차단)",
+  "start_url": "dashboard.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FDFCFA",
+  "theme_color": "#1C1916",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

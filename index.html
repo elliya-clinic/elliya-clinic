@@ -205,6 +205,12 @@
  v194  2026.07.30  [상단 메뉴 '시술'/'오시는 길' 클릭 시 제목 잘림 수정] scrollIntoView가
                    섹션을 화면 맨 위로 올려 고정헤더(70px)에 제목이 가렸음. #treatments,
                    #visit에 scroll-margin-top:90px 추가 → 헤더 아래로 내려와 안 잘림.
+ v195  2026.07.30  [상세페이지 '모든 시술' 버튼 제거 + 이미지 확대] 상세 상단의
+                   "← 모든 시술" 버튼 삭제. 그 자리를 이미지로 메우도록 상세 페이지
+                   상단 여백 제거(#page-detail padding-top:0) + .dt-hero 확대(58vh,
+                   min 440px). 헤더는 투명하게 이미지 위에 뜨고 제목은 이미지 하단이라
+                   안 가림. (목록으로 돌아가기는 상단 메뉴 '시술'로. 브라우저 뒤로가기
+                   history 관리는 별도 과제로 보류.)
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -506,7 +512,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .page{display:none;}.page.active{display:block;}
 
 /* DETAIL */
-.dt-hero{height:50vh;min-height:340px;display:flex;align-items:flex-end;padding:3rem 5vw;background:#2D2520 center/cover no-repeat;position:relative;}
+.dt-hero{height:58vh;min-height:440px;display:flex;align-items:flex-end;padding:3rem 5vw;background:#2D2520 center/cover no-repeat;position:relative;}
+#page-detail{padding-top:0;} /* 상세는 이미지를 상단까지 꽉 채움('모든 시술' 버튼 제거 자리 메움). 헤더는 투명하게 이미지 위에 뜸 */
 .dt-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,23,20,.85) 0%,rgba(26,23,20,.1) 60%);}
 .dt-hct{position:relative;z-index:2;}
 .dt-hct h1{font-size:clamp(1.8rem,4vw,3rem);color:var(--white);font-weight:700;margin-bottom:.5rem;}
@@ -722,7 +729,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v194</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v195</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -984,7 +991,6 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 
 <!-- DETAIL PAGE -->
 <div id="page-detail" class="page pt">
-  <button class="btn-bk" onclick="showPage('home')" data-t="common.back-tx">&#8592; 모든 시술</button>
   <div class="dt-hero"><div class="dt-hct"><h1 id="dt-title"></h1><p id="dt-sub"></p></div></div>
   <div class="dt-body">
     <div class="dt-main" id="dt-body"></div>

@@ -192,6 +192,13 @@
                    잠시만 기다려 주세요"로 변경(6개 언어). 기존 점(...) 애니메이션 →
                    스피너로 교체. 실제 속도가 아니라 대기 체감(멈춘 것 아님)을 개선하는
                    용도. 슬롯 자리 shimmer 스켈레톤은 그대로.
+ v192  2026.07.30  [시술 상세 이미지 장비별 적용] 상세 페이지 대표 이미지(.dt-hero)가
+                   CSS에 proc_detail.jpeg 하나로 고정돼 6개 장비 모두 같은 이미지였음.
+                   CSS의 고정 url 제거(색만 유지) + showDetail()이 장비별 이미지를
+                   배경으로 지정: sofwave=detail_sfwv, titanium=detail_tita,
+                   ultherapy=detail_ulth, onda=detail_onda, shrink=detail_shrk,
+                   skinbooster=detail_boos (images/ 아래, .jpg). 해당 6개 파일을
+                   images 폴더에 넣어야 표시됨.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -492,7 +499,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .page{display:none;}.page.active{display:block;}
 
 /* DETAIL */
-.dt-hero{height:50vh;min-height:340px;display:flex;align-items:flex-end;padding:3rem 5vw;background:#2D2520 url("images/proc_detail.jpeg") center/cover no-repeat;position:relative;}
+.dt-hero{height:50vh;min-height:340px;display:flex;align-items:flex-end;padding:3rem 5vw;background:#2D2520 center/cover no-repeat;position:relative;}
 .dt-hero::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(26,23,20,.85) 0%,rgba(26,23,20,.1) 60%);}
 .dt-hct{position:relative;z-index:2;}
 .dt-hct h1{font-size:clamp(1.8rem,4vw,3rem);color:var(--white);font-weight:700;margin-bottom:.5rem;}
@@ -708,7 +715,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v191</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v192</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1824,6 +1831,9 @@ function showDetail(key) {
   var idx = {"sofwave":0,"titanium":1,"ultherapy":2,"onda":3,"shrink":4,"skinbooster":5}[key];
   var d = SVCS[idx];
   if (!d) return;
+  var DETAIL_IMGS = ["detail_sfwv.jpg","detail_tita.jpg","detail_ulth.jpg","detail_onda.jpg","detail_shrk.jpg","detail_boos.jpg"];
+  var hero = document.querySelector("#page-detail .dt-hero");
+  if (hero) hero.style.backgroundImage = "url('images/"+DETAIL_IMGS[idx]+"')";
   document.getElementById("dt-title").textContent = d.name[lang] || d.name.ko;
   document.getElementById("dt-sub").textContent = d.sub[lang] || d.sub.ko;
   document.getElementById("dt-price").innerHTML = d.priceStr;

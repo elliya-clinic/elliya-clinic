@@ -199,6 +199,9 @@
                    ultherapy=detail_ulth, onda=detail_onda, shrink=detail_shrk,
                    skinbooster=detail_boos (images/ 아래, .jpg). 해당 6개 파일을
                    images 폴더에 넣어야 표시됨.
+ v193  2026.07.30  [SHEET_URL 교체 — Code.gs v20 새 배포] 지난예약 재유입 수정(v20)을
+                   새 배포하면서 /exec URL 변경 → index.html·dashboard.html SHEET_URL을
+                   새 주소로 교체. 동작·화면 변경 없음.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -715,7 +718,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v192</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v193</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1703,7 +1706,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbwRt4q7wtf4N4iKlFuDmB6vy9KBH6n2Of7GhaLS9GaHs99wIH4HxIhCJrL03cMJbpUjNQ/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbwAPrBwf6lVDdSzrYKWhq7EeYgzxfmquWYHBPhxlUjLlh9cUKcwhf7bEALfYVqXc4_aSw/exec";
 
 var LANG_FLAG = { ko:"kr", en:"us", ja:"jp", cn:"cn", zh:"tw", ar:"sa" };
 function syncLangUI(l) {

@@ -202,6 +202,9 @@
  v193  2026.07.30  [SHEET_URL 교체 — Code.gs v20 새 배포] 지난예약 재유입 수정(v20)을
                    새 배포하면서 /exec URL 변경 → index.html·dashboard.html SHEET_URL을
                    새 주소로 교체. 동작·화면 변경 없음.
+ v194  2026.07.30  [상단 메뉴 '시술'/'오시는 길' 클릭 시 제목 잘림 수정] scrollIntoView가
+                   섹션을 화면 맨 위로 올려 고정헤더(70px)에 제목이 가렸음. #treatments,
+                   #visit에 scroll-margin-top:90px 추가 → 헤더 아래로 내려와 안 잘림.
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -393,6 +396,7 @@ nav.nav-scrolled{
 
 /* TREATMENTS */
 .tx-sec{padding:1.5rem 3vw 1.2rem;background:var(--cream-dark);margin:3rem 0;}
+#treatments,#visit{scroll-margin-top:90px;} /* 고정헤더(70px)에 제목이 가려지지 않도록 스크롤 여백 */
 .tx-hd{text-align:center;margin-bottom:1.2rem;}
 .tx-hd .s-title{font-size:clamp(1.1rem,2.2vw,1.5rem);}
 .tx-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3.2rem 1.2rem;padding:0 0 1rem;max-width:calc(100% - 360px);margin:0 auto;}
@@ -718,7 +722,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v193</span>
+    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v194</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

@@ -214,6 +214,21 @@
  v196  2026.07.30  ['오시는 길' 섹션 'Find Us' 영문 라벨 제거] 모든 언어에서 영어로
                    고정돼 아래 제목과 의미가 겹치던 s-eye(visit.eye "Find Us") 삭제.
                    'Signature Treatments'(tx.eye)는 그대로 유지. 제목(visit.title)은 유지.
+				   
+				   
+ v196  2026.08.01  elliyaclinic.com 적용,  v196  imweb-> cloudflare 로 hosting 이전/ DNS 서버 이전작업 완료
+ v197  2026.08.02  [GA4 방문자 흐름 추적 — 가상 페이지뷰] SPA라 모든 화면이 1페이지로
+                   집계돼 이탈 지점 분석 불가하던 문제. 화면 전환 시 GA4에 page_view를
+                   보내 화면별 추적. gaPage() 헬퍼(try-catch로 실패해도 사이트 무영향).
+                   · showPage: /home,/booking,/my-booking,/philo-page,/privacy,/terms
+                     (detail은 showDetail에서 시술별로 전송, 중복 방지 위해 제외)
+                   · showDetail: /treatment/{key} (sofwave,titanium,ultherapy,onda,
+                     shrink,skinbooster)
+                   · showBS: /booking/1-service,2-datetime,3-info,4-confirm (이탈분석)
+                   이벤트 추적(버튼 클릭 등)은 추후 별도 추가 예정.
+                   + 로고 옆 화면 버전 표시(vNNN)를 display:none으로 숨김(손님에게
+                     안 보이게). 버전은 이 변경이력 주석으로만 관리.				   
+				   
 ═══════════════════════════════════════════════════════════
 -->
 <html lang="ko" dir="ltr">
@@ -732,7 +747,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v196</span>
+    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v197</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1758,12 +1773,25 @@ function applyT() {
 // =====================================================
 // PAGE ROUTING
 // =====================================================
+// GA4 가상 페이지뷰 전송 (SPA라 화면 전환을 GA에 알림). 실패해도 사이트엔 지장 없음.
+function gaPage(path, title){
+  try {
+    if (typeof gtag === "function") {
+      gtag("event", "page_view", { page_path: path, page_title: title || path, page_location: location.origin + path });
+    }
+  } catch(e) {}
+}
 function showPage(id) {
   document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
   var t = document.getElementById("page-"+id);
   if (t) { t.classList.add("active"); window.scrollTo({top:0,behavior:"smooth"}); }
   if (typeof updNav === "function") setTimeout(updNav, 50);
   if (id === "my-booking" && typeof resetMyBookingForm === "function") resetMyBookingForm();
+  // GA4: detail은 showDetail에서 시술별 경로로 전송하므로 여기선 제외
+  if (id !== "detail") {
+    var GA_T = {home:"Home", booking:"Booking", "my-booking":"My Booking", "philo-page":"Philosophy", privacy:"Privacy", terms:"Terms"};
+    gaPage("/"+id, GA_T[id] || id);
+  }
 }
 
 function resetMyBookingForm() {
@@ -1846,6 +1874,7 @@ function showDetail(key) {
   var idx = {"sofwave":0,"titanium":1,"ultherapy":2,"onda":3,"shrink":4,"skinbooster":5}[key];
   var d = SVCS[idx];
   if (!d) return;
+  gaPage("/treatment/"+key, "Treatment-"+key); // GA4: 시술 상세(장비별)
   var DETAIL_IMGS = ["detail_sfwv.jpg","detail_tita.jpg","detail_ulth.jpg","detail_onda.jpg","detail_shrk.jpg","detail_boos.jpg"];
   var hero = document.querySelector("#page-detail .dt-hero");
   if (hero) hero.style.backgroundImage = "url('images/"+DETAIL_IMGS[idx]+"')";
@@ -1977,6 +2006,10 @@ function hiSvc(name) {
 
 function showBS(n) {
   for(var i=1;i<=4;i++){var e=document.getElementById("bs-"+i);if(e) e.style.display=i===n?"block":"none";}
+  // GA4: 예약 단계별 가상 페이지뷰 (이탈 지점 분석)
+  var BS_P = {1:"/booking/1-service",2:"/booking/2-datetime",3:"/booking/3-info",4:"/booking/4-confirm"};
+  var BS_T = {1:"Booking-1-Service",2:"Booking-2-DateTime",3:"Booking-3-Info",4:"Booking-4-Confirm"};
+  if (BS_P[n]) gaPage(BS_P[n], BS_T[n]);
 }
 
 function updStep(cur) {

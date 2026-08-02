@@ -237,7 +237,15 @@
                    완료). showPage: /홈,/예약,/예약확인,/원장철학,/개인정보처리방침,/이용약관.
                    showDetail: /시술/{소프웨이브·티타늄·울쎄라피·온다·슈링크·스킨부스터}.
                    경로·제목 모두 한글. (GA에서 경로가 %인코딩돼 보이면 '페이지 제목' 뷰로
-                   보면 한글로 깨끗하게 표시됨. 예약 로직은 안 건드림.)				   
+                   보면 한글로 깨끗하게 표시됨. 예약 로직은 안 건드림.)
+ v200  2026.08.02  [GA4 자동 페이지뷰 끔 — 중복 제거] 페이지 로드 시 GA 기본코드가
+                   현재 URL(/, /elliya-clinic/)을 자동 기록해 gaPage()의 /홈과 중복되던
+                   문제. gtag config에 send_page_view:false 추가 → gaPage()로 보내는
+                   한글 경로만 기록. (GitHub에선 /elliya-clinic/, Cloudflare에선 / 가
+                   중복으로 찍히던 것 사라짐. 예약·기능 무관.)
+ v201  2026.08.02  [모바일 hero main_image1 인물 위치 조정] 모바일에서 인물이 너무
+                   오른쪽에 치우쳐 보임. 첫 슬라이드만 object-position 72%→85%로
+                   (값↑=인물 왼쪽/중앙쪽, 값↓=오른쪽). 다른 슬라이드·데스크탑은 그대로.				   
 				   
 ═══════════════════════════════════════════════════════════
 -->
@@ -249,7 +257,7 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XMDPY3J7MD');
+  gtag('config', 'G-XMDPY3J7MD', { send_page_view: false }); // 자동 페이지뷰 끔 — gaPage()로 보내는 한글 경로만 기록(중복 방지)
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -729,6 +737,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   nav{padding:0 1.2rem;}.nav-links{display:none;}.hamburger{display:block;}
   .nav-lang-group{display:none;}.m-lang{display:block;}
   .hero-slide{object-position:72% center;}
+  .hero-slide:first-child{object-position:85% center;} /* 모바일 main_image1: 인물을 중앙 쪽으로(값↑=왼쪽으로, 값↓=오른쪽으로 미세조정) */
   .visit-info{grid-template-columns:1fr 1fr;}
   .tx-grid{grid-template-columns:repeat(2,1fr);max-width:100%;gap:2rem 1rem;padding-bottom:.5rem;}.tx-card{border:none;}
   .philo-grid{grid-template-columns:1fr;}
@@ -757,7 +766,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v199</span>
+    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v201</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

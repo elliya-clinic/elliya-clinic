@@ -245,7 +245,12 @@
                    중복으로 찍히던 것 사라짐. 예약·기능 무관.)
  v201  2026.08.02  [모바일 hero main_image1 인물 위치 조정] 모바일에서 인물이 너무
                    오른쪽에 치우쳐 보임. 첫 슬라이드만 object-position 72%→85%로
-                   (값↑=인물 왼쪽/중앙쪽, 값↓=오른쪽). 다른 슬라이드·데스크탑은 그대로.				   
+                   (값↑=인물 왼쪽/중앙쪽, 값↓=오른쪽). 다른 슬라이드·데스크탑은 그대로.
+ v202  2026.08.02  [모바일 hero 이미지별 인물 위치 개별 조정] 모바일에서 이미지마다
+                   인물 위치가 달라 일부가 잘리던 문제. 이미지별로 object-position 개별
+                   지정(모바일만, 데스크탑 무관): main_image1=85%(인물 오른쪽),
+                   main_image2=25%(인물 왼쪽), main_image3=72%기본(정상), main_image4=
+                   50%(두 인물 가운데). 각 값은 해당 이미지 1장에만 적용(:nth-child).				   
 				   
 ═══════════════════════════════════════════════════════════
 -->
@@ -738,6 +743,8 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   .nav-lang-group{display:none;}.m-lang{display:block;}
   .hero-slide{object-position:72% center;}
   .hero-slide:first-child{object-position:85% center;} /* 모바일 main_image1: 인물을 중앙 쪽으로(값↑=왼쪽으로, 값↓=오른쪽으로 미세조정) */
+  .hero-slide:nth-child(2){object-position:25% center;} /* 모바일 main_image2: 인물이 왼쪽에 있어 왼쪽 쪽으로(값↓=더 왼쪽, 값↑=오른쪽으로 미세조정) */
+  .hero-slide:nth-child(4){object-position:50% center;} /* 모바일 main_image4: 두 인물이 가로로 나란히 있어 가운데(둘 다 보이게, 값 조정으로 미세조정) */
   .visit-info{grid-template-columns:1fr 1fr;}
   .tx-grid{grid-template-columns:repeat(2,1fr);max-width:100%;gap:2rem 1rem;padding-bottom:.5rem;}.tx-card{border:none;}
   .philo-grid{grid-template-columns:1fr;}
@@ -766,7 +773,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v201</span>
+    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v202</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>

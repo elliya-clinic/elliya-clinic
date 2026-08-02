@@ -227,7 +227,17 @@
                    · showBS: /booking/1-service,2-datetime,3-info,4-confirm (이탈분석)
                    이벤트 추적(버튼 클릭 등)은 추후 별도 추가 예정.
                    + 로고 옆 화면 버전 표시(vNNN)를 display:none으로 숨김(손님에게
-                     안 보이게). 버전은 이 변경이력 주석으로만 관리.				   
+                     안 보이게). 버전은 이 변경이력 주석으로만 관리.
+ v198  2026.08.02  [GA4 예약단계 라벨 정정] v197에서 예약 단계 경로를 번역키 순서로
+                   추측해 붙였으나 실제 화면 순서와 달랐음(showBS(1)은 서비스가 아니라
+                   날짜/시간). 실제 화면 내용 기준 한글 경로로 정정(예약 로직은 안 건드림):
+                   showBS(1)=/예약/날짜시간, (2)=/예약/시술선택, (3)=/예약/정보입력,
+                   (4)=/예약/완료. 번호 제거, 화면 이름 기준이라 진입 경로가 달라도 정확.
+ v199  2026.08.02  [GA4 모든 경로 한글 통일] 메인·시술 경로도 한글로 (예약 단계는 v198에서
+                   완료). showPage: /홈,/예약,/예약확인,/원장철학,/개인정보처리방침,/이용약관.
+                   showDetail: /시술/{소프웨이브·티타늄·울쎄라피·온다·슈링크·스킨부스터}.
+                   경로·제목 모두 한글. (GA에서 경로가 %인코딩돼 보이면 '페이지 제목' 뷰로
+                   보면 한글로 깨끗하게 표시됨. 예약 로직은 안 건드림.)				   
 				   
 ═══════════════════════════════════════════════════════════
 -->
@@ -747,7 +757,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v197</span>
+    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v199</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1789,8 +1799,9 @@ function showPage(id) {
   if (id === "my-booking" && typeof resetMyBookingForm === "function") resetMyBookingForm();
   // GA4: detail은 showDetail에서 시술별 경로로 전송하므로 여기선 제외
   if (id !== "detail") {
-    var GA_T = {home:"Home", booking:"Booking", "my-booking":"My Booking", "philo-page":"Philosophy", privacy:"Privacy", terms:"Terms"};
-    gaPage("/"+id, GA_T[id] || id);
+    var GA_P = {home:"/홈", booking:"/예약", "my-booking":"/예약확인", "philo-page":"/원장철학", privacy:"/개인정보처리방침", terms:"/이용약관"};
+    var GA_T = {home:"홈", booking:"예약", "my-booking":"예약확인", "philo-page":"원장철학", privacy:"개인정보처리방침", terms:"이용약관"};
+    gaPage(GA_P[id] || ("/"+id), GA_T[id] || id);
   }
 }
 
@@ -1874,7 +1885,9 @@ function showDetail(key) {
   var idx = {"sofwave":0,"titanium":1,"ultherapy":2,"onda":3,"shrink":4,"skinbooster":5}[key];
   var d = SVCS[idx];
   if (!d) return;
-  gaPage("/treatment/"+key, "Treatment-"+key); // GA4: 시술 상세(장비별)
+  var SVC_KO = {sofwave:"소프웨이브", titanium:"티타늄", ultherapy:"울쎄라피", onda:"온다", shrink:"슈링크", skinbooster:"스킨부스터"};
+  var svcNm = SVC_KO[key] || key;
+  gaPage("/시술/"+svcNm, "시술-"+svcNm); // GA4: 시술 상세(장비별)
   var DETAIL_IMGS = ["detail_sfwv.jpg","detail_tita.jpg","detail_ulth.jpg","detail_onda.jpg","detail_shrk.jpg","detail_boos.jpg"];
   var hero = document.querySelector("#page-detail .dt-hero");
   if (hero) hero.style.backgroundImage = "url('images/"+DETAIL_IMGS[idx]+"')";
@@ -2007,8 +2020,8 @@ function hiSvc(name) {
 function showBS(n) {
   for(var i=1;i<=4;i++){var e=document.getElementById("bs-"+i);if(e) e.style.display=i===n?"block":"none";}
   // GA4: 예약 단계별 가상 페이지뷰 (이탈 지점 분석)
-  var BS_P = {1:"/booking/1-service",2:"/booking/2-datetime",3:"/booking/3-info",4:"/booking/4-confirm"};
-  var BS_T = {1:"Booking-1-Service",2:"Booking-2-DateTime",3:"Booking-3-Info",4:"Booking-4-Confirm"};
+  var BS_P = {1:"/예약/날짜시간",2:"/예약/시술선택",3:"/예약/정보입력",4:"/예약/완료"};
+  var BS_T = {1:"예약-날짜시간",2:"예약-시술선택",3:"예약-정보입력",4:"예약-완료"};
   if (BS_P[n]) gaPage(BS_P[n], BS_T[n]);
 }
 

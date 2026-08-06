@@ -250,10 +250,7 @@
                    인물 위치가 달라 일부가 잘리던 문제. 이미지별로 object-position 개별
                    지정(모바일만, 데스크탑 무관): main_image1=85%(인물 오른쪽),
                    main_image2=25%(인물 왼쪽), main_image3=72%기본(정상), main_image4=
-                   50%(두 인물 가운데). 각 값은 해당 이미지 1장에만 적용(:nth-child).
- v203  2026.08.02  [SHEET_URL 교체 — Apps Script 재배포] 기존 배포 URL이 응답 불가
-                   ("파일을 열 수 없습니다")로 예약·대시보드 무반응. 새 배포 주소로
-                   index.html·dashboard.html SHEET_URL 교체.				   
+                   50%(두 인물 가운데). 각 값은 해당 이미지 1장에만 적용(:nth-child).				   
 				   
 ═══════════════════════════════════════════════════════════
 -->
@@ -776,7 +773,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v203</span>
+    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v202</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1762,7 +1759,7 @@ var lang = "ko";
   else if (nav.indexOf("en") === 0) detected = "en";
   lang = detected;
 })();
-var SHEET_URL = "https://script.google.com/macros/s/AKfycbxVeEfYxLRD8_GZ2HHLKTy1FHhEBm6tEATHxvBJDJmK0TUK7fgs_R3rdP2zjgTGO7sg/exec";
+var SHEET_URL = "https://script.google.com/macros/s/AKfycbwAPrBwf6lVDdSzrYKWhq7EeYgzxfmquWYHBPhxlUjLlh9cUKcwhf7bEALfYVqXc4_aSw/exec";
 
 var LANG_FLAG = { ko:"kr", en:"us", ja:"jp", cn:"cn", zh:"tw", ar:"sa" };
 function syncLangUI(l) {

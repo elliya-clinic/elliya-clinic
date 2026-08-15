@@ -256,6 +256,18 @@
                    유실되던 버그를 Code.gs v22에서 수정(예약번호 자동생성 H/K 접두어).
                    v22를 새 배포하면서 /exec URL이 변경되어 SHEET_URL을 새 주소로 교체.
                    홈페이지 동작·화면 변경 없음(백엔드 주소만 변경).
+ v204  2026.08.09  [canonical 추가 + 버전 배지 히든 토글]
+                   ① canonical: 구글 Search Console이 아임웹 시절 http:// 주소를
+                      대표 주소로 인식하고 있어(색인 최초 등록이 아임웹 시절),
+                      존재하지 않는 옛 페이지(/15 등)에 404 알림이 발생.
+                      <link rel="canonical" href="https://elliyaclinic.com/"> 추가로
+                      정식 주소가 https임을 명시. sitemap.xml·robots.txt와 함께 적용.
+                      ※ 404 자체는 정상 응답이며 검색 순위에 불이익 없음.
+                   ② 버전 배지 히든 토글: nav 로고를 3초 내 5연타하면 숨겨진
+                      버전 배지가 표시됨(verTap 함수). 배포된 버전 육안 확인용.
+                      다시 5연타 또는 새로고침 시 숨김. 해당 탭에만 적용되며
+                      서버 저장·타인 노출 없음.
+                      ★ 파일 수정 시 VER_INFO 변수값도 함께 갱신할 것.
 				   
 ═══════════════════════════════════════════════════════════
 -->
@@ -277,6 +289,7 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css" />
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" onload="emailjs.init('1KZmSZn1R3Ropqaly')"></script>
 <title>엘리야의원 — Elliya Clinic</title>
+<link rel="canonical" href="https://elliyaclinic.com/"><!-- v204: 구글이 아임웹 시절 http 주소를 대표 주소로 인식하던 문제 → https 명시 -->
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
@@ -768,7 +781,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 
 <!-- NAV -->
 <nav>
-  <a class="nav-logo" href="#" onclick="showPage('home');return false;">
+  <a class="nav-logo" href="#" onclick="showPage('home');verTap();return false;">
     <svg width="160" height="36" viewBox="0 0 160 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="nav-logo-svg">
   <rect x="0" y="6" width="2" height="24" fill="currentColor"/>
   <rect x="0" y="6" width="12" height="2" fill="currentColor"/>
@@ -778,7 +791,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v203</span>
+    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v204</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1812,6 +1825,32 @@ function gaPage(path, title){
     }
   } catch(e) {}
 }
+// ══════════════════════════════════════════════
+// 버전 배지 히든 토글 (v204)
+// 로고를 3초 내 5번 연타하면 숨겨진 버전 배지가 표시된다.
+// 배포된 버전을 육안으로 확인하기 위한 용도.
+// ※ 이 상태는 해당 브라우저 탭에만 존재. 서버 저장·타인 노출 없음.
+//    새로고침하면 원본 HTML을 다시 받으므로 자동으로 숨겨진다.
+// ══════════════════════════════════════════════
+var VER_INFO = 'v204 · 2026.08.09';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
+var verTaps = [];
+function verTap() {
+  var now = Date.now();
+  verTaps.push(now);
+  verTaps = verTaps.filter(function(t){ return now - t <= 3000; }); // 3초 이내 클릭만 유지
+  if (verTaps.length >= 5) {
+    verTaps = [];
+    var b = document.getElementById('ver-badge');
+    if (!b) return;
+    if (b.style.display === 'none') {
+      b.textContent = VER_INFO;
+      b.style.display = '';
+    } else {
+      b.style.display = 'none';
+    }
+  }
+}
+
 function showPage(id) {
   document.querySelectorAll(".page").forEach(function(p) { p.classList.remove("active"); });
   var t = document.getElementById("page-"+id);

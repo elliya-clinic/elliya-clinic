@@ -59,6 +59,17 @@
                   · 버전 토글 판정을 style.opacity → dataset.on 으로 변경.
                     CSS로 지정된 초기 opacity는 style.opacity가 빈 문자열이라
                     첫 비교가 항상 실패하던 문제 정리.
+  v6  2026.08.18  [버전 표시가 보이지 않던 문제 해결]
+                  · 원인1 — 표지에도 '시술 가격 정보' 문구가 있어 어느 쪽을
+                    눌러야 하는지 구분되지 않았음. 표지는 어디를 눌러도 앱으로
+                    진입하므로 5연타가 성립하지 않음.
+                    → 사이드바 부제를 '가격 안내'로 변경해 구분.
+                  · 원인2 — #ver이 .54rem(약 8.6px) 흐린 글씨로 화면 우측 하단
+                    구석에 있어 사실상 판독 불가였음.
+                    → 화면 하단 중앙 토스트로 변경(어두운 배경 + .92rem).
+                      6초 후 자동으로 사라지고, 다시 5연타하면 즉시 숨김.
+
+                  ※ 버전 확인 = 앱 진입 후 왼쪽 사이드바의 '가격 안내' 5연타.
 
   ★ 가격/항목이 바뀌면 아래 DATA 블록만 수정하면 됩니다.
      (Categories 시트 = cats / Options 시트 = opts)
@@ -342,10 +353,16 @@ body{
 }
 
 #ver{
-  position:fixed;right:6px;bottom:2px;z-index:120;
-  font-size:.54rem;color:var(--ink-light);opacity:0;
-  letter-spacing:.05em;pointer-events:none;
+  position:fixed;left:50%;bottom:2.2rem;z-index:200;
+  transform:translate(-50%,10px);
+  background:var(--ink);color:var(--cream);
+  padding:.85rem 1.5rem;border-radius:4px;
+  font-size:.92rem;letter-spacing:.03em;white-space:nowrap;
+  box-shadow:0 6px 26px rgba(28,25,22,.28);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .25s,transform .25s,visibility .25s;
 }
+#ver.on{opacity:1;visibility:visible;transform:translate(-50%,0);}
 
 /* 좁은 화면 — 메뉴는 항상 왼쪽 세로 유지, 폭만 줄임 */
 @media (max-width:820px){
@@ -392,7 +409,7 @@ body{
   <aside id="side">
     <div class="side-head">
       <button class="side-logo" id="home" title="처음 화면으로">ELLIYA</button>
-      <div class="side-tag" id="tag">시술 가격 정보</div>
+      <div class="side-tag" id="tag">가격 안내</div>
     </div>
     <div class="side-list" id="cats"></div>
   </aside>
@@ -442,7 +459,7 @@ body{
    cats : Categories 시트 [순번, 카테고리명, 설명]
    opts : Options 시트    [카테고리순번, 옵션순번, 옵션명, 가격]
    ═══════════════════════════════════════════════════════════ */
-var VER = 'v5 · 2026.08.18';
+var VER = 'v6 · 2026.08.18';
 
 /* 시술 가격 API — "Elliya 시술 관리" 시트에 묶인 별도 Apps Script 배포 */
 var API = 'https://script.google.com/macros/s/AKfycbzjOhnSgccKuCnB_aygeJ1j9zihYYNwgPlzuwZhW57QCKNOp1fKt48SGkSLGxyd2ci1Xg/exec';
@@ -732,6 +749,7 @@ document.getElementById('home').addEventListener('click', function(){
 /* 버전 확인 — 로고 아래 '시술 가격 정보' 글자를 3초 내 5연타.
    (로고는 홈 버튼이 되었으므로 5연타를 받을 수 없어 부제로 옮김) */
 var taps = [];
+var verTimer = null;
 document.getElementById('tag').addEventListener('click', function(){
   var now = Date.now();
   taps.push(now);
@@ -739,12 +757,13 @@ document.getElementById('tag').addEventListener('click', function(){
   if (taps.length >= 5){
     taps = [];
     var v = document.getElementById('ver');
-    if (v.dataset.on === '1'){
-      v.dataset.on = '0'; v.style.opacity = '0';
+    clearTimeout(verTimer);
+    if (v.classList.contains('on')){
+      v.classList.remove('on');
     } else {
-      v.dataset.on = '1';
-      v.textContent = VER + '  ·  ' + srcInfo;
-      v.style.opacity = '1';
+      v.textContent = VER + '   ·   ' + srcInfo;
+      v.classList.add('on');
+      verTimer = setTimeout(function(){ v.classList.remove('on'); }, 6000);
     }
   }
 });

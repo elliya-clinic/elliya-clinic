@@ -48,6 +48,17 @@
                   · noindex 태그 — 검색엔진 색인 차단
                     (robots.txt에 파일명을 적으면 오히려 공개되므로 적지 않음)
                   · 로고 5연타 시 버전과 함께 '데이터 출처 + 갱신시각' 표시
+  v5  2026.08.18  [홈 이동 추가 · 안내문구 삭제 · 버전 토글 위치 이동]
+                  · 확인 화면의 '실제 결제 금액은 …' 안내 문구 삭제
+                  · 왼쪽 상단 ELLIYA → 표지(홈) 화면으로 이동.
+                    선택 내용은 유지되므로 실수로 눌러도 다시 터치하면 복귀.
+                    선택을 비우려면 확인 화면의 [처음으로] 사용.
+                  · 버전 표시를 로고 → 그 아래 '시술 가격 정보' 글자로 이동.
+                    (로고가 홈 버튼이 되어 첫 탭에서 화면이 넘어가므로
+                     5연타를 받을 수 없게 됨)
+                  · 버전 토글 판정을 style.opacity → dataset.on 으로 변경.
+                    CSS로 지정된 초기 opacity는 style.opacity가 빈 문자열이라
+                    첫 비교가 항상 실패하던 문제 정리.
 
   ★ 가격/항목이 바뀌면 아래 DATA 블록만 수정하면 됩니다.
      (Categories 시트 = cats / Options 시트 = opts)
@@ -140,9 +151,14 @@ body{
   border-bottom:1px solid var(--border);
 }
 .side-logo{
+  display:block;width:100%;text-align:left;
+  background:none;border:none;padding:0;cursor:pointer;color:var(--ink);
   font-family:'Cormorant Garamond',Georgia,serif;
   font-size:1.32rem;letter-spacing:.17em;font-weight:400;text-indent:.17em;
+  transition:color .18s;
 }
+.side-logo:active{color:var(--gold-dark);}
+.side-tag{cursor:default;}
 .side-tag{
   font-size:.63rem;letter-spacing:.2em;color:var(--gold-dark);
   margin-top:.42rem;text-indent:.2em;
@@ -375,8 +391,8 @@ body{
 <div id="app">
   <aside id="side">
     <div class="side-head">
-      <div class="side-logo">ELLIYA</div>
-      <div class="side-tag">시술 가격 정보</div>
+      <button class="side-logo" id="home" title="처음 화면으로">ELLIYA</button>
+      <div class="side-tag" id="tag">시술 가격 정보</div>
     </div>
     <div class="side-list" id="cats"></div>
   </aside>
@@ -408,10 +424,6 @@ body{
       <span class="card-total-l">총 금액</span>
       <span class="card-total-v" id="total">0원</span>
     </div>
-    <div class="note" id="note">
-      실제 결제 금액은 시술 범위와 피부 상태에 따라 달라질 수 있습니다.
-      자세한 내용은 코디네이터가 안내해 드립니다.
-    </div>
     <div class="card-foot" id="foot">
       <button class="btn-ghost" id="back">다시 선택</button>
       <button class="btn-fill" id="ok">선택 확인</button>
@@ -430,7 +442,7 @@ body{
    cats : Categories 시트 [순번, 카테고리명, 설명]
    opts : Options 시트    [카테고리순번, 옵션순번, 옵션명, 가격]
    ═══════════════════════════════════════════════════════════ */
-var VER = 'v4 · 2026.08.16';
+var VER = 'v5 · 2026.08.18';
 
 /* 시술 가격 API — "Elliya 시술 관리" 시트에 묶인 별도 Apps Script 배포 */
 var API = 'https://script.google.com/macros/s/AKfycbzjOhnSgccKuCnB_aygeJ1j9zihYYNwgPlzuwZhW57QCKNOp1fKt48SGkSLGxyd2ci1Xg/exec';
@@ -707,17 +719,33 @@ document.getElementById('cover').addEventListener('touchstart', function(e){
   e.preventDefault(); open();
 }, {passive:false});
 
-/* 버전 확인 — 사이드바 로고 3초 내 5연타 (index.html과 동일 방식) */
+/* 왼쪽 상단 ELLIYA — 표지(홈) 화면으로.
+   선택 내용은 그대로 유지되므로, 상담 중 실수로 눌러도 다시 터치하면 복귀됨.
+   선택을 비우려면 확인 화면의 [처음으로]를 사용. */
+document.getElementById('home').addEventListener('click', function(){
+  document.getElementById('sheet').classList.remove('on');
+  document.getElementById('cover').classList.remove('gone');
+  document.getElementById('app').classList.remove('on');
+  refresh();   // 표지로 돌아온 김에 최신 가격 재조회
+});
+
+/* 버전 확인 — 로고 아래 '시술 가격 정보' 글자를 3초 내 5연타.
+   (로고는 홈 버튼이 되었으므로 5연타를 받을 수 없어 부제로 옮김) */
 var taps = [];
-document.querySelector('.side-logo').addEventListener('click', function(){
+document.getElementById('tag').addEventListener('click', function(){
   var now = Date.now();
   taps.push(now);
   taps = taps.filter(function(t){ return now - t <= 3000; });
   if (taps.length >= 5){
     taps = [];
     var v = document.getElementById('ver');
-    if (v.style.opacity === '1'){ v.style.opacity = '0'; }
-    else { v.textContent = VER + '  ·  ' + srcInfo; v.style.opacity = '1'; }
+    if (v.dataset.on === '1'){
+      v.dataset.on = '0'; v.style.opacity = '0';
+    } else {
+      v.dataset.on = '1';
+      v.textContent = VER + '  ·  ' + srcInfo;
+      v.style.opacity = '1';
+    }
   }
 });
 

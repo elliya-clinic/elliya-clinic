@@ -70,21 +70,6 @@
                       6초 후 자동으로 사라지고, 다시 5연타하면 즉시 숨김.
 
                   ※ 버전 확인 = 앱 진입 후 왼쪽 사이드바의 '가격 안내' 5연타.
-  v7  2026.08.18  [예약자 연동 — 결제금액 자동 기록]
-                  Price.gs v4와 연동. 흐름:
-                    표지 → 오늘 예약자 선택 → 카테고리 → [선택 확인] → 시트 기록
-
-                  · 오늘 예약자 목록 (today_bookings)
-                    현재시각 -2시간 이후 건만. 취소·차단 제외.
-                    네이버 예약 시술명은 '1대1 상담'으로 통일되어 표시됨.
-                  · 예약 없이 내원한 환자(워크인)
-                    이름만 입력하면 됨. 날짜는 오늘, 시각은 현재 시각을
-                    30분 단위로 내림(예 19:47 → 오후 7:30).
-                    [선택 확인] 시 예약현황원본에 새 행 추가(예약번호 M 접두어).
-                  · 카테고리 화면 상단에 환자 이름 표시. [변경]으로 재선택 가능.
-                  · [선택 확인] → 결제금액·결제내역을 예약관리 시트에 기록.
-                    성공/실패가 화면에 표시되므로 누락을 즉시 알 수 있음.
-                  · JSONP 호출을 공통 함수 jsonp()로 정리(가격·예약자·기록 공용).
 
   ★ 가격/항목이 바뀌면 아래 DATA 블록만 수정하면 됩니다.
      (Categories 시트 = cats / Options 시트 = opts)
@@ -159,80 +144,6 @@ body{
 @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
 @keyframes widen{from{opacity:0;width:0;}to{opacity:.65;width:64px;}}
 @keyframes breathe{0%,100%{opacity:.35;}50%{opacity:.85;}}
-
-/* ─── 예약자 선택 ─── */
-#pick{
-  position:fixed;inset:0;z-index:90;background:var(--cream);
-  display:none;flex-direction:column;
-  padding-top:env(safe-area-inset-top);
-}
-#pick.on{display:flex;}
-.pick-head{
-  padding:1.9rem clamp(1.5rem,4vw,3rem) 1.2rem;
-  border-bottom:1px solid var(--border);
-}
-.pick-title{font-size:1.34rem;font-weight:600;letter-spacing:-.01em;}
-.pick-sub{font-size:.8rem;color:var(--ink-light);margin-top:.36rem;}
-.pick-list{
-  flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  padding:1.5rem clamp(1.5rem,4vw,3rem);
-}
-.pt{
-  display:flex;align-items:center;gap:1.2rem;width:100%;
-  padding:1.28rem 1.4rem;margin-bottom:.62rem;
-  background:var(--white);border:1px solid var(--border);
-  font-family:inherit;text-align:left;cursor:pointer;
-  transition:border-color .18s,background .18s;
-}
-.pt:active{background:var(--cream-mid);}
-.pt-time{
-  font-size:1.02rem;color:var(--gold-dark);white-space:nowrap;
-  min-width:5.4rem;font-variant-numeric:tabular-nums;
-}
-.pt-name{font-size:1.16rem;font-weight:600;min-width:0;}
-.pt-svc{
-  flex:1;font-size:.93rem;color:var(--ink-light);
-  text-align:right;min-width:0;word-break:keep-all;
-}
-.pick-empty{
-  padding:3rem 1rem;text-align:center;color:var(--ink-light);
-  font-size:.97rem;line-height:1.8;word-break:keep-all;
-}
-.pick-foot{
-  flex-shrink:0;border-top:1px solid var(--border);background:var(--white);
-  padding:1.05rem clamp(1.5rem,4vw,3rem);
-  padding-bottom:calc(1.05rem + env(safe-area-inset-bottom));
-  display:flex;gap:.8rem;align-items:center;
-}
-.walk-in{
-  display:flex;gap:.7rem;flex:1;align-items:center;
-}
-.walk-in input{
-  flex:1;min-width:0;padding:.95rem 1rem;
-  border:1px solid var(--border-mid);background:var(--white);
-  font-family:inherit;font-size:1.02rem;color:var(--ink);
-  border-radius:0;-webkit-appearance:none;
-}
-.walk-in input:focus{outline:none;border-color:var(--gold);}
-.walk-time{
-  font-size:.92rem;color:var(--gold-dark);white-space:nowrap;
-  font-variant-numeric:tabular-nums;
-}
-
-/* 상단 환자 표시 */
-#who{
-  flex-shrink:0;display:flex;align-items:center;gap:.8rem;
-  padding:.92rem clamp(1.5rem,3.4vw,3rem);
-  border-bottom:1px solid var(--border);background:var(--white);
-}
-#who-name{font-size:1.06rem;font-weight:600;}
-#who-meta{font-size:.82rem;color:var(--ink-light);}
-#who-change{
-  margin-left:auto;background:none;border:1px solid var(--border-mid);
-  padding:.5rem .95rem;font-family:inherit;font-size:.8rem;
-  color:var(--ink-mid);cursor:pointer;letter-spacing:.03em;
-}
-#who-change:active{background:var(--cream-mid);}
 
 /* ─── 본문 레이아웃 ─── */
 #app{display:flex;height:100%;opacity:0;transition:opacity .5s ease .1s;}
@@ -494,23 +405,6 @@ body{
 </div>
 
 <!-- ═══ 본문 ═══ -->
-<!-- ═══ 오늘 예약자 선택 ═══ -->
-<div id="pick">
-  <div class="pick-head">
-    <div class="pick-title">오늘 예약자</div>
-    <div class="pick-sub" id="pick-sub">불러오는 중…</div>
-  </div>
-  <div class="pick-list" id="pick-list"></div>
-  <div class="pick-foot">
-    <div class="walk-in">
-      <input id="wname" type="text" placeholder="예약 없이 오신 분 — 이름 입력"
-             autocomplete="off" autocorrect="off" spellcheck="false">
-      <span class="walk-time" id="wtime"></span>
-    </div>
-    <button class="btn" id="wgo" disabled>진행</button>
-  </div>
-</div>
-
 <div id="app">
   <aside id="side">
     <div class="side-head">
@@ -521,11 +415,6 @@ body{
   </aside>
 
   <div id="main">
-    <div id="who">
-      <span id="who-name"></span>
-      <span id="who-meta"></span>
-      <button id="who-change">변경</button>
-    </div>
     <div id="scroll"></div>
     <div id="bar">
       <div class="sum-wrap">
@@ -570,12 +459,11 @@ body{
    cats : Categories 시트 [순번, 카테고리명, 설명]
    opts : Options 시트    [카테고리순번, 옵션순번, 옵션명, 가격]
    ═══════════════════════════════════════════════════════════ */
-var VER = 'v7 · 2026.08.18';
+var VER = 'v6 · 2026.08.18';
 
 /* 시술 가격 API — "Elliya 시술 관리" 시트에 묶인 별도 Apps Script 배포 */
 var API = 'https://script.google.com/macros/s/AKfycbzjOhnSgccKuCnB_aygeJ1j9zihYYNwgPlzuwZhW57QCKNOp1fKt48SGkSLGxyd2ci1Xg/exec';
 var CACHE_KEY = 'elliya_price_v1';
-var KEY = 'elliya2026';   // Price.gs 접근키
 
 /* ↓ 아래는 "첫 실행인데 인터넷이 없을 때"만 쓰이는 비상용 기본값입니다.
      평소에는 시트에서 받아온 값으로 자동 대체되므로 손대지 않아도 됩니다. */
@@ -644,51 +532,40 @@ function loadCache(){
   }catch(err){ return false; }
 }
 
-/* 공통 JSONP 호출 — script.google.com은 다른 도메인이라 script 태그 방식 사용 */
-var jsonpSeq = 0;
-function jsonp(params, done){
-  var cb  = 'ep' + (++jsonpSeq) + '_' + Date.now();
-  var tag = document.createElement('script');
+/* 시트 조회 (JSONP — 다른 도메인이라 script 태그 방식 사용) */
+function fetchSheet(done){
+  var cb = 'ep' + Date.now();
+  var s  = document.createElement('script');
   var fin = false;
 
   function cleanup(){
     try{ delete window[cb]; }catch(err){ window[cb] = null; }
-    if (tag.parentNode) tag.parentNode.removeChild(tag);
+    if (s.parentNode) s.parentNode.removeChild(s);
   }
-  function end(res){
+  function end(ok){
     if (fin) return;
     fin = true; clearTimeout(timer); cleanup();
-    if (done) done(res);
+    if (done) done(ok);
   }
 
-  var timer = setTimeout(function(){ end(null); }, 10000);
-  window[cb] = function(res){ end(res); };
-  tag.onerror = function(){ end(null); };
+  var timer = setTimeout(function(){ end(false); }, 8000);
 
-  var q = ['callback=' + cb, 't=' + Date.now()];
-  for (var k in params){
-    if (params.hasOwnProperty(k) && params[k] !== undefined && params[k] !== null){
-      q.push(encodeURIComponent(k) + '=' + encodeURIComponent(params[k]));
-    }
-  }
-  tag.src = API + '?' + q.join('&');
-  document.head.appendChild(tag);
-}
-
-/* 가격 데이터 조회 */
-function fetchSheet(done){
-  jsonp({}, function(res){
+  window[cb] = function(res){
     if (res && res.ok && res.cats && res.cats.length){
       cats = res.cats;
       opts = res.opts || [];
       srcInfo = '시트 ' + (res.updated || '');
       saveCache(res);
       if (!cats.some(function(c){ return c.n === cur; })) cur = cats[0].n;
-      if (done) done(true);
+      end(true);
     } else {
-      if (done) done(false);
+      end(false);
     }
-  });
+  };
+
+  s.onerror = function(){ end(false); };
+  s.src = API + '?callback=' + cb + '&t=' + Date.now();
+  document.head.appendChild(s);
 }
 
 /* 표지에 있는 동안 갱신 시도 */
@@ -816,7 +693,7 @@ document.getElementById('foot').addEventListener('click', function(e){
     document.getElementById('sheet').classList.remove('on');
 
   } else if (b.id === 'ok'){
-    // 확인 완료 — 코디네이터에게 보여주는 상태 + 예약관리 시트에 결제금액 기록
+    // 확인 완료 — 코디네이터에게 보여주는 상태
     var d = new Date();
     var hh = String(d.getHours()).padStart(2,'0');
     var mm = String(d.getMinutes()).padStart(2,'0');
@@ -824,11 +701,13 @@ document.getElementById('foot').addEventListener('click', function(e){
     document.getElementById('today').textContent =
       d.getFullYear() + '. ' + (d.getMonth()+1) + '. ' + d.getDate() + '  ' + hh + ':' + mm;
     this.innerHTML =
-      '<span class="confirmed" id="saveState">저장 중…</span>' +
+      '<span class="confirmed">' +
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">' +
+      '<polyline points="20 6 9 17 4 12"/></svg>확인되었습니다</span>' +
       '<button class="btn-ghost" id="reset" style="flex:0 0 auto;padding:1rem 1.6rem;">처음으로</button>';
     this.style.alignItems = 'center';
     this.style.justifyContent = 'space-between';
-    saveToSheet();
 
   } else if (b.id === 'reset'){
     // 다음 환자를 위해 전체 초기화
@@ -836,11 +715,9 @@ document.getElementById('foot').addEventListener('click', function(e){
     cur = cats[0] ? cats[0].n : 1;
     this.style.alignItems = '';
     this.style.justifyContent = '';
-    patient = null;
     document.getElementById('sheet').classList.remove('on');
     document.getElementById('cover').classList.remove('gone');
     document.getElementById('app').classList.remove('on');
-    document.getElementById('pick').classList.remove('on');
     draw();
     refresh();   // 다음 환자 — 표지로 돌아온 김에 최신 가격 재조회
   }
@@ -849,182 +726,10 @@ document.getElementById('sheet').addEventListener('click', function(e){
   if (e.target === this) this.classList.remove('on');
 });
 
-/* ═══════════════════════════════════════════════════════════
-   환자 선택
-   ═══════════════════════════════════════════════════════════ */
-var patient = null;   // { name, booking_no, row, time_text, walkin }
-
-/* 현재 시각을 30분 단위로 내림 → "2026.08.18.(화) 오후 7:00" */
-function nowSlot(){
-  var d = new Date();
-  d.setMinutes(d.getMinutes() < 30 ? 0 : 30, 0, 0);
-  return d;
-}
-function slotText(d){
-  var w = ['일','월','화','수','목','금','토'][d.getDay()];
-  var h = d.getHours(), m = d.getMinutes();
-  var ap = h < 12 ? '오전' : '오후';
-  var h12 = h % 12; if (h12 === 0) h12 = 12;
-  return d.getFullYear() + '.' +
-         ('0'+(d.getMonth()+1)).slice(-2) + '.' +
-         ('0'+d.getDate()).slice(-2) + '.(' + w + ') ' +
-         ap + ' ' + h12 + ':' + ('0'+m).slice(-2);
-}
-function slotShort(d){
-  var h = d.getHours(), m = d.getMinutes();
-  var ap = h < 12 ? '오전' : '오후';
-  var h12 = h % 12; if (h12 === 0) h12 = 12;
-  return ap + ' ' + h12 + ':' + ('0'+m).slice(-2);
-}
-
-/* 오늘 예약자 조회 */
-function loadPatients(){
-  var sub  = document.getElementById('pick-sub');
-  var list = document.getElementById('pick-list');
-  sub.textContent = '불러오는 중…';
-  list.innerHTML = '';
-
-  jsonp({ action:'today_bookings', key:KEY }, function(res){
-    if (!res || !res.ok){
-      sub.textContent = '예약 정보를 불러오지 못했습니다';
-      list.innerHTML = '<div class="pick-empty">인터넷 연결을 확인해 주세요.<br>' +
-                       '아래에 이름을 입력하면 예약 없이 진행할 수 있습니다.</div>';
-      return;
-    }
-
-    todayList = res.bookings || [];
-    sub.textContent = res.now + ' 기준  ·  ' + todayList.length + '명';
-
-    if (!todayList.length){
-      list.innerHTML = '<div class="pick-empty">오늘 남은 예약이 없습니다.<br>' +
-                       '아래에 이름을 입력하면 예약 없이 진행할 수 있습니다.</div>';
-      return;
-    }
-
-    var h = '';
-    todayList.forEach(function(b, i){
-      h += '<button class="pt" data-i="' + i + '">' +
-           '<span class="pt-time">' + esc(b.time_text) + '</span>' +
-           '<span class="pt-name">' + esc(b.name) + '</span>' +
-           '<span class="pt-svc">' + esc(b.service || '') + '</span></button>';
-    });
-    list.innerHTML = h;
-  });
-}
-var todayList = [];
-
-document.getElementById('pick-list').addEventListener('click', function(e){
-  var b = e.target.closest('.pt');
-  if (!b) return;
-  var p = todayList[parseInt(b.dataset.i, 10)];
-  if (!p) return;
-  patient = {
-    name: p.name, booking_no: p.booking_no, row: p.row,
-    time_text: p.time_text, walkin: false
-  };
-  enterApp();
-});
-
-/* 워크인 */
-function syncWalk(){
-  var v = document.getElementById('wname').value.trim();
-  document.getElementById('wgo').disabled = !v;
-}
-document.getElementById('wname').addEventListener('input', syncWalk);
-document.getElementById('wgo').addEventListener('click', function(){
-  var v = document.getElementById('wname').value.trim();
-  if (!v) return;
-  var d = nowSlot();
-  patient = {
-    name: v, booking_no: '', row: 0,
-    time_text: slotShort(d), date_time: slotText(d), walkin: true
-  };
-  enterApp();
-});
-
-/* ═══ 예약관리 시트에 결제금액 기록 ═══ */
-function pickedList(){
-  var r = [];
-  cats.forEach(function(c){
-    opts.filter(function(o){ return o.c === c.n && sel[o.c + '-' + o.n]; })
-        .forEach(function(o){ r.push(o); });
-  });
-  return r;
-}
-
-function saveState(txt, ok){
-  var el = document.getElementById('saveState');
-  if (!el) return;
-  if (ok){
-    el.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" ' +
-      'stroke="currentColor" stroke-width="2.6" stroke-linecap="round" ' +
-      'stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' + txt;
-    el.style.color = 'var(--gold-dark)';
-  } else {
-    el.textContent = txt;
-    el.style.color = '#B4483C';
-  }
-}
-
-function saveToSheet(){
-  if (!patient){ saveState('확인되었습니다', true); return; }
-
-  var list   = pickedList();
-  var amount = list.reduce(function(a,o){ return a + o.price; }, 0);
-  var detail = list.map(function(o){ return o.name; }).join(' / ');
-
-  var params;
-  if (patient.walkin){
-    params = {
-      action:'add_walkin', key:KEY,
-      name: patient.name, date_time: patient.date_time,
-      service: detail, amount: amount, detail: detail
-    };
-  } else {
-    params = {
-      action:'save_amount', key:KEY,
-      booking_no: patient.booking_no, row: patient.row,
-      amount: amount, detail: detail
-    };
-  }
-
-  jsonp(params, function(res){
-    if (res && res.ok){
-      saveState('확인되었습니다', true);
-    } else {
-      var why = (res && res.error) ? res.error : '연결 실패';
-      saveState('저장 실패 (' + why + ')', false);
-    }
-  });
-}
-
-/* 화면 전환 */
-function showPick(){
-  document.getElementById('cover').classList.add('gone');
-  document.getElementById('app').classList.remove('on');
-  document.getElementById('sheet').classList.remove('on');
-  document.getElementById('pick').classList.add('on');
-  document.getElementById('wname').value = '';
-  document.getElementById('wgo').disabled = true;
-  document.getElementById('wtime').textContent = slotShort(nowSlot());
-  loadPatients();
-}
-
-function enterApp(){
-  document.getElementById('pick').classList.remove('on');
-  document.getElementById('app').classList.add('on');
-  document.getElementById('who-name').textContent = patient.name + '님';
-  document.getElementById('who-meta').textContent =
-    patient.walkin ? '예약 없이 내원  ·  ' + patient.time_text : patient.time_text + ' 예약';
-  draw();
-}
-
-document.getElementById('who-change').addEventListener('click', showPick);
-
-/* 표지 → 예약자 선택 */
+/* 표지 → 본문 */
 function open(){
   document.getElementById('cover').classList.add('gone');
-  showPick();
+  document.getElementById('app').classList.add('on');
 }
 document.getElementById('cover').addEventListener('click', open);
 document.getElementById('cover').addEventListener('touchstart', function(e){
@@ -1038,7 +743,6 @@ document.getElementById('home').addEventListener('click', function(){
   document.getElementById('sheet').classList.remove('on');
   document.getElementById('cover').classList.remove('gone');
   document.getElementById('app').classList.remove('on');
-  document.getElementById('pick').classList.remove('on');
   refresh();   // 표지로 돌아온 김에 최신 가격 재조회
 });
 

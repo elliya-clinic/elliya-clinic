@@ -268,6 +268,23 @@
                       다시 5연타 또는 새로고침 시 숨김. 해당 탭에만 적용되며
                       서버 저장·타인 노출 없음.
                       ★ 파일 수정 시 VER_INFO 변수값도 함께 갱신할 것.
+ v205  2026.08.25  [예약시간 조회 소요시간 계측]
+                   증상: 예약 화면에서 시간 조회가 느리고, 12초 타임아웃이 나면
+                         모든 시간대가 열려버림(renderTimeSlots([]) 폴백).
+                         이미 찬 시간이 비어 보여 중복 예약 위험.
+                   문제: Apps Script 실행로그의 doGet은 1~3초로 모두 정상이라
+                         손님이 겪는 지연이 어디서 생기는지 알 수 없었음.
+                         (실행 시간만 남고 대기 시간은 로그에 안 잡힘)
+                   조치: 손님 브라우저 기준 실제 소요시간을 측정해 GA4로 전송.
+                         · slots_ok        3초 미만
+                         · slots_slow      3~8초
+                         · slots_verySlow  8초 이상
+                         · slots_timeout   12초 초과(실패 — 전 시간대 열림)
+                         · slots_error     스크립트 로드 실패
+                         이벤트 이름을 구간별로 나눠 GA4 맞춤 측정기준 등록 없이
+                         [보고서 > 참여도 > 이벤트]에서 바로 횟수 확인 가능.
+                   ※ 이번 변경은 계측만 추가. 동작·화면은 그대로이며
+                     타임아웃 시 전 시간대가 열리는 폴백도 아직 유지됨.
 				   
 ═══════════════════════════════════════════════════════════
 -->
@@ -791,7 +808,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v204</span>
+    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v205</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1832,7 +1849,7 @@ function gaPage(path, title){
 // ※ 이 상태는 해당 브라우저 탭에만 존재. 서버 저장·타인 노출 없음.
 //    새로고침하면 원본 HTML을 다시 받으므로 자동으로 숨겨진다.
 // ══════════════════════════════════════════════
-var VER_INFO = 'v204 · 2026.08.09';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
+var VER_INFO = 'v205 · 2026.08.25';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
 var verTaps = [];
 function verTap() {
   var now = Date.now();
@@ -2399,10 +2416,39 @@ function renderTimeSlots(busyMinutes, times, se){
   }).join("");
 }
 
+// ══════════════════════════════════════════════════════════
+// 예약시간 조회 소요시간 측정 (v205)
+// ──────────────────────────────────────────────────────────
+// 손님 브라우저가 체감하는 실제 소요시간을 GA4로 보낸다.
+// Apps Script 실행로그(doGet)는 "실행 시간"만 남고 대기 시간이 잡히지 않아,
+// 손님이 겪는 지연을 알 수 없었음. 그 공백을 메우기 위한 계측.
+//
+// 이벤트 이름을 구간별로 나눈 이유:
+//   GA4에서 맞춤 측정기준을 따로 등록하지 않아도
+//   [보고서 > 참여도 > 이벤트]에서 이름별 발생 횟수가 바로 보이도록.
+//
+//   slots_ok       3초 미만    (정상)
+//   slots_slow     3~8초       (느림)
+//   slots_verySlow 8초 이상    (매우 느림 — 타임아웃 직전)
+//   slots_timeout  12초 초과   (실패 → 전 시간대 열림)
+//   slots_error    스크립트 로드 실패
+// ══════════════════════════════════════════════════════════
+function gaSlots(name, ms, dateStr){
+  try {
+    if (typeof gtag !== "function") return;
+    gtag("event", name, {
+      duration_ms: ms,
+      duration_sec: Math.round(ms / 100) / 10,
+      target_date: dateStr || ""
+    });
+  } catch(e){}
+}
+
 function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
   var cbName = "bkCb" + myReqId + "_" + Date.now();
   var cleaned = false;
   var script = document.createElement("script");
+  var t0 = Date.now();   // v205: 요청 시작 시각
 
   function cleanup(){
     if (cleaned) return;
@@ -2413,7 +2459,9 @@ function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
 
   var timeoutId = setTimeout(function(){
     if (myReqId !== bkReqId) { cleanup(); return; }
-    console.error("예약된 시간 조회 실패: JSONP 응답 시간 초과 (Apps Script에 callback 파라미터 처리가 없을 수 있음)");
+    var ms = Date.now() - t0;
+    console.error("예약된 시간 조회 실패: JSONP 응답 시간 초과 (" + ms + "ms)");
+    gaSlots("slots_timeout", ms, dateStr);
     cleanup();
     renderTimeSlots([], times, se); // 조회 실패 시 전부 활성화 (예약 자체는 막히지 않도록)
   }, 12000);
@@ -2422,6 +2470,9 @@ function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
     clearTimeout(timeoutId);
     cleanup();
     if (myReqId !== bkReqId) return;
+    var ms = Date.now() - t0;
+    gaSlots(ms >= 8000 ? "slots_verySlow" : (ms >= 3000 ? "slots_slow" : "slots_ok"), ms, dateStr);
+    if (ms >= 3000) console.warn("예약된 시간 조회 지연: " + ms + "ms");
     renderTimeSlots((data && data.busyMinutes) || [], times, se);
   };
 
@@ -2429,7 +2480,9 @@ function jsonpFallback(baseUrl, dateStr, myReqId, times, se){
     clearTimeout(timeoutId);
     cleanup();
     if (myReqId !== bkReqId) return;
-    console.error("예약된 시간 조회 실패: JSONP 스크립트 로드 실패");
+    var ms = Date.now() - t0;
+    console.error("예약된 시간 조회 실패: JSONP 스크립트 로드 실패 (" + ms + "ms)");
+    gaSlots("slots_error", ms, dateStr);
     renderTimeSlots([], times, se);
   };
 

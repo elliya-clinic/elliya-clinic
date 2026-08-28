@@ -285,6 +285,69 @@
                          [보고서 > 참여도 > 이벤트]에서 바로 횟수 확인 가능.
                    ※ 이번 변경은 계측만 추가. 동작·화면은 그대로이며
                      타임아웃 시 전 시간대가 열리는 폴백도 아직 유지됨.
+ v206  2026.08.28  [시술 시작가 조정]
+                   'Elliya 시술 관리' 시트 Categories의 시작가(E열)에 맞춤.
+                     소프웨이브   900,000 → 990,000
+                     티타늄       490,000 → 390,000
+                     울쎄라피   1,090,000 → 990,000
+                     온다         360,000 → 240,000
+                     슈링크       150,000 → 320,000
+                     스킨부스터    40,000 (변경 없음)
+                   ※ 가격이 HTML 예약화면과 JS SVCS 배열 두 곳에 중복 하드코딩되어
+                     있어 시술당 2곳씩 고쳐야 함. 시트 연동으로 전환 예정(아래 참조).
+
+                   【다음 작업 — 시트 연동】
+                   가격을 코드에 박아두니 수정이 번거로움. 시트에서 읽어오도록 전환.
+                     · 표시가격 = Categories 시트의 시작가(E열)
+                     · 시작가가 비어 있으면 홈페이지에 표시하지 않음
+                       (현재 7 엘리야 패키지 / 8 엘리야 할인이 그 상태)
+                       → 시작가만 넣으면 예약화면에 박스가 자동으로 추가됨
+                     · 부제(한 줄 설명)는 시트의 긴 설명과 다르므로
+                       Categories에 '짧은설명' 열을 별도로 추가해야 함
+                       (언어별 열: 짧은설명_ko/en/zh/ar/ja/cn)
+                     · 운영시간도 시트로 이관 예정 — '운영시간' 탭
+                       요일 | 시간목록(쉼표 구분) | 휴진
+                       timesForDate()가 이 값을 읽도록 변경.
+                       시간목록에 없는 시각이 곧 휴진시간(점심 등).
+ v207  2026.08.28  [운영시간 시트 연동 + 30분 단위 전환]
+                   'Elliya 시술 관리' 시트의 '운영시간' 탭에서 예약 시간을 읽어온다.
+                   시트를 고치면 홈페이지가 따라 바뀐다 (코드 수정 불필요).
+
+                   시트 구조 — A열 요일(월~일), B열부터 오른쪽으로 시간.
+                     빈 칸을 만나면 그 요일 끝. 시간이 없으면 휴진.
+                     점심시간은 따로 적지 않음 — 목록에 없는 시각이 곧 쉬는 시각.
+                     ※ 중간에 빈 칸을 두면 거기서 끊기므로 주의.
+
+                   갱신 시점 — 예약 화면 진입 시(initBooking) 1회.
+                     운영시간은 자주 바뀌지 않고, 날짜마다 조회하면
+                     get_booked_times와 겹쳐 부담이 커지므로.
+
+                   3단계 안전망 (조회 실패해도 예약이 멈추지 않도록):
+                     ① 시트에서 방금 받은 값   (정상)
+                     ② 브라우저에 저장된 값     (조회 실패)
+                     ③ HOURS_FALLBACK 내장값   (첫 방문 + 조회 실패)
+                     8초 내 응답 없거나 이상 응답이면 기존 값 유지.
+
+                   PRICE_URL 추가 — 시술관리 시트에 묶인 별도 Apps Script.
+                     예약 시스템(Code.gs)과 분리되어 서로 영향 없음.
+                     ※ Price.gs v5를 '새 배포'로 올려 URL이 변경됨
+                       (AKfycbzjOhnSgcc… → AKfycby0fSsrQC2z…).
+                       다음부터는 [배포 관리 > 연필 > 새 버전]으로 하면
+                       URL이 유지되어 index.html 수정이 불필요함.
+
+                   변경 결과 (1시간 → 30분 단위):
+                     월화목금  10개 → 18개  (10:30~12:00, 13:30~20:00)
+                     토        6개 → 11개  (9:30~12:00, 13:00~15:00)
+                     수·일     휴진 (변경 없음)
+
+                   ※ 로고 5연타 시 버전과 함께 운영시간 출처가 표시됨
+                     (시트/저장본/내장값) — 반영 여부 확인용.
+
+                   ※ 시술 소요시간은 슬롯 판정에 반영하지 않음(의도).
+                     예약 시점에 시술이 확정되지 않는 경우가 많음 —
+                     원장님 상담 후 결정하는 손님이 상당수.
+                     소요시간으로 슬롯을 막으면 오히려 맞지 않으므로,
+                     운영 요구사항이 정해지면 그때 다루기로 함.
 				   
 ═══════════════════════════════════════════════════════════
 -->
@@ -808,7 +871,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v205</span>
+    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v207</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1359,11 +1422,11 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
         <h2 class="bk-title" data-t="bk.s1h">시술을 선택해 주세요</h2>
         <p class="bk-sub" data-t="bk.s1p">원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.</p>
         <div class="svc-opts">
-          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="sig1.name">소프웨이브</div><div class="svc-ds" data-t="bk.sd1">SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅</div></div><div class="svc-pr">&#8361; 900,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="sig2.name">티타늄</div><div class="svc-ds" data-t="bk.sd2">3파장 동시 조사 — 올인원 4세대 리프팅</div></div><div class="svc-pr">&#8361; 490,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="sig3.name">울쎄라피 프라임</div><div class="svc-ds" data-t="bk.sd3">고강도 초음파 — 진피부터 SMAS층까지</div></div><div class="svc-pr">&#8361; 1,090,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="sig4.name">온다</div><div class="svc-ds" data-t="bk.sd4">극초단파 컨투어링 — 지속적 콜라겐 리모델링</div></div><div class="svc-pr">&#8361; 360,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(4)"><div><div class="svc-nm" data-t="sig5.name">슈링크 유니버스</div><div class="svc-ds" data-t="bk.sd5">2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅</div></div><div class="svc-pr">&#8361; 150,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="sig1.name">소프웨이브</div><div class="svc-ds" data-t="bk.sd1">SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅</div></div><div class="svc-pr">&#8361; 990,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="sig2.name">티타늄</div><div class="svc-ds" data-t="bk.sd2">3파장 동시 조사 — 올인원 4세대 리프팅</div></div><div class="svc-pr">&#8361; 390,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="sig3.name">울쎄라피 프라임</div><div class="svc-ds" data-t="bk.sd3">고강도 초음파 — 진피부터 SMAS층까지</div></div><div class="svc-pr">&#8361; 990,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="sig4.name">온다</div><div class="svc-ds" data-t="bk.sd4">극초단파 컨투어링 — 지속적 콜라겐 리모델링</div></div><div class="svc-pr">&#8361; 240,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(4)"><div><div class="svc-nm" data-t="sig5.name">슈링크 유니버스</div><div class="svc-ds" data-t="bk.sd5">2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅</div></div><div class="svc-pr">&#8361; 320,000~</div></div>
           <div class="svc-opt" onclick="selectSvc(5)"><div><div class="svc-nm" data-t="sig6.name">스킨부스터</div><div class="svc-ds" data-t="bk.sd6">진피층 직접 주입 — 수분·모공·미백 맞춤 케어</div></div><div class="svc-pr">&#8361; 40,000~</div></div>
         </div>
         <div class="s-nav">
@@ -1795,6 +1858,9 @@ var lang = "ko";
   lang = detected;
 })();
 var SHEET_URL = "https://script.google.com/macros/s/AKfycbyr7Phx88tfpd3t8Yv158nDiAj7Tlcpr4jyMcqrVVIDYODFElPoDV6SbPxG1wOM9Cx7bg/exec";
+// v207: 시술 가격·운영시간 API ("Elliya 시술 관리" 시트에 묶인 별도 Apps Script)
+//       예약 시스템(Code.gs)과 분리되어 있어 서로 영향을 주지 않는다.
+var PRICE_URL = "https://script.google.com/macros/s/AKfycby0fSsrQC2zcNtkwX292H2WMQ3pQaQe8lpjYiGh3_2c9bliOHt4nSf98BpjJ-SpHw2-KA/exec";
 
 var LANG_FLAG = { ko:"kr", en:"us", ja:"jp", cn:"cn", zh:"tw", ar:"sa" };
 function syncLangUI(l) {
@@ -1849,7 +1915,7 @@ function gaPage(path, title){
 // ※ 이 상태는 해당 브라우저 탭에만 존재. 서버 저장·타인 노출 없음.
 //    새로고침하면 원본 HTML을 다시 받으므로 자동으로 숨겨진다.
 // ══════════════════════════════════════════════
-var VER_INFO = 'v205 · 2026.08.25';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
+var VER_INFO = 'v207 · 2026.08.28';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
 var verTaps = [];
 function verTap() {
   var now = Date.now();
@@ -1860,7 +1926,7 @@ function verTap() {
     var b = document.getElementById('ver-badge');
     if (!b) return;
     if (b.style.display === 'none') {
-      b.textContent = VER_INFO;
+      b.textContent = VER_INFO + '  ·  ' + HOURS_SRC;
       b.style.display = '';
     } else {
       b.style.display = 'none';
@@ -1896,7 +1962,7 @@ function resetMyBookingForm() {
 // TREATMENT DATA
 // =====================================================
 var SVCS = [
-  { price: 900000, priceStr: "&#8361; 900,000~",
+  { price: 990000, priceStr: "&#8361; 990,000~",
     name: {"ko":"소프웨이브","en":"Sofwave","zh":"Sofwave 舒芙波","ar":"سوفويف","ja":"ソフウェーブ","cn":"Sofwave 舒芙波"},
     sub:  {"ko":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","en":"SUPERB™ Ultrasound — Dermal Collagen Lifting","zh":"SUPERB™ 超音波技術 — 真皮層膠原拉提","ar":"تقنية SUPERB™ للموجات فوق الصوتية","ja":"SUPERB™超音波技術 — 真皮層コラーゲン再生リフティング","cn":"SUPERB™超声波技术 — 真皮层胶原蛋白再生提升"},
     body: {"ko":"<h2>소프웨이브란?</h2><p>SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>진피층 콜라겐·엘라스틴 재생</li><li>넓고 균일한 에너지 전달로 자연스러운 탄력 개선</li><li>다운타임 없이 일상생활 바로 가능</li></ul>",
@@ -1906,7 +1972,7 @@ var SVCS = [
            "ja":"<h2>ソフウェーブとは？</h2><p>SUPERB™超音波技術により、深さ1.5mmの真皮層に広く均一にエネルギーを伝達し、弾力とコラーゲンを再生させるリフティング機器です。</p><h2>期待できる効果</h2><ul><li>真皮層のコラーゲン・エラスチン再生</li><li>均一なエネルギー伝達による自然な弾力改善</li><li>ダウンタイムなしですぐに日常生活が可能</li></ul>",
            "cn":"<h2>什么是Sofwave？</h2><p>采用SUPERB™超声波技术，将能量广泛均匀地传递至1.5mm深的真皮层，促进弹力与胶原蛋白再生。</p><h2>预期效果</h2><ul><li>真皮层胶原蛋白与弹力蛋白再生</li><li>均匀能量传递，自然改善弹力</li><li>无恢复期</li></ul>"}
   },
-  { price: 490000, priceStr: "&#8361; 490,000~",
+  { price: 390000, priceStr: "&#8361; 390,000~",
     name: {"ko":"티타늄","en":"Titanium","zh":"鈦金拉提","ar":"تيتانيوم","ja":"チタニウム","cn":"钛金拉提"},
     sub:  {"ko":"3파장 동시 조사 — 올인원 4세대 리프팅","en":"3-Wavelength Laser — All-in-One 4th-Gen Lifting","zh":"三波長雷射同步 — 第四代全能拉提","ar":"ثلاث موجات ليزر متزامنة","ja":"3波長同時照射 — オールインワン第4世代リフティング","cn":"三波长同步照射 — 第四代全能提升"},
     body: {"ko":"<h2>티타늄이란?</h2><p>3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅입니다.</p><h2>기대 효과</h2><ul><li>피부결 개선</li><li>탄력 강화</li><li>화이트닝 효과</li></ul>",
@@ -1916,7 +1982,7 @@ var SVCS = [
            "ja":"<h2>チタニウムとは？</h2><p>3種類の波長のレーザーを同時に照射し、ダウンタイムなしで肌質・弾力・美白の3つの効果が得られるオールインワン第4世代リフティングです。</p><h2>期待できる効果</h2><ul><li>肌質改善</li><li>弾力強化</li><li>美白効果</li></ul>",
            "cn":"<h2>什么是钛金拉提？</h2><p>三种波长激光同时照射，无恢复期即可达到肤质、弹力、美白三合一效果的第四代全能提升技术。</p><h2>预期效果</h2><ul><li>改善肤质</li><li>增强弹力</li><li>美白效果</li></ul>"}
   },
-  { price: 1090000, priceStr: "&#8361; 1,090,000~",
+  { price: 990000, priceStr: "&#8361; 990,000~",
     name: {"ko":"울쎄라피 프라임","en":"Ultherapy Prime","zh":"Ultherapy Prime 極線音波尊爵版","ar":"ألثيرابي برايم","ja":"ウルセラピー プライム","cn":"Ultherapy Prime 极线音波尊爵版"},
     sub:  {"ko":"고강도 초음파 — 진피부터 SMAS층까지","en":"High-Intensity Ultrasound — Dermis to SMAS","zh":"高強度超音波 — 真皮至筋膜層","ar":"موجات فوق صوتية عالية الكثافة","ja":"高強度超音波 — 真皮からSMAS層まで","cn":"高强度超声波 — 真皮至筋膜层"},
     body: {"ko":"<h2>울쎄라피 프라임이란?</h2><p>고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>SMAS층까지 다각도 공략</li><li>지방층 정리</li><li>콜라겐 생성 촉진</li></ul>",
@@ -1926,7 +1992,7 @@ var SVCS = [
            "ja":"<h2>ウルセラピー プライムとは？</h2><p>高強度超音波エネルギーを真皮から筋膜層（SMAS）まで肌の全層に多角度で照射し、脂肪層の整理とコラーゲン生成を促すリフティング機器です。</p><h2>期待できる効果</h2><ul><li>SMAS層までの多角度アプローチ</li><li>脂肪層の整理</li><li>コラーゲン生成促進</li></ul>",
            "cn":"<h2>什么是Ultherapy Prime？</h2><p>高强度聚焦超声波从真皮层到筋膜层（SMAS）多角度作用，整理脂肪层并促进胶原蛋白生成。</p><h2>预期效果</h2><ul><li>多角度作用至SMAS层</li><li>整理脂肪层</li><li>促进胶原蛋白生成</li></ul>"}
   },
-  { price: 360000, priceStr: "&#8361; 360,000~",
+  { price: 240000, priceStr: "&#8361; 240,000~",
     name: {"ko":"온다","en":"Onda","zh":"Onda 鳳凰儀","ar":"أوندا","ja":"オンダ","cn":"Onda 凤凰仪"},
     sub:  {"ko":"극초단파 컨투어링 — 지속적 콜라겐 리모델링","en":"Microwave Contouring — Ongoing Collagen Remodeling","zh":"極短波輪廓雕塑 — 持續膠原重塑","ar":"نحت بالموجات الدقيقة","ja":"極超短波コントアリング — 持続的コラーゲンリモデリング","cn":"极短波轮廓塑形 — 持续胶原重塑"},
     body: {"ko":"<h2>온다란?</h2><p>극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비입니다.</p><h2>기대 효과</h2><ul><li>피부 타이트닝</li><li>지속적 콜라겐 리모델링</li><li>부위별 컨투어링</li></ul>",
@@ -1936,7 +2002,7 @@ var SVCS = [
            "ja":"<h2>オンダとは？</h2><p>極超短波（マイクロ波）新技術とハンドピースを用い、肌のタイトニングと持続的なコラーゲンリモデリングでコントアリングする機器です。</p><h2>期待できる効果</h2><ul><li>肌のタイトニング</li><li>持続的コラーゲンリモデリング</li><li>部位別コントアリング</li></ul>",
            "cn":"<h2>什么是Onda？</h2><p>采用新概念极短波（微波）技术与探头，达到肌肤紧致与持续胶原蛋白重塑的轮廓塑形效果。</p><h2>预期效果</h2><ul><li>肌肤紧致</li><li>持续胶原重塑</li><li>部位轮廓塑形</li></ul>"}
   },
-  { price: 150000, priceStr: "&#8361; 150,000~",
+  { price: 320000, priceStr: "&#8361; 320,000~",
     name: {"ko":"슈링크 유니버스","en":"Shurink Universe","zh":"Shurink Universe 聚焦音波宇宙版","ar":"شرينك يونيفرس","ja":"シュリンク ユニバース","cn":"Shurink Universe 聚焦音波宇宙版"},
     sub:  {"ko":"2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅","en":"2 Modes · 7 Cartridges — Customized Lifting","zh":"兩種模式・7種探頭 — 部位客製拉提","ar":"وضعان و7 خراطيش","ja":"2モード・7カートリッジ — 部位別カスタムリフティング","cn":"两种模式・7种探头 — 部位定制提升"},
     body: {"ko":"<h2>슈링크 유니버스란?</h2><p>2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술입니다.</p><h2>기대 효과</h2><ul><li>부위별 맞춤 시술</li><li>깊은 층까지 빈틈없는 리프팅</li><li>탄력 개선</li></ul>",
@@ -2049,6 +2115,12 @@ function getPhone() { return selC.d + " " + (document.getElementById("f-ph")||{v
 var bk = { step:1, svc:null, price:0, date:null, time:null, calY:null, calM:null };
 
 function initBooking(preSvc, prePr) {
+  // v207: 예약 화면에 들어올 때 운영시간을 1회 갱신.
+  //   저장본이 있으면 즉시 그 값을 쓰고, 동시에 시트를 조회해 최신으로 교체한다.
+  //   조회가 실패해도 저장본이나 내장 기본값으로 계속 동작한다.
+  if (!HOURS) loadHoursCache();
+  fetchHours();
+
   bk.step=1; bk.date=null; bk.time=null;
   var now = new Date(); bk.calY=now.getFullYear(); bk.calM=now.getMonth();
   updStep(1); showBS(1);
@@ -2388,12 +2460,86 @@ function selDate(dt, cell) {
   jsonpFallback(SHEET_URL, dateStr, myReqId, times, se);
 }
 
+// ══════════════════════════════════════════════════════════
+// 운영시간 (v207)
+// ──────────────────────────────────────────────────────────
+// "Elliya 시술 관리" 시트의 '운영시간' 탭에서 읽어온다.
+// 시트를 고치면 홈페이지 예약 시간이 따라 바뀐다.
+//
+// 3단계 안전망 — 조회가 실패해도 예약이 멈추지 않도록:
+//   ① 시트에서 방금 받은 값   (정상)
+//   ② 브라우저에 저장된 값     (조회 실패)
+//   ③ 아래 내장 기본값        (첫 방문 + 조회 실패)
+//
+// 키는 getDay()와 동일 (일=0 … 토=6)
+// ══════════════════════════════════════════════════════════
+var HOURS_FALLBACK = {
+  "0": [],
+  "1": ["10:30","11:00","11:30","12:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"],
+  "2": ["10:30","11:00","11:30","12:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"],
+  "3": [],
+  "4": ["10:30","11:00","11:30","12:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"],
+  "5": ["10:30","11:00","11:30","12:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00","17:30","18:00","18:30","19:00","19:30","20:00"],
+  "6": ["9:30","10:00","10:30","11:00","11:30","12:00","13:00","13:30","14:00","14:30","15:00"]
+};
+
+var HOURS_CACHE_KEY = "elliya_hours_v1";
+var HOURS = null;          // 현재 사용 중인 운영시간
+var HOURS_SRC = "내장값";   // 출처(버전 배지에 표시)
+
+/* 저장된 값 불러오기 */
+function loadHoursCache(){
+  try {
+    var raw = localStorage.getItem(HOURS_CACHE_KEY);
+    if (!raw) return false;
+    var c = JSON.parse(raw);
+    if (!c || !c.hours) return false;
+    HOURS = c.hours;
+    HOURS_SRC = "저장본 " + (c.updated || "");
+    return true;
+  } catch(e){ return false; }
+}
+
+/* 시트에서 운영시간 가져오기 — 예약 화면 진입 시 1회 */
+function fetchHours(){
+  var cb = "hrCb" + Date.now();
+  var script = document.createElement("script");
+  var done = false;
+
+  function cleanup(){
+    try { delete window[cb]; } catch(e){ window[cb] = null; }
+    if (script.parentNode) script.parentNode.removeChild(script);
+  }
+  function end(){
+    if (done) return;
+    done = true;
+    clearTimeout(timer);
+    cleanup();
+  }
+
+  var timer = setTimeout(end, 8000);
+
+  window[cb] = function(res){
+    if (res && res.ok && res.hours){
+      HOURS = res.hours;
+      HOURS_SRC = "시트 " + (res.updated || "");
+      try {
+        localStorage.setItem(HOURS_CACHE_KEY,
+          JSON.stringify({ hours: res.hours, updated: res.updated }));
+      } catch(e){}
+    }
+    end();
+  };
+  script.onerror = end;
+
+  script.src = PRICE_URL + "?callback=" + cb + "&t=" + Date.now();
+  document.head.appendChild(script);
+}
+
 function timesForDate(dt){
-  var d = dt.getDay();
-  if (d===1 || d===5) return ["10:30","11:30","12:30","13:30","14:30","15:30","16:30","17:30","18:30","19:30"]; // 월·금
-  if (d===2 || d===4) return ["10:30","11:30","12:30","13:30","14:30","15:30","16:30","17:30"]; // 화·목
-  if (d===6) return ["9:30","10:30","11:30","13:00","14:00","15:00"]; // 토 (네이버와 동일)
-  return []; // 수·일 휴무
+  var h = HOURS || HOURS_FALLBACK;
+  var list = h[String(dt.getDay())];
+  return (list && list.length) ? list.slice() : [];
 }
 
 function timeStrToMinutes(t){

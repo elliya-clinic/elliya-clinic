@@ -425,6 +425,20 @@
                    · 응답을 기다리지 않는다. 기록이 실패해도 손님 화면은
                      영향받지 않아야 하므로.
                    ※ Code.gs v24 이상 필요.
+ v212  2026.08.29  [★버그수정: 조회 실패 시 시술 목록이 통째로 비던 문제]
+                   증상: 예약 화면 '시술을 선택해 주세요'에 아무것도 안 나옴.
+                   원인: applySheetPrices가 항목을 하나씩 숨기다가 마지막에
+                         실패로 판정하면 그 숨김이 그대로 남았음.
+                         조회에 실패한 것이지 시술이 없어진 것이 아닌데도
+                         목록이 비어 예약 자체가 불가능해짐.
+                         (Price.gs v7이 시작가를 반환하지 않아 실제 발생 —
+                          Price.gs v8에서 함께 수정)
+                   수정: · priceFailed()가 모든 숨김 표시를 되돌린다
+                         · renderSvcOptions()에 안전장치 — 표시할 항목이
+                           하나도 없으면 숨김을 무시하고 전부 보여준다.
+                           예약 화면에서 시술을 고를 수 없게 되는 것이
+                           가장 나쁜 결과이므로.
+                   ※ Price.gs v8 이상 필요.
 
                    ※ 시술 소요시간은 슬롯 판정에 반영하지 않음(의도).
                      예약 시점에 시술이 확정되지 않는 경우가 많음 —
@@ -955,7 +969,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v211</span>
+    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v212</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -2000,7 +2014,7 @@ function gaPage(path, title){
 // ※ 이 상태는 해당 브라우저 탭에만 존재. 서버 저장·타인 노출 없음.
 //    새로고침하면 원본 HTML을 다시 받으므로 자동으로 숨겨진다.
 // ══════════════════════════════════════════════
-var VER_INFO = 'v211 · 2026.08.29';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
+var VER_INFO = 'v212 · 2026.08.29';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
 var verTaps = [];
 function verTap() {
   var now = Date.now();
@@ -2715,6 +2729,14 @@ function applySheetPrices(cats){
 function priceFailed(){
   PRICE_TRIED++;
 
+  if (typeof SVCS === "undefined" || !SVCS) return;
+
+  // 조회 도중 붙었을 수 있는 숨김 표시를 모두 되돌린다.
+  //   applySheetPrices가 항목을 하나씩 숨기다가 마지막에 실패로 판정하면,
+  //   그 숨김이 남아 목록이 통째로 비어버린다.
+  //   조회에 실패한 것이지 시술이 없어진 것이 아니므로 전부 다시 보여준다.
+  SVCS.forEach(function(sv){ sv.hidden = false; });
+
   if (PRICE_TRIED < 2) {
     PRICE_SRC = "재시도 중";
     setTimeout(fetchHours, 1500);
@@ -2764,9 +2786,13 @@ function renderSvcOptions(){
   if (typeof SVCS === "undefined" || !SVCS || !SVCS.length) return;
   if (typeof PRICE_FAIL_MSG === "undefined") return;
 
+  // 표시할 항목이 하나도 없으면 숨김을 무시하고 전부 보여준다.
+  //   예약 화면에서 시술을 고를 수 없게 되는 것이 가장 나쁜 결과이므로.
+  var anyVisible = SVCS.some(function(sv){ return !sv.hidden; });
+
   var h = "";
   SVCS.forEach(function(sv, i){
-    if (sv.hidden) return;
+    if (anyVisible && sv.hidden) return;
 
     // 조회에 실패했으면 가격 대신 안내 문구를 보여준다.
     // 시트를 못 읽은 상태에서 코드에 박힌 옛 가격을 보여주면

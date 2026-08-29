@@ -374,6 +374,58 @@
                    → 슬롯 표시까지 대조. 취소 건 제외, 다른 날짜 제외,
                    네이버 '오후  6:00'(공백 2개) 형식까지 정확히 처리 확인.
 
+ v209  2026.08.29  [시술 시작가 시트 연동]
+                   'ELLIYA 시술관리' 시트 Categories의 시작가(E열)를
+                   예약 화면 가격에 반영. 시트만 고치면 홈페이지가 따라온다.
+                   (기존에는 HTML과 JS SVCS 배열 두 곳에 하드코딩되어 있어
+                    가격 하나 바꾸는 데 12곳을 고쳐야 했음)
+
+                   · 추가 호출 없음 — 운영시간과 같은 응답에 cats가 담겨 온다.
+                   · SVCS 각 항목에 sheetNo(시트 순번) 부여.
+                     홈페이지 순서(소프·티타늄·울쎄·온다·슈링크·스킨부스터)와
+                     시트 순번(1·3·4·2·5·6)이 달라 명시적 매핑이 필요함.
+                   · 시작가가 비어 있거나 시트에 없는 시술 → 예약 목록에서 제외
+                     (엘리야 패키지·할인처럼 노출하지 않을 카테고리)
+                   · 조회 실패 시 코드에 있는 값을 그대로 사용
+
+                   ※ 반영 범위는 가격뿐.
+                     이름·부제·상세설명·이미지는 코드에 그대로 둔다.
+                     6개 언어 번역과 이미지가 얽혀 있어 시트로 옮기면
+                     오히려 관리가 복잡해짐. 따라서 시트에 카테고리를
+                     추가해도 홈페이지에 자동으로 나타나지 않는다.
+                     시술 구성이 바뀌면 index.html을 함께 수정할 것.
+
+                   ※ 로고 5연타 시 '가격 시트(N건 갱신)' 형태로 출처 표시.
+ v210  2026.08.29  [가격 조회 실패 시 안내 문구로 대체]
+                   v209는 조회에 실패하면 코드에 박힌 값을 그대로 보여줬다.
+                   시트에서 가격을 바꾼 뒤 조회가 실패하면
+                   손님에게 옛 가격이 보이고, 아무도 그 사실을 모른다.
+                   → 틀린 가격을 보여주느니 보여주지 않는 편이 낫다.
+
+                   · 조회 실패 시 가격 자리에 안내 문구 (6개 언어)
+                     "가격 조회에 장애가 발생하였습니다. 내원 시 안내해 드립니다."
+                   · 예약은 그대로 받는다. 가격만 표시하지 않음.
+                   · 실패로 보는 경우
+                     - 8초 내 응답 없음
+                     - 스크립트 로드 실패
+                     - 응답에 cats 없음 / 빈 배열
+                     - 표시할 시술이 하나도 없음
+                   · 1회 재시도 (1.5초 뒤). 일시적 지연이면 대개 두 번째에 성공.
+                   · 실패 시 경고이력 시트에 기록 (v211에서 GA4에서 변경)
+                   · 조회 전에는 가격 자리에 '···' 표시.
+                     HTML에 옛 가격을 박아두면 실패 판정 전까지 그것이 보이므로.
+ v211  2026.08.29  [가격 조회 실패 기록을 GA4 → 경고이력 시트로]
+                   GA4는 반영이 느리고 찾아 들어가기 번거로움.
+                   경고이력 시트(예약관리)에 남기면 바로 확인 가능.
+                   · logWarn() 추가 — Code.gs의 action=log_warn 호출
+                   · 왜 Code.gs인가
+                     가격 조회 실패는 시술관리 스크립트(Price.gs)가 죽었을 때
+                     발생한다. 그쪽으로 보내면 정작 필요한 순간에 기록이
+                     남지 않는다. 예약관리 스크립트는 별개로 살아 있다.
+                   · 응답을 기다리지 않는다. 기록이 실패해도 손님 화면은
+                     영향받지 않아야 하므로.
+                   ※ Code.gs v24 이상 필요.
+
                    ※ 시술 소요시간은 슬롯 판정에 반영하지 않음(의도).
                      예약 시점에 시술이 확정되지 않는 경우가 많음 —
                      원장님 상담 후 결정하는 손님이 상당수.
@@ -722,6 +774,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .svc-opt{padding:.85rem 1.4rem;border:1px solid var(--border-mid);border-radius:4px;background:var(--white);cursor:pointer;transition:border-color .2s,background .2s;display:flex;justify-content:space-between;align-items:center;}
 .svc-opt:hover{border-color:var(--gold);background:var(--cream-dark);}
 .svc-opt.sel{border-color:var(--gold);background:rgba(201,169,110,.06);}
+.svc-pr-none{font-size:.78rem;color:var(--ink-light);font-weight:400;line-height:1.5;max-width:220px;text-align:right;word-break:keep-all;}
 .svc-nm{font-size:.98rem;font-weight:700;color:var(--ink);margin-bottom:.2rem;}
 .svc-ds{font-size:.8rem;color:var(--ink-light);font-family:'Arial',sans-serif;}
 .svc-pr{font-size:1.05rem;font-weight:700;color:var(--gold-dark);white-space:nowrap;}
@@ -902,7 +955,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v208</span>
+    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v211</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -1453,12 +1506,12 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
         <h2 class="bk-title" data-t="bk.s1h">시술을 선택해 주세요</h2>
         <p class="bk-sub" data-t="bk.s1p">원하시는 시술을 선택하시면 자동으로 다음 단계로 이동합니다.</p>
         <div class="svc-opts">
-          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="sig1.name">소프웨이브</div><div class="svc-ds" data-t="bk.sd1">SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅</div></div><div class="svc-pr">&#8361; 990,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="sig2.name">티타늄</div><div class="svc-ds" data-t="bk.sd2">3파장 동시 조사 — 올인원 4세대 리프팅</div></div><div class="svc-pr">&#8361; 390,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="sig3.name">울쎄라피 프라임</div><div class="svc-ds" data-t="bk.sd3">고강도 초음파 — 진피부터 SMAS층까지</div></div><div class="svc-pr">&#8361; 990,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="sig4.name">온다</div><div class="svc-ds" data-t="bk.sd4">극초단파 컨투어링 — 지속적 콜라겐 리모델링</div></div><div class="svc-pr">&#8361; 240,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(4)"><div><div class="svc-nm" data-t="sig5.name">슈링크 유니버스</div><div class="svc-ds" data-t="bk.sd5">2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅</div></div><div class="svc-pr">&#8361; 320,000~</div></div>
-          <div class="svc-opt" onclick="selectSvc(5)"><div><div class="svc-nm" data-t="sig6.name">스킨부스터</div><div class="svc-ds" data-t="bk.sd6">진피층 직접 주입 — 수분·모공·미백 맞춤 케어</div></div><div class="svc-pr">&#8361; 40,000~</div></div>
+          <div class="svc-opt" onclick="selectSvc(0)"><div><div class="svc-nm" data-t="sig1.name">소프웨이브</div><div class="svc-ds" data-t="bk.sd1">SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅</div></div><div class="svc-pr svc-pr-none">&#183;&#183;&#183;</div></div>
+          <div class="svc-opt" onclick="selectSvc(1)"><div><div class="svc-nm" data-t="sig2.name">티타늄</div><div class="svc-ds" data-t="bk.sd2">3파장 동시 조사 — 올인원 4세대 리프팅</div></div><div class="svc-pr svc-pr-none">&#183;&#183;&#183;</div></div>
+          <div class="svc-opt" onclick="selectSvc(2)"><div><div class="svc-nm" data-t="sig3.name">울쎄라피 프라임</div><div class="svc-ds" data-t="bk.sd3">고강도 초음파 — 진피부터 SMAS층까지</div></div><div class="svc-pr svc-pr-none">&#183;&#183;&#183;</div></div>
+          <div class="svc-opt" onclick="selectSvc(3)"><div><div class="svc-nm" data-t="sig4.name">온다</div><div class="svc-ds" data-t="bk.sd4">극초단파 컨투어링 — 지속적 콜라겐 리모델링</div></div><div class="svc-pr svc-pr-none">&#183;&#183;&#183;</div></div>
+          <div class="svc-opt" onclick="selectSvc(4)"><div><div class="svc-nm" data-t="sig5.name">슈링크 유니버스</div><div class="svc-ds" data-t="bk.sd5">2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅</div></div><div class="svc-pr svc-pr-none">&#183;&#183;&#183;</div></div>
+          <div class="svc-opt" onclick="selectSvc(5)"><div><div class="svc-nm" data-t="sig6.name">스킨부스터</div><div class="svc-ds" data-t="bk.sd6">진피층 직접 주입 — 수분·모공·미백 맞춤 케어</div></div><div class="svc-pr svc-pr-none">&#183;&#183;&#183;</div></div>
         </div>
         <div class="s-nav">
           <button class="btn-sb" onclick="gStep(1)" data-t="cm.back">&#8592; 이전</button>
@@ -1908,6 +1961,7 @@ function setLang(l) {
   document.documentElement.dir = "ltr"; // 아랍어도 화면 방향은 LTR 고정(글자만 아랍어, 레이아웃 반전 안 함)
   syncLangUI(l);
   applyT();
+  renderSvcOptions();   // v209: 시트에서 받은 가격이 유지되도록 다시 그림
   renderCal();
   var mk = document.getElementById("map-ko"), mg = document.getElementById("map-global");
   if (mk && mg) {
@@ -1946,7 +2000,7 @@ function gaPage(path, title){
 // ※ 이 상태는 해당 브라우저 탭에만 존재. 서버 저장·타인 노출 없음.
 //    새로고침하면 원본 HTML을 다시 받으므로 자동으로 숨겨진다.
 // ══════════════════════════════════════════════
-var VER_INFO = 'v208 · 2026.08.28';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
+var VER_INFO = 'v211 · 2026.08.29';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
 var verTaps = [];
 function verTap() {
   var now = Date.now();
@@ -1957,7 +2011,7 @@ function verTap() {
     var b = document.getElementById('ver-badge');
     if (!b) return;
     if (b.style.display === 'none') {
-      b.textContent = VER_INFO + '  ·  ' + HOURS_SRC;
+      b.textContent = VER_INFO + '  ·  ' + HOURS_SRC + '  ·  가격 ' + PRICE_SRC;
       b.style.display = '';
     } else {
       b.style.display = 'none';
@@ -1993,7 +2047,7 @@ function resetMyBookingForm() {
 // TREATMENT DATA
 // =====================================================
 var SVCS = [
-  { price: 990000, priceStr: "&#8361; 990,000~",
+  { sheetNo: 1, price: 990000, priceStr: "&#8361; 990,000~",
     name: {"ko":"소프웨이브","en":"Sofwave","zh":"Sofwave 舒芙波","ar":"سوفويف","ja":"ソフウェーブ","cn":"Sofwave 舒芙波"},
     sub:  {"ko":"SUPERB™ 초음파 기술 — 진피층 콜라겐 재생 리프팅","en":"SUPERB™ Ultrasound — Dermal Collagen Lifting","zh":"SUPERB™ 超音波技術 — 真皮層膠原拉提","ar":"تقنية SUPERB™ للموجات فوق الصوتية","ja":"SUPERB™超音波技術 — 真皮層コラーゲン再生リフティング","cn":"SUPERB™超声波技术 — 真皮层胶原蛋白再生提升"},
     body: {"ko":"<h2>소프웨이브란?</h2><p>SUPERB™ 초음파 기술로 1.5mm 깊이의 진피층에 넓고 균일하게 에너지를 전달, 탄력과 콜라겐을 재생시키는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>진피층 콜라겐·엘라스틴 재생</li><li>넓고 균일한 에너지 전달로 자연스러운 탄력 개선</li><li>다운타임 없이 일상생활 바로 가능</li></ul>",
@@ -2003,7 +2057,7 @@ var SVCS = [
            "ja":"<h2>ソフウェーブとは？</h2><p>SUPERB™超音波技術により、深さ1.5mmの真皮層に広く均一にエネルギーを伝達し、弾力とコラーゲンを再生させるリフティング機器です。</p><h2>期待できる効果</h2><ul><li>真皮層のコラーゲン・エラスチン再生</li><li>均一なエネルギー伝達による自然な弾力改善</li><li>ダウンタイムなしですぐに日常生活が可能</li></ul>",
            "cn":"<h2>什么是Sofwave？</h2><p>采用SUPERB™超声波技术，将能量广泛均匀地传递至1.5mm深的真皮层，促进弹力与胶原蛋白再生。</p><h2>预期效果</h2><ul><li>真皮层胶原蛋白与弹力蛋白再生</li><li>均匀能量传递，自然改善弹力</li><li>无恢复期</li></ul>"}
   },
-  { price: 390000, priceStr: "&#8361; 390,000~",
+  { sheetNo: 3, price: 390000, priceStr: "&#8361; 390,000~",
     name: {"ko":"티타늄","en":"Titanium","zh":"鈦金拉提","ar":"تيتانيوم","ja":"チタニウム","cn":"钛金拉提"},
     sub:  {"ko":"3파장 동시 조사 — 올인원 4세대 리프팅","en":"3-Wavelength Laser — All-in-One 4th-Gen Lifting","zh":"三波長雷射同步 — 第四代全能拉提","ar":"ثلاث موجات ليزر متزامنة","ja":"3波長同時照射 — オールインワン第4世代リフティング","cn":"三波长同步照射 — 第四代全能提升"},
     body: {"ko":"<h2>티타늄이란?</h2><p>3가지 파장의 레이저가 동시에 조사되어 다운타임 없이 피부결·탄력·화이트닝 3가지 효과가 가능한 올인원 4세대 리프팅입니다.</p><h2>기대 효과</h2><ul><li>피부결 개선</li><li>탄력 강화</li><li>화이트닝 효과</li></ul>",
@@ -2013,7 +2067,7 @@ var SVCS = [
            "ja":"<h2>チタニウムとは？</h2><p>3種類の波長のレーザーを同時に照射し、ダウンタイムなしで肌質・弾力・美白の3つの効果が得られるオールインワン第4世代リフティングです。</p><h2>期待できる効果</h2><ul><li>肌質改善</li><li>弾力強化</li><li>美白効果</li></ul>",
            "cn":"<h2>什么是钛金拉提？</h2><p>三种波长激光同时照射，无恢复期即可达到肤质、弹力、美白三合一效果的第四代全能提升技术。</p><h2>预期效果</h2><ul><li>改善肤质</li><li>增强弹力</li><li>美白效果</li></ul>"}
   },
-  { price: 990000, priceStr: "&#8361; 990,000~",
+  { sheetNo: 4, price: 990000, priceStr: "&#8361; 990,000~",
     name: {"ko":"울쎄라피 프라임","en":"Ultherapy Prime","zh":"Ultherapy Prime 極線音波尊爵版","ar":"ألثيرابي برايم","ja":"ウルセラピー プライム","cn":"Ultherapy Prime 极线音波尊爵版"},
     sub:  {"ko":"고강도 초음파 — 진피부터 SMAS층까지","en":"High-Intensity Ultrasound — Dermis to SMAS","zh":"高強度超音波 — 真皮至筋膜層","ar":"موجات فوق صوتية عالية الكثافة","ja":"高強度超音波 — 真皮からSMAS層まで","cn":"高强度超声波 — 真皮至筋膜层"},
     body: {"ko":"<h2>울쎄라피 프라임이란?</h2><p>고강도 초음파 에너지를 진피부터 근막층(SMAS)까지 피부의 전 층을 다각도로 공략, 지방층 정리와 콜라겐 생성하는 리프팅 장비입니다.</p><h2>기대 효과</h2><ul><li>SMAS층까지 다각도 공략</li><li>지방층 정리</li><li>콜라겐 생성 촉진</li></ul>",
@@ -2023,7 +2077,7 @@ var SVCS = [
            "ja":"<h2>ウルセラピー プライムとは？</h2><p>高強度超音波エネルギーを真皮から筋膜層（SMAS）まで肌の全層に多角度で照射し、脂肪層の整理とコラーゲン生成を促すリフティング機器です。</p><h2>期待できる効果</h2><ul><li>SMAS層までの多角度アプローチ</li><li>脂肪層の整理</li><li>コラーゲン生成促進</li></ul>",
            "cn":"<h2>什么是Ultherapy Prime？</h2><p>高强度聚焦超声波从真皮层到筋膜层（SMAS）多角度作用，整理脂肪层并促进胶原蛋白生成。</p><h2>预期效果</h2><ul><li>多角度作用至SMAS层</li><li>整理脂肪层</li><li>促进胶原蛋白生成</li></ul>"}
   },
-  { price: 240000, priceStr: "&#8361; 240,000~",
+  { sheetNo: 2, price: 240000, priceStr: "&#8361; 240,000~",
     name: {"ko":"온다","en":"Onda","zh":"Onda 鳳凰儀","ar":"أوندا","ja":"オンダ","cn":"Onda 凤凰仪"},
     sub:  {"ko":"극초단파 컨투어링 — 지속적 콜라겐 리모델링","en":"Microwave Contouring — Ongoing Collagen Remodeling","zh":"極短波輪廓雕塑 — 持續膠原重塑","ar":"نحت بالموجات الدقيقة","ja":"極超短波コントアリング — 持続的コラーゲンリモデリング","cn":"极短波轮廓塑形 — 持续胶原重塑"},
     body: {"ko":"<h2>온다란?</h2><p>극초단파(Microwave) 신개념 기술 및 핸드피스를 이용, 피부의 타이트닝과 지속적인 콜라겐 리모델링으로 컨투어링하는 장비입니다.</p><h2>기대 효과</h2><ul><li>피부 타이트닝</li><li>지속적 콜라겐 리모델링</li><li>부위별 컨투어링</li></ul>",
@@ -2033,7 +2087,7 @@ var SVCS = [
            "ja":"<h2>オンダとは？</h2><p>極超短波（マイクロ波）新技術とハンドピースを用い、肌のタイトニングと持続的なコラーゲンリモデリングでコントアリングする機器です。</p><h2>期待できる効果</h2><ul><li>肌のタイトニング</li><li>持続的コラーゲンリモデリング</li><li>部位別コントアリング</li></ul>",
            "cn":"<h2>什么是Onda？</h2><p>采用新概念极短波（微波）技术与探头，达到肌肤紧致与持续胶原蛋白重塑的轮廓塑形效果。</p><h2>预期效果</h2><ul><li>肌肤紧致</li><li>持续胶原重塑</li><li>部位轮廓塑形</li></ul>"}
   },
-  { price: 320000, priceStr: "&#8361; 320,000~",
+  { sheetNo: 5, price: 320000, priceStr: "&#8361; 320,000~",
     name: {"ko":"슈링크 유니버스","en":"Shurink Universe","zh":"Shurink Universe 聚焦音波宇宙版","ar":"شرينك يونيفرس","ja":"シュリンク ユニバース","cn":"Shurink Universe 聚焦音波宇宙版"},
     sub:  {"ko":"2가지 모드 · 7개 카트리지 — 부위별 맞춤 리프팅","en":"2 Modes · 7 Cartridges — Customized Lifting","zh":"兩種模式・7種探頭 — 部位客製拉提","ar":"وضعان و7 خراطيش","ja":"2モード・7カートリッジ — 部位別カスタムリフティング","cn":"两种模式・7种探头 — 部位定制提升"},
     body: {"ko":"<h2>슈링크 유니버스란?</h2><p>2가지 모드, 7개의 카트리지로 피부 속 깊은 층까지 빈틈없는 부위별 맞춤 탄력 리프팅 시술입니다.</p><h2>기대 효과</h2><ul><li>부위별 맞춤 시술</li><li>깊은 층까지 빈틈없는 리프팅</li><li>탄력 개선</li></ul>",
@@ -2043,7 +2097,7 @@ var SVCS = [
            "ja":"<h2>シュリンク ユニバースとは？</h2><p>2つのモード、7種類のカートリッジで肌の深層まで隙間なく部位別にカスタムした弾力リフティング施術です。</p><h2>期待できる効果</h2><ul><li>部位別カスタム施術</li><li>深層まで隙間のないリフティング</li><li>弾力改善</li></ul>",
            "cn":"<h2>什么是Shurink Universe？</h2><p>两种模式、7种探头，深入肌肤各层，提供部位定制化、无死角的弹力提升疗程。</p><h2>预期效果</h2><ul><li>部位定制化疗程</li><li>深层无死角提升</li><li>改善弹力</li></ul>"}
   },
-  { price: 40000, priceStr: "&#8361; 40,000~",
+  { sheetNo: 6, price: 40000, priceStr: "&#8361; 40,000~",
     name: {"ko":"스킨부스터","en":"Skin Booster","zh":"水光針 Skin Booster","ar":"حقن التألق","ja":"スキンブースター","cn":"水光针 Skin Booster"},
     sub:  {"ko":"진피층 직접 주입 — 수분·모공·미백 맞춤 케어","en":"Direct Dermal Infusion — Custom Hydration & Brightening","zh":"直接注入真皮層 — 補水・毛孔・美白客製","ar":"حقن مباشر في الأدمة","ja":"真皮層直接注入 — 水分・毛穴・美白カスタムケア","cn":"直接注入真皮层 — 补水・毛孔・美白定制"},
     body: {"ko":"<h2>스킨부스터란?</h2><p>피부 재생과 탄력 개선에 도움을 주는 유효 성분을 진피층에 직접 주입하거나 흡수시키는 미용 시술입니다.</p><h2>기대 효과</h2><ul><li>수분 충전</li><li>모공·잔주름 개선</li><li>미백 등 개인 맞춤 성분 선택 가능</li></ul>",
@@ -2551,9 +2605,13 @@ function fetchHours(){
     cleanup();
   }
 
-  var timer = setTimeout(end, 8000);
+  var timer = setTimeout(function(){ priceFailed(); end(); }, 8000);
 
   window[cb] = function(res){
+    // v210: 같은 응답에 담겨 오는 시술 시작가도 함께 반영
+    if (res && res.ok && res.cats) applySheetPrices(res.cats);
+    else priceFailed();
+
     if (res && res.ok && res.hours){
       var changed = JSON.stringify(HOURS) !== JSON.stringify(res.hours);
       HOURS = res.hours;
@@ -2573,10 +2631,159 @@ function fetchHours(){
     }
     end();
   };
-  script.onerror = end;
+  script.onerror = function(){ priceFailed(); end(); };
 
   script.src = PRICE_URL + "?callback=" + cb + "&t=" + Date.now();
   document.head.appendChild(script);
+}
+
+// ══════════════════════════════════════════════════════════
+// 시술 시작가 시트 연동 (v209)
+// ──────────────────────────────────────────────────────────
+// "ELLIYA 시술관리" 시트 Categories의 시작가(E열)를 홈페이지 가격에 반영한다.
+// 운영시간과 같은 응답에 담겨 오므로 추가 호출이 없다.
+//
+// 반영 범위 — 가격만.
+//   시술 이름·부제·상세설명·이미지는 코드에 그대로 둔다.
+//   6개 언어 번역과 이미지가 얽혀 있어 시트로 옮기면 관리가 더 복잡해진다.
+//   따라서 시트에 카테고리를 추가해도 홈페이지에 자동으로 나타나지 않는다.
+//
+// 시작가가 비어 있으면 → 예약 화면 목록에서 제외한다.
+//   (엘리야 패키지·할인처럼 노출하지 않을 카테고리)
+//
+// 조회 실패 시에는 코드에 있는 값을 그대로 쓴다.
+// ══════════════════════════════════════════════════════════
+var PRICE_SRC   = "조회 전";   // 버전 배지에 표시
+var PRICE_READY = false;       // 시트 조회 성공 여부
+var PRICE_TRIED = 0;           // 조회 시도 횟수(재시도 판단용)
+
+// 조회 실패 시 가격 자리에 대신 넣을 문구
+var PRICE_FAIL_MSG = {
+  ko: "가격 조회에 장애가 발생하였습니다. 내원 시 안내해 드립니다.",
+  en: "Pricing is temporarily unavailable. We'll guide you at your visit.",
+  ja: "料金の取得に問題が発生しました。ご来院時にご案内いたします。",
+  zh: "價格查詢發生問題，將於來院時為您說明。",
+  cn: "价格查询出现问题，将于到院时为您说明。",
+  ar: "تعذّر عرض الأسعار مؤقتًا. سنوضّحها لك عند الزيارة."
+};
+
+function applySheetPrices(cats){
+  if (!cats || !cats.length) { priceFailed(); return; }
+
+  var byNo = {};
+  cats.forEach(function(c){ byNo[String(c.n)] = c; });
+
+  var changed = 0, hidden = 0, ok = 0;
+
+  SVCS.forEach(function(sv, i){
+    if (!sv.sheetNo) return;
+    var c = byNo[String(sv.sheetNo)];
+
+    // 시트에 없는 시술 → 숨김
+    if (!c) { sv.hidden = true; hidden++; return; }
+
+    var raw = (c.price === undefined || c.price === null) ? "" : String(c.price).trim();
+
+    // 시작가가 비어 있으면 예약 목록에서 제외
+    if (raw === "") { sv.hidden = true; hidden++; return; }
+
+    var v = Number(raw);
+    if (!v || isNaN(v)) { sv.hidden = true; hidden++; return; }
+
+    sv.hidden = false;
+    ok++;
+    if (sv.price !== v) {
+      sv.price = v;
+      sv.priceStr = "&#8361; " + v.toLocaleString("ko-KR") + "~";
+      changed++;
+    }
+  });
+
+  // 표시할 시술이 하나도 없으면 조회가 잘못된 것으로 본다
+  if (!ok) { priceFailed(); return; }
+
+  PRICE_READY = true;
+  PRICE_SRC = "시트" + (changed ? " (" + changed + "건 갱신)" : "") +
+              (hidden ? " · " + hidden + "건 숨김" : "");
+  renderSvcOptions();
+}
+
+/* 조회 실패 처리
+   가격 대신 안내 문구를 보여주고 예약은 계속 받는다.
+   틀린 가격을 보여주는 것보다 안 보여주는 편이 낫다는 판단.
+   한 번은 다시 시도한다(일시적 지연이면 대개 두 번째에 성공). */
+function priceFailed(){
+  PRICE_TRIED++;
+
+  if (PRICE_TRIED < 2) {
+    PRICE_SRC = "재시도 중";
+    setTimeout(fetchHours, 1500);
+    return;
+  }
+
+  PRICE_READY = false;
+  PRICE_SRC = "조회 실패";
+  logWarn("가격조회실패", "시술 가격 조회 실패 — 예약화면에 안내 문구 표시");
+  renderSvcOptions();
+}
+
+/* 경고이력 시트에 기록 (Code.gs = 예약관리 스크립트)
+   가격 조회 실패는 시술관리 스크립트가 죽었을 때 생기므로,
+   그쪽이 아니라 예약관리 쪽으로 보내야 기록이 남는다.
+   실패해도 손님 화면에는 아무 영향이 없어야 하므로 응답을 기다리지 않는다. */
+function logWarn(kind, detail){
+  try {
+    var cb  = "lwCb" + Date.now();
+    var tag = document.createElement("script");
+
+    window[cb] = function(){ cleanup(); };
+    tag.onerror = cleanup;
+    setTimeout(cleanup, 8000);
+
+    function cleanup(){
+      try { delete window[cb]; } catch(e){ window[cb] = null; }
+      if (tag.parentNode) tag.parentNode.removeChild(tag);
+    }
+
+    tag.src = SHEET_URL + "?action=log_warn" +
+              "&kind="   + encodeURIComponent(kind) +
+              "&detail=" + encodeURIComponent(detail) +
+              "&callback=" + cb + "&t=" + Date.now();
+    document.head.appendChild(tag);
+  } catch(e){}
+}
+
+/* 예약 화면의 시술 선택 목록을 SVCS 기준으로 다시 그린다.
+   HTML에 박혀 있던 목록을 대체하므로, 시트 값이 그대로 반영된다. */
+function renderSvcOptions(){
+  var box = document.querySelector(".svc-opts");
+  // setLang()에서도 호출되는데 그 정의가 이 파일 앞쪽에 있다.
+  // 스크립트가 다 실행되기 전에 언어 버튼을 누르면 아래 변수들이
+  // 아직 없을 수 있으므로 모두 확인한다.
+  if (!box) return;
+  if (typeof SVCS === "undefined" || !SVCS || !SVCS.length) return;
+  if (typeof PRICE_FAIL_MSG === "undefined") return;
+
+  var h = "";
+  SVCS.forEach(function(sv, i){
+    if (sv.hidden) return;
+
+    // 조회에 실패했으면 가격 대신 안내 문구를 보여준다.
+    // 시트를 못 읽은 상태에서 코드에 박힌 옛 가격을 보여주면
+    // 손님이 틀린 금액을 보고 예약하게 되므로.
+    var priceCell = PRICE_READY
+      ? '<div class="svc-pr">' + sv.priceStr + '</div>'
+      : '<div class="svc-pr svc-pr-none">' +
+          (PRICE_FAIL_MSG[lang] || PRICE_FAIL_MSG.ko) + '</div>';
+
+    h += '<div class="svc-opt" onclick="selectSvc(' + i + ')">' +
+         '<div>' +
+           '<div class="svc-nm" data-t="sig' + (i+1) + '.name">' + sv.name[lang] + '</div>' +
+           '<div class="svc-ds" data-t="bk.sd' + (i+1) + '">' + sv.sub[lang] + '</div>' +
+         '</div>' +
+         priceCell + '</div>';
+  });
+  box.innerHTML = h;
 }
 
 function timesForDate(dt){

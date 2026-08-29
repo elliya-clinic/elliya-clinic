@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엘리야의원 — 시술 관리</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+
+<!--
+═══════════════════════════════════════════════════════════
+  ELLIYA CLINIC — 시술 편집 (가격·옵션 관리)
+───────────────────────────────────────────────────────────
+  v1  2026.06.30  [최초 작성] admin.html
+                  Categories / Options 시트를 편집하고 저장.
+  v2  2026.08.29  [파일명 변경 + 접근코드 + API 교체]
+                  · admin.html → tr-edit-h1o2.html
+                    'tr-' 접두어로 시술 관련 화면을 묶음.
+                    tr-sugg-n2g0.html(진료실 가격 안내)과 한 세트.
+                  · 접근코드 화면 추가 — 기존에는 인증이 전혀 없어
+                    주소만 알면 누구나 가격을 바꾸거나 시술을 지울 수 있었음.
+                    코드를 파일에 넣지 않고 입력받아 그대로 서버에 보낸다.
+                    (틀리면 서버가 unauthorized로 거절)
+                    브라우저 prompt() 대신 브랜드 톤의 전용 화면 사용.
+                  · API 주소 교체 — 시술관리 Apps Script 배포를 하나로
+                    정리하면서 기존 주소(AKfycbx9TupD…)가 삭제됨.
+                    AKfycby0fSsrQC2z… 로 교체. Price.gs v6 이상 필요.
+                  · 저장 결과 확인 — 기존에는 no-cors라 응답을 읽지 못해
+                    실패해도 "저장 완료"가 떴음. 저장 후 다시 불러와
+                    보낸 내용과 대조한다.
+                  · 시작가(홈페이지 표시가) 입력칸 추가
+                    기존에는 이 화면에서 다루지 않아 시트에서 따로 관리했고,
+                    저장 시 사라지거나 어긋나는 문제가 있었음.
+                    · 불러올 때 비어 있으면 옵션 최저가를 자동으로 채움
+                    · 옵션 가격을 고치면 최저가로 자동 반영
+                      (단, 시작가가 빈칸이면 그대로 둠 — 미표시 의도 보존)
+                    · 원장님이 직접 고칠 수 있음
+                    · 위치는 카테고리명 오른쪽 (이미지 파일명 줄이 아니라
+                      맨 윗줄에 두어 눈에 먼저 들어오도록)
+                    · 비우면 홈페이지에 표시되지 않음
+                      (엘리야 패키지·할인처럼 노출하지 않을 카테고리)
+                    · 입력칸 아래에 옵션 최저가와 같은지 안내 표시
+
+  ※ 시작가는 이 화면에서 직접 다룬다(Categories E열).
+    화면이 보낸 값을 그대로 저장하므로, 카테고리 이름을 바꿔도
+    시작가가 사라지지 않는다.
+═══════════════════════════════════════════════════════════
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#FDFCFA;--cream-dark:#F5F2EE;--gold:#B8965A;--gold-light:#DFC99A;--gold-dark:#8A6E3A;
+  --ink:#1C1916;--ink-mid:#4A4440;--ink-light:#8A8480;--white:#FFFFFF;
+  --border:rgba(184,150,90,0.2);--border-mid:rgba(184,150,90,0.35);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Serif KR',serif;background:var(--cream);color:var(--ink);line-height:1.7;padding:2rem 1.5rem 5rem;}
+.wrap{max-width:880px;margin:0 auto;}
+h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.3rem;}
+.sub{font-size:.85rem;color:var(--ink-light);margin-bottom:2rem;}
+.bar{display:flex;gap:.8rem;margin-bottom:2rem;flex-wrap:wrap;}
+.btn{padding:.7rem 1.4rem;border-radius:6px;font-size:.85rem;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:opacity .2s;}
+.btn:hover{opacity:.85;}
+.btn-gold{background:var(--gold);color:var(--ink);}
+.btn-dark{background:var(--ink);color:var(--white);}
+.btn-line{background:var(--white);color:var(--ink);border:1px solid var(--border-mid);}
+.btn-sm{padding:.4rem .9rem;font-size:.78rem;}
+.btn-danger{background:#fff;color:#B23A3A;border:1px solid #E8B8B8;}
+
+.cat-card{background:var(--white);border:1px solid var(--border-mid);border-radius:14px;padding:1.5rem;margin-bottom:1.2rem;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+.cat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;}
+.cat-head .btn-danger{margin-top:1.35rem;}
+.cat-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.6rem;}
+.cat-row3{display:grid;grid-template-columns:2fr 1fr;gap:.8rem;margin-bottom:.6rem;}
+label{display:block;font-size:.72rem;color:var(--gold-dark);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem;font-family:Arial,sans-serif;}
+input[type=text],input[type=number],textarea{
+  width:100%;padding:.6rem .8rem;border:1px solid var(--border-mid);border-radius:6px;
+  font-family:'Noto Serif KR',serif;font-size:.88rem;color:var(--ink);background:var(--cream);
+}
+textarea{resize:vertical;min-height:50px;}
+
+.opt-table{width:100%;border-collapse:collapse;margin-top:.8rem;}
+.opt-table th{text-align:left;font-size:.7rem;color:var(--ink-light);letter-spacing:.06em;text-transform:uppercase;padding:.4rem .3rem;border-bottom:1px solid var(--border);font-family:Arial,sans-serif;}
+.opt-table td{padding:.4rem .3rem;border-bottom:1px solid var(--border);}
+.opt-table input{padding:.45rem .6rem;font-size:.85rem;}
+.opt-num{width:30px;text-align:center;color:var(--ink-light);font-size:.8rem;}
+.opt-del{color:#B23A3A;cursor:pointer;font-size:1.1rem;text-align:center;width:30px;}
+
+.status{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);
+  background:var(--ink);color:var(--white);padding:.8rem 1.6rem;border-radius:30px;font-size:.85rem;
+  box-shadow:0 6px 24px rgba(0,0,0,.2);display:none;z-index:99;}
+.status.show{display:block;}
+.status.err{background:#B23A3A;}
+
+.empty{text-align:center;padding:3rem 0;color:var(--ink-light);font-size:.9rem;}
+.loading{text-align:center;padding:3rem 0;color:var(--ink-light);}
+
+.notice{
+  background:#FFF6F5;border:1px solid #E8C4C0;border-left:3px solid #B23A3A;
+  border-radius:8px;padding:.95rem 1.2rem;margin-bottom:1.8rem;
+  font-size:.84rem;line-height:1.85;color:#8A3530;
+}
+.notice b{color:#B23A3A;}
+.blink{
+  display:inline-block;font-weight:700;color:#B23A3A;
+  animation:blink 1.4s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+@media (prefers-reduced-motion:reduce){ .blink{animation:none;} }
+
+.price-hint{
+  font-size:.72rem;color:var(--ink-light);margin-top:.3rem;
+  font-family:Arial,sans-serif;letter-spacing:0;text-transform:none;
+}
+input.start-price{font-weight:700;color:var(--gold-dark);}
+
+/* ─── 접근코드 ─── */
+#gate{
+  position:fixed;inset:0;z-index:200;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;padding:1.5rem;
+}
+#gate.gone{display:none;}
+.gate-box{width:100%;max-width:380px;text-align:center;}
+.gate-mark{
+  font-family:'Playfair Display',serif;
+  font-size:1.9rem;letter-spacing:.2em;font-weight:600;
+  color:var(--ink);text-indent:.2em;
+}
+.gate-rule{width:52px;height:1px;background:var(--gold);margin:1.5rem auto 1.3rem;opacity:.7;}
+.gate-sub{
+  font-size:.78rem;letter-spacing:.22em;color:var(--gold-dark);
+  text-indent:.22em;margin-bottom:2.4rem;
+}
+.gate-lbl{
+  font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--gold-dark);font-family:Arial,sans-serif;
+  margin-bottom:.5rem;display:block;text-align:left;
+}
+#gate-key{
+  width:100%;padding:.95rem 1rem;
+  border:1px solid var(--border-mid);border-radius:6px;
+  background:var(--white);font-family:'Noto Serif KR',serif;
+  font-size:1.05rem;color:var(--ink);text-align:center;
+  letter-spacing:.28em;
+}
+#gate-key:focus{outline:none;border-color:var(--gold);}
+#gate-btn{
+  width:100%;margin-top:.9rem;padding:.95rem;
+  background:var(--ink);color:var(--white);border:none;border-radius:6px;
+  font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;
+  letter-spacing:.08em;transition:background .2s;
+}
+#gate-btn:hover{background:var(--gold-dark);}
+#gate-btn:disabled{background:var(--cream-dark);color:var(--ink-light);cursor:default;}
+#gate-msg{
+  min-height:1.3rem;margin-top:.9rem;
+  font-size:.82rem;color:#B23A3A;
+}
+</style>
+</head>
+<body>
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-mark">ELLIYA</div>
+    <div class="gate-rule"></div>
+    <div class="gate-sub">시술 편집</div>
+    <label class="gate-lbl" for="gate-key">접근코드</label>
+    <input type="password" id="gate-key" autocomplete="off" inputmode="text" placeholder="••••••••">
+    <button id="gate-btn">확인</button>
+    <div id="gate-msg"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>&#9998; 시술 관리</h1>
+  <p class="sub">시술 카테고리와 옵션(샷수/가격)을 관리합니다. 카테고리당 옵션은 최대 10개까지 등록 가능합니다.</p>
+
+  <div class="notice">
+    <b>시작가</b>는 홈페이지 예약 화면에 <b>&#8361; 000,000~</b> 으로 표시되는 금액입니다.<br>
+    옵션 가격을 고치면 <b>옵션 중 가장 낮은 가격</b>으로 자동 반영됩니다. 직접 고치셔도 됩니다.<br>
+    <span class="blink">홈페이지에 표시하지 않을 카테고리는 시작가를 빈칸으로 두세요.</span>
+  </div>
+
+  <div class="bar">
+    <button class="btn btn-gold" onclick="addCategory()">+ 새 카테고리 추가</button>
+    <button class="btn btn-dark" id="save-btn" onclick="saveAll()">전체 저장</button>
+    <button class="btn btn-line" onclick="loadAll()">새로고침</button>
+  </div>
+
+  <div id="cat-list"></div>
+  <div id="empty-msg" class="empty" style="display:none;">등록된 시술이 없습니다. '+ 새 카테고리 추가'로 시작하세요.</div>
+</div>
+
+<div class="status" id="status"></div>
+
+<script>
+// ══════════════════════════════════════
+// Apps Script 웹앱 URL (시술 관리용)
+// ══════════════════════════════════════
+var SHEET_URL = "https://script.google.com/macros/s/AKfycby0fSsrQC2zcNtkwX292H2WMQ3pQaQe8lpjYiGh3_2c9bliOHt4nSf98BpjJ-SpHw2-KA/exec";
+
+// 접근코드는 파일에 넣지 않는다. 처음 열 때 입력받아 이 세션에서만 사용.
+var ACCESS_KEY = "";
+
+var categories = [];  // { id, name, desc, image, options:[{name,price}] }
+var nextId = 1;
+
+function emptyOption(){ return { name:"", price:"" }; }
+
+function addCategory() {
+  categories.push({
+    id: "new_" + Date.now(),
+    name: "",
+    desc: "",
+    image: "",
+    price: "",
+    options: [emptyOption()]
+  });
+  render();
+}
+
+function removeCategory(idx) {
+  if(!confirm("이 카테고리를 삭제하시겠습니까?")) return;
+  categories.splice(idx, 1);
+  render();
+}
+
+function addOption(catIdx) {
+  if (categories[catIdx].options.length >= 10) {
+    showStatus("옵션은 최대 10개까지 등록 가능합니다.", true);
+    return;
+  }
+  categories[catIdx].options.push(emptyOption());
+  render();
+}
+
+function removeOption(catIdx, optIdx) {
+  categories[catIdx].options.splice(optIdx, 1);
+  syncStartPrice(catIdx);   // 최저 옵션이 지워졌을 수 있으므로 다시 계산
+  render();
+}
+
+function updateField(catIdx, field, value) {
+  categories[catIdx][field] = value;
+  if (field === "price") refreshHint(catIdx);
+}
+
+function updateOption(catIdx, optIdx, field, value) {
+  categories[catIdx].options[optIdx][field] = value;
+
+  // 옵션 가격이 바뀌면 시작가도 최저가로 따라간다.
+  //   단, 시작가가 비어 있으면 건드리지 않는다.
+  //   빈칸은 '홈페이지에 표시하지 않겠다'는 뜻이므로 자동으로 채우면 안 된다.
+  if (field === "price" || field === "name") {
+    syncStartPrice(catIdx);
+  }
+}
+
+/* 옵션 최저가를 시작가에 반영. 빈칸(미표시)은 유지. */
+function syncStartPrice(catIdx) {
+  var cat = categories[catIdx];
+  if (String(cat.price || "").trim() === "") { refreshHint(catIdx); return; }
+
+  var min = minOptionPrice(cat);
+  if (min === null) { refreshHint(catIdx); return; }
+
+  cat.price = min;
+
+  var card = document.querySelectorAll(".cat-card")[catIdx];
+  if (card) {
+    var box = card.querySelector(".start-price");
+    if (box && document.activeElement !== box) box.value = min;
+  }
+  refreshHint(catIdx);
+}
+
+/* 시작가 안내 문구만 다시 그린다. 입력 중인 칸은 건드리지 않는다. */
+function refreshHint(catIdx) {
+  var card = document.querySelectorAll(".cat-card")[catIdx];
+  if (!card) return;
+  var hint = card.querySelector(".price-hint");
+  if (hint) hint.textContent = startPriceHint(categories[catIdx]);
+}
+
+function render() {
+  var list = document.getElementById("cat-list");
+  var emptyMsg = document.getElementById("empty-msg");
+
+  if (categories.length === 0) {
+    list.innerHTML = "";
+    emptyMsg.style.display = "block";
+    return;
+  }
+  emptyMsg.style.display = "none";
+
+  list.innerHTML = categories.map(function(cat, ci) {
+    var optRows = cat.options.map(function(opt, oi) {
+      return '<tr>' +
+        '<td class="opt-num">'+(oi+1)+'</td>' +
+        '<td><input type="text" placeholder="예: 100샷" value="'+escapeHtml(opt.name)+'" oninput="updateOption('+ci+','+oi+',\'name\',this.value)"></td>' +
+        '<td><input type="number" placeholder="가격" value="'+escapeHtml(opt.price)+'" oninput="updateOption('+ci+','+oi+',\'price\',this.value)"></td>' +
+        '<td class="opt-del" onclick="removeOption('+ci+','+oi+')" title="삭제">&times;</td>' +
+        '</tr>';
+    }).join("");
+
+    return '<div class="cat-card">' +
+      '<div class="cat-head">' +
+        '<div style="flex:1;">' +
+          '<label>카테고리명 (시술명)</label>' +
+          '<input type="text" placeholder="예: 슈링크" value="'+escapeHtml(cat.name)+'" oninput="updateField('+ci+',\'name\',this.value)" style="font-size:1rem;font-weight:700;">' +
+        '</div>' +
+        '<div style="width:190px;flex-shrink:0;">' +
+          '<label>시작가 &#183; 홈페이지 표시</label>' +
+          '<input type="number" class="start-price" placeholder="비우면 표시 안 함" value="'+escapeHtml(cat.price)+'" oninput="updateField('+ci+',\'price\',this.value)">' +
+          '<div class="price-hint">' + startPriceHint(cat) + '</div>' +
+        '</div>' +
+        '<button class="btn btn-danger btn-sm" onclick="removeCategory('+ci+')">카테고리 삭제</button>' +
+      '</div>' +
+      '<div class="cat-row3">' +
+        '<div><label>설명</label><input type="text" placeholder="예: HIFU 기반 정밀 리프팅" value="'+escapeHtml(cat.desc)+'" oninput="updateField('+ci+',\'desc\',this.value)"></div>' +
+        '<div><label>이미지 파일명</label><input type="text" placeholder="sig_1.jpg" value="'+escapeHtml(cat.image)+'" oninput="updateField('+ci+',\'image\',this.value)"></div>' +
+      '</div>' +
+
+      '<table class="opt-table"><thead><tr><th>#</th><th>옵션명 (샷수 등)</th><th>가격(원)</th><th></th></tr></thead><tbody>' +
+        optRows +
+      '</tbody></table>' +
+      (cat.options.length < 10 ?
+        '<button class="btn btn-line btn-sm" style="margin-top:.6rem;" onclick="addOption('+ci+')">+ 옵션 추가 ('+cat.options.length+'/10)</button>'
+        : '<p style="font-size:.78rem;color:var(--ink-light);margin-top:.6rem;">옵션 10개 모두 등록되었습니다.</p>') +
+    '</div>';
+  }).join("");
+}
+
+/* 옵션 중 가장 낮은 가격. 옵션이 없으면 null */
+function minOptionPrice(cat) {
+  var min = null;
+  (cat.options || []).forEach(function(o){
+    if (!String(o.name || "").trim()) return;
+    var v = Number(o.price);
+    if (!v || isNaN(v)) return;
+    if (min === null || v < min) min = v;
+  });
+  return min;
+}
+
+function startPriceHint(cat) {
+  var min = minOptionPrice(cat);
+  if (String(cat.price || "").trim() === "") {
+    return "홈페이지에 표시되지 않습니다" +
+      (min !== null ? " · 옵션 최저가는 " + min.toLocaleString() + "원" : "");
+  }
+  if (min !== null && Number(cat.price) !== min) {
+    return "직접 지정한 금액 (옵션 최저가 " + min.toLocaleString() + "원)";
+  }
+  if (min !== null) return "옵션 최저가와 같습니다";
+  return "홈페이지에 이 금액으로 표시됩니다";
+}
+
+/* 시작가가 비어 있는 카테고리에 옵션 최저가를 채워 넣는다.
+   불러온 직후 1회. 값이 이미 있으면 건드리지 않는다. */
+function fillStartPrices() {
+  categories.forEach(function(cat){
+    if (String(cat.price || "").trim() !== "") return;
+    var min = minOptionPrice(cat);
+    if (min !== null) cat.price = min;
+  });
+}
+
+function escapeHtml(s) {
+  if (s === undefined || s === null) return "";
+  return String(s).replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function showStatus(msg, isErr) {
+  var el = document.getElementById("status");
+  el.textContent = msg;
+  el.className = "status show" + (isErr ? " err" : "");
+  setTimeout(function(){ el.classList.remove("show"); }, 2800);
+}
+
+// ── 저장 ──
+var isSaving = false;
+
+function saveAll() {
+  if (isSaving) {
+    showStatus("이미 저장 중입니다. 잠시만 기다려 주세요.", true);
+    return;
+  }
+
+  for (var i = 0; i < categories.length; i++) {
+    if (!categories[i].name.trim()) {
+      showStatus("카테고리명을 입력해 주세요.", true);
+      return;
+    }
+  }
+
+  isSaving = true;
+  var saveBtn = document.getElementById("save-btn");
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = "저장 중..."; }
+  showStatus("저장 중...");
+
+  // 보낸 내용을 기억해 두었다가 저장 후 대조한다.
+  var sentNames = categories
+    .filter(function(c){ return String(c.name || "").trim(); })
+    .map(function(c){ return String(c.name).trim(); });
+
+  function done(msg, isErr) {
+    isSaving = false;
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = "전체 저장"; }
+    showStatus(msg, isErr);
+  }
+
+  // no-cors라 응답 본문을 읽을 수 없다.
+  // 그래서 저장 후 다시 불러와 보낸 내용과 대조하는 방식으로 확인한다.
+  fetch(SHEET_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {"Content-Type": "text/plain"},
+    body: JSON.stringify({
+      action: "save_treatments",
+      key: ACCESS_KEY,
+      categories: categories
+    })
+  })
+  .then(function(){
+    setTimeout(function(){
+      loadAll(function(ok){
+        if (!ok) { done("저장 결과를 확인하지 못했습니다. 새로고침해 주세요.", true); return; }
+
+        var nowNames = categories.map(function(c){ return String(c.name || "").trim(); });
+        var same = nowNames.length === sentNames.length &&
+                   nowNames.every(function(n, i){ return n === sentNames[i]; });
+
+        if (same) done("저장 완료되었습니다.");
+        else done("저장되지 않았습니다. 접근코드를 확인해 주세요.", true);
+      });
+    }, 1200);
+  })
+  .catch(function(err){
+    done("저장 중 오류가 발생했습니다.", true);
+    console.error(err);
+  });
+}
+
+// ── 불러오기 (JSONP) ──
+//   script.google.com은 다른 도메인이라 fetch로는 응답을 읽을 수 없다.
+//   script 태그 방식으로 우회한다.
+function jsonp(params, done) {
+  var cb  = "trCb" + Date.now();
+  var tag = document.createElement("script");
+  var fin = false;
+
+  function cleanup(){
+    try { delete window[cb]; } catch(e) { window[cb] = null; }
+    if (tag.parentNode) tag.parentNode.removeChild(tag);
+  }
+  function end(res){
+    if (fin) return;
+    fin = true; clearTimeout(timer); cleanup();
+    done(res);
+  }
+
+  var timer = setTimeout(function(){ end(null); }, 12000);
+  window[cb] = function(res){ end(res); };
+  tag.onerror = function(){ end(null); };
+
+  var q = ["callback=" + cb, "t=" + Date.now()];
+  for (var k in params) {
+    if (params.hasOwnProperty(k)) {
+      q.push(encodeURIComponent(k) + "=" + encodeURIComponent(params[k]));
+    }
+  }
+  tag.src = SHEET_URL + "?" + q.join("&");
+  document.head.appendChild(tag);
+}
+
+function loadAll(after) {
+  document.getElementById("cat-list").innerHTML = '<div class="loading">불러오는 중...</div>';
+
+  jsonp({ action: "get_treatments", key: ACCESS_KEY }, function(data){
+    if (!data) {
+      categories = [];
+      render();
+      if (gate && gate.classList.contains("gone")) {
+        showStatus("불러오기 실패. 인터넷 연결을 확인해 주세요.", true);
+      } else if (gateMsg) {
+        gateMsg.textContent = "연결에 실패했습니다. 잠시 후 다시 시도해 주세요.";
+      }
+      if (after) after(false);
+      return;
+    }
+    if (data.ok === false) {
+      categories = [];
+      render();
+      // 접근코드 오류는 게이트 화면에서 안내하므로 토스트를 띄우지 않는다.
+      if (data.error !== "unauthorized") {
+        showStatus("불러오기 실패: " + data.error, true);
+      }
+      if (after) after(false);
+      return;
+    }
+    categories = data.categories || [];
+    fillStartPrices();   // 비어 있는 시작가에 옵션 최저가를 채워 넣음
+    render();
+    if (after) after(true);
+  });
+}
+
+// ── 접근코드 ──
+//   코드를 파일에 넣지 않는다. 입력받아 이 세션에서만 사용하고,
+//   맞는지는 서버가 판정한다(틀리면 unauthorized).
+var gate    = document.getElementById("gate");
+var gateKey = document.getElementById("gate-key");
+var gateBtn = document.getElementById("gate-btn");
+var gateMsg = document.getElementById("gate-msg");
+
+function tryKey() {
+  var k = gateKey.value.trim();
+  if (!k) { gateKey.focus(); return; }
+
+  ACCESS_KEY = k;
+  gateBtn.disabled = true;
+  gateBtn.textContent = "확인 중...";
+  gateMsg.textContent = "";
+
+  loadAll(function(ok){
+    gateBtn.disabled = false;
+    gateBtn.textContent = "확인";
+
+    if (ok) {
+      gate.classList.add("gone");
+      return;
+    }
+    ACCESS_KEY = "";
+    gateMsg.textContent = "접근코드가 올바르지 않습니다.";
+    gateKey.value = "";
+    gateKey.focus();
+  });
+}
+
+gateBtn.addEventListener("click", tryKey);
+gateKey.addEventListener("keydown", function(e){
+  if (e.key === "Enter") tryKey();
+});
+gateKey.focus();
+</script>
+</body>
+</html>

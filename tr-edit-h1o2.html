@@ -31,7 +31,11 @@
                     기존에는 이 화면에서 다루지 않아 시트에서 따로 관리했고,
                     저장 시 사라지거나 어긋나는 문제가 있었음.
                     · 불러올 때 비어 있으면 옵션 최저가를 자동으로 채움
+                    · 옵션 가격을 고치면 최저가로 자동 반영
+                      (단, 시작가가 빈칸이면 그대로 둠 — 미표시 의도 보존)
                     · 원장님이 직접 고칠 수 있음
+                    · 위치는 카테고리명 오른쪽 (이미지 파일명 줄이 아니라
+                      맨 윗줄에 두어 눈에 먼저 들어오도록)
                     · 비우면 홈페이지에 표시되지 않음
                       (엘리야 패키지·할인처럼 노출하지 않을 카테고리)
                     · 입력칸 아래에 옵션 최저가와 같은지 안내 표시
@@ -64,7 +68,8 @@ h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:.3rem;}
 .btn-danger{background:#fff;color:#B23A3A;border:1px solid #E8B8B8;}
 
 .cat-card{background:var(--white);border:1px solid var(--border-mid);border-radius:14px;padding:1.5rem;margin-bottom:1.2rem;box-shadow:0 2px 10px rgba(0,0,0,.04);}
-.cat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem;}
+.cat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;}
+.cat-head .btn-danger{margin-top:1.35rem;}
 .cat-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.6rem;}
 .cat-row3{display:grid;grid-template-columns:2fr 1fr;gap:.8rem;margin-bottom:.6rem;}
 label{display:block;font-size:.72rem;color:var(--gold-dark);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem;font-family:Arial,sans-serif;}
@@ -103,7 +108,6 @@ textarea{resize:vertical;min-height:50px;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
 @media (prefers-reduced-motion:reduce){ .blink{animation:none;} }
 
-.cat-row-price{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:.6rem;}
 .price-hint{
   font-size:.72rem;color:var(--ink-light);margin-top:.3rem;
   font-family:Arial,sans-serif;letter-spacing:0;text-transform:none;
@@ -173,7 +177,7 @@ input.start-price{font-weight:700;color:var(--gold-dark);}
 
   <div class="notice">
     <b>시작가</b>는 홈페이지 예약 화면에 <b>&#8361; 000,000~</b> 으로 표시되는 금액입니다.<br>
-    옵션 중 가장 낮은 가격이 자동으로 채워지며, 원하시면 직접 고치실 수 있습니다.<br>
+    옵션 가격을 고치면 <b>옵션 중 가장 낮은 가격</b>으로 자동 반영됩니다. 직접 고치셔도 됩니다.<br>
     <span class="blink">홈페이지에 표시하지 않을 카테고리는 시작가를 빈칸으로 두세요.</span>
   </div>
 
@@ -232,6 +236,7 @@ function addOption(catIdx) {
 
 function removeOption(catIdx, optIdx) {
   categories[catIdx].options.splice(optIdx, 1);
+  syncStartPrice(catIdx);   // 최저 옵션이 지워졌을 수 있으므로 다시 계산
   render();
 }
 
@@ -242,12 +247,34 @@ function updateField(catIdx, field, value) {
 
 function updateOption(catIdx, optIdx, field, value) {
   categories[catIdx].options[optIdx][field] = value;
-  // 가격이 바뀌면 '옵션 최저가와 같은지' 안내만 갱신한다.
-  // 시작가 값 자체는 건드리지 않는다(원장님이 정한 값을 덮어쓰지 않기 위해).
-  if (field === "price") refreshHint(catIdx);
+
+  // 옵션 가격이 바뀌면 시작가도 최저가로 따라간다.
+  //   단, 시작가가 비어 있으면 건드리지 않는다.
+  //   빈칸은 '홈페이지에 표시하지 않겠다'는 뜻이므로 자동으로 채우면 안 된다.
+  if (field === "price" || field === "name") {
+    syncStartPrice(catIdx);
+  }
 }
 
-/* 해당 카테고리의 시작가 안내 문구만 다시 그린다. 입력 중인 칸은 유지. */
+/* 옵션 최저가를 시작가에 반영. 빈칸(미표시)은 유지. */
+function syncStartPrice(catIdx) {
+  var cat = categories[catIdx];
+  if (String(cat.price || "").trim() === "") { refreshHint(catIdx); return; }
+
+  var min = minOptionPrice(cat);
+  if (min === null) { refreshHint(catIdx); return; }
+
+  cat.price = min;
+
+  var card = document.querySelectorAll(".cat-card")[catIdx];
+  if (card) {
+    var box = card.querySelector(".start-price");
+    if (box && document.activeElement !== box) box.value = min;
+  }
+  refreshHint(catIdx);
+}
+
+/* 시작가 안내 문구만 다시 그린다. 입력 중인 칸은 건드리지 않는다. */
 function refreshHint(catIdx) {
   var card = document.querySelectorAll(".cat-card")[catIdx];
   if (!card) return;
@@ -282,20 +309,18 @@ function render() {
           '<label>카테고리명 (시술명)</label>' +
           '<input type="text" placeholder="예: 슈링크" value="'+escapeHtml(cat.name)+'" oninput="updateField('+ci+',\'name\',this.value)" style="font-size:1rem;font-weight:700;">' +
         '</div>' +
+        '<div style="width:190px;flex-shrink:0;">' +
+          '<label>시작가 &#183; 홈페이지 표시</label>' +
+          '<input type="number" class="start-price" placeholder="비우면 표시 안 함" value="'+escapeHtml(cat.price)+'" oninput="updateField('+ci+',\'price\',this.value)">' +
+          '<div class="price-hint">' + startPriceHint(cat) + '</div>' +
+        '</div>' +
         '<button class="btn btn-danger btn-sm" onclick="removeCategory('+ci+')">카테고리 삭제</button>' +
       '</div>' +
       '<div class="cat-row3">' +
         '<div><label>설명</label><input type="text" placeholder="예: HIFU 기반 정밀 리프팅" value="'+escapeHtml(cat.desc)+'" oninput="updateField('+ci+',\'desc\',this.value)"></div>' +
         '<div><label>이미지 파일명</label><input type="text" placeholder="sig_1.jpg" value="'+escapeHtml(cat.image)+'" oninput="updateField('+ci+',\'image\',this.value)"></div>' +
       '</div>' +
-      '<div class="cat-row-price">' +
-        '<div>' +
-          '<label>시작가 — 홈페이지 표시 (비우면 표시 안 함)</label>' +
-          '<input type="number" class="start-price" placeholder="비우면 홈페이지에 표시되지 않습니다" value="'+escapeHtml(cat.price)+'" oninput="updateField('+ci+',\'price\',this.value)">' +
-          '<div class="price-hint">' + startPriceHint(cat) + '</div>' +
-        '</div>' +
-        '<div></div>' +
-      '</div>' +
+
       '<table class="opt-table"><thead><tr><th>#</th><th>옵션명 (샷수 등)</th><th>가격(원)</th><th></th></tr></thead><tbody>' +
         optRows +
       '</tbody></table>' +
@@ -325,9 +350,10 @@ function startPriceHint(cat) {
       (min !== null ? " · 옵션 최저가는 " + min.toLocaleString() + "원" : "");
   }
   if (min !== null && Number(cat.price) !== min) {
-    return "옵션 최저가(" + min.toLocaleString() + "원)와 다릅니다";
+    return "직접 지정한 금액 (옵션 최저가 " + min.toLocaleString() + "원)";
   }
-  return "옵션 최저가와 같습니다";
+  if (min !== null) return "옵션 최저가와 같습니다";
+  return "홈페이지에 이 금액으로 표시됩니다";
 }
 
 /* 시작가가 비어 있는 카테고리에 옵션 최저가를 채워 넣는다.

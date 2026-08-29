@@ -439,6 +439,24 @@
                            예약 화면에서 시술을 고를 수 없게 되는 것이
                            가장 나쁜 결과이므로.
                    ※ Price.gs v8 이상 필요.
+ v213  2026.08.29  [★버그수정: 시술 상세 페이지에 옛 가격이 보이던 문제]
+                   증상: 시트를 990,010으로 고쳤는데 시술 상세에는
+                         990,000이 나옴. 예약 화면을 한 번 거친 뒤
+                         다시 보면 990,010으로 바뀜.
+                   원인: 가격 조회(fetchHours)를 예약 화면 진입 시에만
+                         호출했음. 상세 페이지는 SVCS[].priceStr를 그대로
+                         쓰는데, 그 값이 아직 갱신되기 전이었다.
+                   수정: · 페이지 로드 시 1회 조회 (홈에서 바로 상세로 가도 정확)
+                         · 상세 페이지도 조회 실패 시 안내 문구 표시
+                         · 조회 결과가 늦게 도착하면 열려 있는 상세 화면을
+                           다시 그림 (refreshDetailPrice)
+                         · initBooking에서 재시도 횟수 초기화 —
+                           로드 시 실패했더라도 예약 화면에서 다시 시도
+                         · 예약 확인 화면·완료 메일의 가격도 동일 처리
+                           (bookingPriceText). 화면에는 안내 문구가 뜨는데
+                           메일에만 옛 금액이 나가는 일이 없도록.
+                           기존 tr("bk.free")는 번역 키가 존재하지 않아
+                           가격이 0일 때 빈 값이 나오던 문제도 함께 해소.
 
                    ※ 시술 소요시간은 슬롯 판정에 반영하지 않음(의도).
                      예약 시점에 시술이 확정되지 않는 경우가 많음 —
@@ -788,6 +806,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
 .svc-opt{padding:.85rem 1.4rem;border:1px solid var(--border-mid);border-radius:4px;background:var(--white);cursor:pointer;transition:border-color .2s,background .2s;display:flex;justify-content:space-between;align-items:center;}
 .svc-opt:hover{border-color:var(--gold);background:var(--cream-dark);}
 .svc-opt.sel{border-color:var(--gold);background:rgba(201,169,110,.06);}
+.price-none{font-size:.9rem;font-weight:400;color:var(--ink-light);line-height:1.6;word-break:keep-all;}
 .svc-pr-none{font-size:.78rem;color:var(--ink-light);font-weight:400;line-height:1.5;max-width:220px;text-align:right;word-break:keep-all;}
 .svc-nm{font-size:.98rem;font-weight:700;color:var(--ink);margin-bottom:.2rem;}
 .svc-ds{font-size:.8rem;color:var(--ink-light);font-family:'Arial',sans-serif;}
@@ -969,7 +988,7 @@ footer{background:#1C1916;color:rgba(255,255,255,.55);padding:3.2rem 5vw;display
   <circle cx="88" cy="18" r="2" fill="#B8965A"/>
   <text x="94" y="26" font-family="Playfair Display,serif" font-size="18" font-weight="400" fill="#B8965A" letter-spacing="0.5">Clinic</text>
 </svg>
-    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v212</span>
+    <span id="ver-badge" style="display:none;font-size:.55rem;color:var(--ink-light);font-family:'Arial',sans-serif;font-weight:400;letter-spacing:.05em;align-self:flex-end;margin-bottom:2px;">v213</span>
   </a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home')" data-t="nav.home">홈</a></li>
@@ -2014,7 +2033,7 @@ function gaPage(path, title){
 // ※ 이 상태는 해당 브라우저 탭에만 존재. 서버 저장·타인 노출 없음.
 //    새로고침하면 원본 HTML을 다시 받으므로 자동으로 숨겨진다.
 // ══════════════════════════════════════════════
-var VER_INFO = 'v212 · 2026.08.29';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
+var VER_INFO = 'v213 · 2026.08.29';  // ★ 파일 수정 시 이 값도 함께 갱신할 것
 var verTaps = [];
 function verTap() {
   var now = Date.now();
@@ -2135,7 +2154,16 @@ function showDetail(key) {
   if (hero) hero.style.backgroundImage = "url('images/"+DETAIL_IMGS[idx]+"')";
   document.getElementById("dt-title").textContent = d.name[lang] || d.name.ko;
   document.getElementById("dt-sub").textContent = d.sub[lang] || d.sub.ko;
-  document.getElementById("dt-price").innerHTML = d.priceStr;
+  // v213: 조회 실패 시 상세 페이지에도 안내 문구
+  var dtP = document.getElementById("dt-price");
+  if (PRICE_READY) {
+    dtP.innerHTML = d.priceStr;
+    dtP.classList.remove("price-none");
+  } else {
+    dtP.innerHTML = (PRICE_FAIL_MSG[lang] || PRICE_FAIL_MSG.ko);
+    dtP.classList.add("price-none");
+  }
+  DETAIL_OPEN = idx;   // 조회 결과가 늦게 도착하면 이 화면을 다시 그리기 위함
   document.getElementById("dt-body").innerHTML = d.body[lang] || d.body.ko;
   document.getElementById("dt-join").onclick = function() {
     bk.svc = d.name[lang] || d.name.ko;
@@ -2218,6 +2246,7 @@ function initBooking(preSvc, prePr) {
   //   저장본이 있으면 즉시 그 값을 쓰고, 동시에 시트를 조회해 최신으로 교체한다.
   //   조회가 실패해도 저장본이나 내장 기본값으로 계속 동작한다.
   if (!HOURS) loadHoursCache();
+  PRICE_TRIED = 0;   // 예약 화면에 들어올 때마다 재시도 기회를 새로 준다
   fetchHours();
 
   bk.step=1; bk.date=null; bk.time=null;
@@ -2668,6 +2697,7 @@ function fetchHours(){
 // 조회 실패 시에는 코드에 있는 값을 그대로 쓴다.
 // ══════════════════════════════════════════════════════════
 var PRICE_SRC   = "조회 전";   // 버전 배지에 표시
+var DETAIL_OPEN = null;        // 현재 열려 있는 시술 상세(SVCS 인덱스)
 var PRICE_READY = false;       // 시트 조회 성공 여부
 var PRICE_TRIED = 0;           // 조회 시도 횟수(재시도 판단용)
 
@@ -2720,6 +2750,34 @@ function applySheetPrices(cats){
   PRICE_SRC = "시트" + (changed ? " (" + changed + "건 갱신)" : "") +
               (hidden ? " · " + hidden + "건 숨김" : "");
   renderSvcOptions();
+  refreshDetailPrice();
+}
+
+/* 시술 상세 페이지가 열려 있으면 가격 표시를 다시 그린다.
+   조회는 비동기라, 손님이 상세 화면을 보고 있는 사이에 결과가 도착할 수 있다. */
+/* 예약 확인 화면·메일에 넣을 가격 문자열.
+   조회에 실패했으면 금액 대신 안내 문구를 넣는다.
+   화면에는 안내 문구가 뜨는데 메일에는 옛 금액이 나가면 안 되므로. */
+function bookingPriceText(plain){
+  if (!PRICE_READY || !bk.price) {
+    return (PRICE_FAIL_MSG[lang] || PRICE_FAIL_MSG.ko);
+  }
+  return (plain ? "\u20A9" : "&#8361; ") + bk.price.toLocaleString() + "~";
+}
+
+function refreshDetailPrice(){
+  if (DETAIL_OPEN === null) return;
+  var d = SVCS[DETAIL_OPEN];
+  var el = document.getElementById("dt-price");
+  if (!d || !el) return;
+
+  if (PRICE_READY) {
+    el.innerHTML = d.priceStr;
+    el.classList.remove("price-none");
+  } else {
+    el.innerHTML = (PRICE_FAIL_MSG[lang] || PRICE_FAIL_MSG.ko);
+    el.classList.add("price-none");
+  }
 }
 
 /* 조회 실패 처리
@@ -2745,8 +2803,9 @@ function priceFailed(){
 
   PRICE_READY = false;
   PRICE_SRC = "조회 실패";
-  logWarn("가격조회실패", "시술 가격 조회 실패 — 예약화면에 안내 문구 표시");
+  logWarn("가격조회실패", "시술 가격 조회 실패 — 안내 문구로 대체");
   renderSvcOptions();
+  refreshDetailPrice();
 }
 
 /* 경고이력 시트에 기록 (Code.gs = 예약관리 스크립트)
@@ -2963,7 +3022,7 @@ function fillCart() {
   var fn=document.getElementById("f-fn").value, ln=document.getElementById("f-ln").value;
   document.getElementById("ct-name").textContent=(fn||"-")+" "+(ln||"");
   document.getElementById("ct-cont").textContent=(document.getElementById("f-em").value||"-")+" / "+getPhone();
-  var pr=bk.price?"&#8361; "+bk.price.toLocaleString()+"~":tr("bk.free");
+  var pr = bookingPriceText(false);   // v213
   document.getElementById("ct-pr").innerHTML=pr;
   document.getElementById("ct-tot").innerHTML=pr;
 }
@@ -3036,7 +3095,7 @@ function submitBk() {
     var phone=getPhone();
     var nation=(selC && selC.n) ? selC.n : "-";
     var notes="없음";
-    var pr=bk.price?"₩"+bk.price.toLocaleString()+"~":tr("bk.free");
+    var pr = bookingPriceText(true);   // v213
     if(cfmBtn){cfmBtn.disabled=true;cfmBtn.textContent="발송 중...";}
 
     if (emailVerified !== email || !verifiedToken) {
@@ -3102,7 +3161,7 @@ function submitBk_unused() {
   var ds=d?formatDateNaver(d,da,bk.time||""):"-";
   var email=document.getElementById("f-em").value||"-";
   var name=((document.getElementById("f-fn").value||"")+" "+(document.getElementById("f-ln").value||"")).trim()||"-";
-  var pr=bk.price?"&#8361; "+bk.price.toLocaleString()+"~":tr("bk.free");
+  var pr = bookingPriceText(false);   // v213
   document.getElementById("cfm-details").innerHTML=
     "<div class=\"cfm-row\"><span>"+tr("cr.svc")+"</span><span>"+(bk.svc||"-")+"</span></div>"+
     "<div class=\"cfm-row\"><span>"+tr("cr.date")+"</span><span>"+ds+"</span></div>"+
@@ -3449,6 +3508,14 @@ function restartHeroTimer() {
     test.src = img.src;
   });
 })();
+
+// ── v213: 페이지 로드 시 가격·운영시간을 한 번 가져온다 ──
+//   기존에는 예약 화면에 들어갈 때만(initBooking) 조회했다.
+//   그래서 홈 → 시술 상세로 바로 가면 코드에 박힌 옛 가격이 보이고,
+//   예약 화면을 한 번 거친 뒤에야 시트 값으로 바뀌었다.
+//   상세 페이지에서도 정확한 가격을 보여주려면 로드 시점에 받아야 한다.
+loadHoursCache();
+fetchHours();
 
 var fadeEls = document.querySelectorAll(".fade-in");
 var observer = new IntersectionObserver(function(entries) {

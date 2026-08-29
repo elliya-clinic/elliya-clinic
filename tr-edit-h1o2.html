@@ -16,10 +16,11 @@
                   · admin.html → tr-edit-h1o2.html
                     'tr-' 접두어로 시술 관련 화면을 묶음.
                     tr-sugg-n2g0.html(진료실 가격 안내)과 한 세트.
-                  · 접근코드 추가 — 기존에는 인증이 전혀 없어
+                  · 접근코드 화면 추가 — 기존에는 인증이 전혀 없어
                     주소만 알면 누구나 가격을 바꾸거나 시술을 지울 수 있었음.
                     코드를 파일에 넣지 않고 입력받아 그대로 서버에 보낸다.
                     (틀리면 서버가 unauthorized로 거절)
+                    브라우저 prompt() 대신 브랜드 톤의 전용 화면 사용.
                   · API 주소 교체 — 시술관리 Apps Script 배포를 하나로
                     정리하면서 기존 주소(AKfycbx9TupD…)가 삭제됨.
                     AKfycby0fSsrQC2z… 로 교체. Price.gs v6 이상 필요.
@@ -81,9 +82,64 @@ textarea{resize:vertical;min-height:50px;}
 
 .empty{text-align:center;padding:3rem 0;color:var(--ink-light);font-size:.9rem;}
 .loading{text-align:center;padding:3rem 0;color:var(--ink-light);}
+
+/* ─── 접근코드 ─── */
+#gate{
+  position:fixed;inset:0;z-index:200;background:var(--cream);
+  display:flex;align-items:center;justify-content:center;padding:1.5rem;
+}
+#gate.gone{display:none;}
+.gate-box{width:100%;max-width:380px;text-align:center;}
+.gate-mark{
+  font-family:'Playfair Display',serif;
+  font-size:1.9rem;letter-spacing:.2em;font-weight:600;
+  color:var(--ink);text-indent:.2em;
+}
+.gate-rule{width:52px;height:1px;background:var(--gold);margin:1.5rem auto 1.3rem;opacity:.7;}
+.gate-sub{
+  font-size:.78rem;letter-spacing:.22em;color:var(--gold-dark);
+  text-indent:.22em;margin-bottom:2.4rem;
+}
+.gate-lbl{
+  font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--gold-dark);font-family:Arial,sans-serif;
+  margin-bottom:.5rem;display:block;text-align:left;
+}
+#gate-key{
+  width:100%;padding:.95rem 1rem;
+  border:1px solid var(--border-mid);border-radius:6px;
+  background:var(--white);font-family:'Noto Serif KR',serif;
+  font-size:1.05rem;color:var(--ink);text-align:center;
+  letter-spacing:.28em;
+}
+#gate-key:focus{outline:none;border-color:var(--gold);}
+#gate-btn{
+  width:100%;margin-top:.9rem;padding:.95rem;
+  background:var(--ink);color:var(--white);border:none;border-radius:6px;
+  font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;
+  letter-spacing:.08em;transition:background .2s;
+}
+#gate-btn:hover{background:var(--gold-dark);}
+#gate-btn:disabled{background:var(--cream-dark);color:var(--ink-light);cursor:default;}
+#gate-msg{
+  min-height:1.3rem;margin-top:.9rem;
+  font-size:.82rem;color:#B23A3A;
+}
 </style>
 </head>
 <body>
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-mark">ELLIYA</div>
+    <div class="gate-rule"></div>
+    <div class="gate-sub">시술 편집</div>
+    <label class="gate-lbl" for="gate-key">접근코드</label>
+    <input type="password" id="gate-key" autocomplete="off" inputmode="text" placeholder="••••••••">
+    <button id="gate-btn">확인</button>
+    <div id="gate-msg"></div>
+  </div>
+</div>
+
 <div class="wrap">
   <h1>&#9998; 시술 관리</h1>
   <p class="sub">시술 카테고리와 옵션(샷수/가격)을 관리합니다. 카테고리당 옵션은 최대 10개까지 등록 가능합니다.<br>
@@ -312,16 +368,21 @@ function loadAll(after) {
     if (!data) {
       categories = [];
       render();
-      showStatus("불러오기 실패. 인터넷 연결을 확인해 주세요.", true);
+      if (gate && gate.classList.contains("gone")) {
+        showStatus("불러오기 실패. 인터넷 연결을 확인해 주세요.", true);
+      } else if (gateMsg) {
+        gateMsg.textContent = "연결에 실패했습니다. 잠시 후 다시 시도해 주세요.";
+      }
       if (after) after(false);
       return;
     }
     if (data.ok === false) {
       categories = [];
       render();
-      showStatus(data.error === "unauthorized"
-        ? "접근코드가 올바르지 않습니다."
-        : "불러오기 실패: " + data.error, true);
+      // 접근코드 오류는 게이트 화면에서 안내하므로 토스트를 띄우지 않는다.
+      if (data.error !== "unauthorized") {
+        showStatus("불러오기 실패: " + data.error, true);
+      }
       if (after) after(false);
       return;
     }
@@ -332,21 +393,42 @@ function loadAll(after) {
 }
 
 // ── 접근코드 ──
-function askKey() {
-  var k = prompt("접근코드를 입력하세요");
-  if (k === null) {
-    document.getElementById("cat-list").innerHTML =
-      '<div class="empty">접근코드를 입력해야 시술 정보를 볼 수 있습니다.<br>' +
-      '<button class="btn btn-gold" style="margin-top:1rem;" onclick="askKey()">코드 입력</button></div>';
-    return;
-  }
-  ACCESS_KEY = k.trim();
+//   코드를 파일에 넣지 않는다. 입력받아 이 세션에서만 사용하고,
+//   맞는지는 서버가 판정한다(틀리면 unauthorized).
+var gate    = document.getElementById("gate");
+var gateKey = document.getElementById("gate-key");
+var gateBtn = document.getElementById("gate-btn");
+var gateMsg = document.getElementById("gate-msg");
+
+function tryKey() {
+  var k = gateKey.value.trim();
+  if (!k) { gateKey.focus(); return; }
+
+  ACCESS_KEY = k;
+  gateBtn.disabled = true;
+  gateBtn.textContent = "확인 중...";
+  gateMsg.textContent = "";
+
   loadAll(function(ok){
-    if (!ok) setTimeout(askKey, 300);
+    gateBtn.disabled = false;
+    gateBtn.textContent = "확인";
+
+    if (ok) {
+      gate.classList.add("gone");
+      return;
+    }
+    ACCESS_KEY = "";
+    gateMsg.textContent = "접근코드가 올바르지 않습니다.";
+    gateKey.value = "";
+    gateKey.focus();
   });
 }
 
-askKey();
+gateBtn.addEventListener("click", tryKey);
+gateKey.addEventListener("keydown", function(e){
+  if (e.key === "Enter") tryKey();
+});
+gateKey.focus();
 </script>
 </body>
 </html>

@@ -112,7 +112,9 @@ textarea{resize:vertical;min-height:50px;}
   font-size:.72rem;color:var(--ink-light);margin-top:.3rem;
   font-family:Arial,sans-serif;letter-spacing:0;text-transform:none;
 }
-input.start-price{font-weight:700;color:var(--gold-dark);}
+input.start-price{font-size:1rem;font-weight:700;color:var(--ink);}
+input.money{text-align:right;font-variant-numeric:tabular-nums;}
+td input.money{font-weight:700;color:var(--ink);}
 
 /* ─── 접근코드 ─── */
 #gate{
@@ -241,12 +243,14 @@ function removeOption(catIdx, optIdx) {
 }
 
 function updateField(catIdx, field, value) {
-  categories[catIdx][field] = value;
+  // 금액은 쉼표를 떼고 숫자로 저장한다(화면에만 쉼표를 표시).
+  categories[catIdx][field] = (field === "price") ? unComma(value) : value;
   if (field === "price") refreshHint(catIdx);
 }
 
 function updateOption(catIdx, optIdx, field, value) {
-  categories[catIdx].options[optIdx][field] = value;
+  categories[catIdx].options[optIdx][field] =
+    (field === "price") ? unComma(value) : value;
 
   // 옵션 가격이 바뀌면 시작가도 최저가로 따라간다.
   //   단, 시작가가 비어 있으면 건드리지 않는다.
@@ -269,7 +273,7 @@ function syncStartPrice(catIdx) {
   var card = document.querySelectorAll(".cat-card")[catIdx];
   if (card) {
     var box = card.querySelector(".start-price");
-    if (box && document.activeElement !== box) box.value = min;
+    if (box && document.activeElement !== box) box.value = comma(min);
   }
   refreshHint(catIdx);
 }
@@ -298,7 +302,7 @@ function render() {
       return '<tr>' +
         '<td class="opt-num">'+(oi+1)+'</td>' +
         '<td><input type="text" placeholder="예: 100샷" value="'+escapeHtml(opt.name)+'" oninput="updateOption('+ci+','+oi+',\'name\',this.value)"></td>' +
-        '<td><input type="number" placeholder="가격" value="'+escapeHtml(opt.price)+'" oninput="updateOption('+ci+','+oi+',\'price\',this.value)"></td>' +
+        '<td><input type="text" inputmode="numeric" class="money" placeholder="가격" value="'+escapeHtml(comma(opt.price))+'" oninput="reformat(this);updateOption('+ci+','+oi+',\'price\',this.value)"></td>' +
         '<td class="opt-del" onclick="removeOption('+ci+','+oi+')" title="삭제">&times;</td>' +
         '</tr>';
     }).join("");
@@ -311,7 +315,7 @@ function render() {
         '</div>' +
         '<div style="width:190px;flex-shrink:0;">' +
           '<label>시작가 &#183; 홈페이지 표시</label>' +
-          '<input type="number" class="start-price" placeholder="비우면 표시 안 함" value="'+escapeHtml(cat.price)+'" oninput="updateField('+ci+',\'price\',this.value)">' +
+          '<input type="text" inputmode="numeric" class="start-price money" placeholder="비우면 표시 안 함" value="'+escapeHtml(comma(cat.price))+'" oninput="reformat(this);updateField('+ci+',\'price\',this.value)">' +
           '<div class="price-hint">' + startPriceHint(cat) + '</div>' +
         '</div>' +
         '<button class="btn btn-danger btn-sm" onclick="removeCategory('+ci+')">카테고리 삭제</button>' +
@@ -332,6 +336,40 @@ function render() {
 }
 
 /* 옵션 중 가장 낮은 가격. 옵션이 없으면 null */
+/* 금액 표시용 — 1234567 → "1,234,567". 빈 값은 빈 문자열. */
+function comma(v) {
+  var raw = String(v === undefined || v === null ? "" : v).replace(/[^0-9]/g, "");
+  if (raw === "") return "";
+  return Number(raw).toLocaleString("ko-KR");
+}
+
+/* 입력값에서 숫자만 뽑는다. "1,234,567" → 1234567 */
+function unComma(v) {
+  var raw = String(v === undefined || v === null ? "" : v).replace(/[^0-9]/g, "");
+  return raw === "" ? "" : Number(raw);
+}
+
+/* 입력 중 커서 위치를 유지하면서 쉼표를 다시 넣는다.
+   type="number"는 쉼표를 표시할 수 없어 text로 두고 직접 서식을 넣는다. */
+function reformat(el) {
+  var before = el.value;
+  var caret  = el.selectionStart;
+  var digitsBefore = before.slice(0, caret).replace(/[^0-9]/g, "").length;
+
+  var after = comma(before);
+  if (after === before) return;
+  el.value = after;
+
+  // 앞에서부터 같은 개수의 숫자를 만나는 위치로 커서를 되돌린다
+  var seen = 0, pos = after.length;
+  for (var i = 0; i < after.length; i++) {
+    if (/[0-9]/.test(after[i])) seen++;
+    if (seen === digitsBefore) { pos = i + 1; break; }
+  }
+  if (digitsBefore === 0) pos = 0;
+  try { el.setSelectionRange(pos, pos); } catch(e){}
+}
+
 function minOptionPrice(cat) {
   var min = null;
   (cat.options || []).forEach(function(o){

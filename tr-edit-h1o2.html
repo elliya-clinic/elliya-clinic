@@ -36,10 +36,41 @@
                     · 원장님이 직접 고칠 수 있음
                     · 위치는 카테고리명 오른쪽 (이미지 파일명 줄이 아니라
                       맨 윗줄에 두어 눈에 먼저 들어오도록)
+  v3  2026.08.29  [금액 쉼표 표시 + 글씨 통일]
+                  · 시작가·옵션 가격을 990,010 형태로 표시
+                    type="number"는 쉼표를 넣을 수 없어 text로 바꾸고
+                    inputmode="numeric"으로 모바일 숫자 키패드는 유지.
+                    입력 중 comma()로 서식을 다시 넣되, 커서가 튀지 않도록
+                    앞쪽 숫자 개수를 세어 위치를 보정한다(reformat).
+                  · 저장할 때는 unComma()로 쉼표를 떼고 숫자로 보낸다.
+                    시트에는 990010으로 들어감. 빈 칸은 빈 값 그대로 유지해
+                    '비우면 홈페이지 미표시' 규칙이 깨지지 않도록 함.
+                  · 글씨색을 카테고리명과 동일하게 (검정 굵은 글씨).
+                    기존 시작가는 금색이라 입력칸으로 인식되지 않았음.
+                  · 금액은 오른쪽 정렬 + 고정폭 숫자(tabular-nums)로
+                    자릿수를 비교하기 쉽게 함.
                     · 비우면 홈페이지에 표시되지 않음
                       (엘리야 패키지·할인처럼 노출하지 않을 카테고리)
                     · 입력칸 아래에 옵션 최저가와 같은지 안내 표시
 
+  v4  2026.08.30  [홈페이지 노출 Y/N 추가]
+                  기존에는 '시작가를 비우면 홈페이지 미표시'였는데,
+                  빈칸이 '아직 안 정함'과 '노출 안 함'을 겸해 모호했다.
+                  실제로 새로고침만 해도 자동 채움이 동작해,
+                  노출하지 않으려던 카테고리에 최저가가 들어갔다.
+                  → Categories F열(Y/N)로 의도를 명시한다.
+                  · 카테고리명 오른쪽에 노출 선택(Y/N)
+                  · N이면 시작가 칸 비활성 + 값 비움
+                  · N → Y로 바꾸면 옵션 최저가가 자동으로 들어감
+                  · 자동 채움(fillStartPrices)은 N인 카테고리를 건너뛴다
+                  · 옵션 가격 변경 시 자동 반영도 N이면 건너뛴다
+                  · 시작가가 비어 있어도 채운다(Y인 경우).
+                    빈칸이 '숨김'을 뜻하던 시절에는 건너뛰었으나, 이제 그
+                    역할은 F열이 맡으므로 빈칸은 '아직 안 정함'일 뿐이다.
+                    새 카테고리에 옵션만 넣고 저장하면 시작가가 비어
+                    시트 E열이 빈칸으로 남던 문제를 해소.
+                  · [전체 저장] 직전에도 한 번 더 채운다.
+                  ※ Price.gs v9 이상 필요.
   ※ 시작가는 이 화면에서 직접 다룬다(Categories E열).
     화면이 보낸 값을 그대로 저장하므로, 카테고리 이름을 바꿔도
     시작가가 사라지지 않는다.
@@ -113,6 +144,13 @@ textarea{resize:vertical;min-height:50px;}
   font-family:Arial,sans-serif;letter-spacing:0;text-transform:none;
 }
 input.start-price{font-size:1rem;font-weight:700;color:var(--ink);}
+input.start-price:disabled{background:var(--cream-dark);color:var(--ink-light);cursor:not-allowed;}
+.show-sel{
+  width:100%;padding:.62rem .5rem;font-family:inherit;font-size:1rem;font-weight:700;
+  color:var(--ink);background:var(--white);
+  border:1px solid var(--border-mid);border-radius:6px;cursor:pointer;
+}
+.show-sel:focus{outline:none;border-color:var(--gold);}
 input.money{text-align:right;font-variant-numeric:tabular-nums;}
 td input.money{font-weight:700;color:var(--ink);}
 
@@ -180,7 +218,7 @@ td input.money{font-weight:700;color:var(--ink);}
   <div class="notice">
     <b>시작가</b>는 홈페이지 예약 화면에 <b>&#8361; 000,000~</b> 으로 표시되는 금액입니다.<br>
     옵션 가격을 고치면 <b>옵션 중 가장 낮은 가격</b>으로 자동 반영됩니다. 직접 고치셔도 됩니다.<br>
-    <span class="blink">홈페이지에 표시하지 않을 카테고리는 시작가를 빈칸으로 두세요.</span>
+    <span class="blink">홈페이지에 표시하지 않을 카테고리는 <b>홈페이지 노출</b>을 <b>N</b>으로 두세요.</span>
   </div>
 
   <div class="bar">
@@ -216,6 +254,7 @@ function addCategory() {
     desc: "",
     image: "",
     price: "",
+    show: true,
     options: [emptyOption()]
   });
   render();
@@ -242,6 +281,32 @@ function removeOption(catIdx, optIdx) {
   render();
 }
 
+/* 홈페이지 노출 Y/N 전환
+     N → Y : 칸을 열고 옵션 최저가를 채운다
+     Y → N : 칸을 잠그고 값을 비운다 (시트에도 빈칸으로 저장) */
+function updateShow(catIdx, val) {
+  var cat = categories[catIdx];
+  cat.show = (val !== "N");
+
+  if (cat.show) {
+    var min = minOptionPrice(cat);
+    cat.price = (min === null) ? "" : min;
+  } else {
+    cat.price = "";
+  }
+
+  var card = document.querySelectorAll(".cat-card")[catIdx];
+  if (card) {
+    var box = card.querySelector(".start-price");
+    if (box) {
+      box.disabled = !cat.show;
+      box.value = cat.show ? comma(cat.price) : "";
+      box.placeholder = cat.show ? "옵션 최저가 자동" : "노출 안 함";
+    }
+  }
+  refreshHint(catIdx);
+}
+
 function updateField(catIdx, field, value) {
   // 금액은 쉼표를 떼고 숫자로 저장한다(화면에만 쉼표를 표시).
   categories[catIdx][field] = (field === "price") ? unComma(value) : value;
@@ -263,8 +328,14 @@ function updateOption(catIdx, optIdx, field, value) {
 /* 옵션 최저가를 시작가에 반영. 빈칸(미표시)은 유지. */
 function syncStartPrice(catIdx) {
   var cat = categories[catIdx];
-  if (String(cat.price || "").trim() === "") { refreshHint(catIdx); return; }
 
+  // 노출하지 않는 카테고리는 건드리지 않는다. F열이 그 의도를 담당한다.
+  if (cat.show === false) { refreshHint(catIdx); return; }
+
+  // 비어 있어도 채운다.
+  //   빈칸이 '숨김'을 뜻하던 시절에는 건너뛰었지만, 이제 그 역할은 F열이
+  //   맡으므로 빈칸은 '아직 안 정함'일 뿐이다. 새 카테고리에 옵션을 넣으면
+  //   시작가가 자동으로 들어가야 화면 안내('옵션 최저가 자동')와 맞는다.
   var min = minOptionPrice(cat);
   if (min === null) { refreshHint(catIdx); return; }
 
@@ -313,9 +384,19 @@ function render() {
           '<label>카테고리명 (시술명)</label>' +
           '<input type="text" placeholder="예: 슈링크" value="'+escapeHtml(cat.name)+'" oninput="updateField('+ci+',\'name\',this.value)" style="font-size:1rem;font-weight:700;">' +
         '</div>' +
-        '<div style="width:190px;flex-shrink:0;">' +
-          '<label>시작가 &#183; 홈페이지 표시</label>' +
-          '<input type="text" inputmode="numeric" class="start-price money" placeholder="비우면 표시 안 함" value="'+escapeHtml(comma(cat.price))+'" oninput="reformat(this);updateField('+ci+',\'price\',this.value)">' +
+        '<div style="width:112px;flex-shrink:0;">' +
+          '<label>홈페이지 노출</label>' +
+          '<select class="show-sel" onchange="updateShow('+ci+',this.value)">' +
+            '<option value="Y"'+(cat.show===false?'':' selected')+'>Y &#183; 노출</option>' +
+            '<option value="N"'+(cat.show===false?' selected':'')+'>N &#183; 숨김</option>' +
+          '</select>' +
+        '</div>' +
+        '<div style="width:186px;flex-shrink:0;">' +
+          '<label>시작가</label>' +
+          '<input type="text" inputmode="numeric" class="start-price money" ' +
+            (cat.show===false?'disabled placeholder="노출 안 함" ':'placeholder="옵션 최저가 자동" ') +
+            'value="'+escapeHtml(cat.show===false?'':comma(cat.price))+'" ' +
+            'oninput="reformat(this);updateField('+ci+',\'price\',this.value)">' +
           '<div class="price-hint">' + startPriceHint(cat) + '</div>' +
         '</div>' +
         '<button class="btn btn-danger btn-sm" onclick="removeCategory('+ci+')">카테고리 삭제</button>' +
@@ -383,9 +464,14 @@ function minOptionPrice(cat) {
 
 function startPriceHint(cat) {
   var min = minOptionPrice(cat);
+
+  if (cat.show === false) {
+    return "홈페이지에 노출하지 않습니다";
+  }
   if (String(cat.price || "").trim() === "") {
-    return "홈페이지에 표시되지 않습니다" +
-      (min !== null ? " · 옵션 최저가는 " + min.toLocaleString() + "원" : "");
+    return min !== null
+      ? "저장 시 옵션 최저가 " + min.toLocaleString() + "원이 들어갑니다"
+      : "옵션을 추가하면 최저가가 채워집니다";
   }
   if (min !== null && Number(cat.price) !== min) {
     return "직접 지정한 금액 (옵션 최저가 " + min.toLocaleString() + "원)";
@@ -396,8 +482,11 @@ function startPriceHint(cat) {
 
 /* 시작가가 비어 있는 카테고리에 옵션 최저가를 채워 넣는다.
    불러온 직후 1회. 값이 이미 있으면 건드리지 않는다. */
+/* 불러온 뒤 1회 — 노출(Y)인데 시작가가 비어 있으면 옵션 최저가로 채운다.
+   N인 카테고리는 건드리지 않는다. 그것이 F열을 만든 이유이므로. */
 function fillStartPrices() {
   categories.forEach(function(cat){
+    if (cat.show === false) { cat.price = ""; return; }
     if (String(cat.price || "").trim() !== "") return;
     var min = minOptionPrice(cat);
     if (min !== null) cat.price = min;
@@ -436,6 +525,11 @@ function saveAll() {
   var saveBtn = document.getElementById("save-btn");
   if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = "저장 중..."; }
   showStatus("저장 중...");
+
+  // 노출(Y)인데 시작가가 비어 있으면 저장 직전에 옵션 최저가로 채운다.
+  //   옵션만 입력하고 시작가를 손대지 않은 채 저장하는 경우를 위한 것.
+  fillStartPrices();
+  render();
 
   // 보낸 내용을 기억해 두었다가 저장 후 대조한다.
   var sentNames = categories
